@@ -2,9 +2,11 @@
 
 namespace Tests\Browser;
 
+use App\Post;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use Tests\Browser\Components\IndexComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class DetailTest extends DuskTestCase
@@ -77,7 +79,7 @@ class DetailTest extends DuskTestCase
     /**
      * @test
      */
-    public function user_can_be_deleted()
+    public function resource_can_be_deleted()
     {
         $this->seed();
 
@@ -87,6 +89,27 @@ class DetailTest extends DuskTestCase
                     ->delete();
 
             $this->assertNull(User::where('id', 3)->first());
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function relationships_can_be_searched()
+    {
+        $this->seed();
+
+        $user = User::find(1);
+        $user->posts()->save($post = factory(Post::class)->create());
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('users', 1))
+                    ->within(new IndexComponent('posts'), function ($browser) {
+                        $browser->assertSeeResource(1)
+                                ->searchFor('No Matching Posts')
+                                ->assertDontSeeResource(1);
+                    });
         });
     }
 }
