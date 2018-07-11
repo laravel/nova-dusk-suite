@@ -5,6 +5,7 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Password;
 
 class User extends Resource
 {
@@ -36,6 +37,7 @@ class User extends Resource
             ID::make('ID', 'id')->sortable(),
             Text::make('Name', 'name')->sortable(),
             Text::make('Email', 'email')->sortable(),
+            Password::make('Password', 'password')->onlyOnForms(),
         ];
     }
 

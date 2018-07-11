@@ -112,4 +112,42 @@ class IndexTest extends DuskTestCase
                     ->assertMissing('@users-1-row');
         });
     }
+
+    /**
+     * @test
+     */
+    public function can_navigate_to_create_resource_screen()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->click('@create-users')
+                    ->pause(1000)
+                    ->assertSee('Create & Add Another')
+                    ->assertSee('Create User');
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_navigate_to_detail_screen()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->click('@users-items-0-view-button')
+                    ->pause(1000)
+                    ->assertSee('User Details')
+                    ->assertSee('David Hemphill')
+                    ->assertSee('david@laravel.com')
+                    ->assertPathIs('/nova/resources/users/3');
+        });
+    }
 }
