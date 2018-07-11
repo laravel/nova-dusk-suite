@@ -38,6 +38,15 @@ class IndexTest extends DuskTestCase
         $this->seed();
 
         $this->browse(function (Browser $browser) {
+            // Search For Single User By ID...
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->searchForUser('3')
+                    ->assertMissing('@users-1-row')
+                    ->assertMissing('@users-2-row')
+                    ->assertVisible('@users-3-row');
+
             // Search For Single User By Name...
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
