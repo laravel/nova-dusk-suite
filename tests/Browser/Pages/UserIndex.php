@@ -45,6 +45,17 @@ class UserIndex extends Page
     }
 
     /**
+     * Delete the user at the given resource table row index.
+     */
+    public function deleteUserAtIndex(Browser $browser, $index)
+    {
+        $browser->click('@users-items-'.$index.'-delete-button')
+                        ->pause(250)
+                        ->click('@delete-confirm-button')
+                        ->pause(500);
+    }
+
+    /**
      * Get the element shortcuts for the page.
      *
      * @return array

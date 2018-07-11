@@ -178,10 +178,7 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
                     ->waitForUsers()
-                    ->click('@users-items-0-delete-button')
-                    ->pause(250)
-                    ->click('@delete-confirm-button')
-                    ->pause(500)
+                    ->deleteUserAtIndex(0)
                     ->assertVisible('@users-1-row')
                     ->assertVisible('@users-2-row')
                     ->assertMissing('@users-3-row');
