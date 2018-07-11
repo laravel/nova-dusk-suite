@@ -78,6 +78,17 @@ class UserIndex extends Page
     }
 
     /**
+     * Set the given filter and filter value for the index.
+     */
+    public function applyFilter(Browser $browser, $name, $value)
+    {
+        $browser->click('@users-filter-selector')
+                    ->within('@users-index-component', function ($browser) use ($name, $value) {
+                        $browser->select('@'.$name.'-filter-select', $value);
+                    })->pause(250);
+    }
+
+    /**
      * Run the action with the given URI key.
      */
     public function runAction(Browser $browser, $uriKey)

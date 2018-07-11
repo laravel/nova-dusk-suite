@@ -33,6 +33,60 @@ class IndexTest extends DuskTestCase
     /**
      * @test
      */
+    public function can_navigate_to_create_resource_screen()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->click('@create-users')
+                    ->pause(1000)
+                    ->assertSee('Create & Add Another')
+                    ->assertSee('Create User');
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_navigate_to_detail_screen()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->click('@users-items-0-view-button')
+                    ->pause(1000)
+                    ->assertSee('User Details')
+                    ->assertPathIs('/nova/resources/users/3');
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_navigate_to_edit_screen()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->click('@users-items-0-edit-button')
+                    ->pause(1000)
+                    ->assertSee('Edit User')
+                    ->assertPathIs('/nova/resources/users/3/edit');
+        });
+    }
+
+    /**
+     * @test
+     */
     public function resources_can_be_searched()
     {
         $this->seed();
@@ -134,7 +188,7 @@ class IndexTest extends DuskTestCase
     /**
      * @test
      */
-    public function can_navigate_to_create_resource_screen()
+    public function test_filters_can_be_applied_to_resources()
     {
         $this->seed();
 
@@ -142,46 +196,10 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
                     ->waitForUsers()
-                    ->click('@create-users')
-                    ->pause(1000)
-                    ->assertSee('Create & Add Another')
-                    ->assertSee('Create User');
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function can_navigate_to_detail_screen()
-    {
-        $this->seed();
-
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->click('@users-items-0-view-button')
-                    ->pause(1000)
-                    ->assertSee('User Details')
-                    ->assertPathIs('/nova/resources/users/3');
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function can_navigate_to_edit_screen()
-    {
-        $this->seed();
-
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->click('@users-items-0-edit-button')
-                    ->pause(1000)
-                    ->assertSee('Edit User')
-                    ->assertPathIs('/nova/resources/users/3/edit');
+                    ->applyFilter('Select First', '1')
+                    ->assertVisible('@users-1-row')
+                    ->assertMissing('@users-2-row')
+                    ->assertMissing('@users-3-row');
         });
     }
 
