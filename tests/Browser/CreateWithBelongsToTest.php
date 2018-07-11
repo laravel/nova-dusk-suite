@@ -44,7 +44,6 @@ class CreateWithBelongsToTest extends DuskTestCase
         $this->seed();
 
         $user = User::find(1);
-        $user->posts()->save($post = factory(Post::class)->create());
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -53,7 +52,15 @@ class CreateWithBelongsToTest extends DuskTestCase
                         $browser->click('@create-button');
                     })
                     ->on(new Pages\Create('posts'))
-                    ->assertDisabled('@user');
+                    ->assertDisabled('@user')
+                    ->type('@title', 'Test Post')
+                    ->type('@body', 'Test Post Body')
+                    ->create();
+
+            $user = User::find(1);
+            $post = $user->posts->first();
+            $this->assertEquals('Test Post', $post->title);
+            $this->assertEquals('Test Post Body', $post->body);
         });
     }
 }
