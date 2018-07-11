@@ -24,9 +24,9 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
                     ->waitForUsers()
-                    ->assertSee($users[0]->name)
-                    ->assertSee($users[1]->name)
-                    ->assertSee($users[2]->name);
+                    ->assertVisible('@users-1-row')
+                    ->assertVisible('@users-2-row')
+                    ->assertVisible('@users-3-row');
         });
     }
 
