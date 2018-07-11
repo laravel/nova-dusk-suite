@@ -112,4 +112,27 @@ class DetailTest extends DuskTestCase
                     });
         });
     }
+
+    /**
+     * @test
+     */
+    public function can_navigate_to_create_relationship_screen()
+    {
+        $this->seed();
+
+        $user = User::find(1);
+        $user->posts()->save($post = factory(Post::class)->create());
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('users', 1))
+                    ->within(new IndexComponent('posts'), function ($browser) {
+                        $browser->click('@create-button')
+                                ->assertPathIs('/nova/resources/posts/new')
+                                ->assertQueryStringHas('viaResource', 'users')
+                                ->assertQueryStringHas('viaResourceId', '1')
+                                ->assertQueryStringHas('viaRelationship', 'posts');
+                    });
+        });
+    }
 }
