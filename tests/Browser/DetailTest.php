@@ -135,4 +135,30 @@ class DetailTest extends DuskTestCase
                     });
         });
     }
+
+    /**
+     * @test
+     */
+    public function test_actions_on_all_matching_relations_are_scoped_to_the_relation()
+    {
+        $this->seed();
+
+        $user = User::find(1);
+        $user->posts()->save($post = factory(Post::class)->create());
+
+        $user2 = User::find(2);
+        $user2->posts()->save($post2 = factory(Post::class)->create());
+
+        $this->browse(function (Browser $browser) use ($post, $post2) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('users', 1))
+                    ->within(new IndexComponent('posts'), function ($browser) {
+                        $browser->selectAllMatching()
+                                ->runAction('mark-as-active');
+                    });
+
+            $this->assertEquals(1, $post->fresh()->active);
+            $this->assertEquals(0, $post2->fresh()->active);
+        });
+    }
 }
