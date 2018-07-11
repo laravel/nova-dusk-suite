@@ -150,4 +150,22 @@ class IndexTest extends DuskTestCase
                     ->assertPathIs('/nova/resources/users/3');
         });
     }
+
+    /**
+     * @test
+     */
+    public function can_navigate_to_edit_screen()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->click('@users-items-0-edit-button')
+                    ->pause(1000)
+                    ->assertSee('Edit User')
+                    ->assertPathIs('/nova/resources/users/3/edit');
+        });
+    }
 }
