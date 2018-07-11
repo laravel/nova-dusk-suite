@@ -5,6 +5,7 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Password;
 
 class User extends Resource
@@ -46,6 +47,8 @@ class User extends Resource
                 ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:6')
                 ->updateRules('nullable', 'string', 'min:6'),
+
+            Boolean::make('Active', 'active')->onlyOnDetail(),
         ];
     }
 
