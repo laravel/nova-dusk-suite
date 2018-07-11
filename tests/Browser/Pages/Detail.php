@@ -47,6 +47,19 @@ class Detail extends Page
     }
 
     /**
+     * Open the action modal but cancel the action.
+     */
+    public function cancelAction(Browser $browser, $uriKey)
+    {
+        $browser->select('@action-select', 'mark-as-active')
+                    ->pause(100)
+                    ->click('@run-action-button')
+                    ->pause(250)
+                    ->click('@cancel-action-button')
+                    ->pause(250);
+    }
+
+    /**
      * Assert that the browser is on the page.
      *
      * @param  Browser  $browser

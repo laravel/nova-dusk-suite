@@ -41,4 +41,20 @@ class DetailTest extends DuskTestCase
             $this->assertEquals(1, User::find(1)->active);
         });
     }
+
+    /**
+     * @test
+     */
+    public function actions_can_be_cancelled_without_effect()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('users', 1))
+                    ->cancelAction('mark-as-active');
+
+            $this->assertEquals(0, User::find(1)->active);
+        });
+    }
 }
