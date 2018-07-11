@@ -139,6 +139,35 @@ class DetailTest extends DuskTestCase
     /**
      * @test
      */
+    public function relations_can_be_sorted()
+    {
+        $this->seed();
+
+        $user = User::find(1);
+        $user->posts()->saveMany(factory(Post::class, 10)->create());
+
+        $user2 = User::find(2);
+        $user2->posts()->save(factory(Post::class)->create());
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('users', 1))
+                    ->within(new IndexComponent('posts'), function ($browser) {
+                        $browser->assertSeeResource(10)
+                                ->assertSeeResource(6)
+                                ->assertDontSeeResource(1)
+                                ->sortBy('id')
+                                ->assertDontSeeResource(10)
+                                ->assertDontSeeResource(6)
+                                ->assertSeeResource(5)
+                                ->assertSeeResource(1);
+                    });
+        });
+    }
+
+    /**
+     * @test
+     */
     public function actions_on_all_matching_relations_should_be_scoped_to_the_relation()
     {
         $this->seed();
