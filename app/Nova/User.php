@@ -6,6 +6,7 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Password;
 
 class User extends Resource
@@ -49,6 +50,8 @@ class User extends Resource
                 ->updateRules('nullable', 'string', 'min:6'),
 
             Boolean::make('Active', 'active')->onlyOnDetail(),
+
+            HasMany::make('Posts', 'posts', Post::class),
         ];
     }
 
