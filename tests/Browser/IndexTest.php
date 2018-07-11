@@ -61,6 +61,24 @@ class IndexTest extends DuskTestCase
     /**
      * @test
      */
+    public function test_correct_select_all_matching_count_is_displayed()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->assertSelectAllMatchingCount(3);
+
+            $browser->searchForUser('Taylor')
+                    ->assertSelectAllMatchingCount(1);
+        });
+    }
+
+    /**
+     * @test
+     */
     public function resources_can_be_sorted_by_id()
     {
         factory(User::class, 50)->create();

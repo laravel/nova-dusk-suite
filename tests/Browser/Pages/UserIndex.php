@@ -45,6 +45,18 @@ class UserIndex extends Page
     }
 
     /**
+     * Assert on the matching total matching user count text.
+     */
+    public function assertSelectAllMatchingCount(Browser $browser, $count)
+    {
+        $browser->click('@users-select-all-menu')
+                        ->pause(500)
+                        ->assertSee('Select All Matching ('.$count.')')
+                        ->click('@users-select-all-menu')
+                        ->pause(250);
+    }
+
+    /**
      * Delete the user at the given resource table row index.
      */
     public function deleteUserAtIndex(Browser $browser, $index)
