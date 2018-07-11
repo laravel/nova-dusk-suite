@@ -166,4 +166,25 @@ class IndexTest extends DuskTestCase
                     ->assertPathIs('/nova/resources/users/3/edit');
         });
     }
+
+    /**
+     * @test
+     */
+    public function can_delete_a_resource_via_resource_table_row_delete_icon()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->click('@users-items-0-delete-button')
+                    ->pause(250)
+                    ->click('@delete-confirm-button')
+                    ->pause(500)
+                    ->assertVisible('@users-1-row')
+                    ->assertVisible('@users-2-row')
+                    ->assertMissing('@users-3-row');
+        });
+    }
 }
