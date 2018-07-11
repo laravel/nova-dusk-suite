@@ -57,4 +57,22 @@ class IndexTest extends DuskTestCase
                     ->assertMissing('@users-3-row');
         });
     }
+
+    /**
+     * @test
+     */
+    public function resources_can_be_sorted_by_id()
+    {
+        factory(User::class, 50)->create();
+
+        $this->browse(function (Browser $browser) {
+            // Search For Single User By ID...
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->assertVisible('@users-50-row')
+                    ->assertVisible('@users-26-row')
+                    ->assertMissing('@users-25-row');
+        });
+    }
 }
