@@ -25,9 +25,9 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->assertVisible('@1-row')
-                                ->assertVisible('@2-row')
-                                ->assertVisible('@3-row');
+                        $browser->assertSeeResource(1)
+                                ->assertSeeResource(2)
+                                ->assertSeeResource(3);
                     });
         });
     }
