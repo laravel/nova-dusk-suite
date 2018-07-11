@@ -45,14 +45,35 @@ class UserIndex extends Page
     }
 
     /**
+     * Clear the search field.
+     */
+    public function clearSearch(Browser $browser)
+    {
+        $browser->clear('@users-search')->type('@users-search', ' ')->pause(1000);
+    }
+
+    /**
+     * Select all the matching user resources.
+     */
+    public function selectAllMatching(Browser $browser)
+    {
+        $browser->click('@users-select-all-menu')
+                        ->pause(500)
+                        ->click('[dusk="users-select-all-matching-button"] div.checkbox')
+                        ->pause(250)
+                        ->click('')
+                        ->pause(250);
+    }
+
+    /**
      * Assert on the matching total matching user count text.
      */
     public function assertSelectAllMatchingCount(Browser $browser, $count)
     {
         $browser->click('@users-select-all-menu')
                         ->pause(500)
-                        ->assertSee('Select All Matching ('.$count.')')
                         ->click('@users-select-all-menu')
+                        ->assertSee('Select All Matching ('.$count.')')
                         ->pause(250);
     }
 

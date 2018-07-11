@@ -222,4 +222,25 @@ class IndexTest extends DuskTestCase
                     ->assertMissing('@users-3-row');
         });
     }
+
+    /**
+     * @test
+     */
+    public function can_delete_all_matching_resources()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->searchForUser('David')
+                    ->selectAllMatching()
+                    ->deleteSelected()
+                    ->clearSearch()
+                    ->assertVisible('@users-1-row')
+                    ->assertVisible('@users-2-row')
+                    ->assertMissing('@users-3-row');
+        });
+    }
 }
