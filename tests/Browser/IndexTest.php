@@ -203,6 +203,25 @@ class IndexTest extends DuskTestCase
         });
     }
 
+    public function test_filters_can_be_deselected()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->applyFilter('Select First', '1')
+                    ->assertVisible('@users-1-row')
+                    ->assertMissing('@users-2-row')
+                    ->assertMissing('@users-3-row')
+                    ->applyFilter('Select First', '')
+                    ->assertVisible('@users-1-row')
+                    ->assertVisible('@users-2-row')
+                    ->assertVisible('@users-3-row');
+        });
+    }
+
     /**
      * @test
      */
