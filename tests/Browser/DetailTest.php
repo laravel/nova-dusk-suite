@@ -139,7 +139,7 @@ class DetailTest extends DuskTestCase
     /**
      * @test
      */
-    public function test_actions_on_all_matching_relations_are_scoped_to_the_relation()
+    public function actions_on_all_matching_relations_should_be_scoped_to_the_relation()
     {
         $this->seed();
 
