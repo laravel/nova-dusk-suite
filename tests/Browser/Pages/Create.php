@@ -54,7 +54,7 @@ class Create extends Page
      */
     public function assert(Browser $browser)
     {
-        //
+        $browser->pause(500);
     }
 
     /**
