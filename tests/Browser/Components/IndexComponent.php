@@ -7,11 +7,6 @@ use Laravel\Dusk\Component as BaseComponent;
 
 class IndexComponent extends BaseComponent
 {
-    /**
-     * The name of the resource for the component.
-     *
-     * @var string
-     */
     public $resourceName;
 
     /**

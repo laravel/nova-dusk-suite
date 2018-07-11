@@ -7,6 +7,8 @@ use Laravel\Dusk\Browser;
 
 class Create extends Page
 {
+    public $resourceName;
+
     /**
      * Create a new page instance.
      *
