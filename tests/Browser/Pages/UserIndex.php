@@ -78,6 +78,18 @@ class UserIndex extends Page
     }
 
     /**
+     * Set the per page value for the index.
+     */
+    public function setPerPage(Browser $browser, $value)
+    {
+        $browser->click('@users-filter-selector')
+                    ->within('@users-index-component', function ($browser) use ($value) {
+                        $browser->select('@per-page-select', $value);
+                    })
+                    ->pause(250);
+    }
+
+    /**
      * Set the given filter and filter value for the index.
      */
     public function applyFilter(Browser $browser, $name, $value)

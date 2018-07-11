@@ -188,6 +188,24 @@ class IndexTest extends DuskTestCase
     /**
      * @test
      */
+    public function number_of_resources_displayed_per_page_can_be_changed()
+    {
+        factory(User::class, 50)->create();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->setPerPage('50')
+                    ->assertVisible('@users-50-row')
+                    ->assertVisible('@users-25-row')
+                    ->assertVisible('@users-1-row');
+        });
+    }
+
+    /**
+     * @test
+     */
     public function test_filters_can_be_applied_to_resources()
     {
         $this->seed();
