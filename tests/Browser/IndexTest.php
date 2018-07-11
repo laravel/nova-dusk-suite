@@ -66,7 +66,6 @@ class IndexTest extends DuskTestCase
         factory(User::class, 50)->create();
 
         $this->browse(function (Browser $browser) {
-            // Search For Single User By ID...
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
                     ->waitForUsers()
@@ -91,7 +90,6 @@ class IndexTest extends DuskTestCase
         factory(User::class, 50)->create();
 
         $this->browse(function (Browser $browser) {
-            // Search For Single User By ID...
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
                     ->waitForUsers()
