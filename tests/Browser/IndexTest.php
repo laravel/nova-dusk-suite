@@ -22,13 +22,31 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($users) {
             $browser->loginAs(User::find(1))
-                    ->visit('/nova')
-                    ->clickLink('Users')
-                    ->waitForText(User::find(1)->name)
-                    ->pause(250)
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
                     ->assertSee($users[0]->name)
                     ->assertSee($users[1]->name)
                     ->assertSee($users[2]->name);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function resources_can_be_searched()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            // Search For Single User By Name...
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->type('@users-search', 'Taylor')
+                    ->pause(250)
+                    ->assertSee(User::find(1)->name)
+                    ->assertMissing('@users-2-row')
+                    ->assertMissing('@users-3-row');
         });
     }
 }
