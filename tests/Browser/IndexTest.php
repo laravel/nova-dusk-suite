@@ -145,8 +145,6 @@ class IndexTest extends DuskTestCase
                     ->click('@users-items-0-view-button')
                     ->pause(1000)
                     ->assertSee('User Details')
-                    ->assertSee('David Hemphill')
-                    ->assertSee('david@laravel.com')
                     ->assertPathIs('/nova/resources/users/3');
         });
     }
