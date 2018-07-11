@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use Tests\Browser\Components\IndexComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class IndexTest extends DuskTestCase
@@ -23,10 +24,11 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($users) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->assertVisible('@users-1-row')
-                    ->assertVisible('@users-2-row')
-                    ->assertVisible('@users-3-row');
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->assertVisible('@1-row')
+                                ->assertVisible('@2-row')
+                                ->assertVisible('@3-row');
+                    });
         });
     }
 
@@ -40,9 +42,10 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->click('@create-users')
-                    ->pause(1000)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->click('@create-button');
+                    })
+                    ->pause(250)
                     ->assertSee('Create & Add Another')
                     ->assertSee('Create User');
         });
@@ -58,11 +61,12 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->click('@users-items-0-view-button')
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->click('@1-view-button');
+                    })
                     ->pause(1000)
                     ->assertSee('User Details')
-                    ->assertPathIs('/nova/resources/users/3');
+                    ->assertPathIs('/nova/resources/users/1');
         });
     }
 
@@ -76,11 +80,12 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->click('@users-items-0-edit-button')
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->click('@1-edit-button');
+                    })
                     ->pause(1000)
                     ->assertSee('Edit User')
-                    ->assertPathIs('/nova/resources/users/3/edit');
+                    ->assertPathIs('/nova/resources/users/1/edit');
         });
     }
 
@@ -95,20 +100,22 @@ class IndexTest extends DuskTestCase
             // Search For Single User By ID...
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->searchForUser('3')
-                    ->assertMissing('@users-1-row')
-                    ->assertMissing('@users-2-row')
-                    ->assertVisible('@users-3-row');
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->searchFor('3')
+                                ->assertDontSeeResource(1)
+                                ->assertDontSeeResource(2)
+                                ->assertSeeResource(3);
+                    });
 
             // Search For Single User By Name...
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->searchForUser('Taylor')
-                    ->assertVisible('@users-1-row')
-                    ->assertMissing('@users-2-row')
-                    ->assertMissing('@users-3-row');
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->searchFor('Taylor')
+                                ->assertSeeResource(1)
+                                ->assertDontSeeResource(2)
+                                ->assertDontSeeResource(3);
+                    });
         });
     }
 
@@ -122,11 +129,12 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->assertSelectAllMatchingCount(3);
-
-            $browser->searchForUser('Taylor')
-                    ->assertSelectAllMatchingCount(1);
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->assertSelectAllMatchingCount(3)
+                                ->click('')
+                                ->searchFor('Taylor')
+                                ->assertSelectAllMatchingCount(1);
+                    });
         });
     }
 
@@ -140,17 +148,17 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->assertVisible('@users-50-row')
-                    ->assertVisible('@users-26-row')
-                    ->assertMissing('@users-25-row');
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->assertSeeResource(50)
+                                ->assertSeeResource(26)
+                                ->assertDontSeeResource(25);
 
-            $browser->click('@users-sort-id')
-                    ->pause(500)
-                    ->assertMissing('@users-50-row')
-                    ->assertMissing('@users-26-row')
-                    ->assertVisible('@users-25-row')
-                    ->assertVisible('@users-1-row');
+                        $browser->sortBy('id')
+                                ->assertDontSeeResource(50)
+                                ->assertDontSeeResource(26)
+                                ->assertSeeResource(25)
+                                ->assertSeeResource(1);
+                    });
         });
     }
 
@@ -164,24 +172,23 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->assertVisible('@users-50-row')
-                    ->assertVisible('@users-26-row')
-                    ->assertMissing('@users-25-row');
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->assertSeeResource(50)
+                                ->assertSeeResource(26)
+                                ->assertDontSeeResource(25);
 
-            $browser->click('@users-next')
-                    ->pause(500)
-                    ->assertMissing('@users-50-row')
-                    ->assertMissing('@users-26-row')
-                    ->assertVisible('@users-25-row')
-                    ->assertVisible('@users-1-row');
+                        $browser->nextPage()
+                                ->assertDontSeeResource(50)
+                                ->assertDontSeeResource(26)
+                                ->assertSeeResource(25)
+                                ->assertSeeResource(1);
 
-            $browser->click('@users-previous')
-                    ->pause(500)
-                    ->assertVisible('@users-50-row')
-                    ->assertVisible('@users-26-row')
-                    ->assertMissing('@users-25-row')
-                    ->assertMissing('@users-1-row');
+                        $browser->previousPage()
+                                ->assertSeeResource(50)
+                                ->assertSeeResource(26)
+                                ->assertDontSeeResource(25)
+                                ->assertDontSeeResource(1);
+                    });
         });
     }
 
@@ -195,11 +202,12 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->setPerPage('50')
-                    ->assertVisible('@users-50-row')
-                    ->assertVisible('@users-25-row')
-                    ->assertVisible('@users-1-row');
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->setPerPage('50')
+                                ->assertSeeResource(50)
+                                ->assertSeeResource(25)
+                                ->assertSeeResource(1);
+                    });
         });
     }
 
@@ -213,15 +221,16 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->applyFilter('Select First', '1')
-                    ->assertVisible('@users-1-row')
-                    ->assertMissing('@users-2-row')
-                    ->assertMissing('@users-3-row')
-                    ->applyFilter('Select First', '2')
-                    ->assertMissing('@users-1-row')
-                    ->assertVisible('@users-2-row')
-                    ->assertMissing('@users-3-row');
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->applyFilter('Select First', '1')
+                            ->assertSeeResource(1)
+                            ->assertDontSeeResource(2)
+                            ->assertDontSeeResource(3)
+                            ->applyFilter('Select First', '2')
+                            ->assertDontSeeResource(1)
+                            ->assertSeeResource(2)
+                            ->assertDontSeeResource(3);
+                    });
         });
     }
 
@@ -232,15 +241,16 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->applyFilter('Select First', '1')
-                    ->assertVisible('@users-1-row')
-                    ->assertMissing('@users-2-row')
-                    ->assertMissing('@users-3-row')
-                    ->applyFilter('Select First', '')
-                    ->assertVisible('@users-1-row')
-                    ->assertVisible('@users-2-row')
-                    ->assertVisible('@users-3-row');
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->applyFilter('Select First', '1')
+                            ->assertSeeResource(1)
+                            ->assertDontSeeResource(2)
+                            ->assertDontSeeResource(3)
+                            ->applyFilter('Select First', '')
+                            ->assertSeeResource(1)
+                            ->assertSeeResource(2)
+                            ->assertSeeResource(3);
+                    });
         });
     }
 
@@ -254,11 +264,12 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->deleteUserAtIndex(0)
-                    ->assertVisible('@users-1-row')
-                    ->assertVisible('@users-2-row')
-                    ->assertMissing('@users-3-row');
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->deleteResourceById(3)
+                                ->assertSeeResource(1)
+                                ->assertSeeResource(2)
+                                ->assertDontSeeResource(3);
+                    });
         });
     }
 
@@ -272,13 +283,14 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->clickCheckboxAtIndex(0)
-                    ->clickCheckboxAtIndex(1)
-                    ->deleteSelected()
-                    ->assertVisible('@users-1-row')
-                    ->assertMissing('@users-2-row')
-                    ->assertMissing('@users-3-row');
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->clickCheckboxForId(3)
+                            ->clickCheckboxForId(2)
+                            ->deleteSelected()
+                            ->assertSeeResource(1)
+                            ->assertDontSeeResource(2)
+                            ->assertDontSeeResource(3);
+                    });
         });
     }
 
@@ -292,14 +304,16 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->searchForUser('David')
-                    ->selectAllMatching()
-                    ->deleteSelected()
-                    ->clearSearch()
-                    ->assertVisible('@users-1-row')
-                    ->assertVisible('@users-2-row')
-                    ->assertMissing('@users-3-row');
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->searchFor('David')
+                            ->selectAllMatching()
+                            ->deleteSelected()
+                            ->clearSearch()
+                            ->assertSeeResource(1)
+                            ->assertSeeResource(2)
+                            ->assertDontSeeResource(3);
+                    });
+
         });
     }
 
@@ -313,14 +327,15 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitForUsers()
-                    ->clickCheckboxAtIndex(0)
-                    ->clickCheckboxAtIndex(1)
-                    ->runAction('mark-as-active');
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->clickCheckboxForId(3)
+                            ->clickCheckboxForId(2)
+                            ->runAction('mark-as-active');
+                    });
         });
 
-        $this->assertEquals(1, User::find(3)->active);
-        $this->assertEquals(1, User::find(2)->active);
         $this->assertEquals(0, User::find(1)->active);
+        $this->assertEquals(1, User::find(2)->active);
+        $this->assertEquals(1, User::find(3)->active);
     }
 }
