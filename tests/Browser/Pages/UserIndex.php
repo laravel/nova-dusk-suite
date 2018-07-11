@@ -30,12 +30,18 @@ class UserIndex extends Page
 
     /**
      * Wait for the users to be present.
-     *
-     * @return void
      */
     public function waitForUsers(Browser $browser)
     {
-        $browser->waitForText(User::find(1)->name)->pause(250);
+        $browser->waitForText(User::find(1)->name)->pause(500);
+    }
+
+    /**
+     * Search for the given string.
+     */
+    public function searchForUser(Browser $browser, $search)
+    {
+        $browser->type('@users-search', $search)->pause(1000);
     }
 
     /**
