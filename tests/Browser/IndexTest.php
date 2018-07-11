@@ -216,13 +216,7 @@ class IndexTest extends DuskTestCase
                     ->waitForUsers()
                     ->clickCheckboxAtIndex(0)
                     ->clickCheckboxAtIndex(1)
-                    ->click('@users-delete-menu')
-                    ->within('@users-delete-menu', function ($browser) {
-                        $browser->click('@delete-selected-button');
-                    })
-                    ->pause(500)
-                    ->click('@confirm-delete-button')
-                    ->pause(1000)
+                    ->deleteSelected()
                     ->assertVisible('@users-1-row')
                     ->assertMissing('@users-2-row')
                     ->assertMissing('@users-3-row');

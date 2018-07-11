@@ -77,6 +77,20 @@ class UserIndex extends Page
     }
 
     /**
+     * Delete the users selected via checkboxes.
+     */
+    public function deleteSelected(Browser $browser)
+    {
+        $browser->click('@users-delete-menu')
+                    ->within('@users-delete-menu', function ($browser) {
+                        $browser->click('@delete-selected-button');
+                    })
+                    ->pause(500)
+                    ->click('@confirm-delete-button')
+                    ->pause(1000);
+    }
+
+    /**
      * Get the element shortcuts for the page.
      *
      * @return array
