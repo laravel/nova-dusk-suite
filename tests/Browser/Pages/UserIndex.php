@@ -78,6 +78,19 @@ class UserIndex extends Page
     }
 
     /**
+     * Run the action with the given URI key.
+     */
+    public function runAction(Browser $browser, $uriKey)
+    {
+        $browser->select('@users-action-select', 'mark-as-active')
+                    ->pause(100)
+                    ->click('@users-run-action-button')
+                    ->pause(250)
+                    ->click('@confirm-action-button')
+                    ->pause(250);
+    }
+
+    /**
      * Check the user at the given resource table row index.
      */
     public function clickCheckboxAtIndex(Browser $browser, $index)

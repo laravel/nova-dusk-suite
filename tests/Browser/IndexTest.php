@@ -243,4 +243,25 @@ class IndexTest extends DuskTestCase
                     ->assertMissing('@users-3-row');
         });
     }
+
+    /**
+     * @test
+     */
+    public function can_run_actions_on_selected_resources()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->clickCheckboxAtIndex(0)
+                    ->clickCheckboxAtIndex(1)
+                    ->runAction('mark-as-active');
+        });
+
+        $this->assertEquals(1, User::find(3)->active);
+        $this->assertEquals(1, User::find(2)->active);
+        $this->assertEquals(0, User::find(1)->active);
+    }
 }
