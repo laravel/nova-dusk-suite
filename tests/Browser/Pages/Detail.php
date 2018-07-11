@@ -60,6 +60,17 @@ class Detail extends Page
     }
 
     /**
+     * Delete the resource.
+     */
+    public function delete(Browser $browser)
+    {
+        $browser->click('@open-delete-modal-button')
+                    ->pause(500)
+                    ->click('#confirm-delete-button')
+                    ->pause(1000);
+    }
+
+    /**
      * Assert that the browser is on the page.
      *
      * @param  Browser  $browser

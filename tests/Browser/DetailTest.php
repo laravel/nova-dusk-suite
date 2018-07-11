@@ -57,4 +57,20 @@ class DetailTest extends DuskTestCase
             $this->assertEquals(0, User::find(1)->active);
         });
     }
+
+    /**
+     * @test
+     */
+    public function user_can_be_deleted()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('users', 3))
+                    ->delete();
+
+            $this->assertNull(User::where('id', 3)->first());
+        });
+    }
 }
