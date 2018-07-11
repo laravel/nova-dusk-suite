@@ -73,6 +73,13 @@ class IndexTest extends DuskTestCase
                     ->assertVisible('@users-50-row')
                     ->assertVisible('@users-26-row')
                     ->assertMissing('@users-25-row');
+
+            $browser->click('@users-sort-id')
+                    ->pause(500)
+                    ->assertMissing('@users-50-row')
+                    ->assertMissing('@users-26-row')
+                    ->assertVisible('@users-25-row')
+                    ->assertVisible('@users-1-row');
         });
     }
 }
