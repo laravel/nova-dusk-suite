@@ -202,4 +202,30 @@ class IndexTest extends DuskTestCase
                     ->assertMissing('@users-3-row');
         });
     }
+
+    /**
+     * @test
+     */
+    public function can_delete_resources_using_checkboxes()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->waitForUsers()
+                    ->clickCheckboxAtIndex(0)
+                    ->clickCheckboxAtIndex(1)
+                    ->click('@users-delete-menu')
+                    ->within('@users-delete-menu', function ($browser) {
+                        $browser->click('@delete-selected-button');
+                    })
+                    ->pause(500)
+                    ->click('@confirm-delete-button')
+                    ->pause(1000)
+                    ->assertVisible('@users-1-row')
+                    ->assertMissing('@users-2-row')
+                    ->assertMissing('@users-3-row');
+        });
+    }
 }

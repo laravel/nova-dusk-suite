@@ -57,13 +57,22 @@ class UserIndex extends Page
     }
 
     /**
+     * Check the user at the given resource table row index.
+     */
+    public function clickCheckboxAtIndex(Browser $browser, $index)
+    {
+        $browser->click('[dusk="users-items-'.$index.'-checkbox"] div.checkbox')
+                        ->pause(50);
+    }
+
+    /**
      * Delete the user at the given resource table row index.
      */
     public function deleteUserAtIndex(Browser $browser, $index)
     {
         $browser->click('@users-items-'.$index.'-delete-button')
                         ->pause(250)
-                        ->click('@delete-confirm-button')
+                        ->click('@confirm-delete-button')
                         ->pause(500);
     }
 
