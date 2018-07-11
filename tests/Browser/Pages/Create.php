@@ -2,7 +2,6 @@
 
 namespace Tests\Browser\Pages;
 
-use App\User;
 use Laravel\Dusk\Browser;
 
 class Create extends Page

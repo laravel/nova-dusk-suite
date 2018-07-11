@@ -69,13 +69,13 @@ class CreateTest extends DuskTestCase
                     ->type('@password', 'secret')
                     ->createAndAddAnother();
 
-                    $user = User::orderBy('id', 'desc')->first();
+            $user = User::orderBy('id', 'desc')->first();
 
-                    $browser->assertPathIs('/nova/resources/users/new');
+            $browser->assertPathIs('/nova/resources/users/new');
 
-                    $this->assertEquals('Adam Wathan', $user->name);
-                    $this->assertEquals('adam@laravel.com', $user->email);
-                    $this->assertTrue(Hash::check('secret', $user->password));
+            $this->assertEquals('Adam Wathan', $user->name);
+            $this->assertEquals('adam@laravel.com', $user->email);
+            $this->assertTrue(Hash::check('secret', $user->password));
         });
     }
 }

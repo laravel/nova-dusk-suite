@@ -2,7 +2,6 @@
 
 namespace Tests\Browser\Pages;
 
-use App\User;
 use Laravel\Dusk\Browser;
 
 class Update extends Page

@@ -313,7 +313,6 @@ class IndexTest extends DuskTestCase
                             ->assertSeeResource(2)
                             ->assertDontSeeResource(3);
                     });
-
         });
     }
 

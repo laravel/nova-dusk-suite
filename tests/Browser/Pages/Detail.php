@@ -2,7 +2,6 @@
 
 namespace Tests\Browser\Pages;
 
-use App\User;
 use Laravel\Dusk\Browser;
 
 class Detail extends Page
