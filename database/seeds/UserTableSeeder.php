@@ -17,5 +17,17 @@ class UserTableSeeder extends Seeder
             'email' => 'taylor@laravel.com',
             'password' => '$2y$10$oGhaPFdmduG9419sPVkrROY3joLf0iNwxplM5UzcD.x7u06KcNJj6',
         ]);
+
+        User::forceCreate([
+            'name' => 'Mohamed Said',
+            'email' => 'mohamed@laravel.com',
+            'password' => '$2y$10$oGhaPFdmduG9419sPVkrROY3joLf0iNwxplM5UzcD.x7u06KcNJj6',
+        ]);
+
+        User::forceCreate([
+            'name' => 'David Hemphill',
+            'email' => 'david@laravel.com',
+            'password' => '$2y$10$oGhaPFdmduG9419sPVkrROY3joLf0iNwxplM5UzcD.x7u06KcNJj6',
+        ]);
     }
 }

@@ -18,12 +18,17 @@ class IndexTest extends DuskTestCase
     {
         $this->seed();
 
-        $this->browse(function (Browser $browser) {
+        $users = User::find([1, 2, 3]);
+
+        $this->browse(function (Browser $browser) use ($users) {
             $browser->loginAs(User::find(1))
                     ->visit('/nova')
                     ->clickLink('Users')
                     ->waitForText(User::find(1)->name)
-                    ->assertSee(User::find(1)->name);
+                    ->pause(250)
+                    ->assertSee($users[0]->name)
+                    ->assertSee($users[1]->name)
+                    ->assertSee($users[2]->name);
         });
     }
 }
