@@ -2,10 +2,12 @@
 
 namespace Tests\Browser;
 
+use App\Post;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Support\Facades\Hash;
+use Tests\Browser\Components\IndexComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class CreateWithBelongsToTest extends DuskTestCase
@@ -31,6 +33,27 @@ class CreateWithBelongsToTest extends DuskTestCase
             $post = $user->posts->first();
             $this->assertEquals('Test Post', $post->title);
             $this->assertEquals('Test Post Body', $post->body);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function parent_resource_should_be_locked_when_creating_via_parents_detail_page()
+    {
+        $this->seed();
+
+        $user = User::find(1);
+        $user->posts()->save($post = factory(Post::class)->create());
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('users', 1))
+                    ->within(new IndexComponent('posts'), function ($browser) {
+                        $browser->click('@create-button');
+                    })
+                    ->on(new Pages\Create('posts'))
+                    ->assertDisabled('@user');
         });
     }
 }
