@@ -61,6 +61,22 @@ class DetailTest extends DuskTestCase
     /**
      * @test
      */
+    public function can_navigate_to_edit_page()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('users', 1))
+                    ->click('@edit-resource-button')
+                    ->pause(250)
+                    ->assertPathIs('/nova/resources/users/1/edit');
+        });
+    }
+
+    /**
+     * @test
+     */
     public function user_can_be_deleted()
     {
         $this->seed();
