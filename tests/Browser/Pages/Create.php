@@ -37,6 +37,14 @@ class Create extends Page
     }
 
     /**
+     * Click the create and add another button.
+     */
+    public function createAndAddAnother(Browser $browser)
+    {
+        $browser->click('@create-and-add-another-button')->pause(500);
+    }
+
+    /**
      * Assert that the browser is on the page.
      *
      * @param  Browser  $browser
