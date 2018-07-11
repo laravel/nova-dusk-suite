@@ -199,6 +199,10 @@ class IndexTest extends DuskTestCase
                     ->applyFilter('Select First', '1')
                     ->assertVisible('@users-1-row')
                     ->assertMissing('@users-2-row')
+                    ->assertMissing('@users-3-row')
+                    ->applyFilter('Select First', '2')
+                    ->assertMissing('@users-1-row')
+                    ->assertVisible('@users-2-row')
                     ->assertMissing('@users-3-row');
         });
     }
