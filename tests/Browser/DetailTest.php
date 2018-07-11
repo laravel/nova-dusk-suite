@@ -139,6 +139,35 @@ class DetailTest extends DuskTestCase
     /**
      * @test
      */
+    public function relations_can_be_paginated()
+    {
+        $this->seed();
+
+        $user = User::find(1);
+        $user->posts()->saveMany(factory(Post::class, 10)->create());
+
+        $user2 = User::find(2);
+        $user2->posts()->save(factory(Post::class)->create());
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('users', 1))
+                    ->within(new IndexComponent('posts'), function ($browser) {
+                        $browser->assertSeeResource(10)
+                                ->assertDontSeeResource(1)
+                                ->nextPage()
+                                ->assertDontSeeResource(10)
+                                ->assertSeeResource(1)
+                                ->previousPage()
+                                ->assertSeeResource(10)
+                                ->assertDontSeeResource(1);
+                    });
+        });
+    }
+
+    /**
+     * @test
+     */
     public function relations_can_be_sorted()
     {
         $this->seed();
