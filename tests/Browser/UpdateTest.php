@@ -37,6 +37,22 @@ class UpdateTest extends DuskTestCase
     /**
      * @test
      */
+    public function validation_errors_are_displayed()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Update('users', 1))
+                    ->type('@name', ' ')
+                    ->update()
+                    ->assertSee('The name field is required.');
+        });
+    }
+
+    /**
+     * @test
+     */
     public function resource_can_be_updated_and_user_can_continue_editing()
     {
         $this->seed();
