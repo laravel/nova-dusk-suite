@@ -61,6 +61,11 @@ class User extends Resource
                                 Text::make('Notes', 'notes')->rules('max:20'),
                             ];
                         })
+                        ->actions(function ($request) {
+                            return [
+                                new Actions\UpdatePivotNotes,
+                            ];
+                        })
                         ->prunable(),
         ];
     }
