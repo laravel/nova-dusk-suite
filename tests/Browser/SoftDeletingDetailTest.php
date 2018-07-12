@@ -269,8 +269,8 @@ class SoftDeletingDetailTest extends DuskTestCase
                                 ->deleteSelected();
                     });
 
-            $this->assertNull($ship->fresh());
-            $this->assertNotNull($ship2->fresh());
+            $this->assertNotNull($ship->fresh()->deleted_at);
+            $this->assertNull($ship2->fresh()->deleted_at);
         });
     }
 }
