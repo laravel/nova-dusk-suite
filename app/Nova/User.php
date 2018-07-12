@@ -56,6 +56,11 @@ class User extends Resource
 
             BelongsToMany::make('Roles', 'roles', Role::class)
                         ->display('name')
+                        ->fields(function ($request) {
+                            return [
+                                Text::make('Notes', 'notes'),
+                            ];
+                        })
                         ->prunable(),
         ];
     }
