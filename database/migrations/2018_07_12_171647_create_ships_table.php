@@ -19,6 +19,7 @@ class CreateShipsTable extends Migration
             $table->string('name');
             $table->boolean('active')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -3,6 +3,7 @@
 namespace Tests\Browser;
 
 use App\Dock;
+use App\Ship;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
@@ -55,6 +56,33 @@ class SoftDeletingIndexTest extends DuskTestCase
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3);
+                    });
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_soft_delete_all_matching_resources()
+    {
+        $this->seed();
+
+        $dock = factory(Dock::class)->create();
+        $dock->ships()->saveMany(factory(Ship::class, 3)->create());
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('docks', 1))
+                    ->within(new IndexComponent('ships'), function ($browser) {
+                        $browser->selectAllMatching()
+                            ->deleteSelected()
+                            ->assertDontSeeResource(1)
+                            ->assertDontSeeResource(2)
+                            ->assertDontSeeResource(3)
+                            ->withTrashed()
+                            ->assertSeeResource(1)
+                            ->assertSeeResource(2)
+                            ->assertSeeResource(3);
                     });
         });
     }
