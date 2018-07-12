@@ -107,6 +107,17 @@ class IndexComponent extends BaseComponent
     }
 
     /**
+     * Indicate that trashed records should not be displayed.
+     */
+    public function withoutTrashed(Browser $browser)
+    {
+        $browser->click('@filter-selector')
+                ->within('@filter-selector', function ($browser) {
+                    $browser->select('@trashed-select', '');
+                })->click('')->pause(250);
+    }
+
+    /**
      * Indicate that only trashed records should be displayed.
      */
     public function onlyTrashed(Browser $browser)
@@ -183,6 +194,20 @@ class IndexComponent extends BaseComponent
                     })
                     ->pause(500)
                     ->click('#confirm-delete-button')
+                    ->pause(1000);
+    }
+
+    /**
+     * Restore the resources selected via checkboxes.
+     */
+    public function restoreSelected(Browser $browser)
+    {
+        $browser->click('@delete-menu')
+                    ->within('@delete-menu', function ($browser) {
+                        $browser->click('@restore-selected-button');
+                    })
+                    ->pause(500)
+                    ->click('#confirm-restore-button')
                     ->pause(1000);
     }
 
