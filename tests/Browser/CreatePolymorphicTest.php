@@ -27,7 +27,7 @@ class CreatePolymorphicTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Create('comments'))
                     ->select('@commentable-type', 'posts')
-                    ->pause(250)
+                    ->pause(500)
                     ->select('@commentable-select', 1)
                     ->type('@body', 'Test Comment')
                     ->create();
