@@ -17,6 +17,30 @@ class CreatePolymorphicTest extends DuskTestCase
     /**
      * @test
      */
+    public function resource_can_be_created()
+    {
+        $this->seed();
+
+        $post = factory(Post::class)->create();
+
+        $this->browse(function (Browser $browser) use ($post) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Create('comments'))
+                    ->select('@commentable-type', 'posts')
+                    ->pause(250)
+                    ->select('@commentable-select', 1)
+                    ->type('@body', 'Test Comment')
+                    ->create();
+
+            $browser->assertPathIs('/nova/resources/comments/1');
+
+            $this->assertCount(1, $post->fresh()->comments);
+        });
+    }
+
+    /**
+     * @test
+     */
     public function resource_can_be_created_via_parent_resource()
     {
         $this->seed();
