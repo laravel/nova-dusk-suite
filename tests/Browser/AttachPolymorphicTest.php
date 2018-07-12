@@ -46,7 +46,7 @@ class AttachPolymorphicTest extends DuskTestCase
     {
         $this->seed();
 
-        file_put_contents(base_path('.searchable'), '');
+        touch(base_path('.searchable'));
 
         $post = factory(Post::class)->create();
         $tag = factory(Tag::class)->create();
