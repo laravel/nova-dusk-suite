@@ -107,6 +107,17 @@ class IndexComponent extends BaseComponent
     }
 
     /**
+     * Indicate that trashed records should be displayed.
+     */
+    public function withTrashed(Browser $browser)
+    {
+        $browser->click('@filter-selector')
+                ->within('@filter-selector', function ($browser) {
+                    $browser->select('@trashed-select', 'with');
+                })->click('')->pause(250);
+    }
+
+    /**
      * Run the action with the given URI key.
      */
     public function runAction(Browser $browser, $uriKey)
