@@ -67,7 +67,22 @@ class CreateWithMorphToTest extends DuskTestCase
     /**
      * @test
      */
-    public function resource_can_be_created_via_parent_resource()
+    public function non_searchable_resource_can_be_created_via_parent_resource()
+    {
+        $this->resource_can_be_created_via_parent_resource();
+    }
+
+    /**
+     * @test
+     */
+    public function searchable_resource_can_be_created_via_parent_resource()
+    {
+        $this->whileSearchable(function () {
+            $this->resource_can_be_created_via_parent_resource();
+        });
+    }
+
+    protected function resource_can_be_created_via_parent_resource()
     {
         $this->seed();
 
