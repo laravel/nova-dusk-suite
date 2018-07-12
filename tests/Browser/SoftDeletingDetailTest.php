@@ -255,22 +255,22 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->seed();
 
-        $user = User::find(1);
-        $user->posts()->save($post = factory(Post::class)->create());
+        $dock = factory(Dock::class)->create();
+        $dock->ships()->save($ship = factory(Ship::class)->create());
 
-        $user2 = User::find(2);
-        $user2->posts()->save($post2 = factory(Post::class)->create());
+        $dock2 = factory(Dock::class)->create();
+        $dock2->ships()->save($ship2 = factory(Ship::class)->create());
 
-        $this->browse(function (Browser $browser) use ($post, $post2) {
+        $this->browse(function (Browser $browser) use ($ship, $ship2) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
-                    ->within(new IndexComponent('posts'), function ($browser) {
+                    ->visit(new Pages\Detail('docks', 1))
+                    ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->selectAllMatching()
                                 ->deleteSelected();
                     });
 
-            $this->assertNull($post->fresh());
-            $this->assertNotNull($post2->fresh());
+            $this->assertNull($ship->fresh());
+            $this->assertNotNull($ship2->fresh());
         });
     }
 }
