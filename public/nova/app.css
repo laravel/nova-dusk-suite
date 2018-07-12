@@ -1420,7 +1420,7 @@ body {
   border-color: var(--60) !important;
   -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .05) !important;
           box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .05) !important;
-  font-family: Nunito, Avenir Next, Avenir, Roboto, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, system-ui, BlinkMacSystemFont, -apple-system, sans-serif !important;
+  font-family: Nunito, system-ui, BlinkMacSystemFont, -apple-system, sans-serif !important;
 }
 
 .chartist-tooltip:before {
@@ -2615,7 +2615,7 @@ body {
 }
 
 .font-sans {
-  font-family: Nunito, Avenir Next, Avenir, Roboto, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, system-ui, BlinkMacSystemFont, -apple-system, sans-serif;
+  font-family: Nunito, system-ui, BlinkMacSystemFont, -apple-system, sans-serif;
 }
 
 .font-serif {

@@ -2,12 +2,13 @@
 
 namespace App;
 
+use Laravel\Nova\Actions\Actionable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Actionable, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -33,5 +34,13 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    /**
+     * Get all of the roles attached to the user.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
     }
 }

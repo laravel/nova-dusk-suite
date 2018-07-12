@@ -8,6 +8,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\BelongsToMany;
 
 class User extends Resource
 {
@@ -52,6 +53,10 @@ class User extends Resource
             Boolean::make('Active', 'active')->onlyOnDetail(),
 
             HasMany::make('Posts', 'posts', Post::class),
+
+            BelongsToMany::make('Roles', 'roles', Role::class)
+                        ->display('name')
+                        ->prunable(),
         ];
     }
 
