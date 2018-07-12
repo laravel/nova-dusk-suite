@@ -30,6 +30,25 @@ class Create extends Page
     }
 
     /**
+     * Search for the given value for a searchable relationship attribute.
+     */
+    public function searchRelation(Browser $browser, $attribute, $search)
+    {
+        $browser->click('[dusk="docks-search-input"]')
+                    ->pause(100)
+                    ->type('[dusk="docks-search-input"] input', $search)
+                    ->pause(1500);
+    }
+
+    /**
+     * Select the currently highlighted searchable relation.
+     */
+    public function selectSearchableRelation(Browser $browser)
+    {
+        $browser->keys('[dusk="docks-search-input"] input', '{enter}')->pause(150);
+    }
+
+    /**
      * Click the create button.
      */
     public function create(Browser $browser)
