@@ -6,7 +6,7 @@ use Laravel\Dusk\Browser;
 
 class Create extends Page
 {
-    use HasSearhableRelations;
+    use HasSearchableRelations;
 
     public $resourceName;
 
