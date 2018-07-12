@@ -3,15 +3,44 @@
 namespace Tests\Browser;
 
 use App\Dock;
+use App\Ship;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\IndexComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class CreateWithSearchableSoftDeletingBelongsToTest extends DuskTestCase
+class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
 {
     use DatabaseMigrations;
+
+    /**
+     * @test
+     */
+    public function non_searchable_belongs_to_respects_with_trashed_checkbox_state()
+    {
+        $this->seed();
+
+        $ship = factory(Ship::class)->create(['deleted_at' => now()]);
+
+        $this->browse(function (Browser $browser) use ($ship) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Create('sails'))
+                    ->assertSelectMissingOption('@ship', $ship->id)
+                    ->withTrashedRelation('ships')
+                    ->assertSelectHasOption('@ship', $ship->id)
+                    ->select('@ship', $ship->id)
+                    ->type('@inches', 25)
+                    ->create();
+
+            $this->assertCount(1, $ship->fresh()->sails);
+        });
+    }
+
+    public function unable_to_uncheck_with_trashed_if_currently_selected_non_searchable_parent_is_trashed()
+    {
+
+    }
 
     /**
      * @test

@@ -4,18 +4,17 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\BelongsTo;
 
-class Ship extends Resource
+class Sail extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\Ship';
+    public static $model = 'App\Sail';
 
     /**
      * The columns that should be searched.
@@ -23,7 +22,7 @@ class Ship extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name',
+        'id',
     ];
 
     /**
@@ -36,9 +35,8 @@ class Ship extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
-            BelongsTo::make('Dock', 'dock', Dock::class)->display('name')->searchable(),
-            Text::make('Name', 'name')->sortable(),
-            HasMany::make('Sails', 'sails', Sail::class),
+            BelongsTo::make('Ship', 'ship', Ship::class)->display('name'),
+            Number::make('Inches', 'inches')->sortable(),
         ];
     }
 
@@ -72,9 +70,7 @@ class Ship extends Resource
      */
     public function actions(Request $request)
     {
-        return [
-            new Actions\MarkAsActive,
-        ];
+        return [];
     }
 
     /**

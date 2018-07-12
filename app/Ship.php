@@ -16,4 +16,12 @@ class Ship extends Model
     {
         return $this->belongsTo(Dock::class);
     }
+
+    /**
+     * Get all of the sails for the ship.
+     */
+    public function sails()
+    {
+        return $this->hasMany(Sail::class);
+    }
 }
