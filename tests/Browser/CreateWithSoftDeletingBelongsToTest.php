@@ -22,6 +22,32 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         $this->seed();
 
         $ship = factory(Ship::class)->create(['deleted_at' => now()]);
+        $ship2 = factory(Ship::class)->create();
+
+        $this->browse(function (Browser $browser) use ($ship, $ship2) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Create('sails'))
+                    ->assertSelectMissingOption('@ship', $ship->id)
+                    ->assertSelectHasOption('@ship', $ship2->id)
+                    ->withTrashedRelation('ships')
+                    ->assertSelectHasOption('@ship', $ship->id)
+                    ->assertSelectHasOption('@ship', $ship2->id)
+                    ->select('@ship', $ship->id)
+                    ->type('@inches', 25)
+                    ->create();
+
+            $this->assertCount(1, $ship->fresh()->sails);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function unable_to_uncheck_with_trashed_if_currently_selected_non_searchable_parent_is_trashed()
+    {
+        $this->seed();
+
+        $ship = factory(Ship::class)->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) use ($ship) {
             $browser->loginAs(User::find(1))
@@ -35,11 +61,6 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
 
             $this->assertCount(1, $ship->fresh()->sails);
         });
-    }
-
-    public function unable_to_uncheck_with_trashed_if_currently_selected_non_searchable_parent_is_trashed()
-    {
-
     }
 
     /**
