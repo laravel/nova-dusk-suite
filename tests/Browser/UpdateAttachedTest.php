@@ -31,12 +31,11 @@ class UpdateAttachedTest extends DuskTestCase
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@1-edit-attached-button');
                     })
-                    ->pause(750)
+                    ->on(new Pages\UpdateAttached('users', 1, 'roles', 1))
                     ->assertDisabled('@attachable-select')
                     ->assertInputValue('@notes', 'Test Notes')
                     ->type('@notes', 'Test Notes Updated')
-                    ->click('@update-button')
-                    ->pause(750);
+                    ->update();
 
             $this->assertEquals('Test Notes Updated', User::find(1)->roles->first()->pivot->notes);
         });
