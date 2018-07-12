@@ -5,19 +5,16 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\MorphToMany;
 
-class Post extends Resource
+class Tag extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\Post';
+    public static $model = 'App\Tag';
 
     /**
      * The columns that should be searched.
@@ -38,14 +35,9 @@ class Post extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
+            Text::make('Name', 'name')->sortable(),
 
-            BelongsTo::make('User', 'user', User::class)->display('name'),
-
-            Text::make('Title', 'title')->sortable(),
-            Textarea::make('Body', 'body'),
-
-            MorphMany::make('Comments', 'comments', Comment::class),
-            MorphToMany::make('Tags', 'tags', Tag::class)->display('name'),
+            MorphToMany::make('Posts', 'posts', Post::class)->display('title'),
         ];
     }
 
@@ -79,9 +71,7 @@ class Post extends Resource
      */
     public function actions(Request $request)
     {
-        return [
-            new Actions\MarkAsActive,
-        ];
+        return [];
     }
 
     /**
