@@ -40,4 +40,21 @@ abstract class DuskTestCase extends BaseTestCase
             )
         );
     }
+
+    /**
+     * Run the given callback with searchable functionality enabled.
+     *
+     * @param  callable  $callback
+     * @return void
+     */
+    protected function whileSearchable(callable $callback)
+    {
+        touch(base_path('.searchable'));
+
+        try {
+            $callback();
+        } finally {
+            @unlink(base_path('.searchable'));
+        }
+    }
 }

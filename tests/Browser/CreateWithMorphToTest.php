@@ -44,11 +44,9 @@ class CreateWithMorphToTest extends DuskTestCase
     {
         $this->seed();
 
-        touch(base_path('.searchable'));
+        $this->whileSearchable(function () {
+            $post = factory(Post::class)->create();
 
-        $post = factory(Post::class)->create();
-
-        try {
             $this->browse(function (Browser $browser) use ($post) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Pages\Create('comments'))
@@ -63,9 +61,7 @@ class CreateWithMorphToTest extends DuskTestCase
 
                 $this->assertCount(1, $post->fresh()->comments);
             });
-        } finally {
-            @unlink(base_path('.searchable'));
-        }
+        });
     }
 
     /**
