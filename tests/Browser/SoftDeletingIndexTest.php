@@ -179,6 +179,37 @@ class SoftDeletingIndexTest extends DuskTestCase
     /**
      * @test
      */
+    public function can_force_delete_all_matching_resources()
+    {
+        $this->seed();
+
+        $dock = factory(Dock::class)->create();
+        $dock->ships()->saveMany(factory(Ship::class, 3)->create(['deleted_at' => now()]));
+
+        $separateShip = factory(Ship::class)->create();
+
+        $this->browse(function (Browser $browser) use ($separateShip) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('docks', 1))
+                    ->within(new IndexComponent('ships'), function ($browser) {
+                        $browser->withTrashed();
+
+                        $browser->selectAllMatching()
+                            ->forceDeleteSelected()
+                            ->assertDontSeeResource(1)
+                            ->assertDontSeeResource(2)
+                            ->assertDontSeeResource(3);
+                    });
+
+            $this->assertNotNull($separateShip->fresh());
+            $this->assertEquals(1, Ship::count());
+            $this->assertEquals(0, Ship::onlyTrashed()->count());
+        });
+    }
+
+    /**
+     * @test
+     */
     public function soft_deleted_resource_is_still_viewable_with_proper_trash_state()
     {
         $this->seed();
