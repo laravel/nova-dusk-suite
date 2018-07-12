@@ -109,6 +109,26 @@ class SoftDeletingDetailTest extends DuskTestCase
     /**
      * @test
      */
+    public function resource_can_be_force_deleted()
+    {
+        $this->seed();
+
+        factory(Dock::class)->create(['deleted_at' => now()]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('docks', 1))
+                    ->forceDelete();
+
+            $browser->assertPathIs('/nova/resources/docks');
+
+            $this->assertEquals(0, Dock::count());
+        });
+    }
+
+    /**
+     * @test
+     */
     public function relationships_can_be_searched()
     {
         $this->seed();
