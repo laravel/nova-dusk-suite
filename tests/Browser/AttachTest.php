@@ -36,4 +36,28 @@ class AttachTest extends DuskTestCase
             $this->assertEquals($role->id, User::find(1)->roles->first()->id);
         });
     }
+
+    /**
+     * @test
+     */
+    public function validation_errors_are_displayed()
+    {
+        $this->seed();
+
+        $role = factory(Role::class)->create();
+
+        $this->browse(function (Browser $browser) use ($role) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('users', 1))
+                    ->within(new IndexComponent('roles'), function ($browser) {
+                        $browser->click('@attach-button');
+                    })
+                    ->pause(750)
+                    ->click('@attach-button')
+                    ->pause(500)
+                    ->assertSee('The role field is required.');
+
+            $this->assertNull(User::find(1)->roles->first());
+        });
+    }
 }
