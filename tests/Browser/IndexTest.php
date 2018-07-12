@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use App\Dock;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
@@ -270,6 +271,27 @@ class IndexTest extends DuskTestCase
                                 ->assertSeeResource(2)
                                 ->assertDontSeeResource(3);
                     });
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_soft_delete_a_resource_via_resource_table_row_delete_icon()
+    {
+        $this->seed();
+
+        $dock = factory(Dock::class)->create();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Index('docks'))
+                    ->within(new IndexComponent('docks'), function ($browser) {
+                        $browser->deleteResourceById(1)
+                                ->assertDontSeeResource(1);
+                    });
+
+            $this->assertEquals(1, Dock::withTrashed()->count());
         });
     }
 
