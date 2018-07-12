@@ -27,7 +27,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $comment) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('comments', $comment->id))
-                    ->within(new DetailComponent('comments', 1), function ($browser) {
+                    ->within(new DetailComponent('comments', $comment->id), function ($browser) {
                         $browser->assertSee('Post');
                     })
                     ->clickLink($post->title)
