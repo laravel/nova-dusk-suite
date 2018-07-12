@@ -344,6 +344,28 @@ class IndexTest extends DuskTestCase
     /**
      * @test
      */
+    public function soft_deleted_resources_may_be_restored_via_row_icon()
+    {
+        $this->seed();
+
+        factory(Dock::class)->create();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Index('docks'))
+                    ->within(new IndexComponent('docks'), function ($browser) {
+                        $browser->withTrashed()
+                                ->deleteResourceById(1)
+                                ->restoreResourceById(1);
+                    });
+
+            $this->assertEquals(1, Dock::count());
+        });
+    }
+
+    /**
+     * @test
+     */
     public function can_delete_resources_using_checkboxes()
     {
         $this->seed();

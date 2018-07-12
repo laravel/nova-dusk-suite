@@ -162,6 +162,17 @@ class IndexComponent extends BaseComponent
     }
 
     /**
+     * Restore the user at the given resource table row index.
+     */
+    public function restoreResourceById(Browser $browser, $id)
+    {
+        $browser->click('@'.$id.'-restore-button')
+                        ->pause(250)
+                        ->click('#confirm-restore-button')
+                        ->pause(500);
+    }
+
+    /**
      * Delete the resources selected via checkboxes.
      */
     public function deleteSelected(Browser $browser)
