@@ -45,7 +45,14 @@ class Post extends Resource
             Textarea::make('Body', 'body'),
 
             MorphMany::make('Comments', 'comments', Comment::class),
-            MorphToMany::make('Tags', 'tags', Tag::class)->display('name'),
+
+            MorphToMany::make('Tags', 'tags', Tag::class)
+                    ->display('name')
+                    ->fields(function () {
+                        return [
+                            Text::make('Notes', 'notes')->rules('max:20'),
+                        ];
+                    })
         ];
     }
 

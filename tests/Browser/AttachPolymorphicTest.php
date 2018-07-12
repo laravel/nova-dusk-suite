@@ -41,6 +41,32 @@ class AttachPolymorphicTest extends DuskTestCase
     /**
      * @test
      */
+    public function fields_on_intermediate_table_should_be_stored()
+    {
+        $this->seed();
+
+        $post = factory(Post::class)->create();
+        $tag = factory(Tag::class)->create();
+
+        $this->browse(function (Browser $browser) use ($post, $tag) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('posts', 1))
+                    ->within(new IndexComponent('tags'), function ($browser) {
+                        $browser->click('@attach-button');
+                    })
+                    ->on(new Pages\Attach('posts', 1, 'tags'))
+                    ->selectAttachable($tag->id)
+                    ->type('@notes', 'Test Notes')
+                    ->clickAttach();
+
+            $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
+            $this->assertEquals('Test Notes', Post::find(1)->tags->first()->pivot->notes);
+        });
+    }
+
+    /**
+     * @test
+     */
     public function validation_errors_are_displayed()
     {
         $this->seed();

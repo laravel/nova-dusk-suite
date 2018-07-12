@@ -23,6 +23,7 @@ class CreateTagsTable extends Migration
             $table->unsignedInteger('tag_id');
             $table->unsignedInteger('taggable_id');
             $table->string('taggable_type');
+            $table->string('notes')->nullable();
         });
     }
 
