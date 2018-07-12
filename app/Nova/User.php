@@ -58,7 +58,7 @@ class User extends Resource
                         ->display('name')
                         ->fields(function ($request) {
                             return [
-                                Text::make('Notes', 'notes'),
+                                Text::make('Notes', 'notes')->rules('max:20'),
                             ];
                         })
                         ->prunable(),
