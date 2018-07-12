@@ -22,7 +22,7 @@ class Ship extends Model
      */
     public function captains()
     {
-        return $this->belongsToMany(Captain::class);
+        return $this->belongsToMany(Captain::class)->withPivot('notes');
     }
 
     /**

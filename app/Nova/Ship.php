@@ -42,6 +42,11 @@ class Ship extends Resource
 
             BelongsToMany::make('Captains', 'captains', Captain::class)
                         ->display('name')
+                        ->fields(function ($request) {
+                            return [
+                                Text::make('Notes', 'notes')->rules('max:20'),
+                            ];
+                        })
                         ->prunable()
                         ->searchable(),
 

@@ -11,6 +11,6 @@ class Captain extends Model
      */
     public function ships()
     {
-        return $this->belongsToMany(Ship::class);
+        return $this->belongsToMany(Ship::class)->withPivot('notes');
     }
 }

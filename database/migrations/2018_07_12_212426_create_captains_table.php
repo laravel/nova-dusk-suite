@@ -22,6 +22,7 @@ class CreateCaptainsTable extends Migration
         Schema::create('captain_ship', function (Blueprint $table) {
             $table->unsignedInteger('captain_id');
             $table->unsignedInteger('ship_id');
+            $table->string('notes')->nullable();
 
             $table->index(['captain_id', 'ship_id']);
         });
