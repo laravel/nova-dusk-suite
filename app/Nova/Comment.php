@@ -51,7 +51,7 @@ class Comment extends Resource
                 },
             ])->types([
                 Post::class => 'Post',
-            ]);
+            ])->searchable(file_exists(base_path('.searchable')));
     }
 
     /**
