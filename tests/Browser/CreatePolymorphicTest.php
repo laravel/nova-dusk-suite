@@ -17,7 +17,7 @@ class CreatePolymorphicTest extends DuskTestCase
     /**
      * @test
      */
-    public function resource_can_be_created()
+    public function resource_can_be_created_via_parent_resource()
     {
         $this->seed();
 
@@ -30,6 +30,8 @@ class CreatePolymorphicTest extends DuskTestCase
                         $browser->click('@create-button');
                     })
                     ->on(new Pages\Create('comments'))
+                    ->assertDisabled('@commentable-type')
+                    ->assertDisabled('@commentable-select')
                     ->type('@body', 'Test Comment')
                     ->create();
 
