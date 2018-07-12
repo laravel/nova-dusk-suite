@@ -3,7 +3,6 @@
 namespace Tests\Browser;
 
 use App\Dock;
-use App\Post;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
