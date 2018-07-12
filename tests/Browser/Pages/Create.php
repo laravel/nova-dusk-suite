@@ -49,6 +49,14 @@ class Create extends Page
     }
 
     /**
+     * Indicate that trashed relations should be included in the search results.
+     */
+    public function withTrashedRelation(Browser $browser, $attribute)
+    {
+        $browser->check('@'.$attribute.'-with-trashed-checkbox')->pause(250);
+    }
+
+    /**
      * Click the create button.
      */
     public function create(Browser $browser)
