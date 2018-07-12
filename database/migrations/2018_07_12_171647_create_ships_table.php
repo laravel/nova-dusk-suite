@@ -17,6 +17,7 @@ class CreateShipsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('dock_id')->index();
             $table->string('name');
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
     }
