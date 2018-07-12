@@ -7,6 +7,7 @@ use App\Post;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use App\Nova\Post as PostResource;
 use Tests\Browser\Components\IndexComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -36,6 +37,37 @@ class AttachPolymorphicTest extends DuskTestCase
 
             $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
         });
+    }
+
+    /**
+     * @test
+     */
+    public function searchable_resources_can_be_attached()
+    {
+        $this->seed();
+
+        file_put_contents(base_path('.searchable'), '');
+
+        $post = factory(Post::class)->create();
+        $tag = factory(Tag::class)->create();
+
+        try {
+            $this->browse(function (Browser $browser) use ($post, $tag) {
+                $browser->loginAs(User::find(1))
+                        ->visit(new Pages\Detail('posts', 1))
+                        ->within(new IndexComponent('tags'), function ($browser) {
+                            $browser->click('@attach-button');
+                        })
+                        ->on(new Pages\Attach('posts', 1, 'tags'))
+                        ->searchRelation('tags', $tag->id)
+                        ->selectCurrentRelation('tags')
+                        ->clickAttach();
+
+                $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
+            });
+        } finally {
+            @unlink(base_path('.searchable'));
+        }
     }
 
     /**

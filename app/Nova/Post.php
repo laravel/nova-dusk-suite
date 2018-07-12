@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\MorphToMany;
+use Illuminate\Support\Facades\Cache;
 
 class Post extends Resource
 {
@@ -52,7 +53,7 @@ class Post extends Resource
                         return [
                             Text::make('Notes', 'notes')->rules('max:20'),
                         ];
-                    })
+                    })->searchable(file_exists(base_path('.searchable'))),
         ];
     }
 
