@@ -155,18 +155,17 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->seed();
 
-        $user = User::find(1);
-        $user->posts()->save($post = factory(Post::class)->create());
+        $dock = factory(Dock::class)->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
-                    ->within(new IndexComponent('posts'), function ($browser) {
+                    ->visit(new Pages\Detail('docks', 1))
+                    ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->click('@create-button')
-                                ->assertPathIs('/nova/resources/posts/new')
-                                ->assertQueryStringHas('viaResource', 'users')
+                                ->assertPathIs('/nova/resources/ships/new')
+                                ->assertQueryStringHas('viaResource', 'docks')
                                 ->assertQueryStringHas('viaResourceId', '1')
-                                ->assertQueryStringHas('viaRelationship', 'posts');
+                                ->assertQueryStringHas('viaRelationship', 'ships');
                     });
         });
     }
