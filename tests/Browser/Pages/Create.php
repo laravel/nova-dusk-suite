@@ -51,9 +51,9 @@ class Create extends Page
     /**
      * Indicate that trashed relations should be included in the search results.
      */
-    public function withTrashedRelation(Browser $browser, $attribute)
+    public function withTrashedRelation(Browser $browser, $resourceName)
     {
-        $browser->check('@'.$attribute.'-with-trashed-checkbox')->pause(250);
+        $browser->click('')->check('@'.$resourceName.'-with-trashed-checkbox')->pause(250);
     }
 
     /**
@@ -81,6 +81,14 @@ class Create extends Page
     public function assert(Browser $browser)
     {
         $browser->pause(500);
+    }
+
+    /**
+     * Assert that there are no search results.
+     */
+    public function assertNoRelationSearchResults(Browser $browser, $resourceName)
+    {
+        $browser->assertMissing('@'.$resourceName.'-search-input-result-0');
     }
 
     /**

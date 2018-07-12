@@ -26,11 +26,9 @@ class CreateWithSearchableSoftDeletingBelongsToTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Create('ships'))
                     ->searchRelation('docks', '1')
-                    ->assertMissing('@docks-search-input-result-0')
-                    ->click('')
+                    ->assertNoRelationSearchResults('docks')
                     ->withTrashedRelation('docks')
                     ->searchRelation('docks', '1')
-                    ->assertVisible('@docks-search-input-result-0')
                     ->selectCurrentRelation('docks')
                     ->type('@name', 'Test Ship')
                     ->create();
