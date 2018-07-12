@@ -356,7 +356,8 @@ class IndexTest extends DuskTestCase
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->withTrashed()
                                 ->deleteResourceById(1)
-                                ->restoreResourceById(1);
+                                ->restoreResourceById(1)
+                                ->assertSeeResource(1);
                     });
 
             $this->assertEquals(1, Dock::count());
