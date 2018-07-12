@@ -33,7 +33,12 @@ class UpdateAttachedTest extends DuskTestCase
                     })
                     ->pause(750)
                     ->assertDisabled('@attachable-select')
-                    ->assertInputValue('@notes', 'Test Notes');
+                    ->assertInputValue('@notes', 'Test Notes')
+                    ->type('@notes', 'Test Notes Updated')
+                    ->click('@update-button')
+                    ->pause(750);
+
+            $this->assertEquals('Test Notes Updated', User::find(1)->roles->first()->pivot->notes);
         });
     }
 }
