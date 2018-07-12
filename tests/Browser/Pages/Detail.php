@@ -70,6 +70,17 @@ class Detail extends Page
     }
 
     /**
+     * Restore the resource.
+     */
+    public function restore(Browser $browser)
+    {
+        $browser->click('@open-restore-modal-button')
+                    ->pause(500)
+                    ->click('#confirm-restore-button')
+                    ->pause(1000);
+    }
+
+    /**
      * Assert that the browser is on the page.
      *
      * @param  Browser  $browser
