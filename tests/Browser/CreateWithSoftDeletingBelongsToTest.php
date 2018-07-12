@@ -17,6 +17,30 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
     /**
      * @test
      */
+    public function test_parent_select_is_locked_when_creating_child_of_soft_deleted_resource()
+    {
+        $this->seed();
+
+        $dock = factory(Dock::class)->create(['deleted_at' => now()]);
+
+        $this->browse(function (Browser $browser) use ($dock) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('docks', $dock->id))
+                    ->within(new IndexComponent('ships'), function ($browser) {
+                        $browser->click('@create-button');
+                    })
+                    ->on(new Pages\Create('ships'))
+                    ->assertDisabled('@dock')
+                    ->type('@name', 'Test Ship')
+                    ->create();
+
+            $this->assertCount(1, $dock->fresh()->ships);
+        });
+    }
+
+    /**
+     * @test
+     */
     public function non_searchable_belongs_to_respects_with_trashed_checkbox_state()
     {
         $this->seed();
