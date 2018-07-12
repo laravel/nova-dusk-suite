@@ -16,6 +16,7 @@ class CreateDocksTable extends Migration
         Schema::create('docks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->boolean('active')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
