@@ -39,7 +39,7 @@ class AttachTest extends DuskTestCase
     /**
      * @test
      */
-    public function fields_on_intermediate_table_are_stored_successfully()
+    public function fields_on_intermediate_table_should_be_stored()
     {
         $this->seed();
 
