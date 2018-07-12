@@ -3,7 +3,6 @@
 namespace Tests\Browser;
 
 use App\Dock;
-use App\Post;
 use App\Ship;
 use App\User;
 use Tests\DuskTestCase;
