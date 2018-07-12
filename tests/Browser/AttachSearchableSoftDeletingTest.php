@@ -39,48 +39,23 @@ class AttachSearchableSoftDeletingTest extends DuskTestCase
     /**
      * @test
      */
-    public function fields_on_intermediate_table_should_be_stored()
+    public function soft_deleted_resource_can_be_attached()
     {
         $this->seed();
 
-        $role = factory(Role::class)->create();
+        $captain = factory(Captain::class)->create();
+        $ship = factory(Ship::class)->create(['deleted_at' => now()]);
 
-        $this->browse(function (Browser $browser) use ($role) {
+        $this->browse(function (Browser $browser) use ($captain, $ship) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
-                    ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->click('@attach-button');
-                    })
-                    ->on(new Pages\Attach('users', 1, 'roles'))
-                    ->selectAttachable($role->id)
-                    ->type('@notes', 'Test Notes')
+                    ->visit(new Pages\Attach('captains', $captain->id, 'ships'))
+                    ->withTrashedRelation('ships')
+                    ->searchRelation('ships', 1)
+                    ->selectCurrentRelation('ships')
                     ->clickAttach();
 
-            $this->assertEquals($role->id, User::find(1)->roles->first()->id);
-            $this->assertEquals('Test Notes', User::find(1)->roles->first()->pivot->notes);
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function validation_errors_are_displayed()
-    {
-        $this->seed();
-
-        $role = factory(Role::class)->create();
-
-        $this->browse(function (Browser $browser) use ($role) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
-                    ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->click('@attach-button');
-                    })
-                    ->on(new Pages\Attach('users', 1, 'roles'))
-                    ->clickAttach()
-                    ->assertSee('The role field is required.');
-
-            $this->assertNull(User::find(1)->roles->first());
+            $this->assertCount(0, $captain->fresh()->ships);
+            $this->assertCount(1, $captain->fresh()->ships()->withTrashed()->get());
         });
     }
 }
