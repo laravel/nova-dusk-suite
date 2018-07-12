@@ -5,18 +5,16 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\MorphMany;
+use Laravel\Nova\Fields\MorphTo;
 
-class Post extends Resource
+class Comment extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\Post';
+    public static $model = 'App\Comment';
 
     /**
      * The columns that should be searched.
@@ -37,14 +35,23 @@ class Post extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
-
-            BelongsTo::make('User', 'user', User::class)->display('name'),
-
-            Text::make('Title', 'title')->sortable(),
-            Textarea::make('Body', 'body'),
-
-            MorphMany::make('Comments', 'comments', Comment::class),
+            $this->commentable(),
+            Text::make('Body', 'body'),
         ];
+    }
+
+    /**
+     * Get the commentable field definition.
+     */
+    protected function commentable()
+    {
+        return MorphTo::make('Commentable', 'commentable')->display([
+                Post::class => function ($resource) {
+                    return $resource->title;
+                },
+            ])->types([
+                Post::class => 'Post',
+            ]);
     }
 
     /**
@@ -77,9 +84,7 @@ class Post extends Resource
      */
     public function actions(Request $request)
     {
-        return [
-            new Actions\MarkAsActive,
-        ];
+        return [];
     }
 
     /**
