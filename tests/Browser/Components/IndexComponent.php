@@ -212,6 +212,20 @@ class IndexComponent extends BaseComponent
     }
 
     /**
+     * Restore the resources selected via checkboxes.
+     */
+    public function forceDeleteSelected(Browser $browser)
+    {
+        $browser->click('@delete-menu')
+                    ->within('@delete-menu', function ($browser) {
+                        $browser->click('@force-delete-selected-button');
+                    })
+                    ->pause(500)
+                    ->click('#confirm-delete-button')
+                    ->pause(1000);
+    }
+
+    /**
      * Assert that the browser page contains the component.
      *
      * @param  Browser  $browser

@@ -90,6 +90,33 @@ class SoftDeletingIndexTest extends DuskTestCase
     /**
      * @test
      */
+    public function can_force_delete_resources_using_checkboxes()
+    {
+        $this->seed();
+
+        factory(Dock::class)->create();
+        factory(Dock::class)->create();
+        factory(Dock::class)->create();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Index('docks'))
+                    ->within(new IndexComponent('docks'), function ($browser) {
+                        $browser->withTrashed();
+
+                        $browser->clickCheckboxForId(3)
+                            ->clickCheckboxForId(2)
+                            ->forceDeleteSelected()
+                            ->assertSeeResource(1)
+                            ->assertDontSeeResource(2)
+                            ->assertDontSeeResource(3);
+                    });
+        });
+    }
+
+    /**
+     * @test
+     */
     public function soft_deleted_resource_is_still_viewable_with_proper_trash_state()
     {
         $this->seed();
