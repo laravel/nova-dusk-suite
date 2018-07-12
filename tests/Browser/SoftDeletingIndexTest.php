@@ -70,7 +70,9 @@ class SoftDeletingIndexTest extends DuskTestCase
         $dock = factory(Dock::class)->create();
         $dock->ships()->saveMany(factory(Ship::class, 3)->create());
 
-        $this->browse(function (Browser $browser) {
+        $separateShip = factory(Ship::class)->create();
+
+        $this->browse(function (Browser $browser) use ($separateShip) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
@@ -84,6 +86,8 @@ class SoftDeletingIndexTest extends DuskTestCase
                             ->assertSeeResource(2)
                             ->assertSeeResource(3);
                     });
+
+            $this->assertNull($separateShip->fresh()->deleted_at);
         });
     }
 
