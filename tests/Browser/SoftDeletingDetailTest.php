@@ -4,6 +4,7 @@ namespace Tests\Browser;
 
 use App\Dock;
 use App\Post;
+use App\Ship;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
@@ -133,15 +134,15 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->seed();
 
-        $user = User::find(1);
-        $user->posts()->save($post = factory(Post::class)->create());
+        $dock = factory(Dock::class)->create();
+        $dock->ships()->save($ship = factory(Ship::class)->create());
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
-                    ->within(new IndexComponent('posts'), function ($browser) {
+                    ->visit(new Pages\Detail('docks', 1))
+                    ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->assertSeeResource(1)
-                                ->searchFor('No Matching Posts')
+                                ->searchFor('No Matching Ships')
                                 ->assertDontSeeResource(1);
                     });
         });
