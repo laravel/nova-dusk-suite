@@ -57,6 +57,14 @@ class Create extends Page
     }
 
     /**
+     * Indicate that trashed relations should not be included in the search results.
+     */
+    public function withoutTrashedRelation(Browser $browser, $resourceName)
+    {
+        $browser->click('')->uncheck('@'.$resourceName.'-with-trashed-checkbox')->pause(250);
+    }
+
+    /**
      * Click the create button.
      */
     public function create(Browser $browser)
