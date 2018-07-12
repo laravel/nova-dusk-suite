@@ -43,13 +43,11 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
     {
         $this->seed();
 
-        touch(base_path('.searchable'));
+        $this->whileSearchable(function () {
+            $post = factory(Post::class)->create();
+            $tag = factory(Tag::class)->create();
+            $post->tags()->attach($tag, ['notes' => 'Test Notes']);
 
-        $post = factory(Post::class)->create();
-        $tag = factory(Tag::class)->create();
-        $post->tags()->attach($tag, ['notes' => 'Test Notes']);
-
-        try {
             $this->browse(function (Browser $browser) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Pages\UpdateAttached('posts', 1, 'tags', 1))
@@ -60,9 +58,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
 
                 $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);
             });
-        } finally {
-            @unlink(base_path('.searchable'));
-        }
+        });
     }
 
     /**
