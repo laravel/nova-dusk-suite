@@ -63,37 +63,6 @@ class SoftDeletingIndexTest extends DuskTestCase
     /**
      * @test
      */
-    public function can_soft_delete_all_matching_resources()
-    {
-        $this->seed();
-
-        $dock = factory(Dock::class)->create();
-        $dock->ships()->saveMany(factory(Ship::class, 3)->create());
-
-        $separateShip = factory(Ship::class)->create();
-
-        $this->browse(function (Browser $browser) use ($separateShip) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->selectAllMatching()
-                            ->deleteSelected()
-                            ->assertDontSeeResource(1)
-                            ->assertDontSeeResource(2)
-                            ->assertDontSeeResource(3)
-                            ->withTrashed()
-                            ->assertSeeResource(1)
-                            ->assertSeeResource(2)
-                            ->assertSeeResource(3);
-                    });
-
-            $this->assertNull($separateShip->fresh()->deleted_at);
-        });
-    }
-
-    /**
-     * @test
-     */
     public function can_restore_resources_using_checkboxes()
     {
         $this->seed();
@@ -143,6 +112,67 @@ class SoftDeletingIndexTest extends DuskTestCase
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3);
                     });
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_soft_delete_all_matching_resources()
+    {
+        $this->seed();
+
+        $dock = factory(Dock::class)->create();
+        $dock->ships()->saveMany(factory(Ship::class, 3)->create());
+
+        $separateShip = factory(Ship::class)->create();
+
+        $this->browse(function (Browser $browser) use ($separateShip) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('docks', 1))
+                    ->within(new IndexComponent('ships'), function ($browser) {
+                        $browser->selectAllMatching()
+                            ->deleteSelected()
+                            ->assertDontSeeResource(1)
+                            ->assertDontSeeResource(2)
+                            ->assertDontSeeResource(3)
+                            ->withTrashed()
+                            ->assertSeeResource(1)
+                            ->assertSeeResource(2)
+                            ->assertSeeResource(3);
+                    });
+
+            $this->assertNull($separateShip->fresh()->deleted_at);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_restore_all_matching_resources()
+    {
+        $this->seed();
+
+        $dock = factory(Dock::class)->create();
+        $dock->ships()->saveMany(factory(Ship::class, 3)->create(['deleted_at' => now()]));
+
+        $separateShip = factory(Ship::class)->create();
+
+        $this->browse(function (Browser $browser) use ($separateShip) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('docks', 1))
+                    ->within(new IndexComponent('ships'), function ($browser) {
+                        $browser->withTrashed();
+
+                        $browser->selectAllMatching()
+                            ->restoreSelected()
+                            ->assertSeeResource(1)
+                            ->assertSeeResource(2)
+                            ->assertSeeResource(3);
+                    });
+
+            $this->assertEquals(4, Ship::count());
+            $this->assertEquals(0, Ship::onlyTrashed()->count());
         });
     }
 
