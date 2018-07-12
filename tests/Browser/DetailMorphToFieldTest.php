@@ -7,6 +7,7 @@ use App\User;
 use App\Comment;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use Tests\Browser\Components\DetailComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class DetailMorphToFieldTest extends DuskTestCase
@@ -26,7 +27,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $comment) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('comments', $comment->id))
-                    ->within('@comments-detail-component', function ($browser) {
+                    ->within(new DetailComponent('comments', 1), function ($browser) {
                         $browser->assertSee('Post');
                     })
                     ->clickLink($post->title)
