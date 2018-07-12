@@ -39,7 +39,7 @@ class AttachSearchableSoftDeletingTest extends DuskTestCase
     /**
      * @test
      */
-    public function soft_deleted_resource_can_be_attached()
+    public function with_trashed_checkbox_is_respected_and_soft_deleted_resource_can_be_attached()
     {
         $this->seed();
 
