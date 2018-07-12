@@ -72,9 +72,8 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         $this->seed();
 
         $ship = factory(Ship::class)->create(['deleted_at' => now()]);
-        $ship2 = factory(Ship::class)->create();
 
-        $this->browse(function (Browser $browser) use ($ship, $ship2) {
+        $this->browse(function (Browser $browser) use ($ship) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Create('sails'))
                     ->withTrashedRelation('ships')
