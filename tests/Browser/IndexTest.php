@@ -298,7 +298,7 @@ class IndexTest extends DuskTestCase
     /**
      * @test
      */
-    public function can_soft_deleted_resource_is_still_viewable_with_proper_trash_state()
+    public function soft_deleted_resource_is_still_viewable_with_proper_trash_state()
     {
         $this->seed();
 
@@ -314,6 +314,30 @@ class IndexTest extends DuskTestCase
                     });
 
             $this->assertEquals(1, Dock::withTrashed()->count());
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function only_soft_deleted_resources_may_be_listed()
+    {
+        $this->seed();
+
+        factory(Dock::class, 2)->create();
+        Dock::find(2)->delete();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Index('docks'))
+                    ->within(new IndexComponent('docks'), function ($browser) {
+                        $browser->assertSeeResource(1)
+                                ->assertDontSeeResource(2);
+
+                        $browser->onlyTrashed()
+                                ->assertDontSeeResource(1)
+                                ->assertSeeResource(2);
+                    });
         });
     }
 
