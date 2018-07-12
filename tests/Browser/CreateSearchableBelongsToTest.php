@@ -27,7 +27,7 @@ class CreateSearchableBelongsToTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Create('ships'))
                     ->searchRelation('docks', '1')
-                    ->selectCurrentRelation()
+                    ->selectCurrentRelation('docks')
                     ->type('@name', 'Test Ship')
                     ->create();
 
