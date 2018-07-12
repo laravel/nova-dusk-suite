@@ -81,8 +81,35 @@ class AttachPolymorphicTest extends DuskTestCase
                         $browser->click('@attach-button');
                     })
                     ->on(new Pages\Attach('posts', 1, 'tags'))
+                    ->type('@notes', str_repeat('A', 30))
                     ->clickAttach()
                     ->assertSee('The tag field is required.');
+
+            $this->assertNull(Post::find(1)->tags->first());
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function validation_errors_are_displayed_for_pivot_fields()
+    {
+        $this->seed();
+
+        $post = factory(Post::class)->create();
+        $tag = factory(Tag::class)->create();
+
+        $this->browse(function (Browser $browser) use ($post, $tag) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('posts', 1))
+                    ->within(new IndexComponent('tags'), function ($browser) {
+                        $browser->click('@attach-button');
+                    })
+                    ->on(new Pages\Attach('posts', 1, 'tags'))
+                    ->selectAttachable($tag->id)
+                    ->type('@notes', str_repeat('A', 30))
+                    ->clickAttach()
+                    ->assertSee('The notes may not be greater than 20 characters.');
 
             $this->assertNull(Post::find(1)->tags->first());
         });
