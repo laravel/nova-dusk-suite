@@ -28,10 +28,9 @@ class AttachTest extends DuskTestCase
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@attach-button');
                     })
-                    ->pause(750)
-                    ->select('@attachable-select', $role->id)
-                    ->click('@attach-button')
-                    ->pause(750);
+                    ->on(new Pages\Attach('users', 1, 'roles'))
+                    ->selectAttachable($role->id)
+                    ->clickAttach();
 
             $this->assertEquals($role->id, User::find(1)->roles->first()->id);
         });
@@ -54,7 +53,7 @@ class AttachTest extends DuskTestCase
                     })
                     ->pause(750)
                     ->click('@attach-button')
-                    ->pause(500)
+                    ->pause(50000)
                     ->assertSee('The role field is required.');
 
             $this->assertNull(User::find(1)->roles->first());
