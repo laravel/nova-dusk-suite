@@ -37,31 +37,41 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
                     ->type('@notes', 'Test Notes')
                     ->update();
 
-            $this->assertEquals('Test Notes', $captain->fresh()->ships()->withTrashed()->get()->first()->pivot->notes);
+            $this->assertEquals(
+                'Test Notes',
+                $captain->fresh()->ships()->withTrashed()->get()->first()->pivot->notes
+            );
         });
     }
 
+    /**
+     * @test
+     */
     public function attached_resource_can_be_updated_and_can_continue_editing()
     {
         $this->seed();
 
-        $user = User::find(1);
-        $role = factory(Role::class)->create();
-        $user->roles()->attach($role, ['notes' => 'Test Notes']);
+        $ship = factory(Ship::class)->create(['deleted_at' => now()]);
+        $captain = factory(Captain::class)->create();
+        $captain->ships()->attach($ship);
 
-        $this->browse(function (Browser $browser) {
+        $this->browse(function (Browser $browser) use ($ship, $captain) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
-                    ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->click('@1-edit-attached-button');
+                    ->visit(new Pages\Detail('captains', 1))
+                    ->within(new IndexComponent('ships'), function ($browser) {
+                        $browser->withTrashed()->click('@1-edit-attached-button');
                     })
-                    ->on(new Pages\UpdateAttached('users', 1, 'roles', 1))
-                    ->type('@notes', 'Test Notes Updated')
+                    ->on(new Pages\UpdateAttached('captains', 1, 'ships', 1))
+                    ->assertDisabled('@attachable-select')
+                    ->type('@notes', 'Test Notes')
                     ->updateAndContinueEditing();
 
-            $browser->assertPathIs('/nova/resources/users/1/edit-attached/roles/1');
+            $browser->assertPathIs('/nova/resources/captains/1/edit-attached/ships/1');
 
-            $this->assertEquals('Test Notes Updated', User::find(1)->roles->first()->pivot->notes);
+            $this->assertEquals(
+                'Test Notes',
+                $captain->fresh()->ships()->withTrashed()->get()->first()->pivot->notes
+            );
         });
     }
 }
