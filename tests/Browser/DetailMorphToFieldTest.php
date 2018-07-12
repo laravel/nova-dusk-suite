@@ -26,6 +26,9 @@ class DetailMorphToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $comment) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('comments', $comment->id))
+                    ->within('@comments-detail-component', function ($browser) {
+                        $browser->assertSee('Post');
+                    })
                     ->clickLink($post->title)
                     ->pause(250)
                     ->assertPathIs('/nova/resources/posts/'.$post->id);
