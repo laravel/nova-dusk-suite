@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 
 class Ship extends Resource
 {
@@ -38,6 +39,12 @@ class Ship extends Resource
             ID::make('ID', 'id')->sortable(),
             BelongsTo::make('Dock', 'dock', Dock::class)->display('name')->searchable(),
             Text::make('Name', 'name')->sortable(),
+
+            BelongsToMany::make('Captains', 'captains', Captain::class)
+                        ->display('name')
+                        ->prunable()
+                        ->searchable(),
+
             HasMany::make('Sails', 'sails', Sail::class),
         ];
     }

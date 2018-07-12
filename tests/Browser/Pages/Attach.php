@@ -6,6 +6,8 @@ use Laravel\Dusk\Browser;
 
 class Attach extends Page
 {
+    use HasSearchableRelations;
+
     public $resourceName;
     public $resourceId;
     public $relation;

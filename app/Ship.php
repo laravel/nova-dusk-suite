@@ -18,6 +18,14 @@ class Ship extends Model
     }
 
     /**
+     * Get all of the captains for the ship.
+     */
+    public function captains()
+    {
+        return $this->belongsToMany(Captain::class);
+    }
+
+    /**
      * Get all of the sails for the ship.
      */
     public function sails()

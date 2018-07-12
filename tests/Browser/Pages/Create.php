@@ -6,6 +6,8 @@ use Laravel\Dusk\Browser;
 
 class Create extends Page
 {
+    use HasSearhableRelations;
+
     public $resourceName;
 
     /**
@@ -27,41 +29,6 @@ class Create extends Page
     public function url()
     {
         return '/nova/resources/'.$this->resourceName.'/new';
-    }
-
-    /**
-     * Search for the given value for a searchable relationship attribute.
-     */
-    public function searchRelation(Browser $browser, $attribute, $search)
-    {
-        $browser->click('[dusk="'.$attribute.'-search-input"]')
-                    ->pause(100)
-                    ->type('[dusk="'.$attribute.'-search-input"] input', $search)
-                    ->pause(1500);
-    }
-
-    /**
-     * Select the currently highlighted searchable relation.
-     */
-    public function selectCurrentRelation(Browser $browser, $attribute)
-    {
-        $browser->keys('[dusk="'.$attribute.'-search-input"] input', '{enter}')->pause(150);
-    }
-
-    /**
-     * Indicate that trashed relations should be included in the search results.
-     */
-    public function withTrashedRelation(Browser $browser, $resourceName)
-    {
-        $browser->click('')->check('@'.$resourceName.'-with-trashed-checkbox')->pause(250);
-    }
-
-    /**
-     * Indicate that trashed relations should not be included in the search results.
-     */
-    public function withoutTrashedRelation(Browser $browser, $resourceName)
-    {
-        $browser->click('')->uncheck('@'.$resourceName.'-with-trashed-checkbox')->pause(250);
     }
 
     /**
