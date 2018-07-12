@@ -47,6 +47,14 @@ class UpdateAttached extends Page
     }
 
     /**
+     * Click the update and continue editing button.
+     */
+    public function updateAndContinueEditing(Browser $browser)
+    {
+        $browser->click('@update-and-continue-editing-button')->pause(750);
+    }
+
+    /**
      * Assert that the browser is on the page.
      *
      * @param  Browser  $browser
