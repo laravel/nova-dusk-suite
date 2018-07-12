@@ -80,6 +80,8 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                     ->withTrashedRelation('ships')
                     ->select('@ship', $ship->id)
                     ->withoutTrashedRelation('ships')
+                    // Ideally would use assertChecked here but RemoteWebDriver
+                    // returns unchecked when it clearly is checked?
                     ->type('@inches', 25)
                     ->create();
 
