@@ -51,9 +51,8 @@ class AttachTest extends DuskTestCase
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@attach-button');
                     })
-                    ->pause(750)
-                    ->click('@attach-button')
-                    ->pause(50000)
+                    ->on(new Pages\Attach('users', 1, 'roles'))
+                    ->clickAttach()
                     ->assertSee('The role field is required.');
 
             $this->assertNull(User::find(1)->roles->first());
