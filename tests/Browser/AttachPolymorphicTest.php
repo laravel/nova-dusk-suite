@@ -18,7 +18,7 @@ class AttachPolymorphicTest extends DuskTestCase
     /**
      * @test
      */
-    public function resource_can_be_attached()
+    public function non_searchable_resource_can_be_attached()
     {
         $this->seed();
 
@@ -42,7 +42,7 @@ class AttachPolymorphicTest extends DuskTestCase
     /**
      * @test
      */
-    public function searchable_resources_can_be_attached()
+    public function searchable_resource_can_be_attached()
     {
         $this->seed();
 
