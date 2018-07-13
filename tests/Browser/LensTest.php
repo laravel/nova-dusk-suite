@@ -9,7 +9,7 @@ use Tests\Browser\Components\LensComponent;
 use Tests\Browser\Components\IndexComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class IndexTest extends DuskTestCase
+class LensTest extends DuskTestCase
 {
     use DatabaseMigrations;
 

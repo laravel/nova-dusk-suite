@@ -40,7 +40,6 @@ class PivotFileAttachTest extends DuskTestCase
 
             // Ensure file is not removed on blank update...
             $browser->visit(new Pages\UpdateAttached('captains', $captain->id, 'ships', $ship->id))
-                    ->pause(50000)
                     ->update();
 
             $captain = Captain::orderBy('id', 'desc')->first();
