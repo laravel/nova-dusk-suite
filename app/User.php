@@ -29,6 +29,15 @@ class User extends Authenticatable
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'blocked_from' => 'json',
+    ];
+
+    /**
      * Get all of the user's posts.
      */
     public function posts()
@@ -42,5 +51,14 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class)->withPivot('notes');
+    }
+
+    /**
+     * Determine if the user is blocked from performing the given action.
+     */
+    public function isBlockedFrom($action)
+    {
+        return ! empty($this->blocked_from) &&
+               array_key_exists($action, $this->blocked_from);
     }
 }

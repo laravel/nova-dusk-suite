@@ -18,7 +18,7 @@ class PostPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        return ! $user->isBlockedFrom('post.viewAny');
     }
 
     /**
@@ -30,7 +30,7 @@ class PostPolicy
      */
     public function view(User $user, Post $post)
     {
-        return true;
+        return ! $user->isBlockedFrom('post.view.'.$post->id);
     }
 
     /**
@@ -41,7 +41,7 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        return true;
+        return ! $user->isBlockedFrom('post.create');
     }
 
     /**
@@ -53,7 +53,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post)
     {
-        return true;
+        return ! $user->isBlockedFrom('post.update.'.$post->id);
     }
 
     /**
@@ -65,7 +65,7 @@ class PostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        return true;
+        return ! $user->isBlockedFrom('post.delete.'.$post->id);
     }
 
     /**
@@ -77,7 +77,7 @@ class PostPolicy
      */
     public function restore(User $user, Post $post)
     {
-        return true;
+        return ! $user->isBlockedFrom('post.restore.'.$post->id);
     }
 
     /**
@@ -89,6 +89,6 @@ class PostPolicy
      */
     public function forceDelete(User $user, Post $post)
     {
-        return true;
+        return ! $user->isBlockedFrom('post.forceDelete.'.$post->id);
     }
 }

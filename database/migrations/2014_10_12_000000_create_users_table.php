@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->boolean('active')->default(false);
-            $table->text('permissions');
+            $table->text('blocked_from');
             $table->rememberToken();
             $table->timestamps();
         });
