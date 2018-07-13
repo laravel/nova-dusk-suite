@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\DateTime;
@@ -47,6 +48,7 @@ class Ship extends Resource
                         ->fields(function ($request) {
                             return [
                                 Text::make('Notes', 'notes')->rules('max:20'),
+                                File::make('Contract', 'contract'),
                             ];
                         })
                         ->prunable()

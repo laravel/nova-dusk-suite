@@ -24,6 +24,7 @@ class CreateCaptainsTable extends Migration
             $table->unsignedInteger('captain_id');
             $table->unsignedInteger('ship_id');
             $table->string('notes')->nullable();
+            $table->string('contract')->nullable();
 
             $table->index(['captain_id', 'ship_id']);
         });
