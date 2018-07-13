@@ -31,7 +31,7 @@ class Ship extends Model
      */
     public function captains()
     {
-        return $this->belongsToMany(Captain::class)->withPivot('notes');
+        return $this->belongsToMany(Captain::class)->withPivot('notes', 'contract');
     }
 
     /**
