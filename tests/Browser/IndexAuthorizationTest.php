@@ -28,6 +28,7 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Index('posts'))
+                    ->pause(250)
                     ->assertPathIs('/nova/403');
         });
     }
