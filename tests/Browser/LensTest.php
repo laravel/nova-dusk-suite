@@ -33,30 +33,17 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    public function can_navigate_to_create_resource_screen()
-    {
-        $this->seed();
-
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->click('@create-button');
-                    })
-                    ->pause(250)
-                    ->assertSee('Create & Add Another')
-                    ->assertSee('Create User');
-        });
-    }
-
+    /**
+     * @test
+     */
     public function can_navigate_to_detail_screen()
     {
         $this->seed();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
+                    ->visit(new Pages\Lens('users', 'passthrough-lens'))
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->click('@1-view-button');
                     })
                     ->pause(1000)
