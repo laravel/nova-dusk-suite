@@ -1,7 +1,10 @@
 {
     "name": "laravel/laravel",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -9,7 +12,8 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.6.*",
         "laravel/nova": "*",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "otwell/sidebar-tool": "*"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
@@ -35,8 +39,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         }
     },
     "scripts": {
@@ -55,6 +58,10 @@
         {
             "type": "path",
             "url": "./../nova-lib"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/SidebarTool"
         }
     ],
     "config": {
