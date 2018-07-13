@@ -28,9 +28,25 @@ class FileAttachTest extends DuskTestCase
                     ->attach('@photo', __DIR__.'/Fixtures/StardewTaylor.png')
                     ->create();
 
+            // Verify the photo in the information in the database...
             $captain = Captain::orderBy('id', 'desc')->first();
             $this->assertNotNull($captain->photo);
-            Storage::disk('public')->exists($captain->photo);
+            $this->assertTrue(Storage::disk('public')->exists($captain->photo));
+
+            // Download the file...
+            $browser->on(new Pages\Detail('captains', $captain->id))
+                    ->click('@photo-download-link')
+                    ->pause(250);
+
+            // Delete the file...
+            $browser->visit(new Pages\Update('captains', $captain->id))
+                    ->click('@photo-delete-link')
+                    ->pause(250)
+                    ->click('@confirm-upload-delete-button')
+                    ->pause(250);
+
+            // Clean up the file...
+            $this->assertFalse(Storage::disk('public')->exists($captain->photo));
         });
     }
 }
