@@ -24,9 +24,10 @@ class DateTest extends DuskTestCase
         $dock = factory(Dock::class)->create();
 
         $date = now()->subHours(1);
+        $uiDate = $date->setTimezone(env('DUSK_TIMEZONE'))->format('Y-m-d g:i:s A');
         $formattedDate = $date->setTimezone(env('DUSK_TIMEZONE'))->format('Y-m-d H:i:s');
 
-        $this->browse(function (Browser $browser) use ($dock, $formattedDate) {
+        $this->browse(function (Browser $browser) use ($dock, $uiDate, $formattedDate) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('docks', $dock->id))
                     ->within(new IndexComponent('ships'), function ($browser) {
@@ -37,25 +38,25 @@ class DateTest extends DuskTestCase
                     ->type('@departed_at', $formattedDate)
                     ->create();
 
-            $ship = Ship::orderBy('id', 'desc')->first();
+                $ship = Ship::orderBy('id', 'desc')->first();
 
-            // Asset the date is UTC in the database...
-            $this->assertEquals(
-                $formattedDate,
-                $ship->departed_at->setTimezone(env('DUSK_TIMEZONE'))->format('Y-m-d H:i:s')
-            );
+                // Asset the date is UTC in the database...
+                $this->assertEquals(
+                    $formattedDate,
+                    $ship->departed_at->setTimezone(env('DUSK_TIMEZONE'))->format('Y-m-d H:i:s')
+                );
 
-            // Assert the date is localized on the detail page...
-            $browser->on(new Pages\Detail('ships', $ship->id))
-                    ->assertSee($formattedDate);
+                // Assert the date is localized on the detail page...
+                $browser->on(new Pages\Detail('ships', $ship->id))
+                        ->assertSee($uiDate);
 
-            $browser->assertPathIs('/nova/resources/ships/'.$ship->id);
+                $browser->assertPathIs('/nova/resources/ships/'.$ship->id);
 
-            // Assert the date is localized on the index page...
-            $browser->visit(new Pages\Index('ships'))
-                    ->within(new IndexComponent('ships'), function ($browser) use ($formattedDate) {
-                        $browser->assertSee($formattedDate);
-                    });
+                // Assert the date is localized on the index page...
+                $browser->visit(new Pages\Index('ships'))
+                        ->within(new IndexComponent('ships'), function ($browser) use ($uiDate) {
+                            $browser->assertSee($uiDate);
+                        });
         });
     }
 }
