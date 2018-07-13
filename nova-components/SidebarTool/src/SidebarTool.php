@@ -2,6 +2,7 @@
 
 namespace Otwell\SidebarTool;
 
+use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 
 class SidebarTool extends Tool
@@ -13,7 +14,8 @@ class SidebarTool extends Tool
      */
     public function boot()
     {
-        //
+        Nova::script('sidebar-tool', __DIR__.'/../dist/js/tool.js');
+        Nova::style('sidebar-tool', __DIR__.'/../dist/css/tool.css');
     }
 
     /**

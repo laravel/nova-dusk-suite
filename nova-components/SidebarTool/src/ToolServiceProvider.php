@@ -16,11 +16,6 @@ class ToolServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'sidebar-tool');
-
-        Nova::serving(function (ServingNova $event) {
-            Nova::script('sidebar-tool', __DIR__.'/../dist/js/tool.js');
-            Nova::style('sidebar-tool', __DIR__.'/../dist/css/tool.css');
-        });
     }
 
     /**

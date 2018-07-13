@@ -1,6 +1,7 @@
 <?php
 
 use Laravel\Nova\Http\Middleware\Authorize;
+use Laravel\Nova\Http\Middleware\BootTools;
 use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
 
@@ -33,6 +34,7 @@ return [
     'middleware' => [
         'web',
         DispatchServingNovaEvent::class,
+        BootTools::class,
         Authenticate::class,
         Authorize::class,
     ],
