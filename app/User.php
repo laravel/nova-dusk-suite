@@ -54,6 +54,18 @@ class User extends Authenticatable
     }
 
     /**
+     * Store the actions the user should be blocked from.
+     */
+    public function shouldBlockFrom(...$block)
+    {
+        $this->forceFill([
+            'blocked_from' => collect($block)->mapWithKeys(function ($block) {
+                return [$block => true];
+            })->all(),
+        ])->save();
+    }
+
+    /**
      * Determine if the user is blocked from performing the given action.
      */
     public function isBlockedFrom($action)
