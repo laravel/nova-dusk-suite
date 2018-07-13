@@ -71,6 +71,9 @@ class IndexTest extends DuskTestCase
         });
     }
 
+    /**
+     * @test
+     */
     public function test_correct_select_all_matching_count_is_displayed()
     {
         $this->seed();
