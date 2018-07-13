@@ -83,6 +83,9 @@ class SoftDeletingLensTest extends DuskTestCase
         $this->assertEquals(3, Dock::count());
     }
 
+    /**
+     * @test
+     */
     public function can_force_delete_resources_using_checkboxes()
     {
         $this->seed();
@@ -93,10 +96,8 @@ class SoftDeletingLensTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Index('docks'))
-                    ->within(new IndexComponent('docks'), function ($browser) {
-                        $browser->withTrashed();
-
+                    ->visit(new Pages\Lens('docks', 'passthrough-with-trashed-lens'))
+                    ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
                         $browser->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->forceDeleteSelected()
