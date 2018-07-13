@@ -45,7 +45,7 @@ class Captain extends Resource
                             ];
                         })
                         ->prunable()
-                        ->searchable()
+                        ->searchable(file_exists(base_path('.searchable'))),
         ];
     }
 
