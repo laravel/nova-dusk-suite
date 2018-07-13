@@ -24,7 +24,7 @@ class UpdatePivotNotes extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $model) {
-            $model->forceFill(['notes' => 'Pivot Action Notes'])->save();
+            $model->forceFill(['notes' => $fields->notes ?? 'Pivot Action Notes'])->save();
         }
     }
 
