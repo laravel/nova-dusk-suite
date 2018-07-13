@@ -115,29 +115,32 @@ class IndexTest extends DuskTestCase
         });
     }
 
+    /**
+     * @test
+     */
     public function resources_can_be_paginated()
     {
         factory(User::class, 50)->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->assertSeeResource(50)
-                                ->assertSeeResource(26)
-                                ->assertDontSeeResource(25);
+                    ->visit(new Pages\Lens('users', 'passthrough-lens'))
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                        $browser->assertSeeResource(1)
+                                ->assertSeeResource(25)
+                                ->assertDontSeeResource(26);
 
                         $browser->nextPage()
-                                ->assertDontSeeResource(50)
-                                ->assertDontSeeResource(26)
-                                ->assertSeeResource(25)
-                                ->assertSeeResource(1);
+                                ->assertDontSeeResource(1)
+                                ->assertDontSeeResource(25)
+                                ->assertSeeResource(26)
+                                ->assertSeeResource(50);
 
                         $browser->previousPage()
-                                ->assertSeeResource(50)
-                                ->assertSeeResource(26)
-                                ->assertDontSeeResource(25)
-                                ->assertDontSeeResource(1);
+                                ->assertSeeResource(1)
+                                ->assertSeeResource(25)
+                                ->assertDontSeeResource(26)
+                                ->assertDontSeeResource(50);
                     });
         });
     }
