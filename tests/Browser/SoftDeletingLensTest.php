@@ -157,31 +157,27 @@ class SoftDeletingLensTest extends DuskTestCase
         });
     }
 
+    /**
+     * @test
+     */
     public function can_force_delete_all_matching_resources()
     {
         $this->seed();
 
-        $dock = factory(Dock::class)->create();
-        $dock->ships()->saveMany(factory(Ship::class, 3)->create(['deleted_at' => now()]));
+        factory(Dock::class, 3)->create(['deleted_at' => now()]);
 
-        $separateShip = factory(Ship::class)->create();
-
-        $this->browse(function (Browser $browser) use ($separateShip) {
+        $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->withTrashed();
+                    ->visit(new Pages\Lens('docks', 'passthrough-with-trashed-lens'))
+                    ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
+                        $browser->applyFilter('Select First', '2');
 
                         $browser->selectAllMatching()
-                            ->forceDeleteSelected()
-                            ->assertDontSeeResource(1)
-                            ->assertDontSeeResource(2)
-                            ->assertDontSeeResource(3);
+                            ->forceDeleteSelected();
                     });
 
-            $this->assertNotNull($separateShip->fresh());
-            $this->assertEquals(1, Ship::count());
-            $this->assertEquals(0, Ship::onlyTrashed()->count());
+            $this->assertEquals(0, Dock::count());
+            $this->assertEquals(2, Dock::onlyTrashed()->count());
         });
     }
 
