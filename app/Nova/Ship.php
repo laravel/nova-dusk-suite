@@ -6,6 +6,7 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 
@@ -39,6 +40,7 @@ class Ship extends Resource
             ID::make('ID', 'id')->sortable(),
             BelongsTo::make('Dock', 'dock', Dock::class)->display('name')->searchable(),
             Text::make('Name', 'name')->sortable(),
+            DateTime::make('Departed At', 'departed_at'),
 
             BelongsToMany::make('Captains', 'captains', Captain::class)
                         ->display('name')

@@ -10,6 +10,15 @@ class Ship extends Model
     use SoftDeletes;
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'departed_at' => 'datetime',
+    ];
+
+    /**
      * Get the dock that the ship belongs to.
      */
     public function dock()

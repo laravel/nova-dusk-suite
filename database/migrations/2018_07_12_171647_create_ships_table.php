@@ -18,6 +18,7 @@ class CreateShipsTable extends Migration
             $table->unsignedInteger('dock_id')->index();
             $table->string('name');
             $table->boolean('active')->default(false);
+            $table->timestamp('departed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
