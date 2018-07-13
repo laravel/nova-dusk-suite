@@ -52,6 +52,7 @@ class DateTest extends DuskTestCase
 
             $browser->assertPathIs('/nova/resources/ships/'.$ship->id);
 
+            // Assert the date is localized on the index page...
             $browser->visit(new Pages\Index('ships'))
                     ->within(new IndexComponent('ships'), function ($browser) use ($formattedDate) {
                         $browser->assertSee($formattedDate);
