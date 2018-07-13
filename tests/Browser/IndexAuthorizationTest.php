@@ -40,15 +40,40 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->seed();
 
         $post = factory(Post::class)->create();
+        $post2 = factory(Post::class)->create();
 
         $user = User::find(1);
         $user->shouldBlockFrom('post.update.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post) {
+        $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Index('posts'))
-                    ->within(new IndexComponent('posts'), function ($browser) use ($post) {
+                    ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                         $browser->assertMissing('@'.$post->id.'-edit-button');
+                        $browser->assertVisible('@'.$post2->id.'-edit-button');
+                    });
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function shouldnt_see_delete_button_if_blocked_from_deleting()
+    {
+        $this->seed();
+
+        $post = factory(Post::class)->create();
+        $post2 = factory(Post::class)->create();
+
+        $user = User::find(1);
+        $user->shouldBlockFrom('post.delete.'.$post->id);
+
+        $this->browse(function (Browser $browser) use ($post, $post2) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Index('posts'))
+                    ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
+                        $browser->assertMissing('@'.$post->id.'-delete-button');
+                        $browser->assertVisible('@'.$post2->id.'-delete-button');
                     });
         });
     }
