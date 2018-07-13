@@ -5,16 +5,17 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\MorphTo;
+use Laravel\Nova\Fields\MorphMany;
+use Laravel\Nova\Fields\MorphToMany;
 
-class Comment extends Resource
+class Video extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\Comment';
+    public static $model = 'App\Video';
 
     /**
      * The columns that should be searched.
@@ -35,27 +36,10 @@ class Comment extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
-            $this->commentable(),
-            Text::make('Body', 'body'),
-        ];
-    }
+            Text::make('Title', 'title')->sortable(),
 
-    /**
-     * Get the commentable field definition.
-     */
-    protected function commentable()
-    {
-        return MorphTo::make('Commentable', 'commentable')->display([
-                Post::class => function ($resource) {
-                    return $resource->title;
-                },
-                Video::class => function ($resource) {
-                    return $resource->title;
-                },
-            ])->types([
-                Post::class => 'Post',
-                Video::class => 'Video',
-            ])->searchable(file_exists(base_path('.searchable')));
+            MorphMany::make('Comments', 'comments', Comment::class),
+        ];
     }
 
     /**
