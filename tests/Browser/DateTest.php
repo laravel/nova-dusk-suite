@@ -39,6 +39,9 @@ class DateTest extends DuskTestCase
 
             $ship = Ship::orderBy('id', 'desc')->first();
 
+            $browser->on(new Pages\Detail('ships', $ship->id))
+                    ->assertSee($date->setTimezone(env('DUSK_TIMEZONE'))->format('Y-m-d H:i:s'));
+
             $browser->assertPathIs('/nova/resources/ships/'.$ship->id);
 
             $this->assertEquals(
