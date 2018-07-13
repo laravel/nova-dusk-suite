@@ -46,7 +46,11 @@ class Captain extends Resource
                         ->fields(function ($request) {
                             return [
                                 Text::make('Notes', 'notes')->rules('max:20'),
-                                File::make('Contract', 'contract')->prunable(),
+                                File::make('Contract', 'contract')->prunable()->store(function ($request) {
+                                    if ($request->contract) {
+                                        return $request->contract->storeAs('/', 'Contract.pdf', 'public');
+                                    }
+                                })
                             ];
                         })
                         ->prunable()
