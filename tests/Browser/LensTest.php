@@ -293,4 +293,27 @@ class IndexTest extends DuskTestCase
         $this->assertEquals(1, User::find(2)->active);
         $this->assertEquals(1, User::find(3)->active);
     }
+
+    /**
+     * @test
+     */
+    public function can_run_actions_on_all_matching_resources()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Lens('users', 'passthrough-lens'))
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                        $browser->applyFilter('Select First', '2');
+
+                        $browser->selectAllMatching()
+                                ->runAction('mark-as-active');
+                    });
+        });
+
+        $this->assertEquals(0, User::find(1)->active);
+        $this->assertEquals(1, User::find(2)->active);
+        $this->assertEquals(0, User::find(3)->active);
+    }
 }

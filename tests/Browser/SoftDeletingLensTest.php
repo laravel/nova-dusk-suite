@@ -108,31 +108,28 @@ class SoftDeletingLensTest extends DuskTestCase
         });
     }
 
+    /**
+     * @test
+     */
     public function can_soft_delete_all_matching_resources()
     {
         $this->seed();
 
-        $dock = factory(Dock::class)->create();
-        $dock->ships()->saveMany(factory(Ship::class, 3)->create());
+        factory(Dock::class)->create();
+        factory(Dock::class)->create();
+        factory(Dock::class)->create();
 
-        $separateShip = factory(Ship::class)->create();
-
-        $this->browse(function (Browser $browser) use ($separateShip) {
+        $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
+                    ->visit(new Pages\Lens('docks', 'passthrough-with-trashed-lens'))
+                    ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
+                        $browser->applyFilter('Select First', '2');
+
                         $browser->selectAllMatching()
-                            ->deleteSelected()
-                            ->assertDontSeeResource(1)
-                            ->assertDontSeeResource(2)
-                            ->assertDontSeeResource(3)
-                            ->withTrashed()
-                            ->assertSeeResource(1)
-                            ->assertSeeResource(2)
-                            ->assertSeeResource(3);
+                                ->deleteSelected();
                     });
 
-            $this->assertNull($separateShip->fresh()->deleted_at);
+            $this->assertEquals(2, Dock::count());
         });
     }
 
