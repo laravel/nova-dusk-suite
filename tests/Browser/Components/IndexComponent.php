@@ -140,6 +140,15 @@ class IndexComponent extends BaseComponent
     }
 
     /**
+     * Open the action selector.
+     */
+    public function openActionSelector(Browser $browser)
+    {
+        $browser->click('@action-select')
+                    ->pause(100);
+    }
+
+    /**
      * Run the action with the given URI key.
      */
     public function runAction(Browser $browser, $uriKey, $fieldCallback = null)

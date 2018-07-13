@@ -66,6 +66,7 @@ class User extends Resource
                                 new Actions\UpdatePivotNotes,
                             ];
                         })
+                        ->referToPivotAs('Role Assignment')
                         ->prunable(),
         ];
     }
