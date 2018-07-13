@@ -52,14 +52,17 @@ class IndexTest extends DuskTestCase
         });
     }
 
+    /**
+     * @test
+     */
     public function can_navigate_to_edit_screen()
     {
         $this->seed();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
+                    ->visit(new Pages\Lens('users', 'passthrough-lens'))
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->click('@1-edit-button');
                     })
                     ->pause(1000)
