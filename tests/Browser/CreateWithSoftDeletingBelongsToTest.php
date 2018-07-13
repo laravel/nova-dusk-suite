@@ -93,22 +93,24 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
      */
     public function searchable_belongs_to_respects_with_trashed_checkbox_state()
     {
-        $this->seed();
+        $this->whileSearchable(function () {
+            $this->seed();
 
-        $dock = factory(Dock::class)->create(['deleted_at' => now()]);
+            $dock = factory(Dock::class)->create(['deleted_at' => now()]);
 
-        $this->browse(function (Browser $browser) use ($dock) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('ships'))
-                    ->searchRelation('docks', '1')
-                    ->assertNoRelationSearchResults('docks')
-                    ->withTrashedRelation('docks')
-                    ->searchRelation('docks', '1')
-                    ->selectCurrentRelation('docks')
-                    ->type('@name', 'Test Ship')
-                    ->create();
+            $this->browse(function (Browser $browser) use ($dock) {
+                $browser->loginAs(User::find(1))
+                        ->visit(new Pages\Create('ships'))
+                        ->searchRelation('docks', '1')
+                        ->assertNoRelationSearchResults('docks')
+                        ->withTrashedRelation('docks')
+                        ->searchRelation('docks', '1')
+                        ->selectCurrentRelation('docks')
+                        ->type('@name', 'Test Ship')
+                        ->create();
 
-            $this->assertCount(1, $dock->fresh()->ships);
+                $this->assertCount(1, $dock->fresh()->ships);
+            });
         });
     }
 }
