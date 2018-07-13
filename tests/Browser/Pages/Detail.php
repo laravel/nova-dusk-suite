@@ -37,7 +37,7 @@ class Detail extends Page
      */
     public function runAction(Browser $browser, $uriKey)
     {
-        $browser->select('@action-select', 'mark-as-active')
+        $browser->select('@action-select', $uriKey)
                     ->pause(100)
                     ->click('@run-action-button')
                     ->pause(250)
