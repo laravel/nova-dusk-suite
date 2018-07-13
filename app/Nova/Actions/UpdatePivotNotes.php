@@ -3,6 +3,7 @@
 namespace App\Nova\Actions;
 
 use Illuminate\Bus\Queueable;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Actions\Action;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\ActionFields;
@@ -35,6 +36,8 @@ class UpdatePivotNotes extends Action
      */
     public function fields()
     {
-        return [];
+        return [
+            Text::make('Notes', 'notes'),
+        ];
     }
 }

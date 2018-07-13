@@ -142,13 +142,18 @@ class IndexComponent extends BaseComponent
     /**
      * Run the action with the given URI key.
      */
-    public function runAction(Browser $browser, $uriKey)
+    public function runAction(Browser $browser, $uriKey, $fieldCallback = null)
     {
         $browser->select('@action-select', $uriKey)
                     ->pause(100)
                     ->click('@run-action-button')
-                    ->pause(250)
-                    ->click('@confirm-action-button')
+                    ->pause(250);
+
+        if ($fieldCallback) {
+            $fieldCallback($browser);
+        }
+
+        $browser->click('@confirm-action-button')
                     ->pause(250);
     }
 
