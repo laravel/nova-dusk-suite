@@ -18,7 +18,22 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
     /**
      * @test
      */
-    public function test_parent_select_is_locked_when_creating_child_of_soft_deleted_resource()
+    public function test_parent_select_is_locked_when_creating_child_of_soft_deleted_non_searchable_resource()
+    {
+        $this->test_parent_select_is_locked_when_creating_child_of_soft_deleted_resource();
+    }
+
+    /**
+     * @test
+     */
+    public function test_parent_select_is_locked_when_creating_child_of_soft_deleted_searchable_resource()
+    {
+        $this->whileSearchable(function () {
+            $this->test_parent_select_is_locked_when_creating_child_of_soft_deleted_resource();
+        });
+    }
+
+    protected function test_parent_select_is_locked_when_creating_child_of_soft_deleted_resource()
     {
         $this->seed();
 
