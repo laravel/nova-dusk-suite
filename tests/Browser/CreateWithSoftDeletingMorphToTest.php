@@ -108,25 +108,29 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
         });
     }
 
+    /**
+     * @test
+     */
     public function searchable_belongs_to_respects_with_trashed_checkbox_state()
     {
         $this->whileSearchable(function () {
             $this->seed();
 
-            $dock = factory(Dock::class)->create(['deleted_at' => now()]);
+            $video = factory(Video::class)->create(['deleted_at' => now()]);
 
-            $this->browse(function (Browser $browser) use ($dock) {
+            $this->browse(function (Browser $browser) use ($video) {
                 $browser->loginAs(User::find(1))
-                        ->visit(new Pages\Create('ships'))
-                        ->searchRelation('docks', '1')
-                        ->assertNoRelationSearchResults('docks')
-                        ->withTrashedRelation('docks')
-                        ->searchRelation('docks', '1')
-                        ->selectCurrentRelation('docks')
-                        ->type('@name', 'Test Ship')
+                        ->visit(new Pages\Create('comments'))
+                        ->select('@commentable-type', 'videos')
+                        ->searchRelation('commentable', '1')
+                        ->assertNoRelationSearchResults('commentable')
+                        ->withTrashedRelation('commentable')
+                        ->searchRelation('commentable', '1')
+                        ->selectCurrentRelation('commentable')
+                        ->type('@body', 'Test Comments')
                         ->create();
 
-                $this->assertCount(1, $dock->fresh()->ships);
+                $this->assertCount(1, $video->fresh()->comments);
             });
         });
     }
