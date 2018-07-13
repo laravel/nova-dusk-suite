@@ -28,8 +28,8 @@ class NovaServiceProvider extends ServiceProvider
             Nova::resourcesIn(app_path('Nova'));
             Nova::cards([new Help]);
 
-            Nova::tools([(new SidebarTool)->canSee(function () {
-                return true;
+            Nova::tools([(new SidebarTool)->canSee(function ($request) {
+                return ! $request->user()->isBlockedFrom('sidebarTool');
             })]);
         });
     }
