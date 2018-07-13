@@ -48,8 +48,10 @@ class AttachSoftDeletingTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($captain, $ship) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Attach('captains', $captain->id, 'ships'))
+                    ->assertSelectMissingOption('@attachable-select', $ship->id)
                     ->withTrashedRelation('ships')
-                    ->selectAttachable(1)
+                    ->assertSelectHasOption('@attachable-select', $ship->id)
+                    ->selectAttachable($ship->id)
                     ->clickAttach();
 
             $this->assertCount(0, $captain->fresh()->ships);
