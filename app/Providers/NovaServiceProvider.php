@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Cards\Help;
+use Otwell\SidebarTool\SidebarTool;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\ServiceProvider;
@@ -26,7 +27,7 @@ class NovaServiceProvider extends ServiceProvider
 
             Nova::resourcesIn(app_path('Nova'));
             Nova::cards([new Help]);
-            Nova::tools([]);
+            Nova::tools([new SidebarTool]);
         });
     }
 
