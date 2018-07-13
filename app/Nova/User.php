@@ -90,7 +90,9 @@ class User extends Resource
      */
     public function lenses(Request $request)
     {
-        return [];
+        return [
+            new Lenses\PassthroughLens,
+        ];
     }
 
     /**

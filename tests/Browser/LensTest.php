@@ -12,9 +12,6 @@ class IndexTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
-    /**
-     * @test
-     */
     public function resource_index_can_be_viewed()
     {
         $this->seed();
@@ -32,9 +29,6 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function can_navigate_to_create_resource_screen()
     {
         $this->seed();
@@ -51,9 +45,6 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function can_navigate_to_detail_screen()
     {
         $this->seed();
@@ -70,9 +61,6 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function can_navigate_to_edit_screen()
     {
         $this->seed();
@@ -89,9 +77,6 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function resources_can_be_searched()
     {
         $this->seed();
@@ -119,9 +104,6 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function test_correct_select_all_matching_count_is_displayed()
     {
         $this->seed();
@@ -138,9 +120,6 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function resources_can_be_sorted_by_id()
     {
         factory(User::class, 50)->create();
@@ -162,9 +141,6 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function resources_can_be_paginated()
     {
         factory(User::class, 50)->create();
@@ -192,9 +168,6 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function number_of_resources_displayed_per_page_can_be_changed()
     {
         factory(User::class, 50)->create();
@@ -211,9 +184,6 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function test_filters_can_be_applied_to_resources()
     {
         $this->seed();
@@ -234,9 +204,6 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function test_filters_can_be_deselected()
     {
         $this->seed();
@@ -257,9 +224,6 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function can_delete_a_resource_via_resource_table_row_delete_icon()
     {
         $this->seed();
@@ -276,9 +240,6 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function can_delete_resources_using_checkboxes()
     {
         $this->seed();
@@ -297,9 +258,6 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function can_delete_all_matching_resources()
     {
         $this->seed();
@@ -319,9 +277,6 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function can_run_actions_on_selected_resources()
     {
         $this->seed();
