@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use Tests\Browser\Components\LensComponent;
 use Tests\Browser\Components\IndexComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -12,7 +13,10 @@ class IndexTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
-    public function resource_index_can_be_viewed()
+    /**
+     * @test
+     */
+    public function resource_lens_can_be_viewed()
     {
         $this->seed();
 
@@ -20,8 +24,8 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($users) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
+                    ->visit(new Pages\Lens('users', 'passthrough-lens'))
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->assertSeeResource(1)
                                 ->assertSeeResource(2)
                                 ->assertSeeResource(3);
