@@ -31,4 +31,25 @@ class IndexAuthorizationTest extends DuskTestCase
                     ->assertPathIs('/nova/403');
         });
     }
+
+    /**
+     * @test
+     */
+    public function shouldnt_see_edit_button_if_blocked_from_updating()
+    {
+        $this->seed();
+
+        $post = factory(Post::class)->create();
+
+        $user = User::find(1);
+        $user->shouldBlockFrom('post.update.'.$post->id);
+
+        $this->browse(function (Browser $browser) use ($post) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Index('posts'))
+                    ->within(new IndexComponent('posts'), function ($browser) use ($post) {
+                        $browser->assertMissing('@'.$post->id.'-edit-button');
+                    });
+        });
+    }
 }
