@@ -83,24 +83,28 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
         });
     }
 
+    /**
+     * @test
+     */
     public function unable_to_uncheck_with_trashed_if_currently_selected_non_searchable_parent_is_trashed()
     {
         $this->seed();
 
-        $ship = factory(Ship::class)->create(['deleted_at' => now()]);
+        $video = factory(Video::class)->create(['deleted_at' => now()]);
+        $video2 = factory(Video::class)->create();
 
-        $this->browse(function (Browser $browser) use ($ship) {
+        $this->browse(function (Browser $browser) use ($video, $video2) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('sails'))
-                    ->withTrashedRelation('ships')
-                    ->select('@ship', $ship->id)
-                    ->withoutTrashedRelation('ships')
-                    // Ideally would use assertChecked here but RemoteWebDriver
-                    // returns unchecked when it clearly is checked?
-                    ->type('@inches', 25)
+                    ->visit(new Pages\Create('comments'))
+                    ->select('@commentable-type', 'videos')
+                    ->pause(250)
+                    ->withTrashedRelation('commentable')
+                    ->select('@commentable-select', $video->id)
+                    ->withoutTrashedRelation('commentable')
+                    ->type('@body', 'Test Comment')
                     ->create();
 
-            $this->assertCount(1, $ship->fresh()->sails);
+            $this->assertCount(1, $video->fresh()->comments);
         });
     }
 
