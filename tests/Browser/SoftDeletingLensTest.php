@@ -133,30 +133,27 @@ class SoftDeletingLensTest extends DuskTestCase
         });
     }
 
+    /**
+     * @test
+     */
     public function can_restore_all_matching_resources()
     {
         $this->seed();
 
-        $dock = factory(Dock::class)->create();
-        $dock->ships()->saveMany(factory(Ship::class, 3)->create(['deleted_at' => now()]));
+        factory(Dock::class, 3)->create(['deleted_at' => now()]);
 
-        $separateShip = factory(Ship::class)->create();
-
-        $this->browse(function (Browser $browser) use ($separateShip) {
+        $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->withTrashed();
+                    ->visit(new Pages\Lens('docks', 'passthrough-with-trashed-lens'))
+                    ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
+                        $browser->applyFilter('Select First', '2');
 
                         $browser->selectAllMatching()
-                            ->restoreSelected()
-                            ->assertSeeResource(1)
-                            ->assertSeeResource(2)
-                            ->assertSeeResource(3);
+                            ->restoreSelected();
                     });
 
-            $this->assertEquals(4, Ship::count());
-            $this->assertEquals(0, Ship::onlyTrashed()->count());
+            $this->assertEquals(1, Dock::count());
+            $this->assertEquals(2, Dock::onlyTrashed()->count());
         });
     }
 
