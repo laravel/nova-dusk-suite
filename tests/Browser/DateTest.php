@@ -25,8 +25,9 @@ class DateTest extends DuskTestCase
         $dock = factory(Dock::class)->create();
 
         $date = now()->subHours(1);
+        $formattedDate = $date->setTimezone(env('DUSK_TIMEZONE'))->format('Y-m-d H:i:s');
 
-        $this->browse(function (Browser $browser) use ($dock, $date) {
+        $this->browse(function (Browser $browser) use ($dock, $formattedDate) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('docks', $dock->id))
                     ->within(new IndexComponent('ships'), function ($browser) {
@@ -34,20 +35,27 @@ class DateTest extends DuskTestCase
                     })
                     ->on(new Pages\Create('ships'))
                     ->type('@name', 'Titanic')
-                    ->type('@departed_at', $date->setTimezone(env('DUSK_TIMEZONE'))->format('Y-m-d H:i:s'))
+                    ->type('@departed_at', $formattedDate)
                     ->create();
 
             $ship = Ship::orderBy('id', 'desc')->first();
 
+            // Asset the date is UTC in the database...
+            $this->assertEquals(
+                $formattedDate,
+                $ship->departed_at->setTimezone(env('DUSK_TIMEZONE'))->format('Y-m-d H:i:s')
+            );
+
+            // Assert the date is localized on the detail page...
             $browser->on(new Pages\Detail('ships', $ship->id))
-                    ->assertSee($date->setTimezone(env('DUSK_TIMEZONE'))->format('Y-m-d H:i:s'));
+                    ->assertSee($formattedDate);
 
             $browser->assertPathIs('/nova/resources/ships/'.$ship->id);
 
-            $this->assertEquals(
-                $date->setTimezone(env('DUSK_TIMEZONE'))->format('Y-m-d H:i:s'),
-                $ship->departed_at->setTimezone(env('DUSK_TIMEZONE'))->format('Y-m-d H:i:s')
-            );
+            $browser->visit(new Pages\Index('ships'))
+                    ->within(new IndexComponent('ships'), function ($browser) use ($formattedDate) {
+                        $browser->assertSee($formattedDate);
+                    });
         });
     }
 }
