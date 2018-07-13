@@ -38,6 +38,14 @@ class FileAttachTest extends DuskTestCase
                     ->click('@photo-download-link')
                     ->pause(250);
 
+            // Ensure file is not removed on blank update...
+            $browser->visit(new Pages\Update('captains', $captain->id))
+                    ->update();
+
+            $captain = $captain->fresh();
+            $this->assertNotNull($captain->photo);
+            $this->assertTrue(Storage::disk('public')->exists($captain->photo));
+
             // Delete the file...
             $browser->visit(new Pages\Update('captains', $captain->id))
                     ->click('@photo-delete-link')
