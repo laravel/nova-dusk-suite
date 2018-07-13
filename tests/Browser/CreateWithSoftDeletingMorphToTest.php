@@ -20,7 +20,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
      */
     public function test_parent_select_is_locked_when_creating_child_of_soft_deleted_non_searchable_resource()
     {
-        $this->test_parent_select_is_locked_when_creating_child_of_soft_deleted_resource();
+        $this->parent_select_is_locked_when_creating_child_of_soft_deleted_resource();
     }
 
     /**
@@ -29,11 +29,11 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
     public function test_parent_select_is_locked_when_creating_child_of_soft_deleted_searchable_resource()
     {
         $this->whileSearchable(function () {
-            $this->test_parent_select_is_locked_when_creating_child_of_soft_deleted_resource();
+            $this->parent_select_is_locked_when_creating_child_of_soft_deleted_resource();
         });
     }
 
-    protected function test_parent_select_is_locked_when_creating_child_of_soft_deleted_resource()
+    protected function parent_select_is_locked_when_creating_child_of_soft_deleted_resource()
     {
         $this->seed();
 
