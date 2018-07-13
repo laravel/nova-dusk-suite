@@ -77,4 +77,31 @@ class IndexAuthorizationTest extends DuskTestCase
                     });
         });
     }
+
+    /**
+     * @test
+     */
+    public function can_delete_resources_using_checkboxes_only_if_authorized_to_delete_them()
+    {
+        $this->seed();
+
+        factory(Post::class, 3)->create();
+
+        $user = User::find(1);
+        $user->shouldBlockFrom('post.delete.1');
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Index('posts'))
+                    ->within(new IndexComponent('posts'), function ($browser) {
+                        $browser->clickCheckboxForId(3)
+                            ->clickCheckboxForId(2)
+                            ->clickCheckboxForId(1)
+                            ->deleteSelected()
+                            ->assertSeeResource(1)
+                            ->assertDontSeeResource(2)
+                            ->assertDontSeeResource(3);
+                    });
+        });
+    }
 }
