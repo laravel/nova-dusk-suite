@@ -90,23 +90,27 @@ class IndexTest extends DuskTestCase
         });
     }
 
+    /**
+     * @test
+     */
     public function resources_can_be_sorted_by_id()
     {
         factory(User::class, 50)->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->assertSeeResource(50)
-                                ->assertSeeResource(26)
-                                ->assertDontSeeResource(25);
+                    ->visit(new Pages\Lens('users', 'passthrough-lens'))
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                        $browser->assertSeeResource(1)
+                                ->assertSeeResource(25)
+                                ->assertDontSeeResource(26);
 
                         $browser->sortBy('id')
-                                ->assertDontSeeResource(50)
-                                ->assertDontSeeResource(26)
-                                ->assertSeeResource(25)
-                                ->assertSeeResource(1);
+                                ->sortBy('id')
+                                ->assertSeeResource(50)
+                                ->assertSeeResource(26)
+                                ->assertDontSeeResource(25)
+                                ->assertDontSeeResource(1);
                     });
         });
     }
