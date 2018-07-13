@@ -187,14 +187,17 @@ class IndexTest extends DuskTestCase
         });
     }
 
+    /**
+     * @test
+     */
     public function test_filters_can_be_deselected()
     {
         $this->seed();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
+                    ->visit(new Pages\Lens('users', 'passthrough-lens'))
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->applyFilter('Select First', '1')
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
@@ -207,14 +210,17 @@ class IndexTest extends DuskTestCase
         });
     }
 
+    /**
+     * @test
+     */
     public function can_delete_a_resource_via_resource_table_row_delete_icon()
     {
         $this->seed();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
+                    ->visit(new Pages\Lens('users', 'passthrough-lens'))
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->deleteResourceById(3)
                                 ->assertSeeResource(1)
                                 ->assertSeeResource(2)
