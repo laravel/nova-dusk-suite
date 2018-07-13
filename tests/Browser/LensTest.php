@@ -145,14 +145,17 @@ class IndexTest extends DuskTestCase
         });
     }
 
+    /**
+     * @test
+     */
     public function number_of_resources_displayed_per_page_can_be_changed()
     {
         factory(User::class, 50)->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
+                    ->visit(new Pages\Lens('users', 'passthrough-lens'))
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->setPerPage('50')
                                 ->assertSeeResource(50)
                                 ->assertSeeResource(25)
