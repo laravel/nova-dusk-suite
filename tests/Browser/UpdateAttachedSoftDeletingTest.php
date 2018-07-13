@@ -2,7 +2,6 @@
 
 namespace Tests\Browser;
 
-use App\Role;
 use App\Ship;
 use App\User;
 use App\Captain;

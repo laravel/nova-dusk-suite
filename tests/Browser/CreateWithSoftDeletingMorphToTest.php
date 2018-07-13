@@ -2,8 +2,6 @@
 
 namespace Tests\Browser;
 
-use App\Dock;
-use App\Ship;
 use App\User;
 use App\Video;
 use Tests\DuskTestCase;

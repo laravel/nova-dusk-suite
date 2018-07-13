@@ -7,7 +7,6 @@ use App\Post;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use App\Nova\Post as PostResource;
 use Tests\Browser\Components\IndexComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
