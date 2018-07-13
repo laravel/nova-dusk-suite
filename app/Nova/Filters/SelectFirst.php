@@ -31,6 +31,7 @@ class SelectFirst extends Filter
         return [
             'First User' => '1',
             'Second User' => '2',
+            'Third User' => '3',
         ];
     }
 }

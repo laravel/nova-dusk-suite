@@ -250,18 +250,21 @@ class IndexTest extends DuskTestCase
         });
     }
 
+    /**
+     * @test
+     */
     public function can_delete_all_matching_resources()
     {
         $this->seed();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->searchFor('David')
+                    ->visit(new Pages\Lens('users', 'passthrough-lens'))
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                        $browser->applyFilter('Select First', '3')
                             ->selectAllMatching()
                             ->deleteSelected()
-                            ->clearSearch()
+                            ->applyFilter('Select First', '')
                             ->assertSeeResource(1)
                             ->assertSeeResource(2)
                             ->assertDontSeeResource(3);
