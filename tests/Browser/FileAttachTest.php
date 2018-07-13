@@ -6,7 +6,6 @@ use App\User;
 use App\Captain;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
