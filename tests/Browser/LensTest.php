@@ -71,44 +71,17 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    public function resources_can_be_searched()
-    {
-        $this->seed();
-
-        $this->browse(function (Browser $browser) {
-            // Search For Single User By ID...
-            $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->searchFor('3')
-                                ->assertDontSeeResource(1)
-                                ->assertDontSeeResource(2)
-                                ->assertSeeResource(3);
-                    });
-
-            // Search For Single User By Name...
-            $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->searchFor('Taylor')
-                                ->assertSeeResource(1)
-                                ->assertDontSeeResource(2)
-                                ->assertDontSeeResource(3);
-                    });
-        });
-    }
-
     public function test_correct_select_all_matching_count_is_displayed()
     {
         $this->seed();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
+                    ->visit(new Pages\Lens('users', 'passthrough-lens'))
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->assertSelectAllMatchingCount(3)
                                 ->click('')
-                                ->searchFor('Taylor')
+                                ->applyFilter('Select First', '1')
                                 ->assertSelectAllMatchingCount(1);
                     });
         });

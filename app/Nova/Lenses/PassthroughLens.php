@@ -6,6 +6,7 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Lenses\Lens;
+use App\Nova\Filters\SelectFirst;
 use Laravel\Nova\Http\Requests\LensRequest;
 
 class PassthroughLens extends Lens
@@ -46,7 +47,9 @@ class PassthroughLens extends Lens
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new SelectFirst,
+        ];
     }
 
     /**
