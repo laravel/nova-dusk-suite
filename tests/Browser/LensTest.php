@@ -6,7 +6,6 @@ use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\LensComponent;
-use Tests\Browser\Components\IndexComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class LensTest extends DuskTestCase

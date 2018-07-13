@@ -2,11 +2,9 @@
 
 namespace Tests\Browser;
 
-use App\Post;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ToolAuthorizationTest extends DuskTestCase

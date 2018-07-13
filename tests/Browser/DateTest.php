@@ -38,22 +38,22 @@ class DateTest extends DuskTestCase
                     ->type('@departed_at', $formattedDate)
                     ->create();
 
-                $ship = Ship::orderBy('id', 'desc')->first();
+            $ship = Ship::orderBy('id', 'desc')->first();
 
-                // Asset the date is UTC in the database...
-                $this->assertEquals(
+            // Asset the date is UTC in the database...
+            $this->assertEquals(
                     $formattedDate,
                     $ship->departed_at->setTimezone(env('DUSK_TIMEZONE'))->format('Y-m-d H:i:s')
                 );
 
-                // Assert the date is localized on the detail page...
-                $browser->on(new Pages\Detail('ships', $ship->id))
+            // Assert the date is localized on the detail page...
+            $browser->on(new Pages\Detail('ships', $ship->id))
                         ->assertSee($uiDate);
 
-                $browser->assertPathIs('/nova/resources/ships/'.$ship->id);
+            $browser->assertPathIs('/nova/resources/ships/'.$ship->id);
 
-                // Assert the date is localized on the index page...
-                $browser->visit(new Pages\Index('ships'))
+            // Assert the date is localized on the index page...
+            $browser->visit(new Pages\Index('ships'))
                         ->within(new IndexComponent('ships'), function ($browser) use ($uiDate) {
                             $browser->assertSee($uiDate);
                         });

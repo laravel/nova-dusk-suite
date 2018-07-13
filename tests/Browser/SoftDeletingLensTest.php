@@ -3,12 +3,10 @@
 namespace Tests\Browser;
 
 use App\Dock;
-use App\Ship;
 use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\LensComponent;
-use Tests\Browser\Components\IndexComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class SoftDeletingLensTest extends DuskTestCase
@@ -56,7 +54,7 @@ class SoftDeletingLensTest extends DuskTestCase
                     });
         });
 
-            $this->assertEquals(2, Dock::onlyTrashed()->count());
+        $this->assertEquals(2, Dock::onlyTrashed()->count());
     }
 
     /**
