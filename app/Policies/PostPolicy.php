@@ -2,8 +2,9 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Tag;
 use App\Post;
+use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PostPolicy
@@ -66,6 +67,19 @@ class PostPolicy
     public function addComment(User $user, Post $post)
     {
         return ! $user->isBlockedFrom('post.addComment.'.$post->id);
+    }
+
+    /**
+     * Determine whether the user can attach a tag to the post.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Post  $post
+     * @param  \App\Tag  $tag
+     * @return mixed
+     */
+    public function attachTag(User $user, Post $post, Tag $tag)
+    {
+        return ! $user->isBlockedFrom('post.attachTag.'.$post->id);
     }
 
     /**
