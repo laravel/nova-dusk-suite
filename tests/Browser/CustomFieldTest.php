@@ -65,4 +65,21 @@ class CustomFieldTest extends DuskTestCase
                     });
         });
     }
+
+    /**
+     * @test
+     */
+    public function custom_detail_field_displays_value()
+    {
+        $this->seed();
+
+        $flight = factory(Flight::class)->create();
+
+        $this->browse(function (Browser $browser) use ($flight) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('flights', $flight->id))
+                    ->pause(250)
+                    ->assertSee($flight->name);
+        });
+    }
 }
