@@ -54,7 +54,7 @@ class User extends Resource
             Boolean::make('Active', 'active')->onlyOnDetail(),
 
             ResourceTool::make()->canSee(function ($request) {
-                return false;
+                return ! $request->user()->isBlockedFrom('resourceTool');
             }),
 
             HasMany::make('Posts', 'posts', Post::class),

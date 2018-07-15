@@ -62,4 +62,35 @@ class ToolAuthorizationTest extends DuskTestCase
                     ->assertDontSee('Sidebar Tool');
         });
     }
+
+    /**
+     * @test
+     */
+    public function test_resource_tool_can_be_seen_if_authorized_to_view_it()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('users', 1))
+                    ->assertSee('Resource Tool');
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function test_resource_tool_cant_be_seen_if_not_authorized_to_view_it()
+    {
+        $this->seed();
+
+        $user = User::find(1);
+        $user->shouldBlockFrom('resourceTool');
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('users', 1))
+                    ->assertDontSee('Resource Tool');
+        });
+    }
 }
