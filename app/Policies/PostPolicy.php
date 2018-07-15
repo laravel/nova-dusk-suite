@@ -70,6 +70,18 @@ class PostPolicy
     }
 
     /**
+     * Determine whether the user can attach any tag to the post.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Post  $post
+     * @return mixed
+     */
+    public function attachAnyTag(User $user, Post $post)
+    {
+        return ! $user->isBlockedFrom('post.attachAnyTag.'.$post->id);
+    }
+
+    /**
      * Determine whether the user can attach a tag to the post.
      *
      * @param  \App\User  $user
