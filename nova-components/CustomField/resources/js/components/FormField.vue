@@ -2,6 +2,7 @@
     <default-field :field="field">
         <template slot="field">
             <input :id="field.name" type="text"
+                :dusk="field.attribute"
                 class="w-full form-control form-input form-input-bordered"
                 :class="errorClasses"
                 :placeholder="field.name"
