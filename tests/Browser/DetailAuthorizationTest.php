@@ -26,7 +26,7 @@ class DetailAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('posts', $post->id))
-                    ->assertPathIs('/nova/resources/posts');
+                    ->assertPathIs('/nova/403');
         });
     }
 
