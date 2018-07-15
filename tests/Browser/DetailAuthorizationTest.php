@@ -9,7 +9,7 @@ use Laravel\Dusk\Browser;
 use Tests\Browser\Components\IndexComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class DetailAuthorization extends DuskTestCase
+class DetailAuthorizationTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
