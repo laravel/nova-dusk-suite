@@ -8,6 +8,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Password;
+use Otwell\ResourceTool\ResourceTool;
 use Laravel\Nova\Fields\BelongsToMany;
 
 class User extends Resource
@@ -51,6 +52,10 @@ class User extends Resource
                 ->updateRules('nullable', 'string', 'min:6'),
 
             Boolean::make('Active', 'active')->onlyOnDetail(),
+
+            ResourceTool::make()->canSee(function ($request) {
+                return false;
+            }),
 
             HasMany::make('Posts', 'posts', Post::class),
 

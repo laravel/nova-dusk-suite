@@ -9,7 +9,9 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "build-sidebar-tool": "cd nova-components/SidebarTool && npm run dev",
-        "build-sidebar-tool-prod": "cd nova-components/SidebarTool && npm run prod"
+        "build-sidebar-tool-prod": "cd nova-components/SidebarTool && npm run prod",
+        "build-resource-tool": "cd nova-components/ResourceTool && npm run dev",
+        "build-resource-tool-prod": "cd nova-components/ResourceTool && npm run prod"
     },
     "devDependencies": {
         "axios": "^0.18",

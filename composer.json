@@ -13,7 +13,8 @@
         "laravel/framework": "5.6.*",
         "laravel/nova": "*",
         "laravel/tinker": "^1.0",
-        "otwell/sidebar-tool": "*"
+        "otwell/sidebar-tool": "*",
+        "otwell/resource-tool": "*"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
@@ -62,6 +63,10 @@
         {
             "type": "path",
             "url": "./nova-components/SidebarTool"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/ResourceTool"
         }
     ],
     "config": {
