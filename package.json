@@ -11,7 +11,9 @@
         "build-sidebar-tool": "cd nova-components/SidebarTool && npm run dev",
         "build-sidebar-tool-prod": "cd nova-components/SidebarTool && npm run prod",
         "build-resource-tool": "cd nova-components/ResourceTool && npm run dev",
-        "build-resource-tool-prod": "cd nova-components/ResourceTool && npm run prod"
+        "build-resource-tool-prod": "cd nova-components/ResourceTool && npm run prod",
+        "build-custom-field": "cd nova-components/CustomField && npm run dev",
+        "build-custom-field-prod": "cd nova-components/CustomField && npm run prod"
     },
     "devDependencies": {
         "axios": "^0.18",

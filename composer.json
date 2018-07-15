@@ -14,7 +14,8 @@
         "laravel/nova": "*",
         "laravel/tinker": "^1.0",
         "otwell/sidebar-tool": "*",
-        "otwell/resource-tool": "*"
+        "otwell/resource-tool": "*",
+        "otwell/custom-field": "*"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
@@ -67,6 +68,10 @@
         {
             "type": "path",
             "url": "./nova-components/ResourceTool"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/CustomField"
         }
     ],
     "config": {

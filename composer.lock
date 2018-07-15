@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "eecef18b392d5ef4e16ee7307c85687f",
+    "content-hash": "da37e573051d5bcbb8786644cfd05e2c",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -655,7 +655,7 @@
             "dist": {
                 "type": "path",
                 "url": "./../nova-lib",
-                "reference": "61975e3dcdbeab1d4beaa58e8ec543367a18ba47",
+                "reference": "1c856cd1589b9e3d0d3ea8a98b07bcf65808e3ca",
                 "shasum": null
             },
             "require": {
@@ -1089,6 +1089,40 @@
                 "php"
             ],
             "time": "2018-06-03T11:33:10+00:00"
+        },
+        {
+            "name": "otwell/custom-field",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "./nova-components/CustomField",
+                "reference": "1ffffc77afc7d55edb089395382bcf249560bd14",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Otwell\\CustomField\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Otwell\\CustomField\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova field.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ]
         },
         {
             "name": "otwell/resource-tool",
