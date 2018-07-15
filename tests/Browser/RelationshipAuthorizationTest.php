@@ -22,6 +22,24 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $this->seed();
 
         $user = User::find(1);
+        $user->shouldBlockFrom('user.addPost.'.$user->id);
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Create('posts'))
+                    ->assertSelectMissingOption('@user', $user->id)
+                    ->assertSelectMissingOption('@user', $user->name);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function morphable_resource_cant_be_added_to_parent_if_not_authorized()
+    {
+        $this->seed();
+
+        $user = User::find(1);
         $post = factory(Post::class)->create();
         $user->shouldBlockFrom('post.addComment.'.$post->id);
 
