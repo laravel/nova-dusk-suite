@@ -37,7 +37,7 @@ class Tag extends Resource
             ID::make('ID', 'id')->sortable(),
             Text::make('Name', 'name')->sortable(),
 
-            MorphToMany::make('Posts', 'posts', Post::class)
+            MorphToMany::make('Posts', 'posts')
                         ->display('title')
                         ->fields(function () {
                             return [

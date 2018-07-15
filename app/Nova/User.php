@@ -59,7 +59,7 @@ class User extends Resource
 
             HasMany::make('Posts', 'posts', Post::class),
 
-            BelongsToMany::make('Roles', 'roles')
+            BelongsToMany::make('Roles')
                         ->display('name')
                         ->fields(function ($request) {
                             return [

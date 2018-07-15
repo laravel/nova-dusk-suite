@@ -39,11 +39,11 @@ class Ship extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
-            BelongsTo::make('Dock', 'dock', Dock::class)->display('name')->searchable(),
+            BelongsTo::make('Dock', 'dock')->display('name')->searchable(),
             Text::make('Name', 'name')->sortable(),
             DateTime::make('Departed At', 'departed_at'),
 
-            BelongsToMany::make('Captains', 'captains', Captain::class)
+            BelongsToMany::make('Captains', 'captains')
                         ->display('name')
                         ->fields(function ($request) {
                             return [

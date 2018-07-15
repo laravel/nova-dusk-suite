@@ -41,7 +41,7 @@ class Captain extends Resource
 
             Image::make('Photo', 'photo'),
 
-            BelongsToMany::make('Ships', 'ships', Ship::class)
+            BelongsToMany::make('Ships', 'ships')
                         ->display('name')
                         ->fields(function ($request) {
                             return [

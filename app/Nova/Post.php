@@ -40,14 +40,14 @@ class Post extends Resource
         return [
             ID::make('ID', 'id')->sortable(),
 
-            BelongsTo::make('User', 'user', User::class)->display('name'),
+            BelongsTo::make('User', 'user')->display('name'),
 
             Text::make('Title', 'title')->sortable(),
             Textarea::make('Body', 'body'),
 
-            MorphMany::make('Comments', 'comments', Comment::class),
+            MorphMany::make('Comments', 'comments'),
 
-            MorphToMany::make('Tags', 'tags', Tag::class)
+            MorphToMany::make('Tags', 'tags')
                     ->display('name')
                     ->fields(function () {
                         return [

@@ -36,7 +36,7 @@ class Dock extends Resource
         return [
             ID::make('ID', 'id')->sortable(),
             Text::make('Name', 'name')->sortable(),
-            HasMany::make('Ships', 'ships', Ship::class),
+            HasMany::make('Ships', 'ships'),
         ];
     }
 

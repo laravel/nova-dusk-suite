@@ -35,7 +35,7 @@ class Sail extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
-            BelongsTo::make('Ship', 'ship', Ship::class)->display('name'),
+            BelongsTo::make('Ship', 'ship')->display('name'),
             Number::make('Inches', 'inches')->sortable(),
         ];
     }
