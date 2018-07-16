@@ -12,10 +12,11 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.6.*",
         "laravel/nova": "*",
+        "laravel/scout": "^4.0",
         "laravel/tinker": "^1.0",
-        "otwell/sidebar-tool": "*",
+        "otwell/custom-field": "*",
         "otwell/resource-tool": "*",
-        "otwell/custom-field": "*"
+        "otwell/sidebar-tool": "*"
     },
     "require-dev": {
         "codedungeon/phpunit-result-printer": "^0.19.10",
