@@ -6,7 +6,6 @@ use App\User;
 use App\Address;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class PanelTest extends DuskTestCase
