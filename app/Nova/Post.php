@@ -9,7 +9,6 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\MorphToMany;
-use Illuminate\Support\Facades\Cache;
 
 class Post extends Resource
 {

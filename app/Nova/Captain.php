@@ -50,7 +50,7 @@ class Captain extends Resource
                                     if ($request->contract) {
                                         return $request->contract->storeAs('/', 'Contract.pdf', 'public');
                                     }
-                                })
+                                }),
                             ];
                         })
                         ->prunable()
