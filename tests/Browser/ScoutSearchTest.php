@@ -20,9 +20,9 @@ class ScoutSearchTest extends DuskTestCase
     {
         $this->seed();
 
-        factory(Address::class, 50)->create();
+        factory(Address::class, 1)->create();
 
-        $address = Address::find(random_int(1, 50));
+        $address = Address::find(random_int(1, 1));
 
         $this->browse(function (Browser $browser) use ($address) {
             $browser->loginAs(User::find(1))
