@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Panel;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
@@ -37,10 +38,13 @@ class Address extends Resource
             ID::make()->sortable(),
             Place::make('Address', 'address_line_1'),
             Text::make('Address Line 2', 'address_line_2'),
-            Text::make('City'),
-            Text::make('State'),
-            Text::make('Postal Code'),
-            Text::make('Country'),
+
+            new Panel('More Address Details', [
+                Text::make('City'),
+                Text::make('State'),
+                Text::make('Postal Code'),
+                Text::make('Country'),
+            ]),
         ];
     }
 
