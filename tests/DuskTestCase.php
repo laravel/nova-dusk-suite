@@ -41,8 +41,9 @@ abstract class DuskTestCase extends BaseTestCase
             )
         );
 
-        $size = new WebDriverDimension(1280,800);
+        $size = new WebDriverDimension(1280, 800);
         $driver->manage()->window()->setSize($size);
+
         return $driver;
     }
 
