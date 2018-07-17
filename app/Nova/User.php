@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\Password;
 use Otwell\ResourceTool\ResourceTool;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -39,6 +40,8 @@ class User extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
+
+            // Gravatar::make(),
 
             Text::make('Name', 'name')->sortable()->rules('required'),
 
