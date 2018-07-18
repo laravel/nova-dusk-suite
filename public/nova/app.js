@@ -910,9 +910,8 @@ CodeMirror.defineMode("xml", function(editorConf, config_) {
         stream.next();
       }
       return style;
-    }
+    };
   }
-
   function doctype(depth) {
     return function(stream, state) {
       var ch;
@@ -46127,10 +46126,6 @@ var _regenerator = __webpack_require__(12);
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _promise = __webpack_require__(28);
-
-var _promise2 = _interopRequireDefault(_promise);
-
 var _asyncToGenerator2 = __webpack_require__(13);
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
@@ -46138,95 +46133,6 @@ var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 var _laravelNova = __webpack_require__(4);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var stubResults = [{
-    label: 'First Post',
-    resourceName: 'posts',
-    resourceTitle: 'Posts',
-    resourceId: 1,
-    url: 'http://nova-app.test/nova/resources/posts/1'
-}, {
-    label: 'Second Post',
-    resourceName: 'posts',
-    resourceTitle: 'Posts',
-    resourceId: 2,
-    url: 'http://nova-app.test/nova/resources/posts/2'
-}, {
-    label: 'Third Post',
-    resourceName: 'posts',
-    resourceTitle: 'Posts',
-    resourceId: 3,
-    url: 'http://nova-app.test/nova/resources/posts/3'
-}, {
-    label: 'Taylor Otwell',
-    resourceName: 'users',
-    resourceTitle: 'Users',
-    resourceId: 1,
-    url: 'http://nova-app.test/nova/resources/users/1'
-}, {
-    label: 'David Hemphill',
-    resourceName: 'users',
-    resourceTitle: 'Users',
-    resourceId: 2,
-    url: 'http://nova-app.test/nova/resources/users/2',
-    avatar: 'https://www.gravatar.com/avatar/2821f93cef33ccd01b1262ac41f87d9c?s=300'
-}]; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 exports.default = {
     data: function data() {
@@ -46265,7 +46171,7 @@ exports.default = {
             }, 500);
         },
         fetchResults: function () {
-            var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(searchTerm) {
+            var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(search) {
                 var _ref2, results;
 
                 return _regenerator2.default.wrap(function _callee$(_context) {
@@ -46276,13 +46182,13 @@ exports.default = {
 
                                 _context.prev = 1;
                                 _context.next = 4;
-                                return (0, _laravelNova.Minimum)(new _promise2.default(function (resolve, reject) {
-                                    resolve({ data: { results: stubResults } });
-                                }, 3000));
+                                return Nova.request().get('/nova-api/search', {
+                                    params: { search: search }
+                                });
 
                             case 4:
                                 _ref2 = _context.sent;
-                                results = _ref2.data.results;
+                                results = _ref2.data;
 
 
                                 this.results = results;
@@ -46381,7 +46287,63 @@ exports.default = {
             });
         }
     }
-};
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /***/ }),
 /* 955 */
