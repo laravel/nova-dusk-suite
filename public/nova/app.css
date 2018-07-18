@@ -3056,6 +3056,10 @@ body {
   max-height: 100vh;
 }
 
+.max-h-search {
+  max-height: 24.5rem;
+}
+
 .max-w-login {
   max-width: 25rem;
 }
