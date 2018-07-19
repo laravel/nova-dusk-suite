@@ -109,75 +109,75 @@ class SoftDeletingLensTest extends DuskTestCase
     /**
      * @test
      */
-    public function can_soft_delete_all_matching_resources()
-    {
-        $this->seed();
+    // public function can_soft_delete_all_matching_resources()
+    // {
+    //     $this->seed();
 
-        factory(Dock::class)->create();
-        factory(Dock::class)->create();
-        factory(Dock::class)->create();
+    //     factory(Dock::class)->create();
+    //     factory(Dock::class)->create();
+    //     factory(Dock::class)->create();
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Lens('docks', 'passthrough-with-trashed-lens'))
-                    ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
-                        $browser->applyFilter('Select First', '2');
+    //     $this->browse(function (Browser $browser) {
+    //         $browser->loginAs(User::find(1))
+    //                 ->visit(new Pages\Lens('docks', 'passthrough-with-trashed-lens'))
+    //                 ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
+    //                     $browser->applyFilter('Select First', '2');
 
-                        $browser->selectAllMatching()
-                                ->deleteSelected();
-                    });
+    //                     $browser->selectAllMatching()
+    //                             ->deleteSelected();
+    //                 });
 
-            $this->assertEquals(2, Dock::count());
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function can_restore_all_matching_resources()
-    {
-        $this->seed();
-
-        factory(Dock::class, 3)->create(['deleted_at' => now()]);
-
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Lens('docks', 'passthrough-with-trashed-lens'))
-                    ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
-                        $browser->applyFilter('Select First', '2');
-
-                        $browser->selectAllMatching()
-                            ->restoreSelected();
-                    });
-
-            $this->assertEquals(1, Dock::count());
-            $this->assertEquals(2, Dock::onlyTrashed()->count());
-        });
-    }
+    //         $this->assertEquals(2, Dock::count());
+    //     });
+    // }
 
     /**
      * @test
      */
-    public function can_force_delete_all_matching_resources()
-    {
-        $this->seed();
+    // public function can_restore_all_matching_resources()
+    // {
+    //     $this->seed();
 
-        factory(Dock::class, 3)->create(['deleted_at' => now()]);
+    //     factory(Dock::class, 3)->create(['deleted_at' => now()]);
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Lens('docks', 'passthrough-with-trashed-lens'))
-                    ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
-                        $browser->applyFilter('Select First', '2');
+    //     $this->browse(function (Browser $browser) {
+    //         $browser->loginAs(User::find(1))
+    //                 ->visit(new Pages\Lens('docks', 'passthrough-with-trashed-lens'))
+    //                 ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
+    //                     $browser->applyFilter('Select First', '2');
 
-                        $browser->selectAllMatching()
-                            ->forceDeleteSelected();
-                    });
+    //                     $browser->selectAllMatching()
+    //                         ->restoreSelected();
+    //                 });
 
-            $this->assertEquals(0, Dock::count());
-            $this->assertEquals(2, Dock::onlyTrashed()->count());
-        });
-    }
+    //         $this->assertEquals(1, Dock::count());
+    //         $this->assertEquals(2, Dock::onlyTrashed()->count());
+    //     });
+    // }
+
+    /**
+     * @test
+     */
+    // public function can_force_delete_all_matching_resources()
+    // {
+    //     $this->seed();
+
+    //     factory(Dock::class, 3)->create(['deleted_at' => now()]);
+
+    //     $this->browse(function (Browser $browser) {
+    //         $browser->loginAs(User::find(1))
+    //                 ->visit(new Pages\Lens('docks', 'passthrough-with-trashed-lens'))
+    //                 ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
+    //                     $browser->applyFilter('Select First', '2');
+
+    //                     $browser->selectAllMatching()
+    //                         ->forceDeleteSelected();
+    //                 });
+
+    //         $this->assertEquals(0, Dock::count());
+    //         $this->assertEquals(2, Dock::onlyTrashed()->count());
+    //     });
+    // }
 
     /**
      * @test
