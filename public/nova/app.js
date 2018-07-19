@@ -904,8 +904,9 @@ CodeMirror.defineMode("xml", function(editorConf, config_) {
         stream.next();
       }
       return style;
-    };
+    }
   }
+
   function doctype(depth) {
     return function(stream, state) {
       var ch;
@@ -17613,8 +17614,10 @@ exports.default = {
     },
 
     watch: {
-        resourceId: function resourceId() {
-            this.initializeComponent();
+        resourceId: function resourceId(newResourceId, oldResourceId) {
+            if (newResourceId != oldResourceId) {
+                this.initializeComponent();
+            }
         }
     },
 
@@ -34918,7 +34921,7 @@ var render = function() {
   return _c("p", [
     _vm.field.thumbnailUrl
       ? _c("img", {
-          staticClass: "rounded-full w-6 w-8",
+          staticClass: "rounded-full w-8 h-8",
           attrs: { src: _vm.field.thumbnailUrl }
         })
       : _c("span", [_vm._v("—")])
@@ -46256,7 +46259,13 @@ exports.default = {
         move: function move(offset) {
             var newIndex = this.highlightedResultIndex + offset;
 
-            if (newIndex >= 0 && newIndex < this.results.length) {
+            if (newIndex < 0) {
+                this.highlightedResultIndex = this.results.length - 1;
+                this.updateScrollPosition();
+            } else if (newIndex > this.results.length - 1) {
+                this.highlightedResultIndex = 0;
+                this.updateScrollPosition();
+            } else if (newIndex >= 0 && newIndex < this.results.length) {
                 this.highlightedResultIndex = newIndex;
                 this.updateScrollPosition();
             }
@@ -46425,11 +46434,7 @@ var render = function() {
         ],
         ref: "input",
         staticClass: "form-control form-input form-input-bordered w-full",
-        attrs: {
-          dusk: "global-search",
-          type: "search",
-          placeholder: "Global search"
-        },
+        attrs: { dusk: "global-search", type: "search", placeholder: "Search" },
         domProps: { value: _vm.searchTerm },
         on: {
           input: [

@@ -659,10 +659,6 @@ table {
   --90-half: rgba(40, 54, 61, .5);
 }
 
-body {
-  min-width: 1280px;
-}
-
 .content {
   min-width: 66.25rem;
   width: 100%;
@@ -3130,6 +3126,10 @@ body {
 
 .min-w-24 {
   min-width: 6rem;
+}
+
+.min-w-site {
+  min-width: 80rem;
 }
 
 .min-w-full {
