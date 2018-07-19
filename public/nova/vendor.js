@@ -24908,7 +24908,9 @@ module.exports = {
 
 
 /***/ }),
-/* 12 */
+/* 12 */,
+/* 13 */,
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -42021,8 +42023,6 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(61)(module)))
 
 /***/ }),
-/* 13 */,
-/* 14 */,
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53373,7 +53373,8 @@ process.umask = function() { return 0; };
 /* 28 */,
 /* 29 */,
 /* 30 */,
-/* 31 */
+/* 31 */,
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53462,23 +53463,21 @@ exports.directive = directive;
 exports.mixin = mixin;
 
 /***/ }),
-/* 32 */,
 /* 33 */,
 /* 34 */,
 /* 35 */,
 /* 36 */,
 /* 37 */,
-/* 38 */,
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(348);
 
 /***/ }),
+/* 39 */,
 /* 40 */,
 /* 41 */,
-/* 42 */,
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53563,7 +53562,7 @@ module.exports = {
 
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -53574,7 +53573,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var foreach = __webpack_require__(23);
@@ -53589,7 +53588,7 @@ module.exports = function map(arr, fn) {
 
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {/**
@@ -53781,7 +53780,7 @@ function localstorage() {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(25)))
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
@@ -58276,6 +58275,7 @@ return Chartist;
 
 
 /***/ }),
+/* 47 */,
 /* 48 */,
 /* 49 */,
 /* 50 */,
@@ -79853,7 +79853,7 @@ if (typeof Object.create === 'function') {
 
 module.exports = buildSearchMethod;
 
-var errors = __webpack_require__(43);
+var errors = __webpack_require__(42);
 
 /**
  * Creates a search method to be used in clients
@@ -80040,7 +80040,7 @@ exports.default = '1.7.3';
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
   if (true) {
     // AMD. Register as an anonymous module.
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(47)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (Chartist) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(46)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (Chartist) {
       return (root.returnExportsGlobal = factory(Chartist));
     }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -92984,7 +92984,7 @@ module.exports = createAlgoliasearch(AlgoliaSearchCore, '(lite) ');
 
 module.exports = AlgoliaSearchCore;
 
-var errors = __webpack_require__(43);
+var errors = __webpack_require__(42);
 var exitPromise = __webpack_require__(804);
 var IndexCore = __webpack_require__(805);
 var store = __webpack_require__(811);
@@ -93022,11 +93022,11 @@ var RESET_APP_DATA_TIMER =
  *           If you provide them, you will less benefit from our HA implementation
  */
 function AlgoliaSearchCore(applicationID, apiKey, opts) {
-  var debug = __webpack_require__(46)('algoliasearch');
+  var debug = __webpack_require__(45)('algoliasearch');
 
   var clone = __webpack_require__(24);
-  var isArray = __webpack_require__(44);
-  var map = __webpack_require__(45);
+  var isArray = __webpack_require__(43);
+  var map = __webpack_require__(44);
 
   var usage = 'Usage: algoliasearch(applicationID, apiKey, opts)';
 
@@ -93166,7 +93166,7 @@ AlgoliaSearchCore.prototype.addAlgoliaAgent = function(algoliaAgent) {
 AlgoliaSearchCore.prototype._jsonRequest = function(initialOpts) {
   this._checkAppIdData();
 
-  var requestDebug = __webpack_require__(46)('algoliasearch:' + initialOpts.url);
+  var requestDebug = __webpack_require__(45)('algoliasearch:' + initialOpts.url);
 
 
   var body;
@@ -93599,8 +93599,8 @@ AlgoliaSearchCore.prototype._computeRequestHeaders = function(options) {
  * @return {Promise|undefined} Returns a promise if no callback given
  */
 AlgoliaSearchCore.prototype.search = function(queries, opts, callback) {
-  var isArray = __webpack_require__(44);
-  var map = __webpack_require__(45);
+  var isArray = __webpack_require__(43);
+  var map = __webpack_require__(44);
 
   var usage = 'Usage: client.search(arrayOfQueries[, callback])';
 
@@ -93682,8 +93682,8 @@ AlgoliaSearchCore.prototype.search = function(queries, opts, callback) {
 * Pagination is not supported. The page and hitsPerPage parameters will be ignored.
 */
 AlgoliaSearchCore.prototype.searchForFacetValues = function(queries) {
-  var isArray = __webpack_require__(44);
-  var map = __webpack_require__(45);
+  var isArray = __webpack_require__(43);
+  var map = __webpack_require__(44);
 
   var usage = 'Usage: client.searchForFacetValues([{indexName, params: {facetName, facetQuery, ...params}}, ...queries])'; // eslint-disable-line max-len
 
@@ -94306,8 +94306,8 @@ IndexCore.prototype.getObject = function(objectID, attrs, callback) {
 * @param objectIDs the array of unique identifier of objects to retrieve
 */
 IndexCore.prototype.getObjects = function(objectIDs, attributesToRetrieve, callback) {
-  var isArray = __webpack_require__(44);
-  var map = __webpack_require__(45);
+  var isArray = __webpack_require__(43);
+  var map = __webpack_require__(44);
 
   var usage = 'Usage: index.getObjects(arrayOfObjectIDs[, callback])';
 
@@ -94587,7 +94587,7 @@ module.exports = function isArguments(value) {
 /* 811 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {var debug = __webpack_require__(46)('algoliasearch:src/hostIndexState.js');
+/* WEBPACK VAR INJECTION */(function(global) {var debug = __webpack_require__(45)('algoliasearch:src/hostIndexState.js');
 var localStorageNamespace = 'algoliasearch-client-js';
 
 var store;
@@ -95057,7 +95057,7 @@ var Promise = global.Promise || __webpack_require__(816).Promise;
 // using XMLHttpRequest, XDomainRequest and JSONP as fallback
 module.exports = function createAlgoliasearch(AlgoliaSearch, uaSuffix) {
   var inherits = __webpack_require__(251);
-  var errors = __webpack_require__(43);
+  var errors = __webpack_require__(42);
   var inlineHeaders = __webpack_require__(817);
   var jsonpRequest = __webpack_require__(819);
   var places = __webpack_require__(820);
@@ -95084,7 +95084,7 @@ module.exports = function createAlgoliasearch(AlgoliaSearch, uaSuffix) {
   // we expose into window no matter how we are used, this will allow
   // us to easily debug any website running algolia
   global.__algolia = {
-    debug: __webpack_require__(46),
+    debug: __webpack_require__(45),
     algoliasearch: algoliasearch
   };
 
@@ -96611,7 +96611,7 @@ var objectKeys = Object.keys || function (obj) {
 
 module.exports = jsonpRequest;
 
-var errors = __webpack_require__(43);
+var errors = __webpack_require__(42);
 
 var JSONPCounter = 0;
 
@@ -101050,37 +101050,40 @@ exports.default = {
 /* 1050 */,
 /* 1051 */,
 /* 1052 */,
-/* 1053 */
+/* 1053 */,
+/* 1054 */,
+/* 1055 */,
+/* 1056 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(5);
-__webpack_require__(47);
+__webpack_require__(46);
 __webpack_require__(262);
 __webpack_require__(237);
-__webpack_require__(1054);
 __webpack_require__(1057);
+__webpack_require__(1060);
 __webpack_require__(239);
 __webpack_require__(248);
 __webpack_require__(1);
 __webpack_require__(72);
-__webpack_require__(1058);
+__webpack_require__(1061);
 __webpack_require__(250);
 __webpack_require__(264);
 __webpack_require__(101);
-__webpack_require__(31);
+__webpack_require__(32);
 __webpack_require__(99);
 __webpack_require__(249);
 __webpack_require__(15);
 __webpack_require__(89);
 __webpack_require__(100);
-__webpack_require__(12);
+__webpack_require__(14);
 __webpack_require__(102);
-__webpack_require__(39);
+__webpack_require__(38);
 module.exports = __webpack_require__(4);
 
 
 /***/ }),
-/* 1054 */
+/* 1057 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -101090,7 +101093,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Form = __webpack_require__(1055);
+var _Form = __webpack_require__(1058);
 
 Object.defineProperty(exports, 'default', {
   enumerable: true,
@@ -101117,7 +101120,7 @@ Object.defineProperty(exports, 'Errors', {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
-/* 1055 */
+/* 1058 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -101133,7 +101136,7 @@ var _Errors = __webpack_require__(265);
 
 var _Errors2 = _interopRequireDefault(_Errors);
 
-var _util = __webpack_require__(1056);
+var _util = __webpack_require__(1059);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -101210,7 +101213,7 @@ var Form = function () {
                 this.onFail = options.onFail;
             }
 
-            this.__http = options.http || window.axios || __webpack_require__(39);
+            this.__http = options.http || window.axios || __webpack_require__(38);
 
             if (!this.__http) {
                 throw new Error('No http library provided. Either pass an http option, or install axios.');
@@ -101485,7 +101488,7 @@ var Form = function () {
 exports.default = Form;
 
 /***/ }),
-/* 1056 */
+/* 1059 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -101577,7 +101580,7 @@ function _appendToFormData(formData, key, value) {
 }
 
 /***/ }),
-/* 1057 */
+/* 1060 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -101903,7 +101906,7 @@ if (true) {
 
 
 /***/ }),
-/* 1058 */
+/* 1061 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -103154,4 +103157,4 @@ if (true) {
 
 
 /***/ })
-],[1053]);
+],[1056]);

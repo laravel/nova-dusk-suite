@@ -150,6 +150,30 @@ class SoftDeletingDetailTest extends DuskTestCase
     /**
      * @test
      */
+    public function soft_deleting_resources_can_be_manipulated_from_their_child_index()
+    {
+        $this->seed();
+
+        $dock = factory(Dock::class)->create();
+        $dock->ships()->save($ship = factory(Ship::class)->create());
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('docks', 1))
+                    ->within(new IndexComponent('ships'), function ($browser) {
+                        $browser->withTrashed();
+
+                        $browser->assertSeeResource(1)
+                                ->deleteResourceById(1)
+                                ->restoreResourceById(1)
+                                ->assertSeeResource(1);
+                    });
+        });
+    }
+
+    /**
+     * @test
+     */
     public function can_navigate_to_create_relationship_screen()
     {
         $this->seed();
