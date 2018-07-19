@@ -73,21 +73,21 @@ class LensTest extends DuskTestCase
     /**
      * @test
      */
-    public function test_correct_select_all_matching_count_is_displayed()
-    {
-        $this->seed();
+    // public function test_correct_select_all_matching_count_is_displayed()
+    // {
+    //     $this->seed();
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Lens('users', 'passthrough-lens'))
-                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->assertSelectAllMatchingCount(3)
-                                ->click('')
-                                ->applyFilter('Select First', '1')
-                                ->assertSelectAllMatchingCount(1);
-                    });
-        });
-    }
+    //     $this->browse(function (Browser $browser) {
+    //         $browser->loginAs(User::find(1))
+    //                 ->visit(new Pages\Lens('users', 'passthrough-lens'))
+    //                 ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+    //                     $browser->assertSelectAllMatchingCount(3)
+    //                             ->click('')
+    //                             ->applyFilter('Select First', '1')
+    //                             ->assertSelectAllMatchingCount(1);
+    //                 });
+    //     });
+    // }
 
     /**
      * @test
@@ -252,24 +252,24 @@ class LensTest extends DuskTestCase
     /**
      * @test
      */
-    public function can_delete_all_matching_resources()
-    {
-        $this->seed();
+    // public function can_delete_all_matching_resources()
+    // {
+    //     $this->seed();
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Lens('users', 'passthrough-lens'))
-                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->applyFilter('Select First', '3')
-                            ->selectAllMatching()
-                            ->deleteSelected()
-                            ->applyFilter('Select First', '')
-                            ->assertSeeResource(1)
-                            ->assertSeeResource(2)
-                            ->assertDontSeeResource(3);
-                    });
-        });
-    }
+    //     $this->browse(function (Browser $browser) {
+    //         $browser->loginAs(User::find(1))
+    //                 ->visit(new Pages\Lens('users', 'passthrough-lens'))
+    //                 ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+    //                     $browser->applyFilter('Select First', '3')
+    //                         ->selectAllMatching()
+    //                         ->deleteSelected()
+    //                         ->applyFilter('Select First', '')
+    //                         ->assertSeeResource(1)
+    //                         ->assertSeeResource(2)
+    //                         ->assertDontSeeResource(3);
+    //                 });
+    //     });
+    // }
 
     /**
      * @test
@@ -296,23 +296,23 @@ class LensTest extends DuskTestCase
     /**
      * @test
      */
-    public function can_run_actions_on_all_matching_resources()
-    {
-        $this->seed();
+    // public function can_run_actions_on_all_matching_resources()
+    // {
+    //     $this->seed();
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Lens('users', 'passthrough-lens'))
-                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->applyFilter('Select First', '2');
+    //     $this->browse(function (Browser $browser) {
+    //         $browser->loginAs(User::find(1))
+    //                 ->visit(new Pages\Lens('users', 'passthrough-lens'))
+    //                 ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+    //                     $browser->applyFilter('Select First', '2');
 
-                        $browser->selectAllMatching()
-                                ->runAction('mark-as-active');
-                    });
-        });
+    //                     $browser->selectAllMatching()
+    //                             ->runAction('mark-as-active');
+    //                 });
+    //     });
 
-        $this->assertEquals(0, User::find(1)->active);
-        $this->assertEquals(1, User::find(2)->active);
-        $this->assertEquals(0, User::find(3)->active);
-    }
+    //     $this->assertEquals(0, User::find(1)->active);
+    //     $this->assertEquals(1, User::find(2)->active);
+    //     $this->assertEquals(0, User::find(3)->active);
+    // }
 }
