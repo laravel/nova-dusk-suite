@@ -293,7 +293,7 @@ class LensTest extends DuskTestCase
         $this->assertEquals(1, User::find(3)->active);
     }
 
-    /**
+    /*
      * @test
      */
     // public function can_run_actions_on_all_matching_resources()
