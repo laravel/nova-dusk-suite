@@ -970,6 +970,8 @@ table {
 
 .btn-lg {
   height: 3rem;
+  line-height: 3rem;
+  font-size: 1.125rem;
 }
 
 .btn-link {
@@ -1036,6 +1038,10 @@ table {
 
 .btn-icon:hover {
   opacity: .75;
+}
+
+.no-text-shadow {
+  text-shadow: none;
 }
 
 /* Inline Links
@@ -1546,6 +1552,26 @@ table {
           animation: spin 2s infinite linear;
   -webkit-transform-origin: 50% 50%;
           transform-origin: 50% 50%;
+}
+
+/* Error Pages
+---------------------------------------------------------------------------- */
+
+.text-error-title {
+  font-size: 9rem;
+}
+
+.text-error-subtitle {
+  font-size: 2.25rem;
+}
+
+.text-error-message {
+  font-size: 1.25rem;
+  color: #56677b;
+}
+
+.illustration {
+  margin-right: 7.5rem;
 }
 
 /* Tailwind Utilities
@@ -2754,6 +2780,10 @@ table {
   line-height: 2.25rem;
 }
 
+.leading-12 {
+  line-height: 3rem;
+}
+
 .leading-36 {
   line-height: 2.25rem;
 }
@@ -3056,6 +3086,14 @@ table {
   max-height: 24.5rem;
 }
 
+.max-h-90px {
+  max-height: 5.625rem;
+}
+
+.max-w-8 {
+  max-width: 2rem;
+}
+
 .max-w-login {
   max-width: 25rem;
 }
@@ -3122,6 +3160,10 @@ table {
 
 .min-w-0 {
   min-width: 0;
+}
+
+.min-w-8 {
+  min-width: 2rem;
 }
 
 .min-w-24 {
@@ -4488,6 +4530,10 @@ table {
 
 .w-screen {
   width: 100vw;
+}
+
+.w-error {
+  width: 65rem;
 }
 
 .z-0 {
