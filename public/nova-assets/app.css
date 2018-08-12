@@ -648,6 +648,8 @@ table {
   --primary-50: rgba(64, 153, 222, .5);
   --primary-30: rgba(64, 153, 222, .3);
   --primary-10: rgba(64, 153, 222, .1);
+  --logo: #252d37;
+  --sidebar-icon: #b3c1d1;
   --20: #f6fbff;
   --30: #f4f7fa;
   --40: #eef1f4;
@@ -658,6 +660,20 @@ table {
   --90: #252d37;
   --90-half: rgba(40, 54, 61, .5);
 }
+
+/* Search
+---------------------------------------------------------------------------- */
+
+input[type='search'] {
+  -webkit-appearance: searchfield;
+}
+
+input[type='search']::-webkit-search-cancel-button {
+  -webkit-appearance: searchfield-cancel-button;
+}
+
+/* Content
+---------------------------------------------------------------------------- */
 
 .content {
   min-width: 66.25rem;
@@ -1672,6 +1688,14 @@ table {
   background-color: var(--primary-10);
 }
 
+.bg-sidebar-icon {
+  background-color: var(--sidebar-icon);
+}
+
+.bg-logo {
+  background-color: var(--logo);
+}
+
 .bg-info {
   background-color: var(--info);
 }
@@ -1762,6 +1786,14 @@ table {
 
 .hover\:bg-primary-10\%:hover {
   background-color: var(--primary-10);
+}
+
+.hover\:bg-sidebar-icon:hover {
+  background-color: var(--sidebar-icon);
+}
+
+.hover\:bg-logo:hover {
+  background-color: var(--logo);
 }
 
 .hover\:bg-info:hover {
@@ -1928,6 +1960,14 @@ table {
   border-color: var(--primary-10);
 }
 
+.border-sidebar-icon {
+  border-color: var(--sidebar-icon);
+}
+
+.border-logo {
+  border-color: var(--logo);
+}
+
 .border-info {
   border-color: var(--info);
 }
@@ -2018,6 +2058,14 @@ table {
 
 .hover\:border-primary-10\%:hover {
   border-color: var(--primary-10);
+}
+
+.hover\:border-sidebar-icon:hover {
+  border-color: var(--sidebar-icon);
+}
+
+.hover\:border-logo:hover {
+  border-color: var(--logo);
 }
 
 .hover\:border-info:hover {
@@ -3988,6 +4036,14 @@ table {
   fill: var(--primary-10);
 }
 
+.fill-sidebar-icon {
+  fill: var(--sidebar-icon);
+}
+
+.fill-logo {
+  fill: var(--logo);
+}
+
 .fill-info {
   fill: var(--info);
 }
@@ -4100,6 +4156,14 @@ table {
   color: var(--primary-10);
 }
 
+.text-sidebar-icon {
+  color: var(--sidebar-icon);
+}
+
+.text-logo {
+  color: var(--logo);
+}
+
 .text-info {
   color: var(--info);
 }
@@ -4190,6 +4254,14 @@ table {
 
 .hover\:text-primary-10\%:hover {
   color: var(--primary-10);
+}
+
+.hover\:text-sidebar-icon:hover {
+  color: var(--sidebar-icon);
+}
+
+.hover\:text-logo:hover {
+  color: var(--logo);
 }
 
 .hover\:text-info:hover {

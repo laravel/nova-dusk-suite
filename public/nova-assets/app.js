@@ -904,9 +904,8 @@ CodeMirror.defineMode("xml", function(editorConf, config_) {
         stream.next();
       }
       return style;
-    }
+    };
   }
-
   function doctype(depth) {
     return function(stream, state) {
       var ch;
@@ -15967,6 +15966,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
 
 exports.default = {
     mixins: [_laravelNova.Deletable, _laravelNova.Filterable, _laravelNova.HasCards, _laravelNova.Paginatable, _laravelNova.PerPageable, _laravelNova.InteractsWithResourceInformation, _laravelNova.InteractsWithQueryString],
@@ -16784,7 +16784,7 @@ var render = function() {
                       "data-testid": "search-input",
                       dusk: "search",
                       placeholder: "Search",
-                      type: "text"
+                      type: "search"
                     },
                     domProps: { value: _vm.search },
                     on: {
@@ -16792,6 +16792,7 @@ var render = function() {
                         $event.stopPropagation()
                         return _vm.performSearch($event)
                       },
+                      search: _vm.performSearch,
                       input: function($event) {
                         if ($event.target.composing) {
                           return
@@ -16875,7 +16876,7 @@ var render = function() {
                                       _c(
                                         "li",
                                         {
-                                          staticClass: "flex items-center mb-6"
+                                          staticClass: "flex items-center mb-4"
                                         },
                                         [
                                           _c(
@@ -19430,6 +19431,7 @@ exports.default = {
 
     data: function data() {
         return {
+            loading: true,
             field: null,
             softDeletes: false,
             fields: [],
@@ -19474,6 +19476,7 @@ exports.default = {
 
                 _this.field = data;
                 _this.field.searchable ? _this.determineIfSoftDeletes() : _this.getAvailableResources();
+                _this.loading = false;
             });
         },
 
@@ -19829,6 +19832,10 @@ exports.default = {
 //
 //
 //
+//
+//
+//
+//
 
 /***/ }),
 /* 336 */
@@ -19838,292 +19845,319 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("card", { staticClass: "overflow-hidden" }, [
-    _vm.field
-      ? _c(
-          "form",
-          {
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.attachResource($event)
-              }
-            }
-          },
-          [
-            _c("field-wrapper", [
-              _c(
-                "div",
-                { staticClass: "w-1/5 px-8 py-6" },
-                [
-                  _vm._t("default", [
-                    _c("form-label", [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(_vm.relatedResourceLabel) +
-                          "\n                    "
-                      )
-                    ])
-                  ])
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "w-1/2 px-8 py-6" },
-                [
-                  _vm.field.searchable
-                    ? _c(
-                        "search-input",
-                        {
-                          staticClass: "mb-3",
-                          attrs: {
-                            "data-testid":
-                              _vm.field.resourceName + "-search-input",
-                            value: _vm.selectedResource,
-                            data: _vm.availableResources,
-                            trackBy: "value",
-                            searchBy: "display"
-                          },
-                          on: {
-                            input: _vm.performSearch,
-                            clear: _vm.clearSelection,
-                            selected: _vm.selectResource
-                          },
-                          scopedSlots: _vm._u([
+  return _c(
+    "loading-view",
+    { attrs: { loading: _vm.loading } },
+    [
+      _c("heading", { staticClass: "mb-3" }, [
+        _vm._v("Attach " + _vm._s(_vm.relatedResourceLabel))
+      ]),
+      _vm._v(" "),
+      _c("card", { staticClass: "overflow-hidden" }, [
+        _vm.field
+          ? _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.attachResource($event)
+                  }
+                }
+              },
+              [
+                _c("field-wrapper", [
+                  _c(
+                    "div",
+                    { staticClass: "w-1/5 px-8 py-6" },
+                    [
+                      _vm._t("default", [
+                        _c("form-label", [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(_vm.relatedResourceLabel) +
+                              "\n                        "
+                          )
+                        ])
+                      ])
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "w-1/2 px-8 py-6" },
+                    [
+                      _vm.field.searchable
+                        ? _c(
+                            "search-input",
                             {
-                              key: "option",
-                              fn: function(ref) {
-                                var option = ref.option
-                                var selected = ref.selected
+                              staticClass: "mb-3",
+                              attrs: {
+                                "data-testid":
+                                  _vm.field.resourceName + "-search-input",
+                                value: _vm.selectedResource,
+                                data: _vm.availableResources,
+                                trackBy: "value",
+                                searchBy: "display"
+                              },
+                              on: {
+                                input: _vm.performSearch,
+                                clear: _vm.clearSelection,
+                                selected: _vm.selectResource
+                              },
+                              scopedSlots: _vm._u([
+                                {
+                                  key: "option",
+                                  fn: function(ref) {
+                                    var option = ref.option
+                                    var selected = ref.selected
+                                    return _c(
+                                      "div",
+                                      { staticClass: "flex items-center" },
+                                      [
+                                        option.avatar
+                                          ? _c("div", { staticClass: "mr-3" }, [
+                                              _c("img", {
+                                                staticClass:
+                                                  "w-8 h-8 rounded-full block",
+                                                attrs: { src: option.avatar }
+                                              })
+                                            ])
+                                          : _vm._e(),
+                                        _vm._v(
+                                          "\n\n                            " +
+                                            _vm._s(option.display) +
+                                            "\n                        "
+                                        )
+                                      ]
+                                    )
+                                  }
+                                }
+                              ])
+                            },
+                            [
+                              _vm.selectedResource
+                                ? _c(
+                                    "div",
+                                    {
+                                      staticClass: "flex items-center",
+                                      attrs: { slot: "default" },
+                                      slot: "default"
+                                    },
+                                    [
+                                      _vm.selectedResource.avatar
+                                        ? _c("div", { staticClass: "mr-3" }, [
+                                            _c("img", {
+                                              staticClass:
+                                                "w-8 h-8 rounded-full block",
+                                              attrs: {
+                                                src: _vm.selectedResource.avatar
+                                              }
+                                            })
+                                          ])
+                                        : _vm._e(),
+                                      _vm._v(
+                                        "\n\n                            " +
+                                          _vm._s(_vm.selectedResource.display) +
+                                          "\n                        "
+                                      )
+                                    ]
+                                  )
+                                : _vm._e()
+                            ]
+                          )
+                        : _c(
+                            "select",
+                            {
+                              staticClass:
+                                "form-control form-select mb-3 w-full",
+                              class: {
+                                "border-danger": _vm.validationErrors.has(
+                                  _vm.field.attribute
+                                )
+                              },
+                              attrs: {
+                                dusk: "attachable-select",
+                                "data-testid":
+                                  _vm.field.resourceName + "-select"
+                              },
+                              on: {
+                                change: _vm.selectResourceFromSelectControl
+                              }
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "",
+                                    disabled: "",
+                                    selected: ""
+                                  }
+                                },
+                                [_vm._v("Choose " + _vm._s(_vm.field.name))]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.availableResources, function(
+                                resource
+                              ) {
                                 return _c(
-                                  "div",
-                                  { staticClass: "flex items-center" },
+                                  "option",
+                                  {
+                                    key: resource.value,
+                                    domProps: {
+                                      value: resource.value,
+                                      selected:
+                                        _vm.selectedResourceId == resource.value
+                                    }
+                                  },
                                   [
-                                    option.avatar
-                                      ? _c("div", { staticClass: "mr-3" }, [
-                                          _c("img", {
-                                            staticClass:
-                                              "w-8 h-8 rounded-full block",
-                                            attrs: { src: option.avatar }
-                                          })
-                                        ])
-                                      : _vm._e(),
                                     _vm._v(
-                                      "\n\n                        " +
-                                        _vm._s(option.display) +
-                                        "\n                    "
+                                      "\n                            " +
+                                        _vm._s(resource.display) +
+                                        "\n                        "
                                     )
                                   ]
                                 )
-                              }
-                            }
-                          ])
-                        },
-                        [
-                          _vm.selectedResource
-                            ? _c(
-                                "div",
-                                {
-                                  staticClass: "flex items-center",
-                                  attrs: { slot: "default" },
-                                  slot: "default"
-                                },
-                                [
-                                  _vm.selectedResource.avatar
-                                    ? _c("div", { staticClass: "mr-3" }, [
-                                        _c("img", {
-                                          staticClass:
-                                            "w-8 h-8 rounded-full block",
-                                          attrs: {
-                                            src: _vm.selectedResource.avatar
-                                          }
-                                        })
-                                      ])
-                                    : _vm._e(),
-                                  _vm._v(
-                                    "\n\n                        " +
-                                      _vm._s(_vm.selectedResource.display) +
-                                      "\n                    "
-                                  )
-                                ]
-                              )
-                            : _vm._e()
-                        ]
-                      )
-                    : _c(
-                        "select",
-                        {
-                          staticClass: "form-control form-select mb-3 w-full",
-                          class: {
-                            "border-danger": _vm.validationErrors.has(
-                              _vm.field.attribute
-                            )
-                          },
-                          attrs: {
-                            dusk: "attachable-select",
-                            "data-testid": _vm.field.resourceName + "-select"
-                          },
-                          on: { change: _vm.selectResourceFromSelectControl }
-                        },
-                        [
-                          _c(
-                            "option",
-                            {
-                              attrs: { value: "", disabled: "", selected: "" }
-                            },
-                            [_vm._v("Choose " + _vm._s(_vm.field.name))]
+                              })
+                            ],
+                            2
                           ),
-                          _vm._v(" "),
-                          _vm._l(_vm.availableResources, function(resource) {
-                            return _c(
-                              "option",
+                      _vm._v(" "),
+                      _vm.softDeletes
+                        ? _c("div", [
+                            _c(
+                              "label",
                               {
-                                key: resource.value,
-                                domProps: {
-                                  value: resource.value,
-                                  selected:
-                                    _vm.selectedResourceId == resource.value
+                                staticClass: "flex items-center",
+                                on: {
+                                  input: _vm.toggleWithTrashed,
+                                  keydown: function($event) {
+                                    if (
+                                      !("button" in $event) &&
+                                      _vm._k(
+                                        $event.keyCode,
+                                        "space",
+                                        32,
+                                        $event.key,
+                                        " "
+                                      ) &&
+                                      _vm._k(
+                                        $event.keyCode,
+                                        "enter",
+                                        13,
+                                        $event.key,
+                                        "Enter"
+                                      )
+                                    ) {
+                                      return null
+                                    }
+                                    $event.preventDefault()
+                                    return _vm.toggleWithTrashed($event)
+                                  }
                                 }
                               },
                               [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(resource.display) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
-                          })
-                        ],
-                        2
-                      ),
-                  _vm._v(" "),
-                  _vm.softDeletes
-                    ? _c("div", [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "flex items-center",
-                            on: {
-                              input: _vm.toggleWithTrashed,
-                              keydown: function($event) {
-                                if (
-                                  !("button" in $event) &&
-                                  _vm._k(
-                                    $event.keyCode,
-                                    "space",
-                                    32,
-                                    $event.key,
-                                    " "
-                                  ) &&
-                                  _vm._k(
-                                    $event.keyCode,
-                                    "enter",
-                                    13,
-                                    $event.key,
-                                    "Enter"
+                                _c("checkbox", {
+                                  attrs: {
+                                    dusk:
+                                      _vm.field.resourceName +
+                                      "-with-trashed-checkbox",
+                                    checked: _vm.withTrashed
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("span", { staticClass: "ml-2" }, [
+                                  _vm._v(
+                                    "\n                                With Trashed\n                            "
                                   )
-                                ) {
-                                  return null
-                                }
-                                $event.preventDefault()
-                                return _vm.toggleWithTrashed($event)
-                              }
-                            }
-                          },
-                          [
-                            _c("checkbox", {
-                              attrs: {
-                                dusk:
-                                  _vm.field.resourceName +
-                                  "-with-trashed-checkbox",
-                                checked: _vm.withTrashed
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "ml-2" }, [
-                              _vm._v(
-                                "\n                            With Trashed\n                        "
-                              )
-                            ])
-                          ],
-                          1
-                        )
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  true
-                    ? _c("p", { staticClass: "my-2 text-danger" }, [
-                        _vm._v(
-                          "\n                    " +
-                            _vm._s(
-                              _vm.validationErrors.first(
-                                _vm.relatedResourceName
-                              )
-                            ) +
-                            "\n                "
-                        )
-                      ])
-                    : _vm._e()
-                ],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _vm._l(_vm.fields, function(field) {
-              return _c(
-                "div",
-                [
-                  _c("form-" + field.component, {
-                    tag: "component",
-                    attrs: {
-                      "resource-name": _vm.resourceName,
-                      field: field,
-                      errors: _vm.validationErrors,
-                      "via-resource": _vm.viaResource,
-                      "via-resource-id": _vm.viaResourceId,
-                      "via-relationship": _vm.viaRelationship
-                    }
-                  })
-                ],
-                1
-              )
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "bg-30 flex px-8 py-4" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "ml-auto btn btn-default btn-primary mr-3",
-                  attrs: {
-                    dusk: "attach-and-attach-another-button",
-                    type: "button"
-                  },
-                  on: { click: _vm.attachAndAttachAnother }
-                },
-                [
-                  _vm._v(
-                    "\n                Attach & Attach Another\n            "
+                                ])
+                              ],
+                              1
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      true
+                        ? _c("p", { staticClass: "my-2 text-danger" }, [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(
+                                  _vm.validationErrors.first(
+                                    _vm.relatedResourceName
+                                  )
+                                ) +
+                                "\n                    "
+                            )
+                          ])
+                        : _vm._e()
+                    ],
+                    1
                   )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-default btn-primary",
-                  attrs: { dusk: "attach-button" }
-                },
-                [_vm._v("\n                Attach\n            ")]
-              )
-            ])
-          ],
-          2
-        )
-      : _vm._e()
-  ])
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.fields, function(field) {
+                  return _c(
+                    "div",
+                    [
+                      _c("form-" + field.component, {
+                        tag: "component",
+                        attrs: {
+                          "resource-name": _vm.resourceName,
+                          field: field,
+                          errors: _vm.validationErrors,
+                          "via-resource": _vm.viaResource,
+                          "via-resource-id": _vm.viaResourceId,
+                          "via-relationship": _vm.viaRelationship
+                        }
+                      })
+                    ],
+                    1
+                  )
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "bg-30 flex px-8 py-4" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "ml-auto btn btn-default btn-primary mr-3",
+                      attrs: {
+                        dusk: "attach-and-attach-another-button",
+                        type: "button"
+                      },
+                      on: { click: _vm.attachAndAttachAnother }
+                    },
+                    [
+                      _vm._v(
+                        "\n                    Attach & Attach Another\n                "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-default btn-primary",
+                      attrs: { dusk: "attach-button" }
+                    },
+                    [
+                      _vm._v(
+                        "\n                    Attach " +
+                          _vm._s(_vm.relatedResourceLabel) +
+                          "\n                "
+                      )
+                    ]
+                  )
+                ])
+              ],
+              2
+            )
+          : _vm._e()
+      ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -20278,6 +20312,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
 
 exports.default = {
     mixins: [_laravelNova.PerformsSearches, _laravelNova.TogglesTrashed],
@@ -20313,6 +20351,7 @@ exports.default = {
 
     data: function data() {
         return {
+            loading: true,
             field: null,
             softDeletes: false,
             fields: [],
@@ -20393,6 +20432,8 @@ exports.default = {
                 if (_this.field.searchable) {
                     _this.determineIfSoftDeletes();
                 }
+
+                _this.loading = false;
             });
         },
 
@@ -20736,153 +20777,173 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("card", { staticClass: "overflow-hidden" }, [
-    _vm.field
-      ? _c(
-          "form",
-          {
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.updateAttachedResource($event)
-              }
-            }
-          },
-          [
-            _c("field-wrapper", [
-              _c(
-                "div",
-                { staticClass: "w-1/5 px-8 py-6" },
-                [
-                  _vm._t("default", [
-                    _c("form-label", [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(_vm.relatedResourceLabel) +
-                          "\n                    "
-                      )
-                    ])
-                  ])
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "w-1/2 px-8 py-6" }, [
-                _c(
-                  "select",
-                  {
-                    staticClass: "form-control form-select mb-3 w-full",
-                    class: {
-                      "border-danger": _vm.validationErrors.has(
-                        _vm.field.attribute
-                      )
-                    },
-                    attrs: {
-                      dusk: "attachable-select",
-                      "data-testid": _vm.field.resourceName + "-select",
-                      disabled: ""
-                    },
-                    on: { change: _vm.selectResourceFromSelectControl }
-                  },
-                  [
+  return _c(
+    "loading-view",
+    { attrs: { loading: _vm.loading } },
+    [
+      _c("heading", { staticClass: "mb-3" }, [
+        _vm._v("Update " + _vm._s(_vm.relatedResourceLabel))
+      ]),
+      _vm._v(" "),
+      _c("card", { staticClass: "overflow-hidden" }, [
+        _vm.field
+          ? _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.updateAttachedResource($event)
+                  }
+                }
+              },
+              [
+                _c("field-wrapper", [
+                  _c(
+                    "div",
+                    { staticClass: "w-1/5 px-8 py-6" },
+                    [
+                      _vm._t("default", [
+                        _c("form-label", [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(_vm.relatedResourceLabel) +
+                              "\n                        "
+                          )
+                        ])
+                      ])
+                    ],
+                    2
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "w-1/2 px-8 py-6" }, [
                     _c(
-                      "option",
-                      { attrs: { value: "", disabled: "", selected: "" } },
-                      [_vm._v("Choose " + _vm._s(_vm.field.name))]
+                      "select",
+                      {
+                        staticClass: "form-control form-select mb-3 w-full",
+                        class: {
+                          "border-danger": _vm.validationErrors.has(
+                            _vm.field.attribute
+                          )
+                        },
+                        attrs: {
+                          dusk: "attachable-select",
+                          "data-testid": _vm.field.resourceName + "-select",
+                          disabled: ""
+                        },
+                        on: { change: _vm.selectResourceFromSelectControl }
+                      },
+                      [
+                        _c(
+                          "option",
+                          { attrs: { value: "", disabled: "", selected: "" } },
+                          [_vm._v("Choose " + _vm._s(_vm.field.name))]
+                        ),
+                        _vm._v(" "),
+                        _vm._l(_vm.availableResources, function(resource) {
+                          return _c(
+                            "option",
+                            {
+                              key: resource.value,
+                              domProps: {
+                                value: resource.value,
+                                selected:
+                                  _vm.selectedResourceId == resource.value
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(resource.display) +
+                                  "\n                        "
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
                     ),
                     _vm._v(" "),
-                    _vm._l(_vm.availableResources, function(resource) {
-                      return _c(
-                        "option",
-                        {
-                          key: resource.value,
-                          domProps: {
-                            value: resource.value,
-                            selected: _vm.selectedResourceId == resource.value
-                          }
-                        },
-                        [
+                    true
+                      ? _c("p", { staticClass: "my-2 text-danger" }, [
                           _vm._v(
                             "\n                        " +
-                              _vm._s(resource.display) +
+                              _vm._s(
+                                _vm.validationErrors.first(
+                                  _vm.relatedResourceName
+                                )
+                              ) +
                               "\n                    "
                           )
-                        ]
-                      )
-                    })
-                  ],
-                  2
-                ),
+                        ])
+                      : _vm._e()
+                  ])
+                ]),
                 _vm._v(" "),
-                true
-                  ? _c("p", { staticClass: "my-2 text-danger" }, [
+                _vm._l(_vm.fields, function(field) {
+                  return _c(
+                    "div",
+                    [
+                      _c("form-" + field.component, {
+                        tag: "component",
+                        attrs: {
+                          "resource-name": _vm.resourceName,
+                          "resource-id": _vm.resourceId,
+                          field: field,
+                          errors: _vm.validationErrors,
+                          "related-resource-name": _vm.relatedResourceName,
+                          "related-resource-id": _vm.relatedResourceId,
+                          "via-resource": _vm.viaResource,
+                          "via-resource-id": _vm.viaResourceId,
+                          "via-relationship": _vm.viaRelationship
+                        }
+                      })
+                    ],
+                    1
+                  )
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "bg-30 flex px-8 py-4" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "ml-auto btn btn-default btn-primary mr-3",
+                      attrs: {
+                        dusk: "update-and-continue-editing-button",
+                        type: "button"
+                      },
+                      on: { click: _vm.updateAndContinueEditing }
+                    },
+                    [
                       _vm._v(
-                        "\n                    " +
-                          _vm._s(
-                            _vm.validationErrors.first(_vm.relatedResourceName)
-                          ) +
+                        "\n                    Update & Continue Editing\n                "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-default btn-primary",
+                      attrs: { dusk: "update-button" }
+                    },
+                    [
+                      _vm._v(
+                        "\n                    Update " +
+                          _vm._s(_vm.relatedResourceLabel) +
                           "\n                "
                       )
-                    ])
-                  : _vm._e()
-              ])
-            ]),
-            _vm._v(" "),
-            _vm._l(_vm.fields, function(field) {
-              return _c(
-                "div",
-                [
-                  _c("form-" + field.component, {
-                    tag: "component",
-                    attrs: {
-                      "resource-name": _vm.resourceName,
-                      "resource-id": _vm.resourceId,
-                      field: field,
-                      errors: _vm.validationErrors,
-                      "related-resource-name": _vm.relatedResourceName,
-                      "related-resource-id": _vm.relatedResourceId,
-                      "via-resource": _vm.viaResource,
-                      "via-resource-id": _vm.viaResourceId,
-                      "via-relationship": _vm.viaRelationship
-                    }
-                  })
-                ],
-                1
-              )
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "bg-30 flex px-8 py-4" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "ml-auto btn btn-default btn-primary mr-3",
-                  attrs: {
-                    dusk: "update-and-continue-editing-button",
-                    type: "button"
-                  },
-                  on: { click: _vm.updateAndContinueEditing }
-                },
-                [
-                  _vm._v(
-                    "\n                Update & Continue Editing\n            "
+                    ]
                   )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-default btn-primary",
-                  attrs: { dusk: "update-button" }
-                },
-                [_vm._v("\n                Update\n            ")]
-              )
-            ])
-          ],
-          2
-        )
-      : _vm._e()
-  ])
+                ])
+              ],
+              2
+            )
+          : _vm._e()
+      ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -22659,7 +22720,7 @@ exports.default = {
       canSuccess: true,
       duration: 3000,
       height: '3px',
-      color: '#4099DE',
+      color: 'var(--primary)',
       failedColor: 'red'
     };
   },
@@ -23578,9 +23639,18 @@ exports.default = {
          */
         inputMax: function inputMax() {
             return this.field.max;
+        },
+
+
+        /**
+         * Get the pattern that should be used for the field
+         */
+        inputPattern: function inputPattern() {
+            return this.field.pattern;
         }
     }
 }; //
+//
 //
 //
 //
@@ -23635,6 +23705,7 @@ var render = function() {
                 min: _vm.inputMin,
                 max: _vm.inputMax,
                 step: _vm.inputStep,
+                pattern: _vm.inputPattern,
                 placeholder: _vm.field.name,
                 type: "checkbox"
               },
@@ -23684,6 +23755,7 @@ var render = function() {
                   min: _vm.inputMin,
                   max: _vm.inputMax,
                   step: _vm.inputStep,
+                  pattern: _vm.inputPattern,
                   placeholder: _vm.field.name,
                   type: "radio"
                 },
@@ -23712,6 +23784,7 @@ var render = function() {
                   min: _vm.inputMin,
                   max: _vm.inputMax,
                   step: _vm.inputStep,
+                  pattern: _vm.inputPattern,
                   placeholder: _vm.field.name,
                   type: _vm.inputType
                 },
@@ -34790,6 +34863,7 @@ exports.default = {
 //
 //
 //
+//
 
 /***/ }),
 /* 695 */
@@ -34835,7 +34909,9 @@ var render = function() {
             }
           },
           [
-            _c("option", { attrs: { value: "", selected: "", disabled: "" } }),
+            _c("option", { attrs: { value: "", selected: "", disabled: "" } }, [
+              _vm._v("\n                Choose an option\n            ")
+            ]),
             _vm._v(" "),
             _vm._l(_vm.field.options, function(option) {
               return _c(
@@ -38513,8 +38589,6 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
-//
-//
 
 exports.default = {
     props: ['resourceName', 'field']
@@ -38556,7 +38630,7 @@ var render = function() {
           ],
           1
         )
-      : _c("span", [_vm._v("\n        -\n    ")])
+      : _c("span", [_vm._v("—")])
   ])
 }
 var staticRenderFns = []
@@ -38642,6 +38716,8 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
+//
 
 exports.default = {
     props: ['resource', 'resourceName', 'resourceId', 'field']
@@ -38663,22 +38739,28 @@ var render = function() {
         "template",
         { slot: "value" },
         [
-          _c(
-            "router-link",
-            {
-              staticClass: "no-underline font-bold dim text-primary",
-              attrs: {
-                to: {
-                  name: "detail",
-                  params: {
-                    resourceName: _vm.field.resourceName,
-                    resourceId: _vm.field.belongsToId
+          _vm.field.value
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "no-underline font-bold dim text-primary",
+                  attrs: {
+                    to: {
+                      name: "detail",
+                      params: {
+                        resourceName: _vm.field.resourceName,
+                        resourceId: _vm.field.belongsToId
+                      }
+                    }
                   }
-                }
-              }
-            },
-            [_vm._v("\n            " + _vm._s(_vm.field.value) + "\n        ")]
-          )
+                },
+                [
+                  _vm._v(
+                    "\n            " + _vm._s(_vm.field.value) + "\n        "
+                  )
+                ]
+              )
+            : _c("p", [_vm._v("—")])
         ],
         1
       )
@@ -38768,6 +38850,7 @@ var _vueClickaway = __webpack_require__(32);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
 //
 //
 //
@@ -39103,6 +39186,7 @@ var render = function() {
                   staticClass: "mb-3",
                   attrs: {
                     "data-testid": _vm.field.resourceName + "-search-input",
+                    error: _vm.hasError,
                     value: _vm.selectedResource,
                     data: _vm.availableResources,
                     trackBy: "value",
@@ -39582,8 +39666,6 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
-//
-//
 
 exports.default = {
     props: ['resourceName', 'field']
@@ -39622,7 +39704,7 @@ var render = function() {
           )
         ]
       )
-    : _c("span", [_vm._v("\n    -\n")])
+    : _c("span", [_vm._v("—")])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -42874,7 +42956,7 @@ var render = function() {
                                       {
                                         attrs: {
                                           id: "icon-resources",
-                                          fill: "#4A90E2",
+                                          fill: "var(--primary)",
                                           "fill-rule": "nonzero",
                                           transform: "translate(0 -1)"
                                         }
@@ -42962,7 +43044,7 @@ var render = function() {
                                       {
                                         attrs: {
                                           id: "icon-actions",
-                                          fill: "#4A90E2",
+                                          fill: "var(--primary)",
                                           "fill-rule": "nonzero"
                                         }
                                       },
@@ -43053,7 +43135,7 @@ var render = function() {
                                       {
                                         attrs: {
                                           id: "icon-filters",
-                                          fill: "#4A90E2",
+                                          fill: "var(--primary)",
                                           "fill-rule": "nonzero"
                                         }
                                       },
@@ -43140,7 +43222,7 @@ var render = function() {
                                       {
                                         attrs: {
                                           id: "icon-lenses",
-                                          fill: "#4A90E2",
+                                          fill: "var(--primary)",
                                           "fill-rule": "nonzero"
                                         }
                                       },
@@ -43231,7 +43313,7 @@ var render = function() {
                                       {
                                         attrs: {
                                           id: "icon-metrics",
-                                          fill: "#4A90E2",
+                                          fill: "var(--primary)",
                                           "fill-rule": "nonzero"
                                         }
                                       },
@@ -43318,7 +43400,7 @@ var render = function() {
                                       {
                                         attrs: {
                                           id: "icon-cards",
-                                          fill: "#4A90E2",
+                                          fill: "var(--primary)",
                                           "fill-rule": "nonzero"
                                         }
                                       },
@@ -43871,7 +43953,9 @@ var render = function() {
                           [
                             _c(
                               "g",
-                              { attrs: { id: "b-link", fill: "#4099DE" } },
+                              {
+                                attrs: { id: "b-link", fill: "var(--primary)" }
+                              },
                               [
                                 _c("rect", {
                                   attrs: {
@@ -45020,8 +45104,7 @@ var render = function() {
             ? _c(
                 "button",
                 {
-                  staticClass:
-                    "text-left w-full leading-normal text-sm dim text-90 my-2",
+                  staticClass: "text-left w-full leading-normal dim my-2",
                   attrs: { dusk: "delete-selected-button" },
                   on: { click: _vm.confirmDeleteSelectedResources }
                 },
@@ -45045,7 +45128,7 @@ var render = function() {
                 "button",
                 {
                   staticClass:
-                    "text-left w-full leading-normal text-sm dim text-90 my-2",
+                    "text-left w-full leading-normal dim text-90 my-2",
                   attrs: { dusk: "restore-selected-button" },
                   on: { click: _vm.confirmRestore }
                 },
@@ -45067,7 +45150,7 @@ var render = function() {
                 "button",
                 {
                   staticClass:
-                    "text-left w-full leading-normal text-sm dim text-90 my-2",
+                    "text-left w-full leading-normal dim text-90 my-2",
                   attrs: { dusk: "force-delete-selected-button" },
                   on: { click: _vm.confirmForceDeleteSelectedResources }
                 },
@@ -47414,6 +47497,12 @@ exports.default = {
         };
     },
 
+    watch: {
+        $route: function $route() {
+            this.closeSearch();
+        }
+    },
+
     mounted: function mounted() {
         // Open search menu if the user types '/'
         document.addEventListener('keydown', this.handleKeydown);
@@ -47554,6 +47643,10 @@ exports.default = {
                 }
             });
         },
+        navigate: function navigate(index) {
+            this.highlightedResultIndex = index;
+            this.goToCurrentlySelectedResource();
+        },
         goToCurrentlySelectedResource: function goToCurrentlySelectedResource() {
             var _this2 = this;
 
@@ -47608,13 +47701,6 @@ exports.default = {
         }
     }
 }; //
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -47795,7 +47881,6 @@ var render = function() {
                   _vm.move(-1)
                 }
               ],
-              blur: _vm.closeSearch,
               focus: _vm.openSearch
             }
           })
@@ -47844,28 +47929,22 @@ var render = function() {
                       },
                       [
                         _c(
-                          "router-link",
+                          "a",
                           {
                             staticClass:
-                              "flex items-center hover:bg-20 block py-2 px-3 no-underline font-normal",
+                              "cursor-pointer flex items-center hover:bg-20 block py-2 px-3 no-underline font-normal",
                             class: {
                               "bg-white":
                                 _vm.highlightedResultIndex != item.index,
                               "bg-20": _vm.highlightedResultIndex == item.index
                             },
                             attrs: {
-                              to: {
-                                name: "detail",
-                                params: {
-                                  resourceName: item.resourceName,
-                                  resourceId: item.resourceId
-                                }
-                              },
                               dusk: item.resourceName + " " + item.index
                             },
-                            nativeOn: {
+                            on: {
                               click: function($event) {
-                                return _vm.closeSearch($event)
+                                $event.preventDefault()
+                                _vm.navigate(item.index)
                               }
                             }
                           },
@@ -47892,8 +47971,7 @@ var render = function() {
                             ])
                           ]
                         )
-                      ],
-                      1
+                      ]
                     )
                   })
                 )
@@ -48248,11 +48326,15 @@ var render = function() {
                   "g",
                   { attrs: { id: "checkbox-on", "fill-rule": "nonzero" } },
                   [
-                    _c("g", { attrs: { id: "b-link", fill: "#4099DE" } }, [
-                      _c("rect", {
-                        attrs: { id: "b", width: "20", height: "20", rx: "4" }
-                      })
-                    ]),
+                    _c(
+                      "g",
+                      { attrs: { id: "b-link", fill: "var(--primary)" } },
+                      [
+                        _c("rect", {
+                          attrs: { id: "b", width: "20", height: "20", rx: "4" }
+                        })
+                      ]
+                    ),
                     _c("path", {
                       attrs: {
                         id: "Shape",
@@ -49827,11 +49909,13 @@ var render = function() {
     _vm._l(_vm.lenses, function(lens) {
       return _c(
         "div",
+        { staticClass: "px-3" },
         [
           _c(
             "router-link",
             {
-              staticClass: "dim block text-base text-90 no-underline",
+              staticClass:
+                "dim block text-base text-90 no-underline leading-normal my-2",
               attrs: {
                 to: {
                   name: "lens",
@@ -52182,8 +52266,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
-//
 
 exports.default = {
     mixins: [_vueClickaway.mixin],
@@ -52195,7 +52277,10 @@ exports.default = {
         data: {},
         trackBy: {},
         searchBy: {},
-        error: {},
+        error: {
+            type: Boolean,
+            default: false
+        },
         boundary: {},
         debounce: {
             type: Number,
@@ -52470,10 +52555,6 @@ var render = function() {
             )
           : _vm._e()
       ]),
-      _vm._v(" "),
-      _vm.error
-        ? _c("div", { staticClass: "form-error" }, [_vm._v(_vm._s(_vm.error))])
-        : _vm._e(),
       _vm._v(" "),
       _vm.show
         ? _c(
