@@ -4,7 +4,9 @@ namespace Otwell\SidebarTool;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Otwell\SidebarTool\Http\Middleware\Authorize;
 
 class ToolServiceProvider extends ServiceProvider
 {
@@ -31,11 +33,13 @@ class ToolServiceProvider extends ServiceProvider
      */
     protected function routes()
     {
-        $this->app->booted(function () {
-            if (! $this->app->routesAreCached()) {
-                require __DIR__.'/../routes/api.php';
-            }
-        });
+        if ($this->app->routesAreCached()) {
+            return;
+        }
+
+        Route::middleware(['nova', Authorize::class])->group(
+            __DIR__.'/../routes/api.php'
+        );
     }
 
     /**
