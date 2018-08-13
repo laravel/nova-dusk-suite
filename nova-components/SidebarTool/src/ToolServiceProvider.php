@@ -17,8 +17,10 @@ class ToolServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'sidebar-tool');
 
+        $this->routes();
+
         Nova::serving(function (ServingNova $event) {
-            $this->routes();
+            //
         });
     }
 

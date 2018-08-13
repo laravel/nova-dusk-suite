@@ -29,6 +29,21 @@ class ToolAuthorizationTest extends DuskTestCase
     /**
      * @test
      */
+    public function test_tool_can_call_its_own_backend_routes()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit('/nova/sidebar-tool')
+                    ->pause(250)
+                    ->assertSee('Hello World');
+        });
+    }
+
+    /**
+     * @test
+     */
     public function test_tool_cant_be_seen_if_not_authorized_to_view_it()
     {
         $this->seed();
