@@ -15,6 +15,6 @@ class Authorize
      */
     public function handle($request, $next)
     {
-        return SidebarTool::check($request) ? $next($request) : abort(403);
+        return resolve(SidebarTool::class)->authorize($request) ? $next($request) : abort(403);
     }
 }
