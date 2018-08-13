@@ -37,9 +37,9 @@ class ToolServiceProvider extends ServiceProvider
             return;
         }
 
-        Route::middleware(['nova', Authorize::class])->group(
-            __DIR__.'/../routes/api.php'
-        );
+        Route::middleware(['nova', Authorize::class])
+            ->prefix('nova-api/custom-sidebar-tool')
+            ->group(__DIR__.'/../routes/api.php');
     }
 
     /**
