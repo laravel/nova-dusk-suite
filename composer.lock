@@ -319,16 +319,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.4",
+            "version": "2.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "8790f594151ca6a2010c6218e09d96df67173ad3"
+                "reference": "54859fabea8b3beecbb1a282888d5c990036b9e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/8790f594151ca6a2010c6218e09d96df67173ad3",
-                "reference": "8790f594151ca6a2010c6218e09d96df67173ad3",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/54859fabea8b3beecbb1a282888d5c990036b9e3",
+                "reference": "54859fabea8b3beecbb1a282888d5c990036b9e3",
                 "shasum": ""
             },
             "require": {
@@ -372,7 +372,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2018-04-10T10:11:19+00:00"
+            "time": "2018-08-16T20:49:45+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -567,12 +567,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "c03d02cb567c54cc443f2516018a90afe31c6fa1"
+                "reference": "3b5c0777914bd36445af9607ebb7b30e57145028"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/c03d02cb567c54cc443f2516018a90afe31c6fa1",
-                "reference": "c03d02cb567c54cc443f2516018a90afe31c6fa1",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/3b5c0777914bd36445af9607ebb7b30e57145028",
+                "reference": "3b5c0777914bd36445af9607ebb7b30e57145028",
                 "shasum": ""
             },
             "require": {
@@ -699,7 +699,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2018-08-12T09:03:46+00:00"
+            "time": "2018-08-20T14:24:36+00:00"
         },
         {
             "name": "laravel/nova",
@@ -707,7 +707,7 @@
             "dist": {
                 "type": "path",
                 "url": "./../nova-lib",
-                "reference": "b5313b7e4bf1f51ec8407e9c41d2094e8b6bae56",
+                "reference": "76684d61a5d98d03899e7efaacbb65c6dce20a7b",
                 "shasum": null
             },
             "require": {
