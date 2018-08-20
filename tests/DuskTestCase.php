@@ -41,6 +41,8 @@ abstract class DuskTestCase extends BaseTestCase
             )
         );
 
+        $driver->manage()->window()->maximize();
+
         if (env('DUSK_WIDTH')) {
             $driver->manage()->window()->setSize(
                 new WebDriverDimension(
