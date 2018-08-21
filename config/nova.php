@@ -22,6 +22,32 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Nova App URL
+    |--------------------------------------------------------------------------
+    |
+    | This URL is where users will be directed when clicking the application
+    | name in the Nova navigation bar. You are free to change this URL to
+    | any location you wish depending on the needs of your application.
+    |
+    */
+
+    'url' => env('APP_URL', '/'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Nova Path
+    |--------------------------------------------------------------------------
+    |
+    | This is the URI path where Nova will be accessible from. Feel free to
+    | change this path to anything you like. Note that this URI will not
+    | affect Nova's internal API routes which aren't exposed to users.
+    |
+    */
+
+    'path' => '/nova',
+
+    /*
+    |--------------------------------------------------------------------------
     | Nova Route Middleware
     |--------------------------------------------------------------------------
     |
