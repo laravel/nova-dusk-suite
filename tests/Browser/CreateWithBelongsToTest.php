@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use App\Dock;
 use App\Post;
 use App\User;
+use App\InvoiceItem;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\IndexComponent;
@@ -106,6 +107,20 @@ class CreateWithBelongsToTest extends DuskTestCase
                     ->create();
 
             $this->assertCount(1, $dock->fresh()->ships);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function belongs_to_field_should_honor_custom_labels_on_create()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Create('invoice-items'))
+                    ->assertSee('Client Invoice');
         });
     }
 }

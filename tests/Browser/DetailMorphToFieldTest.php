@@ -4,6 +4,7 @@ namespace Tests\Browser;
 
 use App\Post;
 use App\User;
+use App\Video;
 use App\Comment;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
@@ -33,6 +34,40 @@ class DetailMorphToFieldTest extends DuskTestCase
                     ->clickLink($post->title)
                     ->pause(250)
                     ->assertPathIs('/nova/resources/posts/'.$post->id);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function morph_to_field_should_honor_custom_labels()
+    {
+        $this->seed();
+
+        $post = factory(Post::class)->create();
+        $post->comments()->save($comment = factory(Comment::class)->make());
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('comments', 1))
+                    ->assertSee('User Post');
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function morph_to_field_should_honor_custom_labels_again()
+    {
+        $this->seed();
+
+        $video = factory(Video::class)->create();
+        $video->comments()->save($comment = factory(Comment::class)->make());
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('comments', 1))
+                    ->assertSee('User Video');
         });
     }
 }
