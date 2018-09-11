@@ -33,7 +33,8 @@ class Post extends Resource
      *
      * @return string
      */
-    public static function label() {
+    public static function label()
+    {
         return 'User Post';
     }
 

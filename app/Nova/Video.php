@@ -30,7 +30,8 @@ class Video extends Resource
      *
      * @return string
      */
-    public static function label() {
+    public static function label()
+    {
         return 'User Video';
     }
 

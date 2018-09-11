@@ -5,7 +5,6 @@ namespace Tests\Browser;
 use App\Dock;
 use App\Post;
 use App\User;
-use App\InvoiceItem;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\IndexComponent;
