@@ -69,6 +69,7 @@
     "No Current Data": "No Current Data",
     "No Prior Data": "No Prior Data",
     "No Increase": "No Increase",
+    "No Results Found.": "No Results Found.",
     "Run Action": "Run Action",
     "Select Action": "Select Action",
     "Search": "Search",
@@ -349,5 +350,10 @@
     "Zambia": "Zambia",
     "Zimbabwe": "Zimbabwe",
     "Yes": "Yes",
-    "No": "No"
+    "No": "No",
+    "Action Name": "Name",
+    "Action Initiated By": "Initiated By",
+    "Action Target": "Target",
+    "Action Status": "Status",
+    "Action Happened At": "Happened At"
 }

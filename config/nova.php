@@ -48,6 +48,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Nova Authentication Guard
+    |--------------------------------------------------------------------------
+    |
+    | This configuration option defines the authentication guard that will
+    | be used to protect your Nova routes. This option should match one
+    | of the authentication guards defined in the "auth" config file.
+    |
+    */
+
+    'guard' => env('NOVA_GUARD', null),
+
+    /*
+    |--------------------------------------------------------------------------
     | Nova Route Middleware
     |--------------------------------------------------------------------------
     |
