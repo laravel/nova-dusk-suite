@@ -4,6 +4,7 @@ namespace Tests\Browser;
 
 use App\Post;
 use App\User;
+use App\InvoiceItem;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\DetailComponent;
@@ -31,6 +32,22 @@ class DetailBelongsToFieldTest extends DuskTestCase
                     })
                     ->pause(250)
                     ->assertPathIs('/nova/resources/users/'.$user->id);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function belongs_to_field_should_honor_custom_labels()
+    {
+        $this->seed();
+
+        factory(InvoiceItem::class)->create();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('invoice-items', 1))
+                    ->assertSee('Client Invoice');
         });
     }
 }

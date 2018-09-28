@@ -105,4 +105,19 @@ class CreateWithMorphToTest extends DuskTestCase
             $this->assertCount(1, $post->fresh()->comments);
         });
     }
+
+    /**
+     * @test
+     */
+    public function morph_to_field_should_honor_custom_labels()
+    {
+        $this->seed();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Create('comments'))
+                    ->assertSee('User Post')
+                    ->assertSee('User Video');
+        });
+    }
 }

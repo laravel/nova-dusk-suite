@@ -4,17 +4,33 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\MorphMany;
+use Laravel\Nova\Fields\BelongsTo;
 
-class Video extends Resource
+class InvoiceItem extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\Video';
+    public static $model = 'App\InvoiceItem';
+
+    /**
+     * The single value that should be used to represent the resource when being displayed.
+     *
+     * @var string
+     */
+    public static $title = 'id';
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Invoice Item';
+    }
 
     /**
      * The columns that should be searched.
@@ -26,16 +42,6 @@ class Video extends Resource
     ];
 
     /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
-    {
-        return 'User Video';
-    }
-
-    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -44,10 +50,8 @@ class Video extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make('ID', 'id')->sortable(),
-            Text::make('Title', 'title')->sortable(),
-
-            MorphMany::make('Comments', 'comments'),
+            ID::make()->sortable(),
+            BelongsTo::make('Invoice', 'invoice'),
         ];
     }
 
@@ -58,6 +62,17 @@ class Video extends Resource
      * @return array
      */
     public function cards(Request $request)
+    {
+        return [];
+    }
+
+    /**
+     * Get the filters available for the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function filters(Request $request)
     {
         return [];
     }
@@ -80,17 +95,6 @@ class Video extends Resource
      * @return array
      */
     public function actions(Request $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the filters available for the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function filters(Request $request)
     {
         return [];
     }
