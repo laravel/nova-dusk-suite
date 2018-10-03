@@ -103,7 +103,7 @@ class IndexComponent extends BaseComponent
         $browser->click('@filter-selector')
                     ->within('@filter-selector', function ($browser) use ($name, $value) {
                         $browser->select('@'.$name.'-filter-select', $value);
-                    })->pause(250);
+                    })->click('')->pause(250);
     }
 
     /**

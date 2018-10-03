@@ -4,8 +4,10 @@ namespace Tests\Browser;
 
 use App\Post;
 use App\User;
+use App\InvoiceItem;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use Tests\Browser\Components\DetailComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class DetailBelongsToFieldTest extends DuskTestCase
@@ -25,9 +27,27 @@ class DetailBelongsToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $post) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('posts', $post->id))
-                    ->clickLink($user->name)
+                    ->within(new DetailComponent('posts', $post->id), function ($browser) use ($user) {
+                        $browser->clickLink($user->name);
+                    })
                     ->pause(250)
                     ->assertPathIs('/nova/resources/users/'.$user->id);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function belongs_to_field_should_honor_custom_labels()
+    {
+        $this->seed();
+
+        factory(InvoiceItem::class)->create();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('invoice-items', 1))
+                    ->assertSee('Client Invoice');
         });
     }
 }
