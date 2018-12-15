@@ -48,6 +48,7 @@ class UpdateTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Update('users', 1))
                     ->type('@name', 'Taylor Otwell Updated')
+                    ->type('@password', 'secret')
                     ->update();
 
             $user = User::find(1);
@@ -86,6 +87,7 @@ class UpdateTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Update('users', 1))
                     ->type('@name', 'Taylor Otwell Updated')
+                    ->type('@password', 'secret')
                     ->updateAndContinueEditing();
 
             $user = User::find(1);

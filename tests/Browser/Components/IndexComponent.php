@@ -275,8 +275,8 @@ class IndexComponent extends BaseComponent
     {
         $browser->click('@select-all-dropdown')
                         ->pause(500)
-                        ->within('@select-all-dropdown', function ($browser) use ($count) {
-                            $browser->assertSee('Select All Matching ('.$count.')');
+                        ->within('@select-all-matching-button', function (Browser $browser) use ($count) {
+                            $browser->assertSee('('.$count.')');
                         })
                         ->pause(250);
     }

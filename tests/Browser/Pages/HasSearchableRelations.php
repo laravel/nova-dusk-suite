@@ -30,7 +30,12 @@ trait HasSearchableRelations
      */
     public function withTrashedRelation(Browser $browser, $resourceName)
     {
-        $browser->click('')->check('@'.$resourceName.'-with-trashed-checkbox')->pause(250);
+        $browser->click('')->with(
+            "@{$resourceName}-with-trashed-checkbox",
+            function (Browser $browser) use ($resourceName) {
+                $browser->check(null)->pause(250);
+            }
+        );
     }
 
     /**
