@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use App\Link;
 use App\Post;
 use App\User;
 use App\Video;
@@ -68,6 +69,26 @@ class DetailMorphToFieldTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('comments', 1))
                     ->assertSee('User Video');
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function morph_to_field_should_honor_custom_polymorphic_type()
+    {
+        $this->seed();
+
+        $link = factory(Link::class)->create();
+        $link->comments()->save($comment = factory(Comment::class)->make());
+
+        $this->browse(function (Browser $browser) use ($comment, $link) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('comments', 1))
+                    ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($link) {
+                        $browser->assertSee('Link')
+                                ->assertSee($link->title);
+                    });
         });
     }
 }

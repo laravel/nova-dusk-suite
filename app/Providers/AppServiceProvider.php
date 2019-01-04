@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Link;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Relation::morphMap([
+            'link' => Link::class,
+        ]);
     }
 
     /**
