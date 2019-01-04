@@ -8,7 +8,6 @@ use App\User;
 use App\Comment;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class UpdateWithMorphToTest extends DuskTestCase
