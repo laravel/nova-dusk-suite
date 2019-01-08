@@ -16,7 +16,7 @@ class CreateCaptainsTable extends Migration
         Schema::create('captains', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('photo')->nullable();
+            $table->string('photo');
             $table->timestamps();
         });
 
