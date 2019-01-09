@@ -39,7 +39,8 @@ class Captain extends Resource
             ID::make('ID', 'id')->sortable(),
             Text::make('Name', 'name')->sortable(),
 
-            Image::make('Photo', 'photo'),
+            Image::make('Photo', 'photo')
+                ->prunable(),
 
             BelongsToMany::make('Ships', 'ships')
                         ->display('name')
