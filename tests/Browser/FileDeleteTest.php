@@ -24,7 +24,7 @@ class FileDeleteTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                 ->visit(new Pages\Create('captains'))
                 ->type('@name', 'Taylor Otwell')
-                ->attach('@photo', __DIR__ . '/Fixtures/StardewTaylor.png')
+                ->attach('@photo', __DIR__.'/Fixtures/StardewTaylor.png')
                 ->create();
 
             $captain = Captain::orderBy('id', 'desc')->first();
