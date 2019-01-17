@@ -116,6 +116,7 @@ class User extends Resource
         return [
             new Actions\MarkAsActive,
             new Actions\Sleep,
+            (new Actions\RedirectToGoogle)->withoutConfirmation(),
         ];
     }
 

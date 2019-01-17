@@ -46,6 +46,18 @@ class Detail extends Page
     }
 
     /**
+     * Run the action with the given URI key.
+     */
+    public function runInstantAction(Browser $browser, $uriKey)
+    {
+        $browser->select('@action-select', $uriKey)
+                    ->pause(100)
+                    ->click('@run-action-button')
+                    ->assertDontSee('@cancel-action-button')
+                    ->pause(250);
+    }
+
+    /**
      * Open the action modal but cancel the action.
      */
     public function cancelAction(Browser $browser, $uriKey)
