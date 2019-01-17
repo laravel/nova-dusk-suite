@@ -7,11 +7,32 @@ use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\IndexComponent;
+use Tests\Browser\Components\DetailComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ActionFieldTest extends DuskTestCase
 {
     use DatabaseMigrations;
+
+    /**
+     * @test
+     */
+    public function actions_can_be_instantly_dispatched()
+    {
+        $this->seed();
+
+        $user = User::find(1);
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('users', 1))
+                    ->within(new DetailComponent('users', 1), function ($browser) {
+                        $browser->runInstantAction('redirect-to-google')
+                                ->assertMissing('Nova')
+                                ->assertHostIs('www.google.com');
+                    });
+        });
+    }
 
     /**
      * @test
