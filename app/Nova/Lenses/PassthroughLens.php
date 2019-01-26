@@ -2,12 +2,12 @@
 
 namespace App\Nova\Lenses;
 
-use App\Nova\Actions\MarkAsActive;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Lenses\Lens;
 use App\Nova\Filters\SelectFirst;
+use App\Nova\Actions\MarkAsActive;
 use Laravel\Nova\Http\Requests\LensRequest;
 
 class PassthroughLens extends Lens
