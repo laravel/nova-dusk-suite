@@ -66,7 +66,7 @@ class PassthroughLens extends Lens
     public function actions(Request $request)
     {
         return [
-            new MarkAsActive()
+            new MarkAsActive(),
         ];
     }
 }
