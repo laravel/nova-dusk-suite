@@ -2,6 +2,7 @@
 
 namespace App\Nova\Lenses;
 
+use App\Nova\Actions\MarkAsActive;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
@@ -60,5 +61,12 @@ class PassthroughLens extends Lens
     public function uriKey()
     {
         return 'passthrough-lens';
+    }
+
+    public function actions(Request $request)
+    {
+        return [
+            new MarkAsActive()
+        ];
     }
 }
