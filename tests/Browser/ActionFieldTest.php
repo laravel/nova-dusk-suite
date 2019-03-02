@@ -57,7 +57,7 @@ class ActionFieldTest extends DuskTestCase
                     });
         });
     }
-    
+
     /**
      * @test
      */
