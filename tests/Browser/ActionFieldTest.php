@@ -37,6 +37,30 @@ class ActionFieldTest extends DuskTestCase
     /**
      * @test
      */
+    public function actions_can_open_new_tabs()
+    {
+        $this->seed();
+
+        $user = User::find(1);
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\Detail('users', 1))
+                    ->within(new DetailComponent('users', 1), function ($browser) {
+                        $browser->runInstantAction('tab-to-google')
+                                ->driver->switchTo()->window(
+                                    collect($browser->driver->getWindowHandles())->last()
+                                );
+
+                        $browser->assertMissing('Nova')
+                                ->assertHostIs('www.google.com');
+                    });
+        });
+    }
+    
+    /**
+     * @test
+     */
     public function actions_can_receive_and_utilize_field_input()
     {
         $this->seed();
