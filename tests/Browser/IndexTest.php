@@ -195,6 +195,27 @@ class IndexTest extends DuskTestCase
     /**
      * @test
      */
+    public function number_of_resources_displayed_per_page_matches_config()
+    {
+        factory(User::class, 50)->create();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Pages\UserIndex)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->setPerPage('50')
+                                ->within('@per-page-select', function ($browser) {
+                                    $browser->assertSeeIn('option:nth-of-type(1)', '25')
+                                            ->assertSeeIn('option:nth-of-type(2)', '50')
+                                            ->assertSeeIn('option:nth-of-type(3)', '100');
+                                });
+                    });
+        });
+    }
+
+    /**
+     * @test
+     */
     public function number_of_resources_displayed_per_page_can_be_changed()
     {
         factory(User::class, 50)->create();

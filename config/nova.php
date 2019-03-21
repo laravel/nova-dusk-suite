@@ -91,4 +91,17 @@ return [
 
     'pagination' => 'simple',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Nova Per Page Options
+    |--------------------------------------------------------------------------
+    |
+    | This option defines the records per page options used by Resources.
+    | You may customize the global default per page options here. You
+    | may override these defaults on a per-resource basis as well.
+    |
+    */
+
+    'perPageOptions' => [25, 50, 100],
+
 ];
