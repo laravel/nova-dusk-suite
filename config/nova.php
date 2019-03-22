@@ -102,6 +102,6 @@ return [
     |
     */
 
-    'perPageOptions' => [25, 50, 100],
+    'per_page_options' => [25, 50, 100],
 
 ];
