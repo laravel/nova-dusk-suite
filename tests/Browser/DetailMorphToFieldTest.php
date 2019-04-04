@@ -33,7 +33,7 @@ class DetailMorphToFieldTest extends DuskTestCase
                         $browser->assertSee('Post');
                     })
                     ->clickLink($post->title)
-                    ->pause(250)
+                    ->pause(500)
                     ->assertPathIs('/nova/resources/posts/'.$post->id);
         });
     }

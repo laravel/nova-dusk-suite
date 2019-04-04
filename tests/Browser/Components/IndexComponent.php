@@ -76,7 +76,8 @@ class IndexComponent extends BaseComponent
                     ->within('@filter-selector', function ($browser) use ($value) {
                         $browser->select('@per-page-select', $value);
                     })
-                    ->pause(250);
+                    ->pause(500)
+                    ->click('');
     }
 
     /**
