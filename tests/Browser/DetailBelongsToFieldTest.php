@@ -2,13 +2,13 @@
 
 namespace Tests\Browser;
 
+use App\InvoiceItem;
 use App\Post;
 use App\User;
-use App\InvoiceItem;
-use Tests\DuskTestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\DetailComponent;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\DuskTestCase;
 
 class DetailBelongsToFieldTest extends DuskTestCase
 {

@@ -4,10 +4,10 @@ namespace Tests\Browser;
 
 use App\Post;
 use App\User;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 
 class UpdateTest extends DuskTestCase
 {

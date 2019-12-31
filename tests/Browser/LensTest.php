@@ -3,10 +3,10 @@
 namespace Tests\Browser;
 
 use App\User;
-use Tests\DuskTestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\LensComponent;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\DuskTestCase;
 
 class LensTest extends DuskTestCase
 {

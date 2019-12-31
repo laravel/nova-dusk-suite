@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Tag;
 use App\Post;
+use App\Tag;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

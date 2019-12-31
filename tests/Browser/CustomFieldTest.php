@@ -2,12 +2,12 @@
 
 namespace Tests\Browser;
 
-use App\User;
 use App\Flight;
-use Tests\DuskTestCase;
+use App\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\IndexComponent;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\DuskTestCase;
 
 class CustomFieldTest extends DuskTestCase
 {

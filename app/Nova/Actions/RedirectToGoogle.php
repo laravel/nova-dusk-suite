@@ -2,8 +2,8 @@
 
 namespace App\Nova\Actions;
 
-use Laravel\Nova\Actions\Action;
 use Illuminate\Support\Collection;
+use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 
 class RedirectToGoogle extends Action

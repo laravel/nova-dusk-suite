@@ -2,12 +2,12 @@
 
 namespace App\Nova\Lenses;
 
-use Laravel\Nova\Fields\ID;
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Lenses\Lens;
 use App\Nova\Filters\SelectFirst;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\LensRequest;
+use Laravel\Nova\Lenses\Lens;
 
 class PassthroughWithTrashedLens extends Lens
 {

@@ -2,13 +2,13 @@
 
 namespace Tests\Browser;
 
+use App\Comment;
 use App\Link;
 use App\Post;
 use App\User;
-use App\Comment;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 
 class UpdateWithMorphToTest extends DuskTestCase
 {

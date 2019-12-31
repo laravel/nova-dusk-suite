@@ -4,10 +4,10 @@ namespace Tests\Browser;
 
 use App\User;
 use App\Video;
-use Tests\DuskTestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\IndexComponent;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\DuskTestCase;
 
 class CreateWithSoftDeletingMorphToTest extends DuskTestCase
 {

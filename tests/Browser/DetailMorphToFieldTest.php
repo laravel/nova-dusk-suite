@@ -2,15 +2,15 @@
 
 namespace Tests\Browser;
 
+use App\Comment;
 use App\Link;
 use App\Post;
 use App\User;
 use App\Video;
-use App\Comment;
-use Tests\DuskTestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\DetailComponent;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\DuskTestCase;
 
 class DetailMorphToFieldTest extends DuskTestCase
 {

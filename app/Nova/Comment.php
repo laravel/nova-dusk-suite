@@ -2,10 +2,10 @@
 
 namespace App\Nova;
 
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphTo;
+use Laravel\Nova\Fields\Text;
 
 class Comment extends Resource
 {
@@ -46,20 +46,20 @@ class Comment extends Resource
     protected function commentable()
     {
         return MorphTo::make('Commentable', 'commentable')->display([
-                Link::class => function ($resource) {
-                    return $resource->title;
-                },
-                Post::class => function ($resource) {
-                    return $resource->title;
-                },
-                Video::class => function ($resource) {
-                    return $resource->title;
-                },
-            ])->types([
-                Link::class => 'Link',
-                Post::class => 'Post',
-                Video::class => 'Video',
-            ])->searchable(file_exists(base_path('.searchable')));
+            Link::class => function ($resource) {
+                return $resource->title;
+            },
+            Post::class => function ($resource) {
+                return $resource->title;
+            },
+            Video::class => function ($resource) {
+                return $resource->title;
+            },
+        ])->types([
+            Link::class => 'Link',
+            Post::class => 'Post',
+            Video::class => 'Video',
+        ])->searchable(file_exists(base_path('.searchable')));
     }
 
     /**
