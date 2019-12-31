@@ -2,11 +2,11 @@
 
 namespace App\Nova;
 
-use Laravel\Nova\Panel;
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Place;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Panel;
 
 class Address extends Resource
 {

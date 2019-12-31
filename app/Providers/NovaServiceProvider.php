@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
-use Laravel\Nova\Nova;
-use Laravel\Nova\Cards\Help;
-use Otwell\SidebarTool\SidebarTool;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Nova\Cards\Help;
+use Laravel\Nova\Events\ServingNova;
+use Laravel\Nova\Nova;
+use Otwell\SidebarTool\SidebarTool;
 
 class NovaServiceProvider extends ServiceProvider
 {

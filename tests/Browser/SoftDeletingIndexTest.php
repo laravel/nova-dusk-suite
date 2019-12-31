@@ -5,10 +5,10 @@ namespace Tests\Browser;
 use App\Dock;
 use App\Ship;
 use App\User;
-use Tests\DuskTestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\IndexComponent;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\DuskTestCase;
 
 class SoftDeletingIndexTest extends DuskTestCase
 {

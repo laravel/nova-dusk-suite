@@ -2,8 +2,8 @@
 
 namespace App\Nova;
 
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\ID;
 use Otwell\CustomField\CustomField;
 
 class Flight extends Resource

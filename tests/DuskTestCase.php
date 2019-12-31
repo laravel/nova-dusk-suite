@@ -2,11 +2,11 @@
 
 namespace Tests;
 
+use Facebook\WebDriver\Chrome\ChromeOptions;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverDimension;
 use Laravel\Dusk\TestCase as BaseTestCase;
-use Facebook\WebDriver\Chrome\ChromeOptions;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
-use Facebook\WebDriver\Remote\DesiredCapabilities;
 
 abstract class DuskTestCase extends BaseTestCase
 {

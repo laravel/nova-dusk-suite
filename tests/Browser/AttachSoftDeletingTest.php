@@ -2,12 +2,12 @@
 
 namespace Tests\Browser;
 
+use App\Captain;
 use App\Ship;
 use App\User;
-use App\Captain;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 
 class AttachSoftDeletingTest extends DuskTestCase
 {

@@ -2,14 +2,14 @@
 
 namespace Tests\Browser;
 
+use App\Captain;
 use App\Ship;
 use App\User;
-use App\Captain;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
-use Illuminate\Support\Facades\Storage;
-use Tests\Browser\Components\IndexComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Storage;
+use Laravel\Dusk\Browser;
+use Tests\Browser\Components\IndexComponent;
+use Tests\DuskTestCase;
 
 class PivotFileAttachTest extends DuskTestCase
 {

@@ -4,11 +4,11 @@ namespace Tests\Browser;
 
 use App\Role;
 use App\User;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\Browser\Components\DetailComponent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
+use Tests\Browser\Components\DetailComponent;
+use Tests\Browser\Components\IndexComponent;
+use Tests\DuskTestCase;
 
 class ActionFieldTest extends DuskTestCase
 {

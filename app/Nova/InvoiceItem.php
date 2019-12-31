@@ -2,9 +2,9 @@
 
 namespace App\Nova;
 
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\ID;
 
 class InvoiceItem extends Resource
 {

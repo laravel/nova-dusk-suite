@@ -2,12 +2,12 @@
 
 namespace Tests\Browser;
 
-use App\User;
 use App\Captain;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
-use Illuminate\Support\Facades\Storage;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Storage;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 
 class FileDeleteTest extends DuskTestCase
 {
