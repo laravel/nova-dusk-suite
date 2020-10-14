@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Post;
 use App\Models\User;
+use Database\Factories\PostFactory;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -17,8 +17,8 @@ class UpdateTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $post = factory(Post::class)->create();
-        $post2 = factory(Post::class)->create();
+        $post = PostFactory::new()->create();
+        $post2 = PostFactory::new()->create();
 
         $user = User::find(1);
         $user->shouldBlockFrom('post.update.'.$post->id);

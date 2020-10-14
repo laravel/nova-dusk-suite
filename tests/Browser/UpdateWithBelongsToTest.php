@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Post;
 use App\Models\User;
+use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -17,7 +17,7 @@ class UpdateWithBelongsToTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $user->posts()->save($post = factory(Post::class)->make());
+        $user->posts()->save($post = PostFactory::new()->make());
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))

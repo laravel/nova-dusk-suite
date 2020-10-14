@@ -2,9 +2,9 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\InvoiceItem;
-use App\Models\Post;
 use App\Models\User;
+use Database\Factories\InvoiceItemFactory;
+use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\DetailComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -19,7 +19,7 @@ class DetailBelongsToFieldTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $user->posts()->save($post = factory(Post::class)->create());
+        $user->posts()->save($post = PostFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($user, $post) {
             $browser->loginAs(User::find(1))
@@ -41,7 +41,7 @@ class DetailBelongsToFieldTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(InvoiceItem::class)->create();
+        InvoiceItemFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))

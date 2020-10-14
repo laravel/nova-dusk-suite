@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
+use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -161,7 +162,7 @@ class IndexTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(User::class, 50)->create();
+        UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -190,7 +191,7 @@ class IndexTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(User::class, 50)->create();
+        UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -225,7 +226,7 @@ class IndexTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(User::class, 50)->create();
+        UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))

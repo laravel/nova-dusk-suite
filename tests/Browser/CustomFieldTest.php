@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Flight;
 use App\Models\User;
+use Database\Factories\FlightFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -56,7 +57,7 @@ class CustomFieldTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $flight = factory(Flight::class)->create();
+        $flight = FlightFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($flight) {
             $browser->loginAs(User::find(1))
@@ -77,7 +78,7 @@ class CustomFieldTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $flight = factory(Flight::class)->create();
+        $flight = FlightFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($flight) {
             $browser->loginAs(User::find(1))

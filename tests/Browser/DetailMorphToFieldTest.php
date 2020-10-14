@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Comment;
-use App\Models\Link;
-use App\Models\Post;
 use App\Models\User;
-use App\Models\Video;
+use Database\Factories\CommentFactory;
+use Database\Factories\LinkFactory;
+use Database\Factories\PostFactory;
+use Database\Factories\VideoFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\DetailComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -20,8 +20,8 @@ class DetailMorphToFieldTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $post = factory(Post::class)->create();
-        $post->comments()->save($comment = factory(Comment::class)->make());
+        $post = PostFactory::new()->create();
+        $post->comments()->save($comment = CommentFactory::new()->make());
 
         $this->browse(function (Browser $browser) use ($post, $comment) {
             $browser->loginAs(User::find(1))
@@ -44,8 +44,8 @@ class DetailMorphToFieldTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $post = factory(Post::class)->create();
-        $post->comments()->save($comment = factory(Comment::class)->make());
+        $post = PostFactory::new()->create();
+        $post->comments()->save($comment = CommentFactory::new()->make());
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -63,8 +63,8 @@ class DetailMorphToFieldTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $video = factory(Video::class)->create();
-        $video->comments()->save($comment = factory(Comment::class)->make());
+        $video = VideoFactory::new()->create();
+        $video->comments()->save($comment = CommentFactory::new()->make());
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -82,8 +82,8 @@ class DetailMorphToFieldTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $link = factory(Link::class)->create();
-        $link->comments()->save($comment = factory(Comment::class)->make());
+        $link = LinkFactory::new()->create();
+        $link->comments()->save($comment = CommentFactory::new()->make());
 
         $this->browse(function (Browser $browser) use ($comment, $link) {
             $browser->loginAs(User::find(1))

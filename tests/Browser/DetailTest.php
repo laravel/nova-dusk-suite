@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Post;
 use App\Models\User;
+use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -108,7 +108,7 @@ class DetailTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $user->posts()->save($post = factory(Post::class)->create());
+        $user->posts()->save($post = PostFactory::new()->create());
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -132,7 +132,7 @@ class DetailTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $user->posts()->save($post = factory(Post::class)->create());
+        $user->posts()->save($post = PostFactory::new()->create());
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -158,10 +158,10 @@ class DetailTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $user->posts()->saveMany(factory(Post::class, 10)->create());
+        $user->posts()->saveMany(PostFactory::new()->times(10)->create());
 
         $user2 = User::find(2);
-        $user2->posts()->save(factory(Post::class)->create());
+        $user2->posts()->save(PostFactory::new()->create());
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -190,10 +190,10 @@ class DetailTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $user->posts()->saveMany(factory(Post::class, 10)->create());
+        $user->posts()->saveMany(PostFactory::new()->times(10)->create());
 
         $user2 = User::find(2);
-        $user2->posts()->save(factory(Post::class)->create());
+        $user2->posts()->save(PostFactory::new()->create());
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -222,10 +222,10 @@ class DetailTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $user->posts()->save($post = factory(Post::class)->create());
+        $user->posts()->save($post = PostFactory::new()->create());
 
         $user2 = User::find(2);
-        $user2->posts()->save($post2 = factory(Post::class)->create());
+        $user2->posts()->save($post2 = PostFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
@@ -251,10 +251,10 @@ class DetailTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $user->posts()->save($post = factory(Post::class)->create());
+        $user->posts()->save($post = PostFactory::new()->create());
 
         $user2 = User::find(2);
-        $user2->posts()->save($post2 = factory(Post::class)->create());
+        $user2->posts()->save($post2 = PostFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))

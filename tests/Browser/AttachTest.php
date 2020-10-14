@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Role;
 use App\Models\User;
+use Database\Factories\RoleFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -17,7 +17,7 @@ class AttachTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $role = factory(Role::class)->create();
+        $role = RoleFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(User::find(1))
@@ -48,7 +48,7 @@ class AttachTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $role = factory(Role::class)->create();
+        $role = RoleFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(User::find(1))
@@ -81,7 +81,7 @@ class AttachTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $role = factory(Role::class)->create();
+        $role = RoleFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))

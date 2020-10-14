@@ -2,10 +2,11 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Comment;
-use App\Models\Link;
 use App\Models\Post;
 use App\Models\User;
+use Database\Factories\CommentFactory;
+use Database\Factories\LinkFactory;
+use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -18,8 +19,8 @@ class UpdateWithMorphToTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $comment = factory(Comment::class)->create();
-        $post = factory(Post::class)->create();
+        $comment = CommentFactory::new()->create();
+        $post = PostFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($comment) {
             $browser->loginAs(User::find(1))
@@ -42,8 +43,8 @@ class UpdateWithMorphToTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $link = factory(Link::class)->create();
-        $link->comments()->save($comment = factory(Comment::class)->make());
+        $link = LinkFactory::new()->create();
+        $link->comments()->save($comment = CommentFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($comment, $link) {
             $browser->loginAs(User::find(1))

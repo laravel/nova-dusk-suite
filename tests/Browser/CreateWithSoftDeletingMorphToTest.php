@@ -3,7 +3,7 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
-use App\Models\Video;
+use Database\Factories\VideoFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -32,7 +32,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $video = factory(Video::class)->create(['deleted_at' => now()]);
+        $video = VideoFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) use ($video) {
             $browser->loginAs(User::find(1))
@@ -60,8 +60,8 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $video = factory(Video::class)->create(['deleted_at' => now()]);
-        $video2 = factory(Video::class)->create();
+        $video = VideoFactory::new()->create(['deleted_at' => now()]);
+        $video2 = VideoFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($video, $video2) {
             $browser->loginAs(User::find(1))
@@ -98,8 +98,8 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $video = factory(Video::class)->create(['deleted_at' => now()]);
-        $video2 = factory(Video::class)->create();
+        $video = VideoFactory::new()->create(['deleted_at' => now()]);
+        $video2 = VideoFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($video) {
             $browser->loginAs(User::find(1))
@@ -129,7 +129,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
         $this->whileSearchable(function () {
             $this->setupLaravel();
 
-            $video = factory(Video::class)->create(['deleted_at' => now()]);
+            $video = VideoFactory::new()->create(['deleted_at' => now()]);
 
             $this->browse(function (Browser $browser) use ($video) {
                 $browser->loginAs(User::find(1))

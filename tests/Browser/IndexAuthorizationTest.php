@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Post;
 use App\Models\User;
+use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -17,7 +17,7 @@ class IndexAuthorizationTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $post = factory(Post::class)->create();
+        $post = PostFactory::new()->create();
 
         $user = User::find(1);
         $user->shouldBlockFrom('post.viewAny');
@@ -39,8 +39,8 @@ class IndexAuthorizationTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $post = factory(Post::class)->create();
-        $post2 = factory(Post::class)->create();
+        $post = PostFactory::new()->create();
+        $post2 = PostFactory::new()->create();
 
         $user = User::find(1);
         $user->shouldBlockFrom('post.update.'.$post->id);
@@ -65,8 +65,8 @@ class IndexAuthorizationTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $post = factory(Post::class)->create();
-        $post2 = factory(Post::class)->create();
+        $post = PostFactory::new()->create();
+        $post2 = PostFactory::new()->create();
 
         $user = User::find(1);
         $user->shouldBlockFrom('post.delete.'.$post->id);
@@ -91,7 +91,7 @@ class IndexAuthorizationTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(Post::class, 3)->create();
+        PostFactory::new()->times(3)->create();
 
         $user = User::find(1);
         $user->shouldBlockFrom('post.delete.1');
@@ -121,7 +121,7 @@ class IndexAuthorizationTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(Post::class, 3)->create();
+        PostFactory::new()->times(3)->create();
 
         $user = User::find(1);
         $user->shouldBlockFrom('post.delete.1');

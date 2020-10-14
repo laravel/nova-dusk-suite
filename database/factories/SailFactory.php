@@ -1,21 +1,29 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+use App\Models\Sail;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(App\Models\Sail::class, function (Faker $faker) {
-    return [
-        'ship_id' => factory(App\Models\Ship::class),
-        'inches' => random_int(50, 100),
-    ];
-});
+class SailFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Sail::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'ship_id' => ShipFactory::new()->create(),
+            'inches' => random_int(50, 100),
+        ];
+    }
+}

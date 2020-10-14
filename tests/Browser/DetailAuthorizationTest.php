@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Post;
 use App\Models\User;
+use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -17,7 +17,7 @@ class DetailAuthorizationTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $post = factory(Post::class)->create();
+        $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.view.'.$post->id);
 
         $this->browse(function (Browser $browser) use ($post) {
@@ -37,7 +37,7 @@ class DetailAuthorizationTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $post = factory(Post::class)->create();
+        $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.update.'.$post->id);
 
         $this->browse(function (Browser $browser) use ($post) {
@@ -57,7 +57,7 @@ class DetailAuthorizationTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $post = factory(Post::class)->create();
+        $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.delete.'.$post->id);
 
         $this->browse(function (Browser $browser) use ($post) {

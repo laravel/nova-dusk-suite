@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Dock;
 use App\Models\User;
+use Database\Factories\DockFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\LensComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -17,7 +18,7 @@ class SoftDeletingLensTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $dock = factory(Dock::class)->create();
+        $dock = DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -37,9 +38,9 @@ class SoftDeletingLensTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(Dock::class)->create();
-        factory(Dock::class)->create();
-        factory(Dock::class)->create();
+        DockFactory::new()->create();
+        DockFactory::new()->create();
+        DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -61,9 +62,9 @@ class SoftDeletingLensTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(Dock::class)->create();
-        factory(Dock::class)->create(['deleted_at' => now()]);
-        factory(Dock::class)->create(['deleted_at' => now()]);
+        DockFactory::new()->create();
+        DockFactory::new()->create(['deleted_at' => now()]);
+        DockFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -85,9 +86,9 @@ class SoftDeletingLensTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(Dock::class)->create();
-        factory(Dock::class)->create();
-        factory(Dock::class)->create();
+        DockFactory::new()->create();
+        DockFactory::new()->create();
+        DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -110,9 +111,9 @@ class SoftDeletingLensTest extends DuskTestCase
     // {
     //     $this->setupLaravel();
 
-    //     factory(Dock::class)->create();
-    //     factory(Dock::class)->create();
-    //     factory(Dock::class)->create();
+    //     DockFactory::new()->create();
+    //     DockFactory::new()->create();
+    //     DockFactory::new()->create();
 
     //     $this->browse(function (Browser $browser) {
     //         $browser->loginAs(User::find(1))
@@ -135,7 +136,7 @@ class SoftDeletingLensTest extends DuskTestCase
     // {
     //     $this->setupLaravel();
 
-    //     factory(Dock::class, 3)->create(['deleted_at' => now()]);
+    //     DockFactory::new()->times(3)->create(['deleted_at' => now()]);
 
     //     $this->browse(function (Browser $browser) {
     //         $browser->loginAs(User::find(1))
@@ -159,7 +160,7 @@ class SoftDeletingLensTest extends DuskTestCase
     // {
     //     $this->setupLaravel();
 
-    //     factory(Dock::class, 3)->create(['deleted_at' => now()]);
+    //     DockFactory::new()->times(3)->create(['deleted_at' => now()]);
 
     //     $this->browse(function (Browser $browser) {
     //         $browser->loginAs(User::find(1))
@@ -183,7 +184,7 @@ class SoftDeletingLensTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(Dock::class)->create();
+        DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))

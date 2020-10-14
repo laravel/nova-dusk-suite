@@ -3,8 +3,9 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Post;
-use App\Models\Tag;
 use App\Models\User;
+use Database\Factories\PostFactory;
+use Database\Factories\TagFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -18,8 +19,8 @@ class AttachPolymorphicTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $post = factory(Post::class)->create();
-        $tag = factory(Tag::class)->create();
+        $post = PostFactory::new()->create();
+        $tag = TagFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(User::find(1))
@@ -46,8 +47,8 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->setupLaravel();
 
         $this->whileSearchable(function () {
-            $post = factory(Post::class)->create();
-            $tag = factory(Tag::class)->create();
+            $post = PostFactory::new()->create();
+            $tag = TagFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($tag) {
                 $browser->loginAs(User::find(1))
@@ -74,8 +75,8 @@ class AttachPolymorphicTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $post = factory(Post::class)->create();
-        $tag = factory(Tag::class)->create();
+        $post = PostFactory::new()->create();
+        $tag = TagFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(User::find(1))
@@ -103,8 +104,8 @@ class AttachPolymorphicTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $post = factory(Post::class)->create();
-        $tag = factory(Tag::class)->create();
+        $post = PostFactory::new()->create();
+        $tag = TagFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -132,8 +133,8 @@ class AttachPolymorphicTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $post = factory(Post::class)->create();
-        $tag = factory(Tag::class)->create();
+        $post = PostFactory::new()->create();
+        $tag = TagFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(User::find(1))

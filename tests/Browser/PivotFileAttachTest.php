@@ -5,6 +5,8 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\Captain;
 use App\Models\Ship;
 use App\Models\User;
+use Database\Factories\CaptainFactory;
+use Database\Factories\ShipFactory;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
@@ -19,8 +21,8 @@ class PivotFileAttachTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $captain = factory(Captain::class)->create();
-        $ship = factory(Ship::class)->create();
+        $captain = CaptainFactory::new()->create();
+        $ship = ShipFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($captain, $ship) {
             $browser->loginAs(User::find(1))
@@ -64,8 +66,8 @@ class PivotFileAttachTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $captain = factory(Captain::class)->create();
-        $ship = factory(Ship::class)->create();
+        $captain = CaptainFactory::new()->create();
+        $ship = ShipFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($captain, $ship) {
             $browser->loginAs(User::find(1))

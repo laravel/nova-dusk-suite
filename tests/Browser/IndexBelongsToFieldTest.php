@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Post;
 use App\Models\User;
+use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -18,7 +18,7 @@ class IndexBelongsToFieldTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $user->posts()->save($post = factory(Post::class)->create());
+        $user->posts()->save($post = PostFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(User::find(1))

@@ -5,6 +5,8 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\Captain;
 use App\Models\Ship;
 use App\Models\User;
+use Database\Factories\CaptainFactory;
+use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -18,8 +20,8 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $ship = factory(Ship::class)->create(['deleted_at' => now()]);
-        $captain = factory(Captain::class)->create();
+        $ship = ShipFactory::new()->create(['deleted_at' => now()]);
+        $captain = CaptainFactory::new()->create();
         $captain->ships()->attach($ship);
 
         $this->browse(function (Browser $browser) use ($captain) {
@@ -50,8 +52,8 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $ship = factory(Ship::class)->create(['deleted_at' => now()]);
-        $captain = factory(Captain::class)->create();
+        $ship = ShipFactory::new()->create(['deleted_at' => now()]);
+        $captain = CaptainFactory::new()->create();
         $captain->ships()->attach($ship);
 
         $this->browse(function (Browser $browser) use ($captain) {

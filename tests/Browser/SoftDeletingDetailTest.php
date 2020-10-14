@@ -5,6 +5,8 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\Dock;
 use App\Models\Ship;
 use App\Models\User;
+use Database\Factories\DockFactory;
+use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -18,7 +20,7 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(Dock::class)->create(['name' => 'Test Dock']);
+        DockFactory::new()->create(['name' => 'Test Dock']);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -36,7 +38,7 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(Dock::class)->create();
+        DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -56,7 +58,7 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(Dock::class)->create();
+        DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -76,7 +78,7 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(Dock::class)->create();
+        DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -98,7 +100,7 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(Dock::class)->create(['deleted_at' => now()]);
+        DockFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -120,7 +122,7 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        factory(Dock::class)->create(['deleted_at' => now()]);
+        DockFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -142,8 +144,8 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $dock = factory(Dock::class)->create();
-        $dock->ships()->save($ship = factory(Ship::class)->create());
+        $dock = DockFactory::new()->create();
+        $dock->ships()->save($ship = ShipFactory::new()->create());
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -165,8 +167,8 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $dock = factory(Dock::class)->create();
-        $dock->ships()->save($ship = factory(Ship::class)->create());
+        $dock = DockFactory::new()->create();
+        $dock->ships()->save($ship = ShipFactory::new()->create());
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -191,7 +193,7 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $dock = factory(Dock::class)->create();
+        $dock = DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -215,8 +217,8 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $dock = factory(Dock::class)->create();
-        $dock->ships()->saveMany(factory(Ship::class, 10)->create());
+        $dock = DockFactory::new()->create();
+        $dock->ships()->saveMany(ShipFactory::new()->times(10)->create());
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -243,8 +245,8 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $dock = factory(Dock::class)->create();
-        $dock->ships()->saveMany(factory(Ship::class, 10)->create());
+        $dock = DockFactory::new()->create();
+        $dock->ships()->saveMany(ShipFactory::new()->times(10)->create());
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -271,11 +273,11 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $dock = factory(Dock::class)->create();
-        $dock->ships()->save($ship = factory(Ship::class)->create());
+        $dock = DockFactory::new()->create();
+        $dock->ships()->save($ship = ShipFactory::new()->create());
 
-        $dock2 = factory(Dock::class)->create();
-        $dock2->ships()->save($ship2 = factory(Ship::class)->create());
+        $dock2 = DockFactory::new()->create();
+        $dock2->ships()->save($ship2 = ShipFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
             $browser->loginAs(User::find(1))
@@ -299,11 +301,11 @@ class SoftDeletingDetailTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $dock = factory(Dock::class)->create();
-        $dock->ships()->save($ship = factory(Ship::class)->create());
+        $dock = DockFactory::new()->create();
+        $dock->ships()->save($ship = ShipFactory::new()->create());
 
-        $dock2 = factory(Dock::class)->create();
-        $dock2->ships()->save($ship2 = factory(Ship::class)->create());
+        $dock2 = DockFactory::new()->create();
+        $dock2->ships()->save($ship2 = ShipFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
             $browser->loginAs(User::find(1))

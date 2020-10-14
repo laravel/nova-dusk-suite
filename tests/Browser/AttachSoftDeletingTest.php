@@ -2,9 +2,9 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Captain;
-use App\Models\Ship;
 use App\Models\User;
+use Database\Factories\CaptainFactory;
+use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -17,8 +17,8 @@ class AttachSoftDeletingTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $captain = factory(Captain::class)->create();
-        $ship = factory(Ship::class)->create();
+        $captain = CaptainFactory::new()->create();
+        $ship = ShipFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($captain, $ship) {
             $browser->loginAs(User::find(1))
@@ -39,8 +39,8 @@ class AttachSoftDeletingTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $captain = factory(Captain::class)->create();
-        $ship = factory(Ship::class)->create(['deleted_at' => now()]);
+        $captain = CaptainFactory::new()->create();
+        $ship = ShipFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) use ($captain, $ship) {
             $browser->loginAs(User::find(1))
@@ -63,8 +63,8 @@ class AttachSoftDeletingTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $captain = factory(Captain::class)->create();
-        $ship = factory(Ship::class)->create();
+        $captain = CaptainFactory::new()->create();
+        $ship = ShipFactory::new()->create();
 
         $this->whileSearchable(function () use ($captain, $ship) {
             $this->browse(function (Browser $browser) use ($captain, $ship) {
@@ -88,8 +88,8 @@ class AttachSoftDeletingTest extends DuskTestCase
         $this->whileSearchable(function () {
             $this->setupLaravel();
 
-            $captain = factory(Captain::class)->create();
-            $ship = factory(Ship::class)->create(['deleted_at' => now()]);
+            $captain = CaptainFactory::new()->create();
+            $ship = ShipFactory::new()->create(['deleted_at' => now()]);
 
             $this->browse(function (Browser $browser) use ($captain, $ship) {
                 $browser->loginAs(User::find(1))

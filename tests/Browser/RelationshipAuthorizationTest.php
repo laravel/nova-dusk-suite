@@ -5,6 +5,8 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
+use Database\Factories\PostFactory;
+use Database\Factories\TagFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -42,7 +44,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $post = factory(Post::class)->create();
+        $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.addComment.'.$post->id);
 
         $this->browse(function (Browser $browser) use ($post) {
@@ -65,7 +67,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $post = factory(Post::class)->create();
+        $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.addComment.'.$post->id);
 
         $this->browse(function (Browser $browser) {
@@ -89,8 +91,8 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $post = factory(Post::class)->create();
-        $tag = factory(Tag::class)->create();
+        $post = PostFactory::new()->create();
+        $tag = TagFactory::new()->create();
         $user->shouldBlockFrom('post.attachTag.'.$post->id);
 
         $this->browse(function (Browser $browser) use ($tag) {
@@ -111,7 +113,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $post = factory(Post::class)->create();
+        $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.attachAnyTag.'.$post->id);
 
         $this->browse(function (Browser $browser) {

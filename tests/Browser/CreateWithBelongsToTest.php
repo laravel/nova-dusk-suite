@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Dock;
 use App\Models\User;
+use Database\Factories\DockFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -72,7 +72,7 @@ class CreateWithBelongsToTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $dock = factory(Dock::class)->create();
+        $dock = DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(User::find(1))
@@ -94,7 +94,7 @@ class CreateWithBelongsToTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $dock = factory(Dock::class)->create();
+        $dock = DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(User::find(1))

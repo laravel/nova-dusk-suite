@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Role;
 use App\Models\User;
+use Database\Factories\RoleFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -18,7 +19,7 @@ class PivotActionTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $role = factory(Role::class)->create();
+        $role = RoleFactory::new()->create();
         $user->roles()->attach($role);
 
         $this->browse(function (Browser $browser) {
@@ -44,7 +45,7 @@ class PivotActionTest extends DuskTestCase
         $this->setupLaravel();
 
         $user = User::find(1);
-        $role = factory(Role::class)->create();
+        $role = RoleFactory::new()->create();
         $user->roles()->attach($role);
 
         $this->browse(function (Browser $browser) use ($user) {

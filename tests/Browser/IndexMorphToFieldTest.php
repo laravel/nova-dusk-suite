@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Comment;
 use App\Models\User;
+use Database\Factories\CommentFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -17,7 +17,7 @@ class IndexMorphToFieldTest extends DuskTestCase
     {
         $this->setupLaravel();
 
-        $comment = factory(Comment::class)->create();
+        $comment = CommentFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($comment) {
             $browser->loginAs(User::find(1))
