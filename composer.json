@@ -1,5 +1,5 @@
 {
-    "name": "laravel/laravel",
+    "name": "laravel/nova-dusk-suite",
     "description": "The Laravel Framework.",
     "keywords": [
         "framework",
@@ -16,10 +16,7 @@
         "laravel/framework": "^8.0",
         "laravel/nova": "*",
         "laravel/scout": "^8.3",
-        "laravel/tinker": "^2.0",
-        "otwell/custom-field": "*",
-        "otwell/resource-tool": "*",
-        "otwell/sidebar-tool": "*"
+        "laravel/tinker": "^2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.9.1",
@@ -32,7 +29,10 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "Otwell\\CustomField\\": "nova-components/CustomField/src/",
+            "Otwell\\ResourceTool\\": "nova-components/ResourceTool/src/",
+            "Otwell\\SidebarTool\\": "nova-components/SidebarTool/src/"
         }
     },
     "autoload-dev": {
@@ -62,18 +62,6 @@
         {
             "type": "path",
             "url": "./nova"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/SidebarTool"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/ResourceTool"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/CustomField"
         }
     ],
     "config": {
