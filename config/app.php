@@ -166,6 +166,9 @@ return [
          * Package Service Providers...
          */
         Laravel\Dusk\DuskServiceProvider::class,
+        Otwell\CustomField\FieldServiceProvider::class,
+        Otwell\ResourceTool\ToolServiceProvider::class,
+        Otwell\SidebarTool\ToolServiceProvider::class,
 
         /*
          * Application Service Providers...
