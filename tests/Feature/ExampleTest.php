@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Nova\Tests\TestCase;
 
 class ExampleTest extends TestCase

@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests;
 
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 
 abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase

@@ -78,7 +78,6 @@ class AttachSoftDeletingTest extends DuskTestCase
                 $browser->blank();
             });
         });
-
     }
 
     /**

@@ -21,7 +21,7 @@ class PivotActionTest extends DuskTestCase
         $role = factory(Role::class)->create();
         $user->roles()->attach($role);
 
-        $this->browse(function (Browser $browser) use ($user, $role) {
+        $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
                     ->pause(1500)
@@ -47,7 +47,7 @@ class PivotActionTest extends DuskTestCase
         $role = factory(Role::class)->create();
         $user->roles()->attach($role);
 
-        $this->browse(function (Browser $browser) use ($user, $role) {
+        $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
                     ->pause(1500)

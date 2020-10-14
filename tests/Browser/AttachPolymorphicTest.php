@@ -21,7 +21,7 @@ class AttachPolymorphicTest extends DuskTestCase
         $post = factory(Post::class)->create();
         $tag = factory(Tag::class)->create();
 
-        $this->browse(function (Browser $browser) use ($post, $tag) {
+        $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('posts', 1))
                     ->waitFor('@tags-index-component', 5)
@@ -49,7 +49,7 @@ class AttachPolymorphicTest extends DuskTestCase
             $post = factory(Post::class)->create();
             $tag = factory(Tag::class)->create();
 
-            $this->browse(function (Browser $browser) use ($post, $tag) {
+            $this->browse(function (Browser $browser) use ($tag) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Pages\Detail('posts', 1))
                         ->waitFor('@tags-index-component', 5)
@@ -77,7 +77,7 @@ class AttachPolymorphicTest extends DuskTestCase
         $post = factory(Post::class)->create();
         $tag = factory(Tag::class)->create();
 
-        $this->browse(function (Browser $browser) use ($post, $tag) {
+        $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('posts', 1))
                     ->waitFor('@tags-index-component', 5)
@@ -88,7 +88,6 @@ class AttachPolymorphicTest extends DuskTestCase
                     ->searchAndSelectFirstRelation('tags', $tag->id)
                     ->type('@notes', 'Test Notes')
                     ->clickAttach();
-
 
             $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
             $this->assertEquals('Test Notes', Post::find(1)->tags->first()->pivot->notes);
@@ -107,7 +106,7 @@ class AttachPolymorphicTest extends DuskTestCase
         $post = factory(Post::class)->create();
         $tag = factory(Tag::class)->create();
 
-        $this->browse(function (Browser $browser) use ($post, $tag) {
+        $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('posts', 1))
                     ->waitFor('@tags-index-component', 5)
@@ -136,7 +135,7 @@ class AttachPolymorphicTest extends DuskTestCase
         $post = factory(Post::class)->create();
         $tag = factory(Tag::class)->create();
 
-        $this->browse(function (Browser $browser) use ($post, $tag) {
+        $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('posts', 1))
                     ->within(new IndexComponent('tags'), function ($browser) {

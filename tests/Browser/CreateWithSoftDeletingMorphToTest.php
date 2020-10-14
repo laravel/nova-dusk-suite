@@ -101,7 +101,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
         $video = factory(Video::class)->create(['deleted_at' => now()]);
         $video2 = factory(Video::class)->create();
 
-        $this->browse(function (Browser $browser) use ($video, $video2) {
+        $this->browse(function (Browser $browser) use ($video) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Create('comments'))
                     ->select('@commentable-type', 'videos')

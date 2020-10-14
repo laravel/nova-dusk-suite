@@ -22,7 +22,7 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
         $captain = factory(Captain::class)->create();
         $captain->ships()->attach($ship);
 
-        $this->browse(function (Browser $browser) use ($ship, $captain) {
+        $this->browse(function (Browser $browser) use ($captain) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('captains', 1))
                     ->waitFor('@ships-index-component', 5)
@@ -54,7 +54,7 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
         $captain = factory(Captain::class)->create();
         $captain->ships()->attach($ship);
 
-        $this->browse(function (Browser $browser) use ($ship, $captain) {
+        $this->browse(function (Browser $browser) use ($captain) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('captains', 1))
                     ->waitFor('@ships-index-component', 5)
