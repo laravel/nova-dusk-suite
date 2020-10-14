@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Comment;
-use App\User;
+use App\Models\Comment;
+use App\Models\User;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;

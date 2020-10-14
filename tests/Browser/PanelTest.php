@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Address;
-use App\User;
+use App\Models\Address;
+use App\Models\User;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\DuskTestCase;
 

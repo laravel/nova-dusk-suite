@@ -14,7 +14,7 @@ class Comment extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Comment';
+    public static $model = 'App\Models\Comment';
 
     /**
      * The columns that should be searched.

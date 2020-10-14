@@ -13,9 +13,9 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Post::class, function (Faker $faker) {
+$factory->define(App\Models\Post::class, function (Faker $faker) {
     return [
-        'user_id' => factory(App\User::class),
+        'user_id' => factory(App\Models\User::class),
         'title' => $faker->word,
         'body' => $faker->words(10, true),
     ];

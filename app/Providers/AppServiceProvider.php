@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Link;
+use App\Models\Link;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 

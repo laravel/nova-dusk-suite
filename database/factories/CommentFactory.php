@@ -13,10 +13,10 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Comment::class, function (Faker $faker) {
+$factory->define(App\Models\Comment::class, function (Faker $faker) {
     return [
-        'commentable_type' => App\Post::class,
-        'commentable_id' => factory(App\Post::class),
+        'commentable_type' => App\Models\Post::class,
+        'commentable_id' => factory(App\Models\Post::class),
         'body' => $faker->words(3, true),
     ];
 });

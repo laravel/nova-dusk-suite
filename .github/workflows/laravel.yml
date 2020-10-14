@@ -51,8 +51,8 @@ jobs:
       uses: jakejarvis/wait-action@master
       with:
         time: '5s'
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
-      run: vendor/bin/phpunit --exclude-group=external-network --exclude-group=local-time
+    - name: Execute tests (Dusk tests) via PHPUnit
+      run: vendor/bin/phpunit -c phpunit.dusk.xml --exclude-group=external-network --exclude-group=local-time
       env:
         DB_PORT: ${{ job.services.mysql.ports[3306] }}
         DB_USERNAME: root

@@ -14,7 +14,7 @@ class Role extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Role';
+    public static $model = 'App\Models\Role';
 
     /**
      * The columns that should be searched.

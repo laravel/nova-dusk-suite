@@ -2,9 +2,9 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Post;
-use App\Tag;
-use App\User;
+use App\Models\Post;
+use App\Models\Tag;
+use App\Models\User;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;

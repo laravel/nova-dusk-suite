@@ -1,13 +1,16 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Link extends Model
+class Video extends Model
 {
+    use SoftDeletes;
+
     /**
-     * Get all of the link's comments.
+     * Get all of the post's comments.
      */
     public function comments()
     {

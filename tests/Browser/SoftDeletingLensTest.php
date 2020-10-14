@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Dock;
-use App\User;
+use App\Models\Dock;
+use App\Models\User;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\LensComponent;
 use Laravel\Nova\Tests\DuskTestCase;

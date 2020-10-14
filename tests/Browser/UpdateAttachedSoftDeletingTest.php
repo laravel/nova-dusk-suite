@@ -2,9 +2,9 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Captain;
-use App\Ship;
-use App\User;
+use App\Models\Captain;
+use App\Models\Ship;
+use App\Models\User;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;

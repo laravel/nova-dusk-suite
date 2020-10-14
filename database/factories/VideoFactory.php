@@ -13,7 +13,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Video::class, function (Faker $faker) {
+$factory->define(App\Models\Video::class, function (Faker $faker) {
     return [
         'title' => $faker->word,
     ];

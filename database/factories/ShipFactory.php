@@ -13,9 +13,9 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Ship::class, function (Faker $faker) {
+$factory->define(App\Models\Ship::class, function (Faker $faker) {
     return [
-        'dock_id' => factory(App\Dock::class),
+        'dock_id' => factory(App\Models\Dock::class),
         'name' => $faker->word,
     ];
 });

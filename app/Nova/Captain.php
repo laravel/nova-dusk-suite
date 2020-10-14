@@ -16,7 +16,7 @@ class Captain extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Captain';
+    public static $model = 'App\Models\Captain';
 
     /**
      * The columns that should be searched.

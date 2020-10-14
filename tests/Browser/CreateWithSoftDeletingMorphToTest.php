@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\User;
-use App\Video;
+use App\Models\User;
+use App\Models\Video;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;

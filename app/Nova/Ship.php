@@ -18,7 +18,7 @@ class Ship extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Ship';
+    public static $model = 'App\Models\Ship';
 
     /**
      * The columns that should be searched.

@@ -15,7 +15,7 @@ class Address extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Address';
+    public static $model = 'App\Models\Address';
 
     /**
      * The columns that should be searched.

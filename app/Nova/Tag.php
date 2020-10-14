@@ -14,7 +14,7 @@ class Tag extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Tag';
+    public static $model = 'App\Models\Tag';
 
     /**
      * The columns that should be searched.

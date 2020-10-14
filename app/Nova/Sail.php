@@ -14,7 +14,7 @@ class Sail extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Sail';
+    public static $model = 'App\Models\Sail';
 
     /**
      * The columns that should be searched.

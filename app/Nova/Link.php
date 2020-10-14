@@ -14,7 +14,7 @@ class Link extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Link';
+    public static $model = 'App\Models\Link';
 
     /**
      * The columns that should be searched.

@@ -17,7 +17,7 @@ class Post extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Post';
+    public static $model = 'App\Models\Post';
 
     /**
      * The columns that should be searched.

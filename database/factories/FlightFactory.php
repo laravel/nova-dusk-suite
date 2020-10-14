@@ -13,7 +13,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Flight::class, function (Faker $faker) {
+$factory->define(App\Models\Flight::class, function (Faker $faker) {
     return [
         'name' => $faker->word,
     ];

@@ -13,7 +13,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Address::class, function (Faker $faker) {
+$factory->define(App\Models\Address::class, function (Faker $faker) {
     return [
         'address_line_1' => $faker->word,
         'address_line_2' => $faker->word,

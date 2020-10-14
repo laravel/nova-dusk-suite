@@ -13,7 +13,7 @@ class InvoiceItem extends Resource
      *
      * @var string
      */
-    public static $model = 'App\InvoiceItem';
+    public static $model = 'App\Models\InvoiceItem';
 
     /**
      * The single value that should be used to represent the resource when being displayed.

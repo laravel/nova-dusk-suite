@@ -2,10 +2,10 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Comment;
-use App\Link;
-use App\Post;
-use App\User;
+use App\Models\Comment;
+use App\Models\Link;
+use App\Models\Post;
+use App\Models\User;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\DuskTestCase;
 

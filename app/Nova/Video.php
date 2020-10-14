@@ -14,7 +14,7 @@ class Video extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Video';
+    public static $model = 'App\Models\Video';
 
     /**
      * The columns that should be searched.

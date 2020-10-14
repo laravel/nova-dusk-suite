@@ -13,7 +13,7 @@ class Flight extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Flight';
+    public static $model = 'App\Models\Flight';
 
     /**
      * The columns that should be searched.

@@ -2,8 +2,8 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Captain;
-use App\User;
+use App\Models\Captain;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Tests\DuskTestCase;

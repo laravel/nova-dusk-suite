@@ -13,9 +13,9 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Sail::class, function (Faker $faker) {
+$factory->define(App\Models\Sail::class, function (Faker $faker) {
     return [
-        'ship_id' => factory(App\Ship::class),
+        'ship_id' => factory(App\Models\Ship::class),
         'inches' => random_int(50, 100),
     ];
 });

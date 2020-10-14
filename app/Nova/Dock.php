@@ -14,7 +14,7 @@ class Dock extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Dock';
+    public static $model = 'App\Models\Dock';
 
     /**
      * The columns that should be searched.
