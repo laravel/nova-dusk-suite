@@ -3,13 +3,12 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Cards\Help;
-use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
+use Laravel\Nova\NovaApplicationServiceProvider;
 use Otwell\SidebarTool\SidebarTool;
 
-class NovaServiceProvider extends ServiceProvider
+class NovaServiceProvider extends NovaApplicationServiceProvider
 {
     /**
      * Bootstrap any application services.
@@ -18,38 +17,70 @@ class NovaServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        parent::boot();
+    }
+
+    /**
+     * Register the Nova routes.
+     *
+     * @return void
+     */
+    protected function routes()
+    {
         Nova::routes()
                 ->withAuthenticationRoutes()
-                ->withPasswordResetRoutes();
+                ->withPasswordResetRoutes()
+                ->register();
+    }
 
-        Nova::serving(function (ServingNova $event) {
-            $this->authorization();
-
-            Nova::resourcesIn(app_path('Nova'));
-            Nova::cards([new Help]);
-
-            Nova::tools([(new SidebarTool)->canSee(function ($request) {
-                return ! $request->user()->isBlockedFrom('sidebarTool');
-            })]);
+    /**
+     * Register the Nova gate.
+     *
+     * This gate determines who can access Nova in non-local environments.
+     *
+     * @return void
+     */
+    protected function gate()
+    {
+        Gate::define('viewNova', function ($user) {
+            return true;
         });
     }
 
     /**
-     * Configure the Nova authorization services.
+     * Get the cards that should be displayed on the default Nova dashboard.
      *
-     * @return void
+     * @return array
      */
-    protected function authorization()
+    protected function cards()
     {
-        Gate::define('nova', function ($user) {
-            return in_array($user->email, [
-                //
-            ]);
-        });
+        return [
+            new Help,
+        ];
+    }
 
-        Nova::auth(function ($request) {
-            return app()->environment('local') || Gate::check('nova');
-        });
+    /**
+     * Get the extra dashboards that should be displayed on the Nova dashboard.
+     *
+     * @return array
+     */
+    protected function dashboards()
+    {
+        return [];
+    }
+
+    /**
+     * Get the tools that should be listed in the Nova sidebar.
+     *
+     * @return array
+     */
+    public function tools()
+    {
+        return [
+            (new SidebarTool)->canSee(function ($request) {
+                return ! $request->user()->isBlockedFrom('sidebarTool');
+            }),
+        ];
     }
 
     /**

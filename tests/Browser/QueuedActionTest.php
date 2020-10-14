@@ -1,32 +1,29 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class QueuedActionTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function queued_action_status_is_displayed_in_action_events_list()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
                     ->runAction('sleep')
+                    ->waitFor('[dusk="action-events-index-component"] table', 60)
                     ->within(new IndexComponent('action-events'), function ($browser) {
-                        $browser->pause(250);
-
-                        $browser->assertSee('Sleep')
+                        $browser->scrollIntoView('')
+                                ->assertSee('Sleep')
                                 ->assertSee('Finished');
                     });
         });

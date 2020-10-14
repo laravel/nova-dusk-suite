@@ -1,24 +1,21 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Flight;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class CustomFieldTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function resource_can_be_created()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -30,6 +27,8 @@ class CustomFieldTest extends DuskTestCase
             $browser->assertPathIs('/nova/resources/flights/'.$flight->id);
 
             $this->assertEquals('Test Flight', $flight->name);
+
+            $browser->blank();
         });
     }
 
@@ -38,13 +37,15 @@ class CustomFieldTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Create('flights'))
                     ->create()
-                    ->assertSee('The name field is required.');
+                    ->assertSee('The Name field is required.');
+
+            $browser->blank();
         });
     }
 
@@ -53,16 +54,19 @@ class CustomFieldTest extends DuskTestCase
      */
     public function custom_index_field_displays_value()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $flight = factory(Flight::class)->create();
 
         $this->browse(function (Browser $browser) use ($flight) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Index('flights'))
+                    ->waitFor('@flights-index-component', 5)
                     ->within(new IndexComponent('flights'), function ($browser) use ($flight) {
                         $browser->assertSee($flight->name);
                     });
+
+            $browser->blank();
         });
     }
 
@@ -71,7 +75,7 @@ class CustomFieldTest extends DuskTestCase
      */
     public function custom_detail_field_displays_value()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $flight = factory(Flight::class)->create();
 
@@ -80,6 +84,8 @@ class CustomFieldTest extends DuskTestCase
                     ->visit(new Pages\Detail('flights', $flight->id))
                     ->pause(250)
                     ->assertSee($flight->name);
+
+            $browser->blank();
         });
     }
 }

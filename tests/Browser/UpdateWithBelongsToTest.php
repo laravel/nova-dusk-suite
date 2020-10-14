@@ -1,23 +1,20 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Post;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateWithBelongsToTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function resource_can_be_updated_to_new_parent()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $user->posts()->save($post = factory(Post::class)->make());
@@ -26,10 +23,13 @@ class UpdateWithBelongsToTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Update('posts', $post->id))
                     ->select('@user', 2)
-                    ->update();
+                    ->update()
+                    ->waitForText('The user post was updated');
 
             $this->assertCount(0, User::find(1)->posts);
             $this->assertCount(1, User::find(2)->posts);
+
+            $browser->blank();
         });
     }
 }

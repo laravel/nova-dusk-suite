@@ -1,24 +1,21 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Post;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexBelongsToFieldTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function belongs_to_field_navigates_to_parent_resource_when_clicked()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $user->posts()->save($post = factory(Post::class)->create());
@@ -26,11 +23,14 @@ class IndexBelongsToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $post) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Index('posts'))
+                    ->waitFor('@posts-index-component', 5)
                     ->within(new IndexComponent('posts'), function ($browser) use ($user) {
                         $browser->clickLink($user->name);
                     })
                     ->pause(250)
                     ->assertPathIs('/nova/resources/users/'.$user->id);
+
+            $browser->blank();
         });
     }
 }

@@ -1,18 +1,15 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\User;
 use App\Video;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateWithSoftDeletingMorphToTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
@@ -33,13 +30,14 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
 
     protected function parent_select_is_locked_when_creating_child_of_soft_deleted_resource()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $video = factory(Video::class)->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) use ($video) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('videos', $video->id))
+                    ->waitFor('@comments-index-component', 5)
                     ->within(new IndexComponent('comments'), function ($browser) {
                         $browser->click('@create-button');
                     })
@@ -50,6 +48,8 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
                     ->create();
 
             $this->assertCount(1, $video->fresh()->comments);
+
+            $browser->blank();
         });
     }
 
@@ -58,7 +58,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
      */
     public function non_searchable_morph_to_respects_with_trashed_checkbox_state()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $video = factory(Video::class)->create(['deleted_at' => now()]);
         $video2 = factory(Video::class)->create();
@@ -67,17 +67,27 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Create('comments'))
                     ->select('@commentable-type', 'videos')
-                    ->pause(250)
-                    ->assertSelectMissingOption('@commentable-select', $video->id)
-                    ->assertSelectHasOption('@commentable-select', $video2->id)
+                    ->searchRelation('commentable', $video->id)
+                    ->pause(1500)
+                    ->assertMissing('@commentable-search-input-result-0')
+                    ->searchRelation('commentable', $video2->id)
+                    ->pause(1500)
+                    ->assertSeeIn('@commentable-search-input-result-0', $video2->title);
+
+            $browser->visit(new Pages\Create('comments'))
+                    ->select('@commentable-type', 'videos')
+                    ->pause(750)
                     ->withTrashedRelation('commentable')
-                    ->assertSelectHasOption('@commentable-select', $video->id)
-                    ->assertSelectHasOption('@commentable-select', $video2->id)
-                    ->select('@commentable-select', $video->id)
+                    ->searchRelation('commentable', $video->id)
+                    ->pause(1500)
+                    ->assertSeeIn('@commentable-search-input-result-0', $video->title)
+                    ->selectCurrentRelation('commentable')
                     ->type('@body', 'Test Comment')
                     ->create();
 
             $this->assertCount(1, $video->fresh()->comments);
+
+            $browser->blank();
         });
     }
 
@@ -86,7 +96,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
      */
     public function unable_to_uncheck_with_trashed_if_currently_selected_non_searchable_parent_is_trashed()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $video = factory(Video::class)->create(['deleted_at' => now()]);
         $video2 = factory(Video::class)->create();
@@ -95,14 +105,19 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Create('comments'))
                     ->select('@commentable-type', 'videos')
-                    ->pause(250)
+                    ->pause(175)
                     ->withTrashedRelation('commentable')
-                    ->select('@commentable-select', $video->id)
+                    ->searchAndSelectFirstRelation('commentable', $video->id)
+                    ->pause(1500)
                     ->withoutTrashedRelation('commentable')
                     ->type('@body', 'Test Comment')
-                    ->create();
+                    ->create()
+                    ->pause(175)
+                    ->assertSee('This Commentable may not be associated with this resource.');
 
-            $this->assertCount(1, $video->fresh()->comments);
+            $this->assertCount(0, $video->fresh()->comments);
+
+            $browser->blank();
         });
     }
 
@@ -112,7 +127,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
     public function searchable_belongs_to_respects_with_trashed_checkbox_state()
     {
         $this->whileSearchable(function () {
-            $this->seed();
+            $this->setupLaravel();
 
             $video = factory(Video::class)->create(['deleted_at' => now()]);
 
@@ -121,14 +136,20 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
                         ->visit(new Pages\Create('comments'))
                         ->select('@commentable-type', 'videos')
                         ->searchRelation('commentable', '1')
-                        ->assertNoRelationSearchResults('commentable')
+                        ->pause(1500)
+                        ->assertNoRelationSearchResults('commentable');
+
+                $browser->visit(new Pages\Create('comments'))
+                        ->select('@commentable-type', 'videos')
+                        ->pause(175)
                         ->withTrashedRelation('commentable')
-                        ->searchRelation('commentable', '1')
-                        ->selectCurrentRelation('commentable')
+                        ->searchAndSelectFirstRelation('commentable', '1')
                         ->type('@body', 'Test Comments')
                         ->create();
 
                 $this->assertCount(1, $video->fresh()->comments);
+
+                $browser->blank();
             });
         });
     }

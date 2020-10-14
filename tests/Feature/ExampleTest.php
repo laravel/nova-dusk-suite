@@ -1,8 +1,9 @@
 <?php
 
-namespace Tests\Feature;
+namespace Laravel\Nova\Tests\Feature;
 
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Nova\Tests\TestCase;
 
 class ExampleTest extends TestCase
 {

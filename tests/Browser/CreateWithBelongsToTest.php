@@ -1,24 +1,21 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Dock;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateWithBelongsToTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function resource_can_be_created()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -32,6 +29,8 @@ class CreateWithBelongsToTest extends DuskTestCase
             $post = $user->posts->first();
             $this->assertEquals('Test Post', $post->title);
             $this->assertEquals('Test Post Body', $post->body);
+
+            $browser->blank();
         });
     }
 
@@ -40,7 +39,7 @@ class CreateWithBelongsToTest extends DuskTestCase
      */
     public function parent_resource_should_be_locked_when_creating_via_parents_detail_page()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
 
@@ -51,6 +50,7 @@ class CreateWithBelongsToTest extends DuskTestCase
                         $browser->click('@create-button');
                     })
                     ->on(new Pages\Create('posts'))
+                    ->pause(175)
                     ->assertDisabled('@user')
                     ->type('@title', 'Test Post')
                     ->type('@body', 'Test Post Body')
@@ -60,6 +60,8 @@ class CreateWithBelongsToTest extends DuskTestCase
             $post = $user->posts->first();
             $this->assertEquals('Test Post', $post->title);
             $this->assertEquals('Test Post Body', $post->body);
+
+            $browser->blank();
         });
     }
 
@@ -68,19 +70,20 @@ class CreateWithBelongsToTest extends DuskTestCase
      */
     public function searchable_resource_can_be_created()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $dock = factory(Dock::class)->create();
 
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Create('ships'))
-                    ->searchRelation('docks', '1')
-                    ->selectCurrentRelation('docks')
+                    ->searchAndSelectFirstRelation('docks', '1')
                     ->type('@name', 'Test Ship')
                     ->create();
 
             $this->assertCount(1, $dock->fresh()->ships);
+
+            $browser->blank();
         });
     }
 
@@ -89,13 +92,14 @@ class CreateWithBelongsToTest extends DuskTestCase
      */
     public function searchable_parent_resource_should_be_locked_when_creating_via_parents_detail_page()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $dock = factory(Dock::class)->create();
 
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('docks', 1))
+                    ->waitFor('@ships-index-component', 5)
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->click('@create-button');
                     })
@@ -105,6 +109,8 @@ class CreateWithBelongsToTest extends DuskTestCase
                     ->create();
 
             $this->assertCount(1, $dock->fresh()->ships);
+
+            $browser->blank();
         });
     }
 
@@ -113,12 +119,14 @@ class CreateWithBelongsToTest extends DuskTestCase
      */
     public function belongs_to_field_should_honor_custom_labels_on_create()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Create('invoice-items'))
                     ->assertSee('Client Invoice');
+
+            $browser->blank();
         });
     }
 }

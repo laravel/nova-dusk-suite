@@ -1,38 +1,43 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Role;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class AttachTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function resource_can_be_attached()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $role = factory(Role::class)->create();
 
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
+                    ->waitFor('@roles-index-component', 5)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@attach-button');
                     })
                     ->on(new Pages\Attach('users', 1, 'roles'))
+                    ->waitFor('.content form', 10)
                     ->selectAttachable($role->id)
                     ->clickAttach();
 
-            $this->assertEquals($role->id, User::find(1)->roles->first()->id);
+            $this->assertDatabaseHas('role_user', [
+                'user_id' => '1',
+                'role_id' => '1',
+                'notes' => null,
+            ]);
+
+            $browser->blank();
         });
     }
 
@@ -41,23 +46,31 @@ class AttachTest extends DuskTestCase
      */
     public function fields_on_intermediate_table_should_be_stored()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $role = factory(Role::class)->create();
 
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
+                    ->waitFor('@roles-index-component', 5)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@attach-button');
                     })
                     ->on(new Pages\Attach('users', 1, 'roles'))
+                    ->waitFor('.content form', 10)
                     ->selectAttachable($role->id)
                     ->type('@notes', 'Test Notes')
-                    ->clickAttach();
+                    ->clickAttach()
+                    ->waitFor('[dusk="roles-index-component"] table', 60);
 
-            $this->assertEquals($role->id, User::find(1)->roles->first()->id);
-            $this->assertEquals('Test Notes', User::find(1)->roles->first()->pivot->notes);
+            $this->assertDatabaseHas('role_user', [
+                'user_id' => '1',
+                'role_id' => '1',
+                'notes' => 'Test Notes',
+            ]);
+
+            $browser->blank();
         });
     }
 
@@ -66,21 +79,28 @@ class AttachTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $role = factory(Role::class)->create();
 
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
+                    ->waitFor('@roles-index-component', 5)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@attach-button');
                     })
                     ->on(new Pages\Attach('users', 1, 'roles'))
+                    ->waitFor('.content form', 10)
                     ->clickAttach()
-                    ->assertSee('The role field is required.');
+                    ->waitForText('The role field is required.');
 
-            $this->assertNull(User::find(1)->roles->first());
+            $this->assertDatabaseMissing('role_user', [
+                'user_id' => '1',
+                'role_id' => '1',
+            ]);
+
+            $browser->blank();
         });
     }
 }

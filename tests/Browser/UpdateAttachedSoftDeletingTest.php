@@ -1,25 +1,22 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Captain;
 use App\Ship;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateAttachedSoftDeletingTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function attached_resource_can_be_updated()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $ship = factory(Ship::class)->create(['deleted_at' => now()]);
         $captain = factory(Captain::class)->create();
@@ -28,8 +25,9 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($ship, $captain) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('captains', 1))
+                    ->waitFor('@ships-index-component', 5)
                     ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->withTrashed()->click('@1-edit-attached-button');
+                        $browser->withTrashed()->pause(175)->click('@1-edit-attached-button');
                     })
                     ->on(new Pages\UpdateAttached('captains', 1, 'ships', 1))
                     ->assertDisabled('@attachable-select')
@@ -40,6 +38,8 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
                 'Test Notes',
                 $captain->fresh()->ships()->withTrashed()->get()->first()->pivot->notes
             );
+
+            $browser->blank();
         });
     }
 
@@ -48,7 +48,7 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
      */
     public function attached_resource_can_be_updated_and_can_continue_editing()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $ship = factory(Ship::class)->create(['deleted_at' => now()]);
         $captain = factory(Captain::class)->create();
@@ -57,6 +57,7 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($ship, $captain) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('captains', 1))
+                    ->waitFor('@ships-index-component', 5)
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed()->click('@1-edit-attached-button');
                     })
@@ -71,6 +72,8 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
                 'Test Notes',
                 $captain->fresh()->ships()->withTrashed()->get()->first()->pivot->notes
             );
+
+            $browser->blank();
         });
     }
 }

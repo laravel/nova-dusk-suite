@@ -1,27 +1,24 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Comment;
 use App\Link;
 use App\Post;
 use App\User;
 use App\Video;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\DetailComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\DetailComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class DetailMorphToFieldTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function morph_to_field_navigates_to_parent_resource_when_clicked()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $post = factory(Post::class)->create();
         $post->comments()->save($comment = factory(Comment::class)->make());
@@ -33,8 +30,10 @@ class DetailMorphToFieldTest extends DuskTestCase
                         $browser->assertSee('Post');
                     })
                     ->clickLink($post->title)
-                    ->pause(250)
+                    ->waitForText('User Post Details: '.$post->id)
                     ->assertPathIs('/nova/resources/posts/'.$post->id);
+
+            $browser->blank();
         });
     }
 
@@ -43,7 +42,7 @@ class DetailMorphToFieldTest extends DuskTestCase
      */
     public function morph_to_field_should_honor_custom_labels()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $post = factory(Post::class)->create();
         $post->comments()->save($comment = factory(Comment::class)->make());
@@ -52,6 +51,8 @@ class DetailMorphToFieldTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('comments', 1))
                     ->assertSee('User Post');
+
+            $browser->blank();
         });
     }
 
@@ -60,7 +61,7 @@ class DetailMorphToFieldTest extends DuskTestCase
      */
     public function morph_to_field_should_honor_custom_labels_again()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $video = factory(Video::class)->create();
         $video->comments()->save($comment = factory(Comment::class)->make());
@@ -69,6 +70,8 @@ class DetailMorphToFieldTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('comments', 1))
                     ->assertSee('User Video');
+
+            $browser->blank();
         });
     }
 
@@ -77,7 +80,7 @@ class DetailMorphToFieldTest extends DuskTestCase
      */
     public function morph_to_field_should_honor_custom_polymorphic_type()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $link = factory(Link::class)->create();
         $link->comments()->save($comment = factory(Comment::class)->make());
@@ -89,6 +92,8 @@ class DetailMorphToFieldTest extends DuskTestCase
                         $browser->assertSee('Link')
                                 ->assertSee($link->title);
                     });
+
+            $browser->blank();
         });
     }
 }

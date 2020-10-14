@@ -1,31 +1,29 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Dock;
 use App\Ship;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function test_parent_select_is_locked_when_creating_child_of_soft_deleted_resource()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $dock = factory(Dock::class)->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('docks', $dock->id))
+                    ->waitFor('@ships-index-component', 5)
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->click('@create-button');
                     })
@@ -35,6 +33,8 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                     ->create();
 
             $this->assertCount(1, $dock->fresh()->ships);
+
+            $browser->blank();
         });
     }
 
@@ -43,7 +43,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
      */
     public function non_searchable_belongs_to_respects_with_trashed_checkbox_state()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $ship = factory(Ship::class)->create(['deleted_at' => now()]);
         $ship2 = factory(Ship::class)->create();
@@ -61,6 +61,8 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                     ->create();
 
             $this->assertCount(1, $ship->fresh()->sails);
+
+            $browser->blank();
         });
     }
 
@@ -69,7 +71,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
      */
     public function unable_to_uncheck_with_trashed_if_currently_selected_non_searchable_parent_is_trashed()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $ship = factory(Ship::class)->create(['deleted_at' => now()]);
 
@@ -85,6 +87,8 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                     ->create();
 
             $this->assertCount(1, $ship->fresh()->sails);
+
+            $browser->blank();
         });
     }
 
@@ -94,7 +98,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
     public function searchable_belongs_to_respects_with_trashed_checkbox_state()
     {
         $this->whileSearchable(function () {
-            $this->seed();
+            $this->setupLaravel();
 
             $dock = factory(Dock::class)->create(['deleted_at' => now()]);
 
@@ -102,14 +106,16 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                 $browser->loginAs(User::find(1))
                         ->visit(new Pages\Create('ships'))
                         ->searchRelation('docks', '1')
+                        ->pause(1500)
                         ->assertNoRelationSearchResults('docks')
                         ->withTrashedRelation('docks')
-                        ->searchRelation('docks', '1')
-                        ->selectCurrentRelation('docks')
+                        ->searchAndSelectFirstRelation('docks', '1')
                         ->type('@name', 'Test Ship')
                         ->create();
 
                 $this->assertCount(1, $dock->fresh()->ships);
+
+                $browser->blank();
             });
         });
     }

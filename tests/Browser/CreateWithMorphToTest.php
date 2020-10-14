@@ -1,24 +1,21 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Post;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateWithMorphToTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function resource_can_be_created()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $post = factory(Post::class)->create();
 
@@ -27,13 +24,15 @@ class CreateWithMorphToTest extends DuskTestCase
                     ->visit(new Pages\Create('comments'))
                     ->select('@commentable-type', 'posts')
                     ->pause(500)
-                    ->select('@commentable-select', 1)
+                    ->searchAndSelectFirstRelation('commentable', 1)
                     ->type('@body', 'Test Comment')
                     ->create();
 
             $browser->assertPathIs('/nova/resources/comments/1');
 
             $this->assertCount(1, $post->fresh()->comments);
+
+            $browser->blank();
         });
     }
 
@@ -42,7 +41,7 @@ class CreateWithMorphToTest extends DuskTestCase
      */
     public function searchable_resource_can_be_created()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->whileSearchable(function () {
             $post = factory(Post::class)->create();
@@ -52,14 +51,15 @@ class CreateWithMorphToTest extends DuskTestCase
                         ->visit(new Pages\Create('comments'))
                         ->select('@commentable-type', 'posts')
                         ->pause(500)
-                        ->searchRelation('commentable', 1)
-                        ->selectCurrentRelation('commentable')
+                        ->searchAndSelectFirstRelation('commentable', 1)
                         ->type('@body', 'Test Comment')
                         ->create();
 
                 $browser->assertPathIs('/nova/resources/comments/1');
 
                 $this->assertCount(1, $post->fresh()->comments);
+
+                $browser->blank();
             });
         });
     }
@@ -84,13 +84,14 @@ class CreateWithMorphToTest extends DuskTestCase
 
     protected function resource_can_be_created_via_parent_resource()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $post = factory(Post::class)->create();
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('posts', $post->id))
+                    ->waitFor('@comments-index-component', 5)
                     ->within(new IndexComponent('comments'), function ($browser) {
                         $browser->click('@create-button');
                     })
@@ -103,6 +104,8 @@ class CreateWithMorphToTest extends DuskTestCase
             $browser->assertPathIs('/nova/resources/comments/1');
 
             $this->assertCount(1, $post->fresh()->comments);
+
+            $browser->blank();
         });
     }
 
@@ -111,13 +114,15 @@ class CreateWithMorphToTest extends DuskTestCase
      */
     public function morph_to_field_should_honor_custom_labels()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Create('comments'))
                     ->assertSee('User Post')
                     ->assertSee('User Video');
+
+            $browser->blank();
         });
     }
 }

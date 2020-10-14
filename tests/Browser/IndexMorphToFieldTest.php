@@ -1,35 +1,35 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Comment;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexMorphToFieldTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function morph_to_field_navigates_to_parent_resource_when_clicked()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $comment = factory(Comment::class)->create();
 
         $this->browse(function (Browser $browser) use ($comment) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Index('comments'))
+                    ->waitFor('@comments-index-component', 5)
                     ->within(new IndexComponent('comments'), function ($browser) use ($comment) {
                         $browser->clickLink('Post: '.$comment->commentable->title);
                     })
                     ->pause(250)
                     ->assertPathIs('/nova/resources/posts/'.$comment->commentable->id);
+
+            $browser->blank();
         });
     }
 }

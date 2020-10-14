@@ -47,6 +47,7 @@ class Role extends Resource
                         ->actions(function ($request) {
                             return [
                                 new Actions\UpdatePivotNotes,
+                                new Actions\UpdateRequiredPivotNotes,
                             ];
                         })
                         ->prunable(),

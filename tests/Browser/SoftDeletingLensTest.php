@@ -1,24 +1,21 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Dock;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\LensComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\LensComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class SoftDeletingLensTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function can_soft_delete_a_resource_via_resource_table_row_delete_icon()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $dock = factory(Dock::class)->create();
 
@@ -38,7 +35,7 @@ class SoftDeletingLensTest extends DuskTestCase
      */
     public function can_soft_delete_resources_using_checkboxes()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         factory(Dock::class)->create();
         factory(Dock::class)->create();
@@ -62,7 +59,7 @@ class SoftDeletingLensTest extends DuskTestCase
      */
     public function can_restore_resources_using_checkboxes()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         factory(Dock::class)->create();
         factory(Dock::class)->create(['deleted_at' => now()]);
@@ -86,7 +83,7 @@ class SoftDeletingLensTest extends DuskTestCase
      */
     public function can_force_delete_resources_using_checkboxes()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         factory(Dock::class)->create();
         factory(Dock::class)->create();
@@ -111,7 +108,7 @@ class SoftDeletingLensTest extends DuskTestCase
      */
     // public function can_soft_delete_all_matching_resources()
     // {
-    //     $this->seed();
+    //     $this->setupLaravel();
 
     //     factory(Dock::class)->create();
     //     factory(Dock::class)->create();
@@ -136,7 +133,7 @@ class SoftDeletingLensTest extends DuskTestCase
      */
     // public function can_restore_all_matching_resources()
     // {
-    //     $this->seed();
+    //     $this->setupLaravel();
 
     //     factory(Dock::class, 3)->create(['deleted_at' => now()]);
 
@@ -160,7 +157,7 @@ class SoftDeletingLensTest extends DuskTestCase
      */
     // public function can_force_delete_all_matching_resources()
     // {
-    //     $this->seed();
+    //     $this->setupLaravel();
 
     //     factory(Dock::class, 3)->create(['deleted_at' => now()]);
 
@@ -184,7 +181,7 @@ class SoftDeletingLensTest extends DuskTestCase
      */
     public function soft_deleted_resources_may_be_restored_via_row_icon()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         factory(Dock::class)->create();
 

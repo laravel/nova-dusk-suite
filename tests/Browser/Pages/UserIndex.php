@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Browser\Pages;
+namespace Laravel\Nova\Tests\Browser\Pages;
 
 class UserIndex extends Index
 {

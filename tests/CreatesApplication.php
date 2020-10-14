@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace Laravel\Nova\Tests;
 
 use Illuminate\Contracts\Console\Kernel;
 

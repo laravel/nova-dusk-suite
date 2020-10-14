@@ -1,24 +1,21 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Post;
 use App\Tag;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateAttachedPolymorphicTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function attached_resource_can_be_updated()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $post = factory(Post::class)->create();
         $tag = factory(Tag::class)->create();
@@ -33,6 +30,8 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                     ->update();
 
             $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);
+
+            $browser->blank();
         });
     }
 
@@ -41,7 +40,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
      */
     public function attached_searchable_resource_is_locked()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->whileSearchable(function () {
             $post = factory(Post::class)->create();
@@ -57,6 +56,8 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                         ->update();
 
                 $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);
+
+                $browser->blank();
             });
         });
     }
@@ -66,7 +67,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
      */
     public function attached_resource_can_be_updated_and_can_continue_editing()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $post = factory(Post::class)->create();
         $tag = factory(Tag::class)->create();
@@ -81,6 +82,8 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
             $browser->assertPathIs('/nova/resources/posts/1/edit-attached/tags/1');
 
             $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);
+
+            $browser->blank();
         });
     }
 
@@ -89,7 +92,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $post = factory(Post::class)->create();
         $tag = factory(Tag::class)->create();
@@ -103,6 +106,8 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                     ->assertSee('The notes may not be greater than 20 characters.');
 
             $this->assertEquals('Test Notes', Post::find(1)->tags->first()->pivot->notes);
+
+            $browser->blank();
         });
     }
 }

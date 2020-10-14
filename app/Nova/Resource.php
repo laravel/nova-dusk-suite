@@ -8,6 +8,13 @@ use Laravel\Nova\Resource as NovaResource;
 abstract class Resource extends NovaResource
 {
     /**
+     * Indicates whether Nova should check for modifications between viewing and updating a resource.
+     *
+     * @var bool
+     */
+    public static $trafficCop = false;
+
+    /**
      * Build a "detail" query for the given resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request

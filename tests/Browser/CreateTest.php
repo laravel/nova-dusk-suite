@@ -1,23 +1,20 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function resource_can_be_created()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -34,6 +31,8 @@ class CreateTest extends DuskTestCase
             $this->assertEquals('Adam Wathan', $user->name);
             $this->assertEquals('adam@laravel.com', $user->email);
             $this->assertTrue(Hash::check('secret', $user->password));
+
+            $browser->blank();
         });
     }
 
@@ -42,15 +41,17 @@ class CreateTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Create('users'))
                     ->create()
-                    ->assertSee('The name field is required.')
-                    ->assertSee('The email field is required.')
-                    ->assertSee('The password field is required.');
+                    ->assertSee('The Name field is required.')
+                    ->assertSee('The Email field is required.')
+                    ->assertSee('The Password field is required.');
+
+            $browser->blank();
         });
     }
 
@@ -59,7 +60,7 @@ class CreateTest extends DuskTestCase
      */
     public function resource_can_be_created_and_another_resource_can_be_added()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -76,6 +77,8 @@ class CreateTest extends DuskTestCase
             $this->assertEquals('Adam Wathan', $user->name);
             $this->assertEquals('adam@laravel.com', $user->email);
             $this->assertTrue(Hash::check('secret', $user->password));
+
+            $browser->blank();
         });
     }
 }

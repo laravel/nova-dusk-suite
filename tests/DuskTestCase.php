@@ -1,58 +1,157 @@
 <?php
 
-namespace Tests;
+namespace Laravel\Nova\Tests;
 
-use Facebook\WebDriver\Chrome\ChromeOptions;
-use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
-use Facebook\WebDriver\WebDriverDimension;
-use Laravel\Dusk\TestCase as BaseTestCase;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Artisan;
+use Laravel\Dusk\Browser;
 
-abstract class DuskTestCase extends BaseTestCase
+abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
 {
-    use CreatesApplication;
+    /**
+     * The base serve host URL to use while testing the application.
+     *
+     * @var string
+     */
+    protected static $baseServeHost = '127.0.0.1';
 
     /**
-     * Prepare for Dusk test execution.
+     * The base serve port to use while testing the application.
      *
-     * @beforeClass
+     * @var int
+     */
+    protected static $baseServePort = 8085;
+
+    /**
+     * Server specific setup. It may share alot with the main setUp() method, but
+     * should exclude things like DB migrations so we don't end up wiping the
+     * DB content mid test. Using this method means we can be explicit.
+     *
      * @return void
      */
-    public static function prepare()
+    protected function setUpDuskServer(): void
     {
-        static::startChromeDriver();
+        parent::setUp();
+
+        tap($this->app->make('config'), function ($config) {
+            $config->set('app.url', static::baseServeUrl());
+            $config->set('filesystems.disks.public.url', static::baseServeUrl().'/storage');
+        });
     }
 
     /**
-     * Create the RemoteWebDriver instance.
+     * Get base path.
      *
-     * @return \Facebook\WebDriver\Remote\RemoteWebDriver
+     * @return string
      */
-    protected function driver()
+    protected function getBasePath()
     {
-        $options = (new ChromeOptions)->addArguments([
-            '--disable-gpu',
-            // '--headless'
-        ]);
+        return realpath(__DIR__.'/../');
+    }
 
-        $driver = RemoteWebDriver::create(
-            'http://localhost:9515', DesiredCapabilities::chrome()->setCapability(
-                ChromeOptions::CAPABILITY, $options
-            )
-        );
+    /**
+     * Get package providers.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     *
+     * @return array
+     */
+    protected function getPackageProviders($app)
+    {
+        return [
+            'Fideloper\Proxy\TrustedProxyServiceProvider',
+            'Laravel\Nova\NovaCoreServiceProvider',
+            'Carbon\Laravel\ServiceProvider',
+        ];
+    }
 
-        $driver->manage()->window()->maximize();
+    /**
+     * Get application aliases.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     *
+     * @return array
+     */
+    protected function getApplicationAliases($app)
+    {
+        return $app['config']['app.aliases'];
+    }
 
-        if (env('DUSK_WIDTH')) {
-            $driver->manage()->window()->setSize(
-                new WebDriverDimension(
-                    env('DUSK_WIDTH', 1920),
-                    env('DUSK_HEIGHT', 1080)
-                )
-            );
+    /**
+     * Get application providers.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     *
+     * @return array
+     */
+    protected function getApplicationProviders($app)
+    {
+        return $app['config']['app.providers'];
+    }
+
+    /**
+     * Resolve application implementation.
+     *
+     * @return \Illuminate\Foundation\Application
+     */
+    protected function resolveApplication()
+    {
+        return tap(new Application($this->getBasePath()), function ($app) {
+            $app->detectEnvironment(function () {
+                return 'testing';
+            });
+        });
+    }
+
+    /**
+     * Resolve application Console Kernel implementation.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     *
+     * @return void
+     */
+    protected function resolveApplicationConsoleKernel($app)
+    {
+        $app->singleton('Illuminate\Contracts\Console\Kernel', 'App\Console\Kernel');
+    }
+
+    /**
+     * Resolve application HTTP Kernel implementation.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     *
+     * @return void
+     */
+    protected function resolveApplicationHttpKernel($app)
+    {
+        $app->singleton('Illuminate\Contracts\Http\Kernel', 'App\Http\Kernel');
+    }
+
+    /**
+     * Resolve application HTTP exception handler.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     *
+     * @return void
+     */
+    protected function resolveApplicationExceptionHandler($app)
+    {
+        $app->singleton('Illuminate\Contracts\Debug\ExceptionHandler', 'App\Exceptions\Handler');
+    }
+
+    /**
+     * Setup Laravel for the test.
+     *
+     * @param  callable|null  $callback
+     * @return void
+     */
+    protected function setupLaravel(callable $callback = null)
+    {
+        $this->artisan('migrate:fresh', ['--seed' => true])->run();
+
+        if (is_callable($callback)) {
+            $callback($this->app);
         }
-
-        return $driver;
     }
 
     /**
@@ -70,5 +169,18 @@ abstract class DuskTestCase extends BaseTestCase
         } finally {
             @unlink(base_path('.searchable'));
         }
+    }
+
+    /**
+     * Create a new Browser instance.
+     *
+     * @param  \Facebook\WebDriver\Remote\RemoteWebDriver  $driver
+     * @return \Laravel\Dusk\Browser
+     */
+    protected function newBrowser($driver)
+    {
+        return tap(new Browser($driver), function ($browser) {
+            $browser->resize(env('DUSK_WIDTH'), env('DUSK_HEIGHT'));
+        });
     }
 }

@@ -1,26 +1,23 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Captain;
 use App\Ship;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class PivotFileAttachTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function file_can_be_attached_to_resource()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $captain = factory(Captain::class)->create();
         $ship = factory(Ship::class)->create();
@@ -28,7 +25,7 @@ class PivotFileAttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($captain, $ship) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Attach('captains', $captain->id, 'ships'))
-                    ->selectAttachable($ship->id)
+                    ->searchAndSelectFirstRelation('ships', $ship->id)
                     ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
                     ->clickAttach();
 
@@ -55,6 +52,8 @@ class PivotFileAttachTest extends DuskTestCase
 
             // Clean up the file...
             $this->assertFalse(Storage::disk('public')->exists($path));
+
+            $browser->blank();
         });
     }
 
@@ -63,7 +62,7 @@ class PivotFileAttachTest extends DuskTestCase
      */
     public function file_can_be_detached_from_edit_attached_screen()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $captain = factory(Captain::class)->create();
         $ship = factory(Ship::class)->create();
@@ -71,7 +70,7 @@ class PivotFileAttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($captain, $ship) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Attach('captains', $captain->id, 'ships'))
-                    ->selectAttachable($ship->id)
+                    ->searchAndSelectFirstRelation('ships', $ship->id)
                     ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
                     ->clickAttach();
 
@@ -90,6 +89,8 @@ class PivotFileAttachTest extends DuskTestCase
 
             // Clean up the file...
             $this->assertFalse(Storage::disk('public')->exists($path));
+
+            $browser->blank();
         });
     }
 }

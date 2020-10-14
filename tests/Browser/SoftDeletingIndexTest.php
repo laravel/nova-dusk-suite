@@ -1,25 +1,22 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Dock;
 use App\Ship;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class SoftDeletingIndexTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function can_soft_delete_a_resource_via_resource_table_row_delete_icon()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $dock = factory(Dock::class)->create();
 
@@ -40,7 +37,7 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function can_soft_delete_resources_using_checkboxes()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         factory(Dock::class)->create();
         factory(Dock::class)->create();
@@ -65,7 +62,7 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function can_restore_resources_using_checkboxes()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         factory(Dock::class)->create();
         factory(Dock::class)->create(['deleted_at' => now()]);
@@ -81,6 +78,7 @@ class SoftDeletingIndexTest extends DuskTestCase
                             ->clickCheckboxForId(2)
                             ->restoreSelected()
                             ->withoutTrashed()
+                            ->pause(1500)
                             ->assertSeeResource(1)
                             ->assertSeeResource(2)
                             ->assertSeeResource(3);
@@ -93,7 +91,7 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function can_force_delete_resources_using_checkboxes()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         factory(Dock::class)->create();
         factory(Dock::class)->create();
@@ -120,7 +118,7 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function can_soft_delete_all_matching_resources()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $dock = factory(Dock::class)->create();
         $dock->ships()->saveMany(factory(Ship::class, 3)->create());
@@ -151,7 +149,7 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function can_restore_all_matching_resources()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $dock = factory(Dock::class)->create();
         $dock->ships()->saveMany(factory(Ship::class, 3)->create(['deleted_at' => now()]));
@@ -181,7 +179,7 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function can_force_delete_all_matching_resources()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $dock = factory(Dock::class)->create();
         $dock->ships()->saveMany(factory(Ship::class, 3)->create(['deleted_at' => now()]));
@@ -212,7 +210,7 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function soft_deleted_resource_is_still_viewable_with_proper_trash_state()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $dock = factory(Dock::class)->create();
 
@@ -234,7 +232,7 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function only_soft_deleted_resources_may_be_listed()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         factory(Dock::class, 2)->create();
         Dock::find(2)->delete();
@@ -258,7 +256,7 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function soft_deleted_resources_may_be_restored_via_row_icon()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         factory(Dock::class)->create();
 

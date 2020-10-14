@@ -1,11 +1,13 @@
 <?php
 
-namespace Tests\Browser\Pages;
+namespace Laravel\Nova\Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
 
 class Update extends Page
 {
+    use HasSearchableRelations;
+
     public $resourceName;
     public $resourceId;
 

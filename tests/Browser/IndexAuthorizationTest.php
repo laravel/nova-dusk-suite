@@ -1,24 +1,21 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Post;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexAuthorizationTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function resource_index_can_be_totally_blocked_via_view_any()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $post = factory(Post::class)->create();
 
@@ -30,6 +27,8 @@ class IndexAuthorizationTest extends DuskTestCase
                     ->visit(new Pages\Index('posts'))
                     ->pause(250)
                     ->assertPathIs('/nova/403');
+
+            $browser->blank();
         });
     }
 
@@ -38,7 +37,7 @@ class IndexAuthorizationTest extends DuskTestCase
      */
     public function shouldnt_see_edit_button_if_blocked_from_updating()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $post = factory(Post::class)->create();
         $post2 = factory(Post::class)->create();
@@ -49,10 +48,13 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Index('posts'))
+                    ->waitFor('@posts-index-component', 5)
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                         $browser->assertMissing('@'.$post->id.'-edit-button');
                         $browser->assertVisible('@'.$post2->id.'-edit-button');
                     });
+
+            $browser->blank();
         });
     }
 
@@ -61,7 +63,7 @@ class IndexAuthorizationTest extends DuskTestCase
      */
     public function shouldnt_see_delete_button_if_blocked_from_deleting()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $post = factory(Post::class)->create();
         $post2 = factory(Post::class)->create();
@@ -72,10 +74,13 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Index('posts'))
+                    ->waitFor('@posts-index-component', 5)
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                         $browser->assertMissing('@'.$post->id.'-delete-button');
                         $browser->assertVisible('@'.$post2->id.'-delete-button');
                     });
+
+            $browser->blank();
         });
     }
 
@@ -84,7 +89,7 @@ class IndexAuthorizationTest extends DuskTestCase
      */
     public function can_delete_resources_using_checkboxes_only_if_authorized_to_delete_them()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         factory(Post::class, 3)->create();
 
@@ -94,6 +99,7 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Index('posts'))
+                    ->waitFor('@posts-index-component', 5)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
@@ -103,6 +109,8 @@ class IndexAuthorizationTest extends DuskTestCase
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3);
                     });
+
+            $browser->blank();
         });
     }
 
@@ -111,7 +119,7 @@ class IndexAuthorizationTest extends DuskTestCase
      */
     public function can_delete_all_matching_resources_only_if_authorized_to_delete_them()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         factory(Post::class, 3)->create();
 
@@ -121,6 +129,7 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Index('posts'))
+                    ->waitFor('@posts-index-component', 5)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->selectAllMatching()
                             ->deleteSelected()
@@ -128,6 +137,8 @@ class IndexAuthorizationTest extends DuskTestCase
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3);
                     });
+
+            $browser->blank();
         });
     }
 }

@@ -1,24 +1,24 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Captain;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Dusk\Browser;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class FileAttachTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function file_can_be_attached_to_resource()
     {
-        $this->seed();
+        $this->setupLaravel();
+
+        $this->artisan('storage:link')->run();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -29,6 +29,7 @@ class FileAttachTest extends DuskTestCase
 
             // Verify the photo in the information in the database...
             $captain = Captain::orderBy('id', 'desc')->first();
+            $photo = $captain->photo;
             $this->assertNotNull($captain->photo);
             $this->assertTrue(Storage::disk('public')->exists($captain->photo));
 
@@ -54,6 +55,10 @@ class FileAttachTest extends DuskTestCase
 
             // Clean up the file...
             $this->assertFalse(Storage::disk('public')->exists($captain->photo));
+
+            $browser->blank();
+
+            File::delete(base_path($photo));
         });
     }
 }

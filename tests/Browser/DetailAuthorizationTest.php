@@ -1,23 +1,20 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Post;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class DetailAuthorizationTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function detail_page_should_not_be_accessible_if_not_authorized_to_view()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $post = factory(Post::class)->create();
@@ -27,6 +24,8 @@ class DetailAuthorizationTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('posts', $post->id))
                     ->assertPathIs('/nova/403');
+
+            $browser->blank();
         });
     }
 
@@ -35,7 +34,7 @@ class DetailAuthorizationTest extends DuskTestCase
      */
     public function cant_navigate_to_edit_page_if_not_authorized()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $post = factory(Post::class)->create();
@@ -45,6 +44,8 @@ class DetailAuthorizationTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('posts', $post->id))
                     ->assertMissing('@edit-resource-button');
+
+            $browser->blank();
         });
     }
 
@@ -53,7 +54,7 @@ class DetailAuthorizationTest extends DuskTestCase
      */
     public function resource_cant_be_deleted_if_not_authorized()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $post = factory(Post::class)->create();
@@ -63,6 +64,8 @@ class DetailAuthorizationTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('posts', $post->id))
                     ->assertMissing('@open-delete-modal-button');
+
+            $browser->blank();
         });
     }
 }

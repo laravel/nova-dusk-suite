@@ -1,20 +1,18 @@
 <?php
 
-namespace Tests\Browser\Pages;
+namespace Laravel\Nova\Tests\Browser\Pages;
 
-use Laravel\Dusk\Page as BasePage;
+use Laravel\Dusk\Page as Dusk;
 
-abstract class Page extends BasePage
+abstract class Page extends Dusk
 {
     /**
      * Get the global element shortcuts for the site.
      *
      * @return array
      */
-    public static function siteElements()
+    public static function siteElements(): array
     {
-        return [
-            '@element' => '#selector',
-        ];
+        return [];
     }
 }

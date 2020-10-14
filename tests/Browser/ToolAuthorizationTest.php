@@ -1,28 +1,27 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class ToolAuthorizationTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function test_tool_can_be_seen_if_authorized_to_view_it()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit('/nova')
                     ->pause(250)
                     ->assertSee('Sidebar Tool');
+
+            $browser->blank();
         });
     }
 
@@ -31,13 +30,15 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_tool_can_call_its_own_backend_routes()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit('/nova/sidebar-tool')
                     ->pause(250)
                     ->assertSee('Hello World');
+
+            $browser->blank();
         });
     }
 
@@ -46,7 +47,7 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_tool_cant_be_seen_if_not_authorized_to_view_it()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $user->shouldBlockFrom('sidebarTool');
@@ -56,6 +57,8 @@ class ToolAuthorizationTest extends DuskTestCase
                     ->visit('/nova')
                     ->pause(250)
                     ->assertDontSee('Sidebar Tool');
+
+            $browser->blank();
         });
     }
 
@@ -64,7 +67,7 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_tool_cant_be_navigated_to_if_not_authorized_to_view_it()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $user->shouldBlockFrom('sidebarTool');
@@ -75,6 +78,8 @@ class ToolAuthorizationTest extends DuskTestCase
                     ->pause(250)
                     ->assertSee('404')
                     ->assertDontSee('Sidebar Tool');
+
+            $browser->blank();
         });
     }
 
@@ -83,12 +88,14 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_resource_tool_can_be_seen_if_authorized_to_view_it()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
                     ->assertSee('Resource Tool');
+
+            $browser->blank();
         });
     }
 
@@ -97,7 +104,7 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_resource_tool_cant_be_seen_if_not_authorized_to_view_it()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $user->shouldBlockFrom('resourceTool');
@@ -106,6 +113,8 @@ class ToolAuthorizationTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
                     ->assertDontSee('Resource Tool');
+
+            $browser->blank();
         });
     }
 }

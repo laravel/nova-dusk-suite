@@ -1,24 +1,21 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Role;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateAttachedTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function attached_resource_can_be_updated()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $role = factory(Role::class)->create();
@@ -27,6 +24,7 @@ class UpdateAttachedTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
+                    ->waitFor('@roles-index-component', 5)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@1-edit-attached-button');
                     })
@@ -37,6 +35,8 @@ class UpdateAttachedTest extends DuskTestCase
                     ->update();
 
             $this->assertEquals('Test Notes Updated', User::find(1)->roles->first()->pivot->notes);
+
+            $browser->blank();
         });
     }
 
@@ -45,7 +45,7 @@ class UpdateAttachedTest extends DuskTestCase
      */
     public function attached_resource_can_be_updated_and_can_continue_editing()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $role = factory(Role::class)->create();
@@ -54,6 +54,7 @@ class UpdateAttachedTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
+                    ->waitFor('@roles-index-component', 5)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@1-edit-attached-button');
                     })
@@ -64,6 +65,8 @@ class UpdateAttachedTest extends DuskTestCase
             $browser->assertPathIs('/nova/resources/users/1/edit-attached/roles/1');
 
             $this->assertEquals('Test Notes Updated', User::find(1)->roles->first()->pivot->notes);
+
+            $browser->blank();
         });
     }
 
@@ -72,7 +75,7 @@ class UpdateAttachedTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $role = factory(Role::class)->create();
@@ -81,6 +84,7 @@ class UpdateAttachedTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
+                    ->waitFor('@roles-index-component', 5)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@1-edit-attached-button');
                     })
@@ -90,6 +94,8 @@ class UpdateAttachedTest extends DuskTestCase
                     ->assertSee('The notes may not be greater than 20 characters.');
 
             $this->assertEquals('Test Notes', User::find(1)->roles->first()->pivot->notes);
+
+            $browser->blank();
         });
     }
 }

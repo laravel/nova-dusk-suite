@@ -1,24 +1,21 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Captain;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Dusk\Browser;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class FileDeleteTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function file_can_be_deleted()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -36,6 +33,8 @@ class FileDeleteTest extends DuskTestCase
 
             $this->assertFalse(Storage::disk('public')->exists($captain->photo));
             $this->assertEmpty(Captain::query()->get());
+
+            $browser->blank();
         });
     }
 }

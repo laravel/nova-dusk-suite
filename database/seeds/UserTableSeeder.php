@@ -12,24 +12,33 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
+        $password = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'; // password
+
         User::forceCreate([
             'name' => 'Taylor Otwell',
             'email' => 'taylor@laravel.com',
-            'password' => '$2y$10$oGhaPFdmduG9419sPVkrROY3joLf0iNwxplM5UzcD.x7u06KcNJj6',
+            'password' => $password,
             'blocked_from' => [],
         ]);
 
         User::forceCreate([
             'name' => 'Mohamed Said',
             'email' => 'mohamed@laravel.com',
-            'password' => '$2y$10$oGhaPFdmduG9419sPVkrROY3joLf0iNwxplM5UzcD.x7u06KcNJj6',
+            'password' => $password,
             'blocked_from' => [],
         ]);
 
         User::forceCreate([
             'name' => 'David Hemphill',
             'email' => 'david@laravel.com',
-            'password' => '$2y$10$oGhaPFdmduG9419sPVkrROY3joLf0iNwxplM5UzcD.x7u06KcNJj6',
+            'password' => $password,
+            'blocked_from' => [],
+        ]);
+
+        User::forceCreate([
+            'name' => 'Laravel Nova',
+            'email' => 'nova@laravel.com',
+            'password' => $password,
             'blocked_from' => [],
         ]);
     }

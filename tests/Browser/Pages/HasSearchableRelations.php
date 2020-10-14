@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Browser\Pages;
+namespace Laravel\Nova\Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
 
@@ -13,8 +13,7 @@ trait HasSearchableRelations
     {
         $browser->click('[dusk="'.$attribute.'-search-input"]')
                     ->pause(100)
-                    ->type('[dusk="'.$attribute.'-search-input"] input', $search)
-                    ->pause(1500);
+                    ->type('[dusk="'.$attribute.'-search-input"] input', $search);
     }
 
     /**
@@ -22,7 +21,27 @@ trait HasSearchableRelations
      */
     public function selectCurrentRelation(Browser $browser, $attribute)
     {
-        $browser->keys('[dusk="'.$attribute.'-search-input"] input', '{enter}')->pause(150);
+        $browser->click('[dusk="'.$attribute.'-search-input-result-0"]')->pause(150);
+    }
+
+    /**
+     * Select the currently highlighted searchable relation.
+     */
+    public function cancelSelectingRelation(Browser $browser, $attribute)
+    {
+        $browser->keys('[dusk="'.$attribute.'-search-input"] input', '{escape}')->pause(150);
+    }
+
+    /**
+     * Search and select the currently highlighted searchable relation.
+     */
+    public function searchAndSelectFirstRelation(Browser $browser, $attribute, $search)
+    {
+        $this->searchRelation($browser, $attribute, $search);
+
+        $browser->pause(1500);
+
+        $this->selectCurrentRelation($browser, $attribute);
     }
 
     /**
@@ -33,7 +52,7 @@ trait HasSearchableRelations
         $browser->click('')->with(
             "@{$resourceName}-with-trashed-checkbox",
             function (Browser $browser) use ($resourceName) {
-                $browser->check(null)->pause(250);
+                $browser->check('input[type="checkbox"]')->pause(250);
             }
         );
     }
@@ -43,6 +62,6 @@ trait HasSearchableRelations
      */
     public function withoutTrashedRelation(Browser $browser, $resourceName)
     {
-        $browser->click('')->uncheck('@'.$resourceName.'-with-trashed-checkbox')->pause(250);
+        $browser->uncheck('[dusk="'.$resourceName.'-with-trashed-checkbox"] input[type="checkbox"]')->pause(250);
     }
 }

@@ -1,24 +1,21 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Post;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function cant_view_update_page_if_not_authorized_to_update()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $post = factory(Post::class)->create();
         $post2 = factory(Post::class)->create();
@@ -34,6 +31,8 @@ class UpdateTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Update('posts', $post2->id))
                     ->assertPathIsNot('/nova/403');
+
+            $browser->blank();
         });
     }
 
@@ -42,10 +41,14 @@ class UpdateTest extends DuskTestCase
      */
     public function resource_can_be_updated()
     {
-        $this->seed();
+        $this->setupLaravel();
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $user = User::find(1);
+        $user->name = 'Taylor';
+        $user->save();
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Pages\Update('users', 1))
                     ->type('@name', 'Taylor Otwell Updated')
                     ->type('@password', 'secret')
@@ -53,10 +56,10 @@ class UpdateTest extends DuskTestCase
 
             $user = User::find(1);
 
-            $browser->assertPathIs('/nova/resources/users/'.$user->id);
-
             $this->assertEquals('Taylor Otwell Updated', $user->name);
             $this->assertTrue(Hash::check('secret', $user->password));
+
+            $browser->blank();
         });
     }
 
@@ -65,14 +68,16 @@ class UpdateTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Update('users', 1))
                     ->type('@name', ' ')
                     ->update()
-                    ->assertSee('The name field is required.');
+                    ->assertSee('The Name field is required.');
+
+            $browser->blank();
         });
     }
 
@@ -81,7 +86,7 @@ class UpdateTest extends DuskTestCase
      */
     public function resource_can_be_updated_and_user_can_continue_editing()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -96,6 +101,8 @@ class UpdateTest extends DuskTestCase
 
             $this->assertEquals('Taylor Otwell Updated', $user->name);
             $this->assertTrue(Hash::check('secret', $user->password));
+
+            $browser->blank();
         });
     }
 }

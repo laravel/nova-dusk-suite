@@ -1,32 +1,33 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Address;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\DuskTestCase;
 
+/**
+ * @group external-network
+ */
 class PlaceFieldTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function resource_can_be_created()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Create('addresses'))
                     ->click('@address_line_1')
                     ->type('@address_line_1', '110 Kingsbrook St Hot Springs')
-                    ->pause(2000)
+                    ->pause(3000)
                     ->keys('@address_line_1', '{arrow_down}', '{enter}')
-                    ->create();
+                    ->create()
+                    ->pause(2000);
 
             $address = Address::latest('id')->first();
 
@@ -38,6 +39,8 @@ class PlaceFieldTest extends DuskTestCase
             $this->assertEquals('AR', $address->state);
             $this->assertEquals('71901', $address->postal_code);
             $this->assertEquals('US', $address->country);
+
+            $browser->blank();
         });
     }
 }

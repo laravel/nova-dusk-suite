@@ -1,25 +1,22 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Comment;
 use App\Link;
 use App\Post;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateWithMorphToTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function resource_can_be_updated_to_new_parent()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $comment = factory(Comment::class)->create();
         $post = factory(Post::class)->create();
@@ -27,11 +24,14 @@ class UpdateWithMorphToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($comment) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Update('comments', $comment->id))
-                    ->select('@commentable-select', 2)
-                    ->update();
+                    ->searchAndSelectFirstRelation('commentable', 2)
+                    ->update()
+                    ->waitForText('The comment was updated');
 
             $this->assertCount(0, Post::find(1)->comments);
             $this->assertCount(1, Post::find(2)->comments);
+
+            $browser->blank();
         });
     }
 
@@ -40,7 +40,7 @@ class UpdateWithMorphToTest extends DuskTestCase
      */
     public function morph_to_field_should_honor_custom_polymorphic_type()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $link = factory(Link::class)->create();
         $link->comments()->save($comment = factory(Comment::class)->make());
@@ -52,10 +52,12 @@ class UpdateWithMorphToTest extends DuskTestCase
                     ->within('@commentable-type', function ($browser) {
                         $browser->assertSee('Link');
                     })
-                    ->assertEnabled('@commentable-select')
-                    ->within('@commentable-select', function ($browser) use ($link) {
+                    ->assertEnabled('@commentable-search-input')
+                    ->within('@commentable-search-input', function ($browser) use ($link) {
                         $browser->assertSee($link->title);
                     });
+
+            $browser->blank();
         });
     }
 }

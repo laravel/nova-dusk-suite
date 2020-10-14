@@ -1,30 +1,29 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laravel\Nova\Tests\Browser;
 
 use App\Post;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Components\IndexComponent;
-use Tests\DuskTestCase;
+use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Tests\DuskTestCase;
 
 class DetailTest extends DuskTestCase
 {
-    use DatabaseMigrations;
-
     /**
      * @test
      */
     public function can_view_resource_attributes()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
                     ->assertSee('Taylor Otwell')
                     ->assertSee('taylor@laravel.com');
+
+            $browser->blank();
         });
     }
 
@@ -33,14 +32,17 @@ class DetailTest extends DuskTestCase
      */
     public function can_run_actions_on_resource()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
-                    ->runAction('mark-as-active');
+                    ->runAction('mark-as-active')
+                    ->pause(3000);
 
             $this->assertEquals(1, User::find(1)->active);
+
+            $browser->blank();
         });
     }
 
@@ -49,7 +51,7 @@ class DetailTest extends DuskTestCase
      */
     public function actions_can_be_cancelled_without_effect()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -57,6 +59,8 @@ class DetailTest extends DuskTestCase
                     ->cancelAction('mark-as-active');
 
             $this->assertEquals(0, User::find(1)->active);
+
+            $browser->blank();
         });
     }
 
@@ -65,7 +69,7 @@ class DetailTest extends DuskTestCase
      */
     public function can_navigate_to_edit_page()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -73,6 +77,8 @@ class DetailTest extends DuskTestCase
                     ->click('@edit-resource-button')
                     ->pause(250)
                     ->assertPathIs('/nova/resources/users/1/edit');
+
+            $browser->blank();
         });
     }
 
@@ -81,7 +87,7 @@ class DetailTest extends DuskTestCase
      */
     public function resource_can_be_deleted()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -89,6 +95,8 @@ class DetailTest extends DuskTestCase
                     ->delete();
 
             $this->assertNull(User::where('id', 3)->first());
+
+            $browser->blank();
         });
     }
 
@@ -97,7 +105,7 @@ class DetailTest extends DuskTestCase
      */
     public function relationships_can_be_searched()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $user->posts()->save($post = factory(Post::class)->create());
@@ -105,11 +113,14 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
+                    ->waitFor('@posts-index-component', 5)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->assertSeeResource(1)
                                 ->searchFor('No Matching Posts')
                                 ->assertDontSeeResource(1);
                     });
+
+            $browser->blank();
         });
     }
 
@@ -118,7 +129,7 @@ class DetailTest extends DuskTestCase
      */
     public function can_navigate_to_create_relationship_screen()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $user->posts()->save($post = factory(Post::class)->create());
@@ -126,6 +137,7 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
+                    ->waitFor('@posts-index-component', 5)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->click('@create-button')
                                 ->assertPathIs('/nova/resources/posts/new')
@@ -133,6 +145,8 @@ class DetailTest extends DuskTestCase
                                 ->assertQueryStringHas('viaResourceId', '1')
                                 ->assertQueryStringHas('viaRelationship', 'posts');
                     });
+
+            $browser->blank();
         });
     }
 
@@ -141,7 +155,7 @@ class DetailTest extends DuskTestCase
      */
     public function relations_can_be_paginated()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $user->posts()->saveMany(factory(Post::class, 10)->create());
@@ -152,6 +166,7 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
+                    ->waitFor('@posts-index-component', 5)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->assertSeeResource(10)
                                 ->assertDontSeeResource(1)
@@ -162,6 +177,8 @@ class DetailTest extends DuskTestCase
                                 ->assertSeeResource(10)
                                 ->assertDontSeeResource(1);
                     });
+
+            $browser->blank();
         });
     }
 
@@ -170,7 +187,7 @@ class DetailTest extends DuskTestCase
      */
     public function relations_can_be_sorted()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $user->posts()->saveMany(factory(Post::class, 10)->create());
@@ -181,6 +198,7 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
+                    ->waitFor('@posts-index-component', 5)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->assertSeeResource(10)
                                 ->assertSeeResource(6)
@@ -191,6 +209,8 @@ class DetailTest extends DuskTestCase
                                 ->assertSeeResource(5)
                                 ->assertSeeResource(1);
                     });
+
+            $browser->blank();
         });
     }
 
@@ -199,7 +219,7 @@ class DetailTest extends DuskTestCase
      */
     public function actions_on_all_matching_relations_should_be_scoped_to_the_relation()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $user->posts()->save($post = factory(Post::class)->create());
@@ -210,6 +230,7 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
+                    ->waitFor('@posts-index-component', 5)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->selectAllMatching()
                                 ->runAction('mark-as-active');
@@ -217,6 +238,8 @@ class DetailTest extends DuskTestCase
 
             $this->assertEquals(1, $post->fresh()->active);
             $this->assertEquals(0, $post2->fresh()->active);
+
+            $browser->blank();
         });
     }
 
@@ -225,7 +248,7 @@ class DetailTest extends DuskTestCase
      */
     public function deleting_all_matching_relations_is_scoped_to_the_relationships()
     {
-        $this->seed();
+        $this->setupLaravel();
 
         $user = User::find(1);
         $user->posts()->save($post = factory(Post::class)->create());
@@ -236,6 +259,7 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
+                    ->waitFor('@posts-index-component', 5)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->selectAllMatching()
                                 ->deleteSelected();
@@ -243,6 +267,8 @@ class DetailTest extends DuskTestCase
 
             $this->assertNull($post->fresh());
             $this->assertNotNull($post2->fresh());
+
+            $browser->blank();
         });
     }
 }
