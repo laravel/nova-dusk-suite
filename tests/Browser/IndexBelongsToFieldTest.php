@@ -20,7 +20,7 @@ class IndexBelongsToFieldTest extends DuskTestCase
         $user = User::find(1);
         $user->posts()->save($post = factory(Post::class)->create());
 
-        $this->browse(function (Browser $browser) use ($user, $post) {
+        $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Index('posts'))
                     ->waitFor('@posts-index-component', 5)

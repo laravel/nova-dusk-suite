@@ -68,7 +68,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $post = factory(Post::class)->create();
         $user->shouldBlockFrom('post.addComment.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post) {
+        $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('posts', 1))
                     ->within(new IndexComponent('comments'), function ($browser) {
@@ -93,7 +93,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $tag = factory(Tag::class)->create();
         $user->shouldBlockFrom('post.attachTag.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post, $tag) {
+        $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Attach('posts', 1, 'tags'))
                     ->assertSelectMissingOption('@attachable-select', $tag->name)
@@ -114,7 +114,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $post = factory(Post::class)->create();
         $user->shouldBlockFrom('post.attachAnyTag.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post) {
+        $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('posts', 1))
                     ->within(new IndexComponent('tags'), function ($browser) {

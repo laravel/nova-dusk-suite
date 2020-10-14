@@ -5,7 +5,6 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Role;
 use App\User;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\DetailComponent;
 use Laravel\Nova\Tests\Browser\Components\IndexComponent;
 use Laravel\Nova\Tests\DuskTestCase;
 

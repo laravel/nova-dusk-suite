@@ -51,7 +51,7 @@ trait HasSearchableRelations
     {
         $browser->click('')->with(
             "@{$resourceName}-with-trashed-checkbox",
-            function (Browser $browser) use ($resourceName) {
+            function (Browser $browser) {
                 $browser->check('input[type="checkbox"]')->pause(250);
             }
         );

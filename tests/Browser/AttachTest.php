@@ -83,7 +83,7 @@ class AttachTest extends DuskTestCase
 
         $role = factory(Role::class)->create();
 
-        $this->browse(function (Browser $browser) use ($role) {
+        $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
                     ->waitFor('@roles-index-component', 5)

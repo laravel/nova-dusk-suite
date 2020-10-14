@@ -18,7 +18,7 @@ class IndexTest extends DuskTestCase
 
         $users = User::find([1, 2, 3]);
 
-        $this->browse(function (Browser $browser) use ($users) {
+        $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
                     ->waitFor('@users-index-component', 5)

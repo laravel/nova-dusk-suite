@@ -156,7 +156,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
         $separateShip = factory(Ship::class)->create();
 
-        $this->browse(function (Browser $browser) use ($separateShip) {
+        $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
