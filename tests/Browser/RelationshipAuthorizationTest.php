@@ -2,8 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Post;
-use App\Models\Tag;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Database\Factories\TagFactory;

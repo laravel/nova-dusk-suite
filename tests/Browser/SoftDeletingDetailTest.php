@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Dock;
-use App\Models\Ship;
 use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\ShipFactory;
