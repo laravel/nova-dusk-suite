@@ -58,7 +58,8 @@ class FileAttachTest extends DuskTestCase
 
             $browser->blank();
 
-            File::delete(base_path($photo));
+            // Cleanup temporary files.
+            File::delete(__DIR__.'/../../'.$photo);
         });
     }
 }
