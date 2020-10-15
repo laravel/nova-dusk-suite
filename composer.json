@@ -14,12 +14,12 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.24",
-        "laravel/nova": "*",
         "laravel/scout": "^8.3",
         "laravel/tinker": "^2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.9.1",
+        "laravel/nova": "*",
         "mockery/mockery": "^1.3.1",
         "nunomaduro/collision": "^4.1",
         "orchestra/testbench-dusk": "^5.3",
