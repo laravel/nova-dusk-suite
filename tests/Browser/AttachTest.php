@@ -22,7 +22,7 @@ class AttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
-                    ->waitFor('@roles-index-component', 5)
+                    ->waitFor('@roles-index-component', 10)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@attach-button');
                     })
@@ -53,7 +53,7 @@ class AttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
-                    ->waitFor('@roles-index-component', 5)
+                    ->waitFor('@roles-index-component', 10)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@attach-button');
                     })
@@ -86,7 +86,7 @@ class AttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 1))
-                    ->waitFor('@roles-index-component', 5)
+                    ->waitFor('@roles-index-component', 10)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@attach-button');
                     })

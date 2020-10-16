@@ -40,7 +40,7 @@ class ActionFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs($user = User::find(1))
                     ->visit(new Pages\Detail('users', 1))
-                    ->waitFor('@roles-index-component', 5)
+                    ->waitFor('@roles-index-component', 10)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->clickCheckboxForId(1)
                             ->runAction('update-pivot-notes', function ($browser) {
@@ -68,7 +68,7 @@ class ActionFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs($user = User::find(1))
                     ->visit(new Pages\Detail('users', 1))
-                    ->waitFor('@roles-index-component', 5)
+                    ->waitFor('@roles-index-component', 10)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->clickCheckboxForId(1)
                             ->runAction('update-required-pivot-notes')

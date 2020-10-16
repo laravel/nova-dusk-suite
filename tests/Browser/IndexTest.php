@@ -22,7 +22,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSeeResource(1)
                                 ->assertSeeResource(2)
@@ -43,7 +43,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->click('@create-button');
                     })
@@ -65,7 +65,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->click('@1-view-button');
                     })
@@ -87,7 +87,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->click('@1-edit-button');
                     })
@@ -110,7 +110,7 @@ class IndexTest extends DuskTestCase
             // Search For Single User By ID...
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->searchFor('3')
                                 ->assertDontSeeResource(1)
@@ -121,7 +121,7 @@ class IndexTest extends DuskTestCase
             // Search For Single User By Name...
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->searchFor('Taylor')
                                 ->assertSeeResource(1)
@@ -143,7 +143,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSelectAllMatchingCount(4)
                                 ->click('')
@@ -167,7 +167,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSeeResource(50)
                                 ->assertSeeResource(36)
@@ -196,7 +196,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSeeResource(50)
                                 ->assertSeeResource(30)
@@ -231,7 +231,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->setPerPage('50')
                                 ->pause(1500)
@@ -254,7 +254,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->applyFilter('Select First', '1')
                             ->pause(1500)
@@ -282,7 +282,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->applyFilter('Select First', '1')
                             ->pause(1500)
@@ -310,7 +310,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->deleteResourceById(3)
                                 ->assertSeeResource(1)
@@ -332,7 +332,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
@@ -357,7 +357,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->searchFor('David')
                             ->selectAllMatching()
@@ -383,7 +383,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\UserIndex)
-                    ->waitFor('@users-index-component', 5)
+                    ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
