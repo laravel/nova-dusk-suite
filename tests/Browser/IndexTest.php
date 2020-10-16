@@ -340,7 +340,8 @@ class IndexTest extends DuskTestCase
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3);
-                    });
+                    })
+                    ->assertPathIs('/nova/resources/users');
 
             $browser->blank();
         });
@@ -365,7 +366,8 @@ class IndexTest extends DuskTestCase
                             ->assertSeeResource(1)
                             ->assertSeeResource(2)
                             ->assertDontSeeResource(3);
-                    });
+                    })
+                    ->assertPathIs('/nova/resources/users');
 
             $browser->blank();
         });
