@@ -24,7 +24,7 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('posts', 1))
-                    ->waitFor('@tags-index-component', 5)
+                    ->waitFor('@tags-index-component', 10)
                     ->within(new IndexComponent('tags'), function ($browser) {
                         $browser->click('@attach-button');
                     })
@@ -52,7 +52,7 @@ class AttachPolymorphicTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($tag) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Pages\Detail('posts', 1))
-                        ->waitFor('@tags-index-component', 5)
+                        ->waitFor('@tags-index-component', 10)
                         ->within(new IndexComponent('tags'), function ($browser) {
                             $browser->click('@attach-button');
                         })
@@ -80,7 +80,7 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('posts', 1))
-                    ->waitFor('@tags-index-component', 5)
+                    ->waitFor('@tags-index-component', 10)
                     ->within(new IndexComponent('tags'), function ($browser) {
                         $browser->click('@attach-button');
                     })
@@ -109,7 +109,7 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('posts', 1))
-                    ->waitFor('@tags-index-component', 5)
+                    ->waitFor('@tags-index-component', 10)
                     ->within(new IndexComponent('tags'), function ($browser) {
                         $browser->click('@attach-button');
                     })

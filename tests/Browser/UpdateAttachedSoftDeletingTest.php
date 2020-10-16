@@ -25,7 +25,7 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($captain) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('captains', 1))
-                    ->waitFor('@ships-index-component', 5)
+                    ->waitFor('@ships-index-component', 10)
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed()->pause(175)->click('@1-edit-attached-button');
                     })
@@ -57,7 +57,7 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($captain) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('captains', 1))
-                    ->waitFor('@ships-index-component', 5)
+                    ->waitFor('@ships-index-component', 10)
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed()->click('@1-edit-attached-button');
                     })

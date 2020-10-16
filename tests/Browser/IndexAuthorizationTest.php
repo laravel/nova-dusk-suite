@@ -48,7 +48,7 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Index('posts'))
-                    ->waitFor('@posts-index-component', 5)
+                    ->waitFor('@posts-index-component', 10)
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                         $browser->assertMissing('@'.$post->id.'-edit-button');
                         $browser->assertVisible('@'.$post2->id.'-edit-button');
@@ -74,7 +74,7 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Index('posts'))
-                    ->waitFor('@posts-index-component', 5)
+                    ->waitFor('@posts-index-component', 10)
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                         $browser->assertMissing('@'.$post->id.'-delete-button');
                         $browser->assertVisible('@'.$post2->id.'-delete-button');
@@ -99,7 +99,7 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Index('posts'))
-                    ->waitFor('@posts-index-component', 5)
+                    ->waitFor('@posts-index-component', 10)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
@@ -129,7 +129,7 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Index('posts'))
-                    ->waitFor('@posts-index-component', 5)
+                    ->waitFor('@posts-index-component', 10)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->selectAllMatching()
                             ->deleteSelected()
