@@ -92,7 +92,8 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Pages\Detail('users', 3))
-                    ->delete();
+                    ->delete()
+                    ->assertPathIs('/nova/resources/users');
 
             $this->assertNull(User::where('id', 3)->first());
 
