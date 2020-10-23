@@ -6,7 +6,9 @@ use App\Models\User;
 use Database\Factories\CaptainFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\UpdateAttached;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateAttachedSoftDeletingTest extends DuskTestCase
@@ -24,12 +26,12 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($captain) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('captains', 1))
+                    ->visit(new Detail('captains', 1))
                     ->waitFor('@ships-index-component', 10)
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed()->pause(175)->click('@1-edit-attached-button');
                     })
-                    ->on(new Pages\UpdateAttached('captains', 1, 'ships', 1))
+                    ->on(new UpdateAttached('captains', 1, 'ships', 1))
                     ->assertDisabled('@attachable-select')
                     ->type('@notes', 'Test Notes')
                     ->update();
@@ -56,12 +58,12 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($captain) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('captains', 1))
+                    ->visit(new Detail('captains', 1))
                     ->waitFor('@ships-index-component', 10)
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed()->click('@1-edit-attached-button');
                     })
-                    ->on(new Pages\UpdateAttached('captains', 1, 'ships', 1))
+                    ->on(new UpdateAttached('captains', 1, 'ships', 1))
                     ->assertDisabled('@attachable-select')
                     ->type('@notes', 'Test Notes')
                     ->updateAndContinueEditing();

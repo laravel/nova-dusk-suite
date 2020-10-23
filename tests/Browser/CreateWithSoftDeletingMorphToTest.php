@@ -5,7 +5,9 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\VideoFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Create;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateWithSoftDeletingMorphToTest extends DuskTestCase
@@ -36,12 +38,12 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($video) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('videos', $video->id))
+                    ->visit(new Detail('videos', $video->id))
                     ->waitFor('@comments-index-component', 10)
                     ->within(new IndexComponent('comments'), function ($browser) {
                         $browser->click('@create-button');
                     })
-                    ->on(new Pages\Create('comments'))
+                    ->on(new Create('comments'))
                     ->assertDisabled('@commentable-type')
                     ->assertDisabled('@commentable-select')
                     ->type('@body', 'Test Comment')
@@ -65,7 +67,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($video, $video2) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('comments'))
+                    ->visit(new Create('comments'))
                     ->select('@commentable-type', 'videos')
                     ->searchRelation('commentable', $video->id)
                     ->pause(1500)
@@ -74,7 +76,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
                     ->pause(1500)
                     ->assertSeeIn('@commentable-search-input-result-0', $video2->title);
 
-            $browser->visit(new Pages\Create('comments'))
+            $browser->visit(new Create('comments'))
                     ->select('@commentable-type', 'videos')
                     ->pause(750)
                     ->withTrashedRelation('commentable')
@@ -103,7 +105,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($video) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('comments'))
+                    ->visit(new Create('comments'))
                     ->select('@commentable-type', 'videos')
                     ->pause(175)
                     ->withTrashedRelation('commentable')
@@ -133,13 +135,13 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
 
             $this->browse(function (Browser $browser) use ($video) {
                 $browser->loginAs(User::find(1))
-                        ->visit(new Pages\Create('comments'))
+                        ->visit(new Create('comments'))
                         ->select('@commentable-type', 'videos')
                         ->searchRelation('commentable', '1')
                         ->pause(1500)
                         ->assertNoRelationSearchResults('commentable');
 
-                $browser->visit(new Pages\Create('comments'))
+                $browser->visit(new Create('comments'))
                         ->select('@commentable-type', 'videos')
                         ->pause(175)
                         ->withTrashedRelation('commentable')

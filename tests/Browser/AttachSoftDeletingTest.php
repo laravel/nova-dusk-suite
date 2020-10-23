@@ -6,6 +6,7 @@ use App\Models\User;
 use Database\Factories\CaptainFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class AttachSoftDeletingTest extends DuskTestCase
@@ -22,7 +23,7 @@ class AttachSoftDeletingTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($captain, $ship) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Attach('captains', $captain->id, 'ships'))
+                    ->visit(new Attach('captains', $captain->id, 'ships'))
                     ->searchAndSelectFirstRelation('ships', $ship->id)
                     ->clickAttach();
 
@@ -44,7 +45,7 @@ class AttachSoftDeletingTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($captain, $ship) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Attach('captains', $captain->id, 'ships'))
+                    ->visit(new Attach('captains', $captain->id, 'ships'))
                     ->withTrashedRelation('ships')
                     ->searchAndSelectFirstRelation('ships', $ship->id)
                     ->clickAttach();
@@ -69,7 +70,7 @@ class AttachSoftDeletingTest extends DuskTestCase
         $this->whileSearchable(function () use ($captain, $ship) {
             $this->browse(function (Browser $browser) use ($captain, $ship) {
                 $browser->loginAs(User::find(1))
-                        ->visit(new Pages\Attach('captains', $captain->id, 'ships'))
+                        ->visit(new Attach('captains', $captain->id, 'ships'))
                         ->searchAndSelectFirstRelation('ships', $ship->id)
                         ->clickAttach();
 
@@ -93,7 +94,7 @@ class AttachSoftDeletingTest extends DuskTestCase
 
             $this->browse(function (Browser $browser) use ($captain, $ship) {
                 $browser->loginAs(User::find(1))
-                        ->visit(new Pages\Attach('captains', $captain->id, 'ships'))
+                        ->visit(new Attach('captains', $captain->id, 'ships'))
                         ->withTrashedRelation('ships')
                         ->searchAndSelectFirstRelation('ships', $ship->id)
                         ->clickAttach();

@@ -6,6 +6,7 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateTest extends DuskTestCase
@@ -25,11 +26,11 @@ class UpdateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Update('posts', $post->id))
+                    ->visit(new Update('posts', $post->id))
                     ->assertPathIs('/nova/403');
 
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Update('posts', $post2->id))
+                    ->visit(new Update('posts', $post2->id))
                     ->assertPathIsNot('/nova/403');
 
             $browser->blank();
@@ -49,7 +50,7 @@ class UpdateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
-                    ->visit(new Pages\Update('users', 1))
+                    ->visit(new Update('users', 1))
                     ->type('@name', 'Taylor Otwell Updated')
                     ->type('@password', 'secret')
                     ->update();
@@ -72,7 +73,7 @@ class UpdateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Update('users', 1))
+                    ->visit(new Update('users', 1))
                     ->type('@name', ' ')
                     ->update()
                     ->assertSee('The Name field is required.');
@@ -90,7 +91,7 @@ class UpdateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Update('users', 1))
+                    ->visit(new Update('users', 1))
                     ->type('@name', 'Taylor Otwell Updated')
                     ->type('@password', 'secret')
                     ->updateAndContinueEditing();

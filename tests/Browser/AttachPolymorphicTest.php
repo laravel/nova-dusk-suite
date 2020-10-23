@@ -7,7 +7,9 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Database\Factories\TagFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Attach;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class AttachPolymorphicTest extends DuskTestCase
@@ -24,12 +26,12 @@ class AttachPolymorphicTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('posts', 1))
+                    ->visit(new Detail('posts', 1))
                     ->waitFor('@tags-index-component', 10)
                     ->within(new IndexComponent('tags'), function ($browser) {
                         $browser->click('@attach-button');
                     })
-                    ->on(new Pages\Attach('posts', 1, 'tags'))
+                    ->on(new Attach('posts', 1, 'tags'))
                     ->searchAndSelectFirstRelation('tags', $tag->id)
                     ->clickAttach();
 
@@ -52,12 +54,12 @@ class AttachPolymorphicTest extends DuskTestCase
 
             $this->browse(function (Browser $browser) use ($tag) {
                 $browser->loginAs(User::find(1))
-                        ->visit(new Pages\Detail('posts', 1))
+                        ->visit(new Detail('posts', 1))
                         ->waitFor('@tags-index-component', 10)
                         ->within(new IndexComponent('tags'), function ($browser) {
                             $browser->click('@attach-button');
                         })
-                        ->on(new Pages\Attach('posts', 1, 'tags'))
+                        ->on(new Attach('posts', 1, 'tags'))
                         ->searchAndSelectFirstRelation('tags', $tag->id)
                         ->clickAttach();
 
@@ -80,12 +82,12 @@ class AttachPolymorphicTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('posts', 1))
+                    ->visit(new Detail('posts', 1))
                     ->waitFor('@tags-index-component', 10)
                     ->within(new IndexComponent('tags'), function ($browser) {
                         $browser->click('@attach-button');
                     })
-                    ->on(new Pages\Attach('posts', 1, 'tags'))
+                    ->on(new Attach('posts', 1, 'tags'))
                     ->searchAndSelectFirstRelation('tags', $tag->id)
                     ->type('@notes', 'Test Notes')
                     ->clickAttach();
@@ -109,12 +111,12 @@ class AttachPolymorphicTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('posts', 1))
+                    ->visit(new Detail('posts', 1))
                     ->waitFor('@tags-index-component', 10)
                     ->within(new IndexComponent('tags'), function ($browser) {
                         $browser->click('@attach-button');
                     })
-                    ->on(new Pages\Attach('posts', 1, 'tags'))
+                    ->on(new Attach('posts', 1, 'tags'))
                     ->type('@notes', str_repeat('A', 30))
                     ->clickAttach()
                     ->pause(175)
@@ -138,11 +140,11 @@ class AttachPolymorphicTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('posts', 1))
+                    ->visit(new Detail('posts', 1))
                     ->within(new IndexComponent('tags'), function ($browser) {
                         $browser->click('@attach-button');
                     })
-                    ->on(new Pages\Attach('posts', 1, 'tags'))
+                    ->on(new Attach('posts', 1, 'tags'))
                     ->searchAndSelectFirstRelation('tags', $tag->id)
                     ->type('@notes', str_repeat('A', 30))
                     ->clickAttach()

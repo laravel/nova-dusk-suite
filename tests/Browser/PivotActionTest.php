@@ -5,7 +5,8 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\RoleFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class PivotActionTest extends DuskTestCase
@@ -23,7 +24,7 @@ class PivotActionTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->pause(1500)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->clickCheckboxForId(1)
@@ -49,7 +50,7 @@ class PivotActionTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->pause(1500)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->clickCheckboxForId(1)

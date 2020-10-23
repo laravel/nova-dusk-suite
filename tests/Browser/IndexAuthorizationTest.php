@@ -5,7 +5,8 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexAuthorizationTest extends DuskTestCase
@@ -24,7 +25,7 @@ class IndexAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Index('posts'))
+                    ->visit(new Index('posts'))
                     ->pause(250)
                     ->assertPathIs('/nova/403');
 
@@ -47,7 +48,7 @@ class IndexAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Index('posts'))
+                    ->visit(new Index('posts'))
                     ->waitFor('@posts-index-component', 10)
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                         $browser->assertMissing('@'.$post->id.'-edit-button');
@@ -73,7 +74,7 @@ class IndexAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Index('posts'))
+                    ->visit(new Index('posts'))
                     ->waitFor('@posts-index-component', 10)
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                         $browser->assertMissing('@'.$post->id.'-delete-button');
@@ -98,7 +99,7 @@ class IndexAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Index('posts'))
+                    ->visit(new Index('posts'))
                     ->waitFor('@posts-index-component', 10)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->clickCheckboxForId(3)
@@ -128,7 +129,7 @@ class IndexAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Index('posts'))
+                    ->visit(new Index('posts'))
                     ->waitFor('@posts-index-component', 10)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->selectAllMatching()

@@ -8,7 +8,9 @@ use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class SoftDeletingIndexTest extends DuskTestCase
@@ -24,7 +26,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Index('docks'))
+                    ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->deleteResourceById(1)
                                 ->assertDontSeeResource(1);
@@ -47,7 +49,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Index('docks'))
+                    ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
@@ -72,7 +74,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Index('docks'))
+                    ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->withTrashed();
 
@@ -101,7 +103,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Index('docks'))
+                    ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->withTrashed();
 
@@ -129,7 +131,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($separateShip) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->selectAllMatching()
                             ->deleteSelected()
@@ -160,7 +162,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed();
 
@@ -190,7 +192,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($separateShip) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed();
 
@@ -218,7 +220,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Index('docks'))
+                    ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->withTrashed()
                                 ->deleteResourceById(1)
@@ -241,7 +243,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Index('docks'))
+                    ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->assertSeeResource(1)
                                 ->assertDontSeeResource(2);
@@ -264,7 +266,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Index('docks'))
+                    ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->withTrashed()
                                 ->deleteResourceById(1)

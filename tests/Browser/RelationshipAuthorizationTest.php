@@ -6,7 +6,10 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Database\Factories\TagFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Attach;
+use Laravel\Nova\Testing\Browser\Pages\Create;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class RelationshipAuthorizationTest extends DuskTestCase
@@ -23,7 +26,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('posts'))
+                    ->visit(new Create('posts'))
                     ->pause(500)
                     ->assertSelectMissingOption('@user', $user->id)
                     ->assertSelectMissingOption('@user', $user->name);
@@ -47,7 +50,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('comments'))
+                    ->visit(new Create('comments'))
                     ->select('@commentable-type', 'posts')
                     ->pause(500)
                     ->assertSelectMissingOption('@commentable-select', $post->title)
@@ -70,7 +73,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('posts', 1))
+                    ->visit(new Detail('posts', 1))
                     ->within(new IndexComponent('comments'), function ($browser) {
                         $browser->assertMissing('@create-button');
                     });
@@ -95,7 +98,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Attach('posts', 1, 'tags'))
+                    ->visit(new Attach('posts', 1, 'tags'))
                     ->assertSelectMissingOption('@attachable-select', $tag->name)
                     ->assertSelectMissingOption('@attachable-select', $tag->id);
 
@@ -116,7 +119,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('posts', 1))
+                    ->visit(new Detail('posts', 1))
                     ->within(new IndexComponent('tags'), function ($browser) {
                         $browser->assertMissing('@attach-button');
                     });

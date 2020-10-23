@@ -5,7 +5,9 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\RoleFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Attach;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class AttachTest extends DuskTestCase
@@ -21,12 +23,12 @@ class AttachTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->waitFor('@roles-index-component', 10)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@attach-button');
                     })
-                    ->on(new Pages\Attach('users', 1, 'roles'))
+                    ->on(new Attach('users', 1, 'roles'))
                     ->waitFor('.content form', 10)
                     ->selectAttachable($role->id)
                     ->clickAttach();
@@ -52,12 +54,12 @@ class AttachTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->waitFor('@roles-index-component', 10)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@attach-button');
                     })
-                    ->on(new Pages\Attach('users', 1, 'roles'))
+                    ->on(new Attach('users', 1, 'roles'))
                     ->waitFor('.content form', 10)
                     ->selectAttachable($role->id)
                     ->type('@notes', 'Test Notes')
@@ -85,12 +87,12 @@ class AttachTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->waitFor('@roles-index-component', 10)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@attach-button');
                     })
-                    ->on(new Pages\Attach('users', 1, 'roles'))
+                    ->on(new Attach('users', 1, 'roles'))
                     ->waitFor('.content form', 10)
                     ->clickAttach()
                     ->waitForText('The role field is required.');

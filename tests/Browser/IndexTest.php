@@ -5,7 +5,8 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexTest extends DuskTestCase
@@ -21,7 +22,7 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSeeResource(1)
@@ -42,7 +43,7 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->click('@create-button');
@@ -64,7 +65,7 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->click('@1-view-button');
@@ -86,7 +87,7 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->click('@1-edit-button');
@@ -109,7 +110,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             // Search For Single User By ID...
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->searchFor('3')
@@ -120,7 +121,7 @@ class IndexTest extends DuskTestCase
 
             // Search For Single User By Name...
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->searchFor('Taylor')
@@ -142,7 +143,7 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSelectAllMatchingCount(4)
@@ -166,7 +167,7 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSeeResource(50)
@@ -195,7 +196,7 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSeeResource(50)
@@ -230,7 +231,7 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->setPerPage('50')
@@ -253,7 +254,7 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->applyFilter('Select First', '1')
@@ -281,7 +282,7 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->applyFilter('Select First', '1')
@@ -309,7 +310,7 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->deleteResourceById(3)
@@ -331,7 +332,7 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->clickCheckboxForId(3)
@@ -356,7 +357,7 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->searchFor('David')
@@ -382,7 +383,7 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UserIndex)
+                    ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 10)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->clickCheckboxForId(3)

@@ -13,5 +13,8 @@ npm-debug.log
 yarn-error.log
 .env
 
+/public/vendor/nova/*
+/resources/lang/vendor/nova/*
+/resources/views/vendor/nova/*
 /nova*
 /nova-*.zip

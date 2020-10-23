@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class DetailAuthorizationTest extends DuskTestCase
@@ -22,7 +23,7 @@ class DetailAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('posts', $post->id))
+                    ->visit(new Detail('posts', $post->id))
                     ->assertPathIs('/nova/403');
 
             $browser->blank();
@@ -42,7 +43,7 @@ class DetailAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('posts', $post->id))
+                    ->visit(new Detail('posts', $post->id))
                     ->assertMissing('@edit-resource-button');
 
             $browser->blank();
@@ -62,7 +63,7 @@ class DetailAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('posts', $post->id))
+                    ->visit(new Detail('posts', $post->id))
                     ->assertMissing('@open-delete-modal-button');
 
             $browser->blank();

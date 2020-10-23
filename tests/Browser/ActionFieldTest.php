@@ -5,7 +5,8 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\RoleFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class ActionFieldTest extends DuskTestCase
@@ -19,7 +20,7 @@ class ActionFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->visit('/')->assertMissing('Nova');
 
             $browser->blank();
@@ -39,7 +40,7 @@ class ActionFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs($user = User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->waitFor('@roles-index-component', 10)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->clickCheckboxForId(1)
@@ -67,7 +68,7 @@ class ActionFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs($user = User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->waitFor('@roles-index-component', 10)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->clickCheckboxForId(1)

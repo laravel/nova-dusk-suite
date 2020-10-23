@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateTest extends DuskTestCase
@@ -18,7 +19,7 @@ class CreateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('users'))
+                    ->visit(new Create('users'))
                     ->type('@name', 'Adam Wathan')
                     ->type('@email', 'adam@laravel.com')
                     ->type('@password', 'secret')
@@ -45,7 +46,7 @@ class CreateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('users'))
+                    ->visit(new Create('users'))
                     ->create()
                     ->assertSee('The Name field is required.')
                     ->assertSee('The Email field is required.')
@@ -64,7 +65,7 @@ class CreateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('users'))
+                    ->visit(new Create('users'))
                     ->type('@name', 'Adam Wathan')
                     ->type('@email', 'adam@laravel.com')
                     ->type('@password', 'secret')

@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateWithBelongsToTest extends DuskTestCase
@@ -21,7 +22,7 @@ class UpdateWithBelongsToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Update('posts', $post->id))
+                    ->visit(new Update('posts', $post->id))
                     ->select('@user', 2)
                     ->update()
                     ->waitForText('The user post was updated');

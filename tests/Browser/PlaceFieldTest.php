@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\Address;
 use App\Models\User;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Tests\DuskTestCase;
 
 /**
@@ -21,7 +22,7 @@ class PlaceFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('addresses'))
+                    ->visit(new Create('addresses'))
                     ->click('@address_line_1')
                     ->type('@address_line_1', '110 Kingsbrook St Hot Springs')
                     ->pause(3000)

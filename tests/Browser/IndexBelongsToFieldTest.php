@@ -5,7 +5,8 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexBelongsToFieldTest extends DuskTestCase
@@ -22,7 +23,7 @@ class IndexBelongsToFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Index('posts'))
+                    ->visit(new Index('posts'))
                     ->waitFor('@posts-index-component', 10)
                     ->within(new IndexComponent('posts'), function ($browser) use ($user) {
                         $browser->clickLink($user->name);

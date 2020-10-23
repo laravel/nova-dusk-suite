@@ -6,7 +6,9 @@ use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Create;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
@@ -22,12 +24,12 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', $dock->id))
+                    ->visit(new Detail('docks', $dock->id))
                     ->waitFor('@ships-index-component', 10)
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->click('@create-button');
                     })
-                    ->on(new Pages\Create('ships'))
+                    ->on(new Create('ships'))
                     ->assertDisabled('@dock')
                     ->type('@name', 'Test Ship')
                     ->create();
@@ -50,7 +52,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('sails'))
+                    ->visit(new Create('sails'))
                     ->assertSelectMissingOption('@ship', $ship->id)
                     ->assertSelectHasOption('@ship', $ship2->id)
                     ->withTrashedRelation('ships')
@@ -77,7 +79,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($ship) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('sails'))
+                    ->visit(new Create('sails'))
                     ->withTrashedRelation('ships')
                     ->select('@ship', $ship->id)
                     ->withoutTrashedRelation('ships')
@@ -104,7 +106,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
 
             $this->browse(function (Browser $browser) use ($dock) {
                 $browser->loginAs(User::find(1))
-                        ->visit(new Pages\Create('ships'))
+                        ->visit(new Create('ships'))
                         ->searchRelation('docks', '1')
                         ->pause(1500)
                         ->assertNoRelationSearchResults('docks')

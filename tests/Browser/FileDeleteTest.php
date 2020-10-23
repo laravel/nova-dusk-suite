@@ -6,6 +6,8 @@ use App\Models\Captain;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Pages\Create;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class FileDeleteTest extends DuskTestCase
@@ -19,7 +21,7 @@ class FileDeleteTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                ->visit(new Pages\Create('captains'))
+                ->visit(new Create('captains'))
                 ->type('@name', 'Taylor Otwell')
                 ->attach('@photo', __DIR__.'/Fixtures/StardewTaylor.png')
                 ->create();
@@ -28,7 +30,7 @@ class FileDeleteTest extends DuskTestCase
 
             $this->assertTrue(Storage::disk('public')->exists($captain->photo));
 
-            $browser->visit(new Pages\Detail('captains', $captain->id))
+            $browser->visit(new Detail('captains', $captain->id))
                 ->delete();
 
             $this->assertFalse(Storage::disk('public')->exists($captain->photo));

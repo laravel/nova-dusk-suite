@@ -7,7 +7,8 @@ use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class SoftDeletingDetailTest extends DuskTestCase
@@ -23,7 +24,7 @@ class SoftDeletingDetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->assertSee('Test Dock');
 
             $browser->blank();
@@ -41,7 +42,7 @@ class SoftDeletingDetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->runAction('mark-as-active');
 
             $this->assertEquals(1, Dock::find(1)->active);
@@ -61,7 +62,7 @@ class SoftDeletingDetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->click('@edit-resource-button')
                     ->pause(250)
                     ->assertPathIs('/nova/resources/docks/1/edit');
@@ -81,7 +82,7 @@ class SoftDeletingDetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->delete();
 
             $browser->assertPathIs('/nova/resources/docks/1');
@@ -103,7 +104,7 @@ class SoftDeletingDetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->restore();
 
             $browser->assertPathIs('/nova/resources/docks/1');
@@ -125,7 +126,7 @@ class SoftDeletingDetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->forceDelete();
 
             $browser->assertPathIs('/nova/resources/docks');
@@ -148,7 +149,7 @@ class SoftDeletingDetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->assertSeeResource(1)
                                 ->searchFor('No Matching Ships')
@@ -171,7 +172,7 @@ class SoftDeletingDetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed();
 
@@ -196,7 +197,7 @@ class SoftDeletingDetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->click('@create-button')
                                 ->assertPathIs('/nova/resources/ships/new')
@@ -221,7 +222,7 @@ class SoftDeletingDetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->assertSeeResource(10)
                                 ->assertDontSeeResource(1)
@@ -249,7 +250,7 @@ class SoftDeletingDetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->assertSeeResource(10)
                                 ->assertSeeResource(6)
@@ -280,7 +281,7 @@ class SoftDeletingDetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->selectAllMatching()
                                 ->runAction('mark-as-active');
@@ -308,7 +309,7 @@ class SoftDeletingDetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('docks', 1))
+                    ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->selectAllMatching()
                                 ->deleteSelected();

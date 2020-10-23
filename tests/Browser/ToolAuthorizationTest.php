@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class ToolAuthorizationTest extends DuskTestCase
@@ -92,7 +93,7 @@ class ToolAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->assertSee('Resource Tool');
 
             $browser->blank();
@@ -111,7 +112,7 @@ class ToolAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->assertDontSee('Resource Tool');
 
             $browser->blank();

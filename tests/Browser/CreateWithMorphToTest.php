@@ -5,7 +5,9 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Create;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateWithMorphToTest extends DuskTestCase
@@ -21,7 +23,7 @@ class CreateWithMorphToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('comments'))
+                    ->visit(new Create('comments'))
                     ->select('@commentable-type', 'posts')
                     ->pause(500)
                     ->searchAndSelectFirstRelation('commentable', 1)
@@ -48,7 +50,7 @@ class CreateWithMorphToTest extends DuskTestCase
 
             $this->browse(function (Browser $browser) use ($post) {
                 $browser->loginAs(User::find(1))
-                        ->visit(new Pages\Create('comments'))
+                        ->visit(new Create('comments'))
                         ->select('@commentable-type', 'posts')
                         ->pause(500)
                         ->searchAndSelectFirstRelation('commentable', 1)
@@ -90,12 +92,12 @@ class CreateWithMorphToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('posts', $post->id))
+                    ->visit(new Detail('posts', $post->id))
                     ->waitFor('@comments-index-component', 10)
                     ->within(new IndexComponent('comments'), function ($browser) {
                         $browser->click('@create-button');
                     })
-                    ->on(new Pages\Create('comments'))
+                    ->on(new Create('comments'))
                     ->assertDisabled('@commentable-type')
                     ->assertDisabled('@commentable-select')
                     ->type('@body', 'Test Comment')
@@ -118,7 +120,7 @@ class CreateWithMorphToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('comments'))
+                    ->visit(new Create('comments'))
                     ->assertSee('User Post')
                     ->assertSee('User Video');
 

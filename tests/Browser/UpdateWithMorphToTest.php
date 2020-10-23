@@ -8,6 +8,7 @@ use Database\Factories\CommentFactory;
 use Database\Factories\LinkFactory;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateWithMorphToTest extends DuskTestCase
@@ -24,7 +25,7 @@ class UpdateWithMorphToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($comment) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Update('comments', $comment->id))
+                    ->visit(new Update('comments', $comment->id))
                     ->searchAndSelectFirstRelation('commentable', 2)
                     ->update()
                     ->waitForText('The comment was updated');
@@ -48,7 +49,7 @@ class UpdateWithMorphToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($comment, $link) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Update('comments', $comment->id))
+                    ->visit(new Update('comments', $comment->id))
                     ->assertEnabled('@commentable-type')
                     ->within('@commentable-type', function ($browser) {
                         $browser->assertSee('Link');

@@ -7,6 +7,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Pages\Create;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class FileAttachTest extends DuskTestCase
@@ -22,7 +25,7 @@ class FileAttachTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('captains'))
+                    ->visit(new Create('captains'))
                     ->type('@name', 'Taylor Otwell')
                     ->attach('@photo', __DIR__.'/Fixtures/StardewTaylor.png')
                     ->create();
@@ -34,12 +37,12 @@ class FileAttachTest extends DuskTestCase
             $this->assertTrue(Storage::disk('public')->exists($captain->photo));
 
             // Download the file...
-            $browser->on(new Pages\Detail('captains', $captain->id))
+            $browser->on(new Detail('captains', $captain->id))
                     ->click('@photo-download-link')
                     ->pause(250);
 
             // Ensure file is not removed on blank update...
-            $browser->visit(new Pages\Update('captains', $captain->id))
+            $browser->visit(new Update('captains', $captain->id))
                     ->update();
 
             $captain = $captain->fresh();
@@ -47,7 +50,7 @@ class FileAttachTest extends DuskTestCase
             $this->assertTrue(Storage::disk('public')->exists($captain->photo));
 
             // Delete the file...
-            $browser->visit(new Pages\Update('captains', $captain->id))
+            $browser->visit(new Update('captains', $captain->id))
                     ->click('@photo-delete-link')
                     ->pause(250)
                     ->click('@confirm-upload-delete-button')

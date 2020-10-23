@@ -5,7 +5,8 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class DetailTest extends DuskTestCase
@@ -19,7 +20,7 @@ class DetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->assertSee('Taylor Otwell')
                     ->assertSee('taylor@laravel.com');
 
@@ -36,7 +37,7 @@ class DetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->runAction('mark-as-active')
                     ->pause(3000);
 
@@ -55,7 +56,7 @@ class DetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->cancelAction('mark-as-active');
 
             $this->assertEquals(0, User::find(1)->active);
@@ -73,7 +74,7 @@ class DetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->click('@edit-resource-button')
                     ->pause(250)
                     ->assertPathIs('/nova/resources/users/1/edit');
@@ -91,7 +92,7 @@ class DetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 3))
+                    ->visit(new Detail('users', 3))
                     ->delete()
                     ->assertPathIs('/nova/resources/users');
 
@@ -113,7 +114,7 @@ class DetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->waitFor('@posts-index-component', 10)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->assertSeeResource(1)
@@ -137,7 +138,7 @@ class DetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->waitFor('@posts-index-component', 10)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->click('@create-button')
@@ -166,7 +167,7 @@ class DetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->waitFor('@posts-index-component', 10)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->assertSeeResource(10)
@@ -198,7 +199,7 @@ class DetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->waitFor('@posts-index-component', 10)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->assertSeeResource(10)
@@ -230,7 +231,7 @@ class DetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->waitFor('@posts-index-component', 10)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->selectAllMatching()
@@ -259,7 +260,7 @@ class DetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('users', 1))
+                    ->visit(new Detail('users', 1))
                     ->waitFor('@posts-index-component', 10)
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->selectAllMatching()

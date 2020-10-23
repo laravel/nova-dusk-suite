@@ -8,7 +8,8 @@ use Database\Factories\LinkFactory;
 use Database\Factories\PostFactory;
 use Database\Factories\VideoFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\DetailComponent;
+use Laravel\Nova\Testing\Browser\Components\DetailComponent;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class DetailMorphToFieldTest extends DuskTestCase
@@ -25,7 +26,7 @@ class DetailMorphToFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post, $comment) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('comments', $comment->id))
+                    ->visit(new Detail('comments', $comment->id))
                     ->within(new DetailComponent('comments', $comment->id), function ($browser) {
                         $browser->assertSee('Post');
                     })
@@ -49,7 +50,7 @@ class DetailMorphToFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('comments', 1))
+                    ->visit(new Detail('comments', 1))
                     ->assertSee('User Post');
 
             $browser->blank();
@@ -68,7 +69,7 @@ class DetailMorphToFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('comments', 1))
+                    ->visit(new Detail('comments', 1))
                     ->assertSee('User Video');
 
             $browser->blank();
@@ -87,7 +88,7 @@ class DetailMorphToFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($comment, $link) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('comments', 1))
+                    ->visit(new Detail('comments', 1))
                     ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($link) {
                         $browser->assertSee('Link')
                                 ->assertSee($link->title);

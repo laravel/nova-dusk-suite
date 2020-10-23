@@ -8,7 +8,10 @@ use Database\Factories\CaptainFactory;
 use Database\Factories\ShipFactory;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Attach;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\UpdateAttached;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class PivotFileAttachTest extends DuskTestCase
@@ -25,7 +28,7 @@ class PivotFileAttachTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($captain, $ship) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Attach('captains', $captain->id, 'ships'))
+                    ->visit(new Attach('captains', $captain->id, 'ships'))
                     ->searchAndSelectFirstRelation('ships', $ship->id)
                     ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
                     ->clickAttach();
@@ -37,7 +40,7 @@ class PivotFileAttachTest extends DuskTestCase
             $this->assertTrue(Storage::disk('public')->exists($ship->pivot->contract));
 
             // Ensure file is not removed on blank update...
-            $browser->visit(new Pages\UpdateAttached('captains', $captain->id, 'ships', $ship->id))
+            $browser->visit(new UpdateAttached('captains', $captain->id, 'ships', $ship->id))
                     ->update();
 
             $captain = Captain::orderBy('id', 'desc')->first();
@@ -46,7 +49,7 @@ class PivotFileAttachTest extends DuskTestCase
             $this->assertTrue(Storage::disk('public')->exists($ship->pivot->contract));
 
             // Detach the record...
-            $browser->visit(new Pages\Detail('captains', $captain->id))
+            $browser->visit(new Detail('captains', $captain->id))
                     ->within(new IndexComponent('ships'), function ($browser) use ($ship) {
                         $browser->deleteResourceById($ship->id);
                     });
@@ -70,7 +73,7 @@ class PivotFileAttachTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($captain, $ship) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Attach('captains', $captain->id, 'ships'))
+                    ->visit(new Attach('captains', $captain->id, 'ships'))
                     ->searchAndSelectFirstRelation('ships', $ship->id)
                     ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
                     ->clickAttach();
@@ -82,7 +85,7 @@ class PivotFileAttachTest extends DuskTestCase
             $this->assertTrue(Storage::disk('public')->exists($ship->pivot->contract));
 
             // Delete the file...
-            $browser->visit(new Pages\UpdateAttached('captains', $captain->id, 'ships', $ship->id))
+            $browser->visit(new UpdateAttached('captains', $captain->id, 'ships', $ship->id))
                     ->click('@contract-internal-delete-link')
                     ->pause(250)
                     ->click('@confirm-upload-delete-button')

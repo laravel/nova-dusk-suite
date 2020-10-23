@@ -49,7 +49,7 @@ class Post extends Resource
         return [
             ID::make('ID', 'id')->sortable(),
 
-            BelongsTo::make('User', 'user')->display('name'),
+            BelongsTo::make('User', 'user')->display('name')->sortable(),
 
             Text::make('Title', 'title')->sortable(),
             Textarea::make('Body', 'body'),
@@ -85,7 +85,9 @@ class Post extends Resource
      */
     public function lenses(Request $request)
     {
-        return [];
+        return [
+            new Lenses\PostLens,
+        ];
     }
 
     /**

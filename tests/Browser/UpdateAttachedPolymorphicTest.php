@@ -7,6 +7,7 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Database\Factories\TagFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Pages\UpdateAttached;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateAttachedPolymorphicTest extends DuskTestCase
@@ -24,7 +25,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UpdateAttached('posts', 1, 'tags', 1))
+                    ->visit(new UpdateAttached('posts', 1, 'tags', 1))
                     ->assertDisabled('@attachable-select')
                     ->assertInputValue('@notes', 'Test Notes')
                     ->type('@notes', 'Test Notes Updated')
@@ -50,7 +51,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
 
             $this->browse(function (Browser $browser) {
                 $browser->loginAs(User::find(1))
-                        ->visit(new Pages\UpdateAttached('posts', 1, 'tags', 1))
+                        ->visit(new UpdateAttached('posts', 1, 'tags', 1))
                         ->assertDisabled('@attachable-select')
                         ->assertInputValue('@notes', 'Test Notes')
                         ->type('@notes', 'Test Notes Updated')
@@ -76,7 +77,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UpdateAttached('posts', 1, 'tags', 1))
+                    ->visit(new UpdateAttached('posts', 1, 'tags', 1))
                     ->type('@notes', 'Test Notes Updated')
                     ->updateAndContinueEditing();
 
@@ -101,7 +102,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\UpdateAttached('posts', 1, 'tags', 1))
+                    ->visit(new UpdateAttached('posts', 1, 'tags', 1))
                     ->type('@notes', str_repeat('A', 30))
                     ->update()
                     ->assertSee('The notes may not be greater than 20 characters.');

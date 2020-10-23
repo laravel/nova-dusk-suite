@@ -6,7 +6,10 @@ use App\Models\Flight;
 use App\Models\User;
 use Database\Factories\FlightFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Tests\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Create;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class CustomFieldTest extends DuskTestCase
@@ -20,7 +23,7 @@ class CustomFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('flights'))
+                    ->visit(new Create('flights'))
                     ->type('@name', 'Test Flight')
                     ->create();
 
@@ -42,7 +45,7 @@ class CustomFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Create('flights'))
+                    ->visit(new Create('flights'))
                     ->create()
                     ->assertSee('The Name field is required.');
 
@@ -61,7 +64,7 @@ class CustomFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($flight) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Index('flights'))
+                    ->visit(new Index('flights'))
                     ->waitFor('@flights-index-component', 10)
                     ->within(new IndexComponent('flights'), function ($browser) use ($flight) {
                         $browser->assertSee($flight->name);
@@ -82,7 +85,7 @@ class CustomFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($flight) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Pages\Detail('flights', $flight->id))
+                    ->visit(new Detail('flights', $flight->id))
                     ->pause(250)
                     ->assertSee($flight->name);
 
