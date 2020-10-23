@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
@@ -37,6 +38,7 @@ class Comment extends Resource
             ID::make('ID', 'id')->sortable(),
             $this->commentable(),
             Text::make('Body', 'body'),
+            File::make('Attachment')->nullable(),
         ];
     }
 
@@ -59,7 +61,8 @@ class Comment extends Resource
             Link::class => 'Link',
             Post::class => 'Post',
             Video::class => 'Video',
-        ])->searchable(file_exists(base_path('.searchable')));
+        ])->showCreateRelationButton(file_exists(base_path('.inline-create')))
+        ->searchable(file_exists(base_path('.searchable')));
     }
 
     /**

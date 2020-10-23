@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\MorphToMany;
@@ -53,6 +54,7 @@ class Post extends Resource
 
             Text::make('Title', 'title')->sortable(),
             Textarea::make('Body', 'body'),
+            File::make('Attachment')->nullable(),
 
             MorphMany::make('Comments', 'comments'),
 
