@@ -118,7 +118,6 @@ class User extends Resource
                     return true;
                 }
 
-
                 return $this->resource->exists && $this->resource->active === true;
             }),
             new Actions\Sleep,
