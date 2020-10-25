@@ -118,9 +118,8 @@ class User extends Resource
                     return true;
                 }
 
-                $model = $this->model() ?? static::newModel();
 
-                return $model->exists && $model->active === true;
+                return $this->resource->exists && $this->resource->active === true;
             }),
             new Actions\Sleep,
             (new Actions\RedirectToGoogle)->withoutConfirmation(),
