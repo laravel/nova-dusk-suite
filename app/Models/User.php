@@ -35,6 +35,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'blocked_from' => 'json',
+        'active' => 'boolean',
     ];
 
     /**
