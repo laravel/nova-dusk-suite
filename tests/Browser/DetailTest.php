@@ -21,6 +21,7 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
+                    ->assertSee('User Details: 1')
                     ->assertSee('Taylor Otwell')
                     ->assertSee('taylor@laravel.com');
 

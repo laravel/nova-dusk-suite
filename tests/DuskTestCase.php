@@ -172,6 +172,23 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     }
 
     /**
+     * Run the given callback with inline-create functionality enabled.
+     *
+     * @param  callable  $callback
+     * @return void
+     */
+    protected function whileInlineCreate(callable $callback)
+    {
+        touch(base_path('.inline-create'));
+
+        try {
+            $callback();
+        } finally {
+            @unlink(base_path('.inline-create'));
+        }
+    }
+
+    /**
      * Create a new Browser instance.
      *
      * @param  \Facebook\WebDriver\Remote\RemoteWebDriver  $driver
