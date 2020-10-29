@@ -9,7 +9,6 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Http\Requests\ActionRequest;
 use Otwell\ResourceTool\ResourceTool;
 
 class User extends Resource
