@@ -113,9 +113,8 @@ class User extends Resource
         return [
             new Actions\MarkAsActive,
             (new Actions\MarkAsInactive)->showOnTableRow()->showOnDetail()->canSee(function ($request) {
-                return $this->resource->exists && $this->resource->active === true;
-            })->canRun(function ($request, $model) {
-                return (int) $model->getKey() !== 1;
+                return $request instanceof ActionRequest
+                    || ($this->resource->exists && $this->resource->active === true);
             }),
             new Actions\Sleep,
             (new Actions\RedirectToGoogle)->withoutConfirmation(),
