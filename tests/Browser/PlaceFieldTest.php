@@ -25,7 +25,7 @@ class PlaceFieldTest extends DuskTestCase
                     ->visit(new Create('addresses'))
                     ->click('@address_line_1')
                     ->type('@address_line_1', '110 Kingsbrook St Hot Springs')
-                    ->pause(3000)
+                    ->pause(6000)
                     ->keys('@address_line_1', '{arrow_down}', '{enter}')
                     ->create()
                     ->pause(2000);

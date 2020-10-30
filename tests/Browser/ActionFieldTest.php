@@ -7,6 +7,7 @@ use Database\Factories\RoleFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class ActionFieldTest extends DuskTestCase
@@ -77,6 +78,32 @@ class ActionFieldTest extends DuskTestCase
                                 $browser->assertSee('The Notes field is required.');
                             });
                     });
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function actions_cant_be_executed_when_not_authorized_to_run()
+    {
+        $this->setupLaravel();
+
+        User::whereIn('id', [1])->update(['active' => true]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new UserIndex)
+                    ->waitFor('@users-index-component', 10)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->assertSeeIn('@1-row', 'Mark As Inactive')
+                            ->assertDontSeeIn('@2-row', 'Mark As Inactive')
+                            ->assertDontSeeIn('@3-row', 'Mark As Inactive')
+                            ->runInlineAction(1, 'mark-as-inactive');
+                    })->waitForText('Sorry! You are not authorized to perform this action.', 10);
+
+            $this->assertEquals(1, User::find(1)->active);
 
             $browser->blank();
         });
