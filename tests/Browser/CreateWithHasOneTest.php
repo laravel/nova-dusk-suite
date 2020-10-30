@@ -12,6 +12,8 @@ class CreateWithHasOneTest extends DuskTestCase
 {
     public function test_has_one_should_be_filled()
     {
+        $this->markTestSkipped('Need to setup nova-dusk-suite to support requirement');
+
         $this->setupLaravel();
 
         $this->browse(function (Browser $browser) {
