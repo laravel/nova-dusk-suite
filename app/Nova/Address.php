@@ -45,6 +45,8 @@ class Address extends Resource
                 Text::make('Postal Code'),
                 Text::make('Country'),
             ]),
+
+            BelongsTo::make('user', 'user', User::class),
         ];
     }
 
