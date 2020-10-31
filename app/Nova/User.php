@@ -75,8 +75,6 @@ class User extends Resource
                         })
                         ->referToPivotAs('Role Assignment')
                         ->prunable(),
-
-            HasOne::make('address', 'address', Address::class),
         ];
     }
 

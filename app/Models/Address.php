@@ -10,11 +10,4 @@ class Address extends Model
 {
     use Searchable, SoftDeletes;
 
-    /**
-     * get the user for this address
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }
