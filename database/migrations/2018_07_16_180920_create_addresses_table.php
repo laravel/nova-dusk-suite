@@ -21,7 +21,6 @@ class CreateAddressesTable extends Migration
             $table->string('state');
             $table->string('postal_code');
             $table->string('country');
-            $table->unsignedInteger('user_id');
             $table->timestamps();
             $table->softDeletes();
         });

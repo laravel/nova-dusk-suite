@@ -55,14 +55,6 @@ class User extends Authenticatable
     }
 
     /**
-     * get user address
-     */
-    public function address()
-    {
-        return $this->hasOne(Address::class);
-    }
-
-    /**
      * Store the actions the user should be blocked from.
      */
     public function shouldBlockFrom(...$block)
