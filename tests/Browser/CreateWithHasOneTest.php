@@ -24,7 +24,7 @@ class CreateWithHasOneTest extends DuskTestCase
                 ->within(new IndexComponent('employees'), function ($browser) {
                     $browser->click('@create-button');
                 })
-                ->pause(200)
+                ->waitFor('[data-testid="content"] form', 10)
                 ->assertDisabled('@people');
 
             $browser->blank();
