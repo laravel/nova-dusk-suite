@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Laravel\Nova\Tests\Browser;
-
 
 use App\Models\User;
 use Laravel\Dusk\Browser;
@@ -32,5 +30,4 @@ class CreateWithHasOneTest extends DuskTestCase
             $browser->blank();
         });
     }
-
 }

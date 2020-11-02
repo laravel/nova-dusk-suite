@@ -10,7 +10,7 @@ class People extends Model
     use HasFactory;
 
     /**
-     * get employee from people
+     * get employee from people.
      */
     public function employee()
     {
