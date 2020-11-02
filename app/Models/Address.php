@@ -9,5 +9,4 @@ use Laravel\Scout\Searchable;
 class Address extends Model
 {
     use Searchable, SoftDeletes;
-
 }

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
 class People extends Resource
 {
@@ -47,7 +46,6 @@ class People extends Resource
             Text::make(__('Name')),
 
             /** RELATION */
-
             HasOne::make(__('Employee'), 'employee', Employee::class),
         ];
     }
