@@ -190,6 +190,38 @@ class LensTest extends DuskTestCase
     /**
      * @test
      */
+    public function number_of_resources_displayed_per_page_is_saved_in_query_params()
+    {
+        $this->setupLaravel();
+
+        UserFactory::new()->times(50)->create();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Lens('users', 'passthrough-lens'))
+                    ->waitFor('@passthrough-lens-lens-component', 10)
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                        $browser->setPerPage('50')
+                                ->pause(1500)
+                                ->assertSeeResource(50)
+                                ->assertSeeResource(25)
+                                ->assertSeeResource(1);
+                    })
+                    ->refresh()
+                    ->waitFor('@passthrough-lens-lens-component', 10)
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                        $browser->assertSeeResource(50)
+                                ->assertSeeResource(25)
+                                ->assertSeeResource(1);
+                    });
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
     public function test_filters_can_be_applied_to_resources()
     {
         $this->setupLaravel();

@@ -248,6 +248,38 @@ class IndexTest extends DuskTestCase
     /**
      * @test
      */
+    public function number_of_resources_displayed_per_page_is_saved_in_query_params()
+    {
+        $this->setupLaravel();
+
+        UserFactory::new()->times(50)->create();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new UserIndex)
+                    ->waitFor('@users-index-component', 10)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->setPerPage('50')
+                                ->pause(1500)
+                                ->assertSeeResource(50)
+                                ->assertSeeResource(25)
+                                ->assertDontSeeResource(1);
+                    })
+                    ->refresh()
+                    ->waitFor('@users-index-component', 10)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->assertSeeResource(50)
+                                ->assertSeeResource(25)
+                                ->assertDontSeeResource(1);
+                    });
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
     public function test_filters_can_be_applied_to_resources()
     {
         $this->setupLaravel();
