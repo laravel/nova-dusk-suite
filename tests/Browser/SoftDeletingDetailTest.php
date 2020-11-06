@@ -105,9 +105,9 @@ class SoftDeletingDetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
-                    ->restore();
-
-            $browser->assertPathIs('/nova/resources/docks/1');
+                    ->restore()
+                    ->waitForText('The dock was restored!', 10)
+                    ->assertPathIs('/nova/resources/docks/1');
 
             $this->assertEquals(1, Dock::count());
 
