@@ -51,7 +51,7 @@ class UpdateTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
                     ->visit(new Update('users', 1))
-                    ->type('@name', 'Taylor Otwell Updated')
+                    ->type('@name', 'Taylor Otwell upDATED')
                     ->type('@password', 'secret')
                     ->update();
 
