@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
@@ -41,7 +42,10 @@ class User extends Resource
         return [
             ID::make('ID', 'id')->sortable(),
 
-            Text::make('Name', 'name')->sortable()->rules('required'),
+            Text::make('Name', 'name')->sortable()->rules('required')
+                ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                    $model->{$attribute} = Str::title($request->input($attribute));
+                }),
 
             Text::make('Email', 'email')->sortable()->rules('required', 'email', 'max:255')
                 ->creationRules('unique:users,email')
