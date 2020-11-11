@@ -93,7 +93,7 @@ class CreateWithMorphToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('posts', $post->id))
-                    ->waitFor('@comments-index-component', 10)
+                    ->waitFor('@comments-index-component', 15)
                     ->within(new IndexComponent('comments'), function ($browser) {
                         $browser->click('@create-button');
                     })

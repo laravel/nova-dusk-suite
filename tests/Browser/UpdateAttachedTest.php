@@ -26,7 +26,7 @@ class UpdateAttachedTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->waitFor('@roles-index-component', 10)
+                    ->waitFor('@roles-index-component', 15)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@1-edit-attached-button');
                     })
@@ -56,7 +56,7 @@ class UpdateAttachedTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->waitFor('@roles-index-component', 10)
+                    ->waitFor('@roles-index-component', 15)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@1-edit-attached-button');
                     })
@@ -86,7 +86,7 @@ class UpdateAttachedTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->waitFor('@roles-index-component', 10)
+                    ->waitFor('@roles-index-component', 15)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@1-edit-attached-button');
                     })

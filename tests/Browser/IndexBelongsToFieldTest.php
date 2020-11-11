@@ -24,7 +24,7 @@ class IndexBelongsToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(User::find(1))
                     ->visit(new Index('posts'))
-                    ->waitFor('@posts-index-component', 10)
+                    ->waitFor('@posts-index-component', 15)
                     ->within(new IndexComponent('posts'), function ($browser) use ($user) {
                         $browser->clickLink($user->name);
                     })

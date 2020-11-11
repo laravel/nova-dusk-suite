@@ -23,7 +23,7 @@ class IndexMorphToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($comment) {
             $browser->loginAs(User::find(1))
                     ->visit(new Index('comments'))
-                    ->waitFor('@comments-index-component', 10)
+                    ->waitFor('@comments-index-component', 15)
                     ->within(new IndexComponent('comments'), function ($browser) use ($comment) {
                         $browser->clickLink('Post: '.$comment->commentable->title);
                     })

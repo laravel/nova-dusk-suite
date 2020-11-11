@@ -42,7 +42,7 @@ class ActionFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs($user = User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->waitFor('@roles-index-component', 10)
+                    ->waitFor('@roles-index-component', 15)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->clickCheckboxForId(1)
                             ->runAction('update-pivot-notes', function ($browser) {
@@ -70,7 +70,7 @@ class ActionFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs($user = User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->waitFor('@roles-index-component', 10)
+                    ->waitFor('@roles-index-component', 15)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->clickCheckboxForId(1)
                             ->runAction('update-required-pivot-notes')
@@ -95,7 +95,7 @@ class ActionFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 10)
+                    ->waitFor('@users-index-component', 15)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSeeIn('@1-row', 'Mark As Inactive')
                             ->assertDontSeeIn('@2-row', 'Mark As Inactive')
