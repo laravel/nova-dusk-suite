@@ -61,6 +61,7 @@ class UpdateAttachedTest extends DuskTestCase
                         $browser->click('@1-edit-attached-button');
                     })
                     ->on(new UpdateAttached('users', 1, 'roles', 1))
+                    ->waitFor('@notes', 15)
                     ->type('@notes', 'Test Notes Updated')
                     ->updateAndContinueEditing();
 
