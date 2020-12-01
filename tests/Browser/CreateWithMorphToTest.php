@@ -93,7 +93,7 @@ class CreateWithMorphToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('posts', $post->id))
-                    ->waitFor('@comments-index-component', 15)
+                    ->waitFor('@comments-index-component', 25)
                     ->within(new IndexComponent('comments'), function ($browser) {
                         $browser->click('@create-button');
                     })
@@ -123,6 +123,29 @@ class CreateWithMorphToTest extends DuskTestCase
                     ->visit(new Create('comments'))
                     ->assertSee('User Post')
                     ->assertSee('User Video');
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function morph_to_field_should_honor_query_parameters_on_create()
+    {
+        $this->setupLaravel();
+
+        $post = PostFactory::new()->create();
+
+        $this->browse(function (Browser $browser) use ($post) {
+            $browser->loginAs(User::find(1))
+                ->visit(new Create('comments', [
+                    'viaResource' => 'posts',
+                    'viaResourceId' => $post->id,
+                    'viaRelationship' => 'comments',
+                ]))
+                ->assertValue('@commentable-type', 'posts')
+                ->assertValue('@commentable-select', $post->id);
 
             $browser->blank();
         });

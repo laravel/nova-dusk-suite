@@ -27,7 +27,7 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('posts', 1))
-                    ->waitFor('@tags-index-component', 15)
+                    ->waitFor('@tags-index-component', 25)
                     ->within(new IndexComponent('tags'), function ($browser) {
                         $browser->click('@attach-button');
                     })
@@ -55,7 +55,7 @@ class AttachPolymorphicTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($tag) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Detail('posts', 1))
-                        ->waitFor('@tags-index-component', 15)
+                        ->waitFor('@tags-index-component', 25)
                         ->within(new IndexComponent('tags'), function ($browser) {
                             $browser->click('@attach-button');
                         })
@@ -83,7 +83,7 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('posts', 1))
-                    ->waitFor('@tags-index-component', 15)
+                    ->waitFor('@tags-index-component', 25)
                     ->within(new IndexComponent('tags'), function ($browser) {
                         $browser->click('@attach-button');
                     })
@@ -112,7 +112,7 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('posts', 1))
-                    ->waitFor('@tags-index-component', 15)
+                    ->waitFor('@tags-index-component', 25)
                     ->within(new IndexComponent('tags'), function ($browser) {
                         $browser->click('@attach-button');
                     })

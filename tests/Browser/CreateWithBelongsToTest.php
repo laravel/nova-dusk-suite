@@ -101,7 +101,7 @@ class CreateWithBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
-                    ->waitFor('@ships-index-component', 15)
+                    ->waitFor('@ships-index-component', 25)
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->click('@create-button');
                     })
@@ -127,6 +127,26 @@ class CreateWithBelongsToTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Create('invoice-items'))
                     ->assertSee('Client Invoice');
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function belongs_to_field_should_honor_query_parameters_on_create()
+    {
+        $this->setupLaravel();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Create('posts', [
+                        'viaResource' => 'users',
+                        'viaResourceId' => 1,
+                        'viaRelationship' => 'posts',
+                    ]))
+                    ->assertValue('@user', 1);
 
             $browser->blank();
         });

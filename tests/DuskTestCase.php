@@ -30,7 +30,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      */
     protected function setUpDuskServer(): void
     {
-        parent::setUp();
+        parent::setUpDuskServer();
 
         tap($this->app->make('config'), function ($config) {
             $config->set('app.url', static::baseServeUrl());
@@ -139,6 +139,18 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     }
 
     /**
+     * Define database migrations.
+     *
+     * @return void
+     */
+    protected function defineDatabaseMigrations()
+    {
+        $this->artisan('migrate:fresh', [
+            '--seed' => true,
+        ])->run();
+    }
+
+    /**
      * Setup Laravel for the test.
      *
      * @param  callable|null  $callback
@@ -146,9 +158,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      */
     protected function setupLaravel(callable $callback = null)
     {
-        $this->artisan('migrate:fresh')->run();
-        $this->artisan('db:seed', ['--class' => \Database\Seeders\DatabaseSeeder::class])->run();
-
         if (is_callable($callback)) {
             $callback($this->app);
         }

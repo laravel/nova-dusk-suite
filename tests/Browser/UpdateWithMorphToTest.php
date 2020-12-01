@@ -62,4 +62,31 @@ class UpdateWithMorphToTest extends DuskTestCase
             $browser->blank();
         });
     }
+
+    /**
+     * @test
+     */
+    public function morph_to_field_should_ignore_query_parameters_when_editing()
+    {
+        $this->setupLaravel();
+
+        $post = PostFactory::new()->create();
+        $post->comments()->save($comment = CommentFactory::new()->create());
+
+        $this->browse(function (Browser $browser) use ($comment, $post) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Update('comments', $comment->id, [
+                        'viaResource' => 'links',
+                        'viaResourceId' => 1,
+                        'viaRelationship' => 'comments',
+                    ]))
+                    ->assertValue('@commentable-type', 'posts')
+                    ->assertEnabled('@commentable-search-input')
+                    ->within('@commentable-search-input', function ($browser) use ($post) {
+                        $browser->assertSee($post->title);
+                    });
+
+            $browser->blank();
+        });
+    }
 }

@@ -27,10 +27,11 @@ class DetailMorphToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $comment) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('comments', $comment->id))
-                    ->within(new DetailComponent('comments', $comment->id), function ($browser) {
-                        $browser->assertSee('Post');
+                    ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($post) {
+                        $browser->waitForText('Comment Details', 15)
+                                ->assertSee('Post')
+                                ->clickLink($post->title);
                     })
-                    ->clickLink($post->title)
                     ->waitForText('User Post Details: '.$post->id)
                     ->assertPathIs('/nova/resources/posts/'.$post->id);
 
@@ -51,6 +52,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('comments', 1))
+                    ->waitForText('Comment Details', 15)
                     ->assertSee('User Post');
 
             $browser->blank();
@@ -92,6 +94,29 @@ class DetailMorphToFieldTest extends DuskTestCase
                     ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($link) {
                         $browser->assertSee('Link')
                                 ->assertSee($link->title);
+                    });
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function morph_to_field_can_be_displayed_when_not_defined_using_types()
+    {
+        $this->setupLaravel();
+
+        $comment = CommentFactory::new()->create([
+            'commentable_type' => \Illuminate\Foundation\Auth\User::class,
+            'commentable_id' => 4,
+        ]);
+
+        $this->browse(function (Browser $browser) use ($comment) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Detail('comments', 1))
+                    ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($comment) {
+                        $browser->assertSee('Illuminate\Foundation\Auth\User: '.$comment->commentable->id);
                     });
 
             $browser->blank();

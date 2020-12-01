@@ -23,7 +23,7 @@ class LensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('users', 'passthrough-lens'))
-                    ->waitFor('@passthrough-lens-lens-component', 15)
+                    ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->assertSeeResource(1)
                                 ->assertSeeResource(2)
@@ -44,7 +44,7 @@ class LensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('users', 'passthrough-lens'))
-                    ->waitFor('@passthrough-lens-lens-component', 15)
+                    ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->click('@1-view-button');
                     })
@@ -66,7 +66,7 @@ class LensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('users', 'passthrough-lens'))
-                    ->waitFor('@passthrough-lens-lens-component', 15)
+                    ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->click('@1-edit-button');
                     })
@@ -109,7 +109,7 @@ class LensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('users', 'passthrough-lens'))
-                    ->waitFor('@passthrough-lens-lens-component', 15)
+                    ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->assertSeeResource(1)
                                 ->assertSeeResource(25)
@@ -139,7 +139,7 @@ class LensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('users', 'passthrough-lens'))
-                    ->waitFor('@passthrough-lens-lens-component', 15)
+                    ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->assertSeeResource(1)
                                 ->assertSeeResource(25)
@@ -174,7 +174,7 @@ class LensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('users', 'passthrough-lens'))
-                    ->waitFor('@passthrough-lens-lens-component', 15)
+                    ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->setPerPage('50')
                                 ->pause(1500)
@@ -199,7 +199,7 @@ class LensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('users', 'passthrough-lens'))
-                    ->waitFor('@passthrough-lens-lens-component', 15)
+                    ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->setPerPage('50')
                                 ->pause(1500)
@@ -208,7 +208,7 @@ class LensTest extends DuskTestCase
                                 ->assertSeeResource(1);
                     })
                     ->refresh()
-                    ->waitFor('@passthrough-lens-lens-component', 15)
+                    ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->assertSeeResource(50)
                                 ->assertSeeResource(25)
@@ -229,7 +229,7 @@ class LensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('users', 'passthrough-lens'))
-                    ->waitFor('@passthrough-lens-lens-component', 15)
+                    ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->applyFilter('Select First', '1')
                             ->pause(1500)
@@ -257,7 +257,7 @@ class LensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('users', 'passthrough-lens'))
-                    ->waitFor('@passthrough-lens-lens-component', 15)
+                    ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->applyFilter('Select First', '1')
                             ->pause(1500)
@@ -285,7 +285,7 @@ class LensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('users', 'passthrough-lens'))
-                    ->waitFor('@passthrough-lens-lens-component', 15)
+                    ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->deleteResourceById(3)
                                 ->assertSeeResource(1)
@@ -307,7 +307,7 @@ class LensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('users', 'passthrough-lens'))
-                    ->waitFor('@passthrough-lens-lens-component', 15)
+                    ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
@@ -354,7 +354,7 @@ class LensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('users', 'passthrough-lens'))
-                    ->waitFor('@passthrough-lens-lens-component', 15)
+                    ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
@@ -363,6 +363,33 @@ class LensTest extends DuskTestCase
 
             $this->assertEquals(0, User::find(1)->active);
             $this->assertEquals(1, User::find(2)->active);
+            $this->assertEquals(1, User::find(3)->active);
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_run_table_row_actions_on_selected_resources()
+    {
+        $this->setupLaravel();
+
+        User::whereIn('id', [2, 3, 4])->update(['active' => true]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Lens('users', 'passthrough-lens'))
+                    ->waitFor('@passthrough-lens-lens-component', 25)
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                        $browser->assertDontSeeIn('@1-row', 'Mark As Inactive')
+                            ->assertSeeIn('@2-row', 'Mark As Inactive')
+                            ->runInlineAction(2, 'mark-as-inactive');
+                    });
+
+            $this->assertEquals(0, User::find(1)->active);
+            $this->assertEquals(0, User::find(2)->active);
             $this->assertEquals(1, User::find(3)->active);
 
             $browser->blank();

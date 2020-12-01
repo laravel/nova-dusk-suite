@@ -9,6 +9,7 @@ use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class SoftDeletingDetailTest extends DuskTestCase
@@ -112,6 +113,58 @@ class SoftDeletingDetailTest extends DuskTestCase
             $this->assertEquals(1, Dock::count());
 
             $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function resource_can_be_edited_on_soft_deleted()
+    {
+        $this->setupLaravel();
+
+        DockFactory::new()->create([
+            'name' => 'hello',
+            'deleted_at' => now(),
+        ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Update('docks', 1))
+                    ->type('@name', 'world')
+                    ->update()
+                    ->waitForText('The dock was updated!', 10)
+                    ->assertPathIs('/nova/resources/docks/1');
+
+            $browser->blank();
+
+            $dock = Dock::onlyTrashed()->find(1);
+            $this->assertEquals('world', $dock->name);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function resource_can_run_action_on_soft_deleted()
+    {
+        $this->setupLaravel();
+
+        DockFactory::new()->create([
+            'name' => 'hello',
+            'deleted_at' => now(),
+        ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Detail('docks', 1))
+                    ->runAction('mark-as-active')
+                    ->waitForText('The action ran successfully!', 10);
+
+            $browser->blank();
+
+            $dock = Dock::onlyTrashed()->find(1);
+            $this->assertEquals(true, $dock->active);
         });
     }
 

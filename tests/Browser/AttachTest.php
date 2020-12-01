@@ -24,12 +24,12 @@ class AttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->waitFor('@roles-index-component', 15)
+                    ->waitFor('@roles-index-component', 25)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@attach-button');
                     })
                     ->on(new Attach('users', 1, 'roles'))
-                    ->waitFor('.content form', 15)
+                    ->waitFor('.content form', 25)
                     ->selectAttachable($role->id)
                     ->clickAttach();
 
@@ -55,12 +55,12 @@ class AttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->waitFor('@roles-index-component', 15)
+                    ->waitFor('@roles-index-component', 25)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@attach-button');
                     })
                     ->on(new Attach('users', 1, 'roles'))
-                    ->waitFor('.content form', 15)
+                    ->waitFor('.content form', 25)
                     ->selectAttachable($role->id)
                     ->type('@notes', 'Test Notes')
                     ->clickAttach()
@@ -88,12 +88,12 @@ class AttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->waitFor('@roles-index-component', 15)
+                    ->waitFor('@roles-index-component', 25)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->click('@attach-button');
                     })
                     ->on(new Attach('users', 1, 'roles'))
-                    ->waitFor('.content form', 15)
+                    ->waitFor('.content form', 25)
                     ->clickAttach()
                     ->waitForText('The role field is required.');
 

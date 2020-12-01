@@ -33,4 +33,27 @@ class UpdateWithBelongsToTest extends DuskTestCase
             $browser->blank();
         });
     }
+
+    /**
+     * @test
+     */
+    public function belongs_to_field_should_ignore_query_parameters_when_editing()
+    {
+        $this->setupLaravel();
+
+        $user = User::find(1);
+        $user->posts()->save($post = PostFactory::new()->make());
+
+        $this->browse(function (Browser $browser) use ($post) {
+            $browser->loginAs(User::find(1))
+                ->visit(new Update('posts', $post->id, [
+                    'viaResource' => 'users',
+                    'viaResourceId' => 2,
+                    'viaRelationship' => 'posts',
+                ]))
+                ->assertValue('@user', 1); // not 2
+
+            $browser->blank();
+        });
+    }
 }

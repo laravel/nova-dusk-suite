@@ -39,7 +39,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($video) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('videos', $video->id))
-                    ->waitFor('@comments-index-component', 15)
+                    ->waitFor('@comments-index-component', 25)
                     ->within(new IndexComponent('comments'), function ($browser) {
                         $browser->click('@create-button');
                     })
