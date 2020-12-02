@@ -22,6 +22,7 @@ jobs:
           - false
         include:
           - php: "8.0"
+            os: "ubuntu-latest"
             dependencies: "highest"
             composer-options: "--ignore-platform-reqs --prefer-dist --no-cache"
             experimental: true
