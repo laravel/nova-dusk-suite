@@ -14,13 +14,17 @@ jobs:
           - "ubuntu-latest"
         php:
           - "7.3"
-          - "8.0"
         dependencies:
           - "locked"
           - "lowest"
           - "highest"
         experimental:
           - false
+        include:
+          - php: "8.0"
+            dependencies: "highest"
+            composer-options: "--ignore-platform-reqs --prefer-dist --no-cache"
+            experimental: true
 
     name: PHP${{ matrix.php }} on ${{ matrix.os }} (${{ matrix.dependencies }})
 
