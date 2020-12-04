@@ -57,6 +57,8 @@ class PivotActionTest extends DuskTestCase
                                 ->runAction('update-pivot-notes');
                     });
 
+            $browser->waitForText('The action ran successfully!', 25);
+
             $this->assertEquals('Pivot Action Notes', $user->fresh()->roles()->first()->pivot->notes);
 
             $browser->blank();

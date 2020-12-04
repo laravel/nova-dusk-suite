@@ -40,7 +40,7 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->runAction('mark-as-active')
-                    ->pause(3000);
+                    ->waitForText('The action ran successfully!', 25);
 
             $this->assertEquals(1, User::find(1)->active);
 

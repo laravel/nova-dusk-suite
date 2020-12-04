@@ -24,13 +24,12 @@ class UpdateTest extends DuskTestCase
         $user = User::find(1);
         $user->shouldBlockFrom('post.update.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post, $post2) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $post, $post2) {
+            $browser->loginAs($user)
                     ->visit(new Update('posts', $post->id))
                     ->assertPathIs('/nova/403');
 
-            $browser->loginAs(User::find(1))
-                    ->visit(new Update('posts', $post2->id))
+            $browser->visit(new Update('posts', $post2->id))
                     ->assertPathIsNot('/nova/403');
 
             $browser->blank();

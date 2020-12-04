@@ -82,7 +82,7 @@ class SoftDeletingIndexTest extends DuskTestCase
                             ->clickCheckboxForId(2)
                             ->restoreSelected()
                             ->withoutTrashed()
-                            ->pause(1500)
+                            ->waitForText('Docks', 25)
                             ->assertSeeResource(1)
                             ->assertSeeResource(2)
                             ->assertSeeResource(3);
