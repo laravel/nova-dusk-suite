@@ -56,7 +56,7 @@ class User extends Resource
                 ->creationRules('required', 'string', 'min:6')
                 ->updateRules('nullable', 'string', 'min:6'),
 
-            Boolean::make('Active', 'active')->onlyOnDetail(),
+            Boolean::make('Active', 'active')->default(true)->hideFromIndex(),
 
             ResourceTool::make()->canSee(function ($request) {
                 return ! $request->user()->isBlockedFrom('resourceTool');
