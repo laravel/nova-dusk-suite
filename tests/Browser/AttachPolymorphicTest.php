@@ -119,7 +119,7 @@ class AttachPolymorphicTest extends DuskTestCase
                     ->on(new Attach('posts', 1, 'tags'))
                     ->type('@notes', str_repeat('A', 30))
                     ->clickAttach()
-                    ->pause(175)
+                    ->waitForText('There was a problem submitting the form.', 15)
                     ->assertSee('The tag field is required.');
 
             $this->assertNull(Post::find(1)->tags->first());

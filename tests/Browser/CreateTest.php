@@ -32,6 +32,7 @@ class CreateTest extends DuskTestCase
             $this->assertEquals('Adam Wathan', $user->name);
             $this->assertEquals('adam@laravel.com', $user->email);
             $this->assertTrue(Hash::check('secret', $user->password));
+            $this->assertTrue($user->active);
 
             $browser->blank();
         });
@@ -48,6 +49,7 @@ class CreateTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Create('users'))
                     ->create()
+                    ->waitForText('There was a problem submitting the form.', 15)
                     ->assertSee('The Name field is required.')
                     ->assertSee('The Email field is required.')
                     ->assertSee('The Password field is required.');

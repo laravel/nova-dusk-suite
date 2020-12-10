@@ -75,6 +75,7 @@ class UpdateTest extends DuskTestCase
                     ->visit(new Update('users', 1))
                     ->type('@name', ' ')
                     ->update()
+                    ->waitForText('There was a problem submitting the form.', 15)
                     ->assertSee('The Name field is required.');
 
             $browser->blank();

@@ -95,7 +95,8 @@ class AttachTest extends DuskTestCase
                     ->on(new Attach('users', 1, 'roles'))
                     ->waitFor('.content form', 25)
                     ->clickAttach()
-                    ->waitForText('The role field is required.');
+                    ->waitForText('There was a problem submitting the form.', 15)
+                    ->assertSee('The role field is required.');
 
             $this->assertDatabaseMissing('role_user', [
                 'user_id' => '1',
