@@ -29,7 +29,8 @@ class IndexTest extends DuskTestCase
                         $browser->assertSeeResource(1)
                                 ->assertSeeResource(2)
                                 ->assertSeeResource(3);
-                    });
+                    })
+                    ->assertTitle('Users | Nova Dusk Suite');
 
             $browser->blank();
         });
@@ -146,6 +147,40 @@ class IndexTest extends DuskTestCase
                                 ->assertSeeResource(1)
                                 ->assertDontSeeResource(2)
                                 ->assertDontSeeResource(3);
+                    });
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function resources_search_query_will_reset_on_revisit()
+    {
+        $this->setupLaravel();
+
+        $this->browse(function (Browser $browser) {
+            // Search For Single User By ID...
+            $browser->loginAs(User::find(1))
+                    ->visit(new UserIndex)
+                    ->waitFor('@users-index-component', 25)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->searchFor('3')
+                                ->assertDontSeeResource(1)
+                                ->assertDontSeeResource(2)
+                                ->assertSeeResource(3)
+                                ->assertDontSeeResource(4)
+                                ->assertValue('@search', '3');
+                    })
+                    ->click('@users-resource-link')
+                    ->waitFor('@users-index-component', 25)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->assertValue('@search', '')
+                                ->assertSeeResource(1)
+                                ->assertSeeResource(2)
+                                ->assertSeeResource(3)
+                                ->assertSeeResource(4);
                     });
 
             $browser->blank();
@@ -351,6 +386,52 @@ class IndexTest extends DuskTestCase
 
     /**
      * @test
+     * @dataProvider userResourceUrlWithFilterApplied
+     */
+    public function test_filters_can_be_applied_to_resources_received_from_url($url)
+    {
+        $this->setupLaravel();
+
+        $this->browse(function (Browser $browser) use ($url) {
+            $browser->loginAs(User::find(1))
+                    ->visit($url)
+                    ->waitFor('@users-index-component', 25)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->assertDontSeeResource(1)
+                            ->assertDontSeeResource(2)
+                            ->assertSeeResource(3)
+                            ->assertDontSeeResource(4);
+                    });
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     * @dataProvider userResourceUrlWithFilterIgnored
+     */
+    public function test_filters_ignored_for_resources_received_from_url($url)
+    {
+        $this->setupLaravel();
+
+        $this->browse(function (Browser $browser) use ($url) {
+            $browser->loginAs(User::find(1))
+                    ->visit($url)
+                    ->waitFor('@users-index-component', 25)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->assertSeeResource(1)
+                            ->assertSeeResource(2)
+                            ->assertSeeResource(3)
+                            ->assertSeeResource(4);
+                    });
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
      */
     public function test_filters_can_be_deselected()
     {
@@ -500,5 +581,16 @@ class IndexTest extends DuskTestCase
 
             $browser->blank();
         });
+    }
+
+    public function userResourceUrlWithFilterApplied()
+    {
+        yield ['nova/resources/users?users_page=1&users_filter=W3siU2VsZWN0Rmlyc3QiOiIzIn1d'];
+        yield ['nova/resources/users?users_page=1&users_filter=W3siY2xhc3MiOiJTZWxlY3RGaXJzdCIsInZhbHVlIjoiMyJ9XQ'];
+    }
+
+    public function userResourceUrlWithFilterIgnored()
+    {
+        yield ['nova/resources/users?users_page=1&users_filter=W3siY2xhc3MiOiJBcHBcXE5vdmFcXEZpbHRlcnNcXFNlbGVjdEZpcnN0IiwidmFsdWUiOiIzIn1d'];
     }
 }

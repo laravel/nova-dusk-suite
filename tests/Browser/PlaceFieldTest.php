@@ -14,6 +14,20 @@ use Laravel\Nova\Tests\DuskTestCase;
 class PlaceFieldTest extends DuskTestCase
 {
     /**
+     * Define environment setup.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     *
+     * @return void
+     */
+    protected function defineEnvironment($app)
+    {
+        if (! class_exists(\Algolia\AlgoliaSearch\PlacesClient::class)) {
+            $this->markTestSkipped('Missing "algolia/algoliasearch-client-php" requirement.');
+        }
+    }
+
+    /**
      * @test
      */
     public function resource_can_be_created()
