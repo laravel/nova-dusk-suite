@@ -87,7 +87,7 @@ class CustomFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($flight) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('flights', $flight->id))
-                    ->pause(250)
+                    ->waitForTextIn('h1', 'Flight Details', 25)
                     ->assertSee($flight->name);
 
             $browser->blank();

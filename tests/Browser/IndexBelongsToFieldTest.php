@@ -28,7 +28,7 @@ class IndexBelongsToFieldTest extends DuskTestCase
                     ->within(new IndexComponent('posts'), function ($browser) use ($user) {
                         $browser->clickLink($user->name);
                     })
-                    ->pause(250)
+                    ->waitForTextIn('h1', 'User Details', 25)
                     ->assertPathIs('/nova/resources/users/'.$user->id);
 
             $browser->blank();

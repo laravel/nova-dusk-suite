@@ -27,7 +27,7 @@ class IndexMorphToFieldTest extends DuskTestCase
                     ->within(new IndexComponent('comments'), function ($browser) use ($comment) {
                         $browser->clickLink('Post: '.$comment->commentable->title);
                     })
-                    ->pause(250)
+                    ->waitForTextIn('h1', 'User Post Details', 25)
                     ->assertPathIs('/nova/resources/posts/'.$comment->commentable->id);
 
             $browser->blank();

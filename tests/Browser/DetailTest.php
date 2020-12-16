@@ -77,7 +77,7 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->click('@edit-resource-button')
-                    ->pause(250)
+                    ->waitForTextIn('h1', 'Update User', 25)
                     ->assertPathIs('/nova/resources/users/1/edit');
 
             $browser->blank();
