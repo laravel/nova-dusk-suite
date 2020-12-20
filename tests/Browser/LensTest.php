@@ -278,52 +278,6 @@ class LensTest extends DuskTestCase
 
     /**
      * @test
-     * @dataProvider userResourceLenUrlWithFilterApplied
-     */
-    public function test_filters_can_be_applied_to_lenses_received_from_url($url)
-    {
-        $this->setupLaravel();
-
-        $this->browse(function (Browser $browser) use ($url) {
-            $browser->loginAs(User::find(1))
-                    ->visit($url)
-                    ->waitFor('@passthrough-lens-lens-component', 25)
-                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->assertDontSeeResource(1)
-                            ->assertDontSeeResource(2)
-                            ->assertSeeResource(3)
-                            ->assertDontSeeResource(4);
-                    });
-
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     * @dataProvider userResourceLenUrlWithFilterIgnored
-     */
-    public function test_filters_ignored_for_lenses_received_from_url($url)
-    {
-        $this->setupLaravel();
-
-        $this->browse(function (Browser $browser) use ($url) {
-            $browser->loginAs(User::find(1))
-                    ->visit($url)
-                    ->waitFor('@passthrough-lens-lens-component', 25)
-                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->assertSeeResource(1)
-                            ->assertSeeResource(2)
-                            ->assertSeeResource(3)
-                            ->assertSeeResource(4);
-                    });
-
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
      */
     public function can_delete_a_resource_via_resource_table_row_delete_icon()
     {
@@ -441,17 +395,6 @@ class LensTest extends DuskTestCase
 
             $browser->blank();
         });
-    }
-
-    public function userResourceLenUrlWithFilterApplied()
-    {
-        yield ['nova/resources/users/lens/passthrough-lens?users_page=1&users_filter=W3siU2VsZWN0Rmlyc3QiOiIzIn1d'];
-        yield ['nova/resources/users/lens/passthrough-lens?users_page=1&users_filter=W3siY2xhc3MiOiJTZWxlY3RGaXJzdCIsInZhbHVlIjoiMyJ9XQ'];
-    }
-
-    public function userResourceLenUrlWithFilterIgnored()
-    {
-        yield ['nova/resources/users/lens/passthrough-lens?users_page=1&users_filter=W3siY2xhc3MiOiJBcHBcXE5vdmFcXEZpbHRlcnNcXFNlbGVjdEZpcnN0IiwidmFsdWUiOiIzIn1d'];
     }
 
     /*

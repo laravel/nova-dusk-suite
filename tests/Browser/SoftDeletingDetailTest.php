@@ -107,7 +107,7 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
                     ->restore()
-                    ->waitForText('The dock was restored!', 10)
+                    ->waitForText('The dock was restored!', 25)
                     ->assertPathIs('/nova/resources/docks/1');
 
             $this->assertEquals(1, Dock::count());
@@ -133,7 +133,7 @@ class SoftDeletingDetailTest extends DuskTestCase
                     ->visit(new Update('docks', 1))
                     ->type('@name', 'world')
                     ->update()
-                    ->waitForText('The dock was updated!', 10)
+                    ->waitForText('The dock was updated!', 25)
                     ->assertPathIs('/nova/resources/docks/1');
 
             $browser->blank();
@@ -159,7 +159,7 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
                     ->runAction('mark-as-active')
-                    ->waitForText('The action ran successfully!', 10);
+                    ->waitForText('The action ran successfully!', 25);
 
             $browser->blank();
 

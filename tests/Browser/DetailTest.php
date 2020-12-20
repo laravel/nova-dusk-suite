@@ -95,7 +95,7 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 3))
                     ->delete()
-                    ->waitForText('The user was deleted', 10)
+                    ->waitForText('The user was deleted', 25)
                     ->assertPathIs('/nova/resources/users');
 
             $this->assertNull(User::where('id', 3)->first());

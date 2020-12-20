@@ -32,10 +32,10 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                                 ->type('@body', 'Test Post Body')
                                 ->attach('@attachment', __DIR__.'/Fixtures/Document.pdf');
                         })
-                        ->waitForText('The user post was created!', 10)
+                        ->waitForText('The user post was created!', 25)
                         ->type('@body', 'Test Comment Body')
                         ->create()
-                        ->waitForText('The comment was created!', 10);
+                        ->waitForText('The comment was created!', 25);
 
                 $browser->blank();
 
@@ -66,11 +66,11 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                                 ->type('@title', 'Test Post')
                                 ->type('@body', 'Test Post Body');
                         })
-                        ->waitForText('The user post was created!', 10)
+                        ->waitForText('The user post was created!', 25)
                         ->type('@body', 'Test Comment Body')
                         ->attach('@attachment', __DIR__.'/Fixtures/Document.pdf')
                         ->create()
-                        ->waitForText('The comment was created!', 10);
+                        ->waitForText('The comment was created!', 25);
 
                 $browser->blank();
 

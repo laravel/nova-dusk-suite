@@ -101,7 +101,7 @@ class ActionFieldTest extends DuskTestCase
                             ->assertDontSeeIn('@2-row', 'Mark As Inactive')
                             ->assertDontSeeIn('@3-row', 'Mark As Inactive')
                             ->runInlineAction(1, 'mark-as-inactive');
-                    })->waitForText('Sorry! You are not authorized to perform this action.', 10);
+                    })->waitForText('Sorry! You are not authorized to perform this action.', 25);
 
             $this->assertEquals(1, User::find(1)->active);
 
