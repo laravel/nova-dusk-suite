@@ -48,6 +48,12 @@ jobs:
           token: ${{ secrets.MY_GITHUB_TOKEN }}
           path: nova
           ref: "3.0"
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, intl, fileinfo
+          coverage: none
       - name: Require algolia/algoliasearch-client-php
         run: |
           composer require "algolia/algoliasearch-client-php:^2.2" --dev --no-interaction --no-update
@@ -127,6 +133,12 @@ jobs:
           token: ${{ secrets.MY_GITHUB_TOKEN }}
           path: nova
           ref: "3.0"
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, intl, fileinfo
+          coverage: none
       - name: Install dependencies
         uses: "ramsey/composer-install@v1"
         with:
