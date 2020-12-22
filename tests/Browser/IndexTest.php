@@ -28,7 +28,8 @@ class IndexTest extends DuskTestCase
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSeeResource(1)
                                 ->assertSeeResource(2)
-                                ->assertSeeResource(3);
+                                ->assertSeeResource(3)
+                                ->assertSee('1-4 of 4');
                     })
                     ->assertTitle('Users | Nova Dusk Suite');
 
@@ -135,7 +136,8 @@ class IndexTest extends DuskTestCase
                         $browser->searchFor('3')
                                 ->assertDontSeeResource(1)
                                 ->assertDontSeeResource(2)
-                                ->assertSeeResource(3);
+                                ->assertSeeResource(3)
+                                ->assertSee('1-1 of 1');
                     });
 
             // Search For Single User By Name...
@@ -199,10 +201,12 @@ class IndexTest extends DuskTestCase
                     ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->assertSelectAllMatchingCount(4)
+                        $browser->assertSee('1-4 of 4')
+                                ->assertSelectAllMatchingCount(4)
                                 ->click('')
                                 ->searchFor('Taylor')
-                                ->assertSelectAllMatchingCount(1);
+                                ->assertSelectAllMatchingCount(1)
+                                ->assertSee('1-1 of 1');
                     });
 
             $browser->blank();
@@ -225,13 +229,15 @@ class IndexTest extends DuskTestCase
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSeeResource(50)
                                 ->assertSeeResource(36)
-                                ->assertDontSeeResource(25);
+                                ->assertDontSeeResource(25)
+                                ->assertSee('1-25 of 54');
 
                         $browser->sortBy('id')
                                 ->assertDontSeeResource(50)
                                 ->assertDontSeeResource(26)
                                 ->assertSeeResource(25)
-                                ->assertSeeResource(1);
+                                ->assertSeeResource(1)
+                                ->assertSee('1-25 of 54');
                     });
 
             $browser->blank();
@@ -250,7 +256,8 @@ class IndexTest extends DuskTestCase
                     ->visit(new UserIndex)
                     ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->assertSeeIn('table > tbody > tr:first-child', 'Laravel Nova');
+                        $browser->assertSee('1-4 of 4')
+                            ->assertSeeIn('table > tbody > tr:first-child', 'Laravel Nova');
 
                         $browser->sortBy('name')
                             ->assertSeeIn('table > tbody > tr:first-child', 'David Hemphill')
@@ -280,19 +287,22 @@ class IndexTest extends DuskTestCase
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSeeResource(50)
                                 ->assertSeeResource(30)
-                                ->assertDontSeeResource(25);
+                                ->assertDontSeeResource(25)
+                                ->assertSee('1-25 of 54');
 
                         $browser->nextPage()
                                 ->assertDontSeeResource(50)
                                 ->assertDontSeeResource(30)
                                 ->assertSeeResource(25)
-                                ->assertDontSeeResource(1);
+                                ->assertDontSeeResource(1)
+                                ->assertSee('26-50 of 54');
 
                         $browser->previousPage()
                                 ->assertSeeResource(50)
                                 ->assertSeeResource(30)
                                 ->assertDontSeeResource(25)
-                                ->assertDontSeeResource(1);
+                                ->assertDontSeeResource(1)
+                                ->assertSee('1-25 of 54');
                     });
 
             $browser->blank();
@@ -317,7 +327,8 @@ class IndexTest extends DuskTestCase
                                 ->pause(1500)
                                 ->assertSeeResource(50)
                                 ->assertSeeResource(25)
-                                ->assertDontSeeResource(1);
+                                ->assertDontSeeResource(1)
+                                ->assertSee('1-50 of 54');
                     });
 
             $browser->blank();
@@ -342,14 +353,16 @@ class IndexTest extends DuskTestCase
                                 ->pause(1500)
                                 ->assertSeeResource(50)
                                 ->assertSeeResource(25)
-                                ->assertDontSeeResource(1);
+                                ->assertDontSeeResource(1)
+                                ->assertSee('1-50 of 54');
                     })
                     ->refresh()
                     ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSeeResource(50)
                                 ->assertSeeResource(25)
-                                ->assertDontSeeResource(1);
+                                ->assertDontSeeResource(1)
+                                ->assertSee('1-50 of 54');
                     });
 
             $browser->blank();
@@ -373,11 +386,13 @@ class IndexTest extends DuskTestCase
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3)
+                            ->assertSee('1-1 of 1')
                             ->applyFilter('Select First', '2')
                             ->pause(1500)
                             ->assertDontSeeResource(1)
                             ->assertSeeResource(2)
-                            ->assertDontSeeResource(3);
+                            ->assertDontSeeResource(3)
+                            ->assertSee('1-1 of 1');
                     });
 
             $browser->blank();
@@ -401,11 +416,13 @@ class IndexTest extends DuskTestCase
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3)
+                            ->assertSee('1-1 of 1')
                             ->applyFilter('Select First', '')
                             ->pause(1500)
                             ->assertSeeResource(1)
                             ->assertSeeResource(2)
-                            ->assertSeeResource(3);
+                            ->assertSeeResource(3)
+                            ->assertSee('1-4 of 4');
                     });
 
             $browser->blank();
@@ -427,7 +444,8 @@ class IndexTest extends DuskTestCase
                         $browser->deleteResourceById(3)
                                 ->assertSeeResource(1)
                                 ->assertSeeResource(2)
-                                ->assertDontSeeResource(3);
+                                ->assertDontSeeResource(3)
+                                ->assertSee('1-3 of 3');
                     });
 
             $browser->blank();
@@ -451,7 +469,8 @@ class IndexTest extends DuskTestCase
                             ->deleteSelected()
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
-                            ->assertDontSeeResource(3);
+                            ->assertDontSeeResource(3)
+                            ->assertSee('1-2 of 2');
                     })
                     ->assertPathIs('/nova/resources/users');
 
@@ -477,7 +496,8 @@ class IndexTest extends DuskTestCase
                             ->clearSearch()
                             ->assertSeeResource(1)
                             ->assertSeeResource(2)
-                            ->assertDontSeeResource(3);
+                            ->assertDontSeeResource(3)
+                            ->assertSee('1-3 of 3');
                     })
                     ->assertPathIs('/nova/resources/users');
 
