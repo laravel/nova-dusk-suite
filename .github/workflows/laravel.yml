@@ -143,7 +143,7 @@ jobs:
         uses: "ramsey/composer-install@v1"
         with:
           dependencies-versions: "${{ matrix.dependencies }}"
-          composer-options: "--ignore-platform-reqs --prefer-dist --no-cache"
+          composer-options: "--prefer-dist --no-cache"
       - name: Generate key
         run: php artisan key:generate
       - name: Directory Permissions
