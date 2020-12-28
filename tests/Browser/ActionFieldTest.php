@@ -48,7 +48,7 @@ class ActionFieldTest extends DuskTestCase
                             ->runAction('update-pivot-notes', function ($browser) {
                                 $browser->type('@notes', 'Custom Notes');
                             });
-                    });
+                    })->waitForText('The action ran successfully!', 25);
 
             $this->assertEquals('Custom Notes', $user->fresh()->roles->first()->pivot->notes);
 

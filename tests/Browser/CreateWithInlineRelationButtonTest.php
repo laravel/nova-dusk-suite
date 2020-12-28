@@ -27,7 +27,8 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                         ->select('@commentable-type', 'posts')
                         ->pause(500)
                         ->runInlineCreate('commentable', function ($browser) {
-                            $browser->select('@user', 1)
+                            $browser->waitForText('Create User Post', 25)
+                                ->select('@user', 1)
                                 ->type('@title', 'Test Post')
                                 ->type('@body', 'Test Post Body')
                                 ->attach('@attachment', __DIR__.'/Fixtures/Document.pdf');
@@ -62,7 +63,8 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                         ->select('@commentable-type', 'posts')
                         ->pause(500)
                         ->runInlineCreate('commentable', function ($browser) {
-                            $browser->select('@user', 1)
+                            $browser->waitForText('Create User Post', 25)
+                                ->select('@user', 1)
                                 ->type('@title', 'Test Post')
                                 ->type('@body', 'Test Post Body');
                         })

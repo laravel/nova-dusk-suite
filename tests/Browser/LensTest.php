@@ -49,7 +49,7 @@ class LensTest extends DuskTestCase
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->click('@1-view-button');
                     })
-                    ->pause(1000)
+                    ->waitForTextIn('h1', 'User Details', 25)
                     ->assertSee('User Details')
                     ->assertPathIs('/nova/resources/users/1');
 
