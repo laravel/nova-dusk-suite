@@ -2,6 +2,7 @@
 
 namespace App\Nova\Metrics;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
 
@@ -15,7 +16,7 @@ class PostCountOverTime extends Trend
      */
     public function calculate(Request $request)
     {
-        return $this->countByDays($request, Model::class);
+        return $this->countByDays($request, Post::class);
     }
 
     /**
