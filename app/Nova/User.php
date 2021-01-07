@@ -138,6 +138,7 @@ class User extends Resource
     {
         return [
             new Filters\SelectFirst,
+            new Filters\Created,
         ];
     }
 }
