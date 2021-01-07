@@ -2,8 +2,8 @@
 
 namespace App\Nova\Filters;
 
-use Illuminate\Http\Request;
 use Carbon\CarbonImmutable;
+use Illuminate\Http\Request;
 use Laravel\Nova\Filters\DateFilter;
 
 class Created extends DateFilter
