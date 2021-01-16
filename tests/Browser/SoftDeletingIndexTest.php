@@ -20,8 +20,6 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function can_soft_delete_a_resource_via_resource_table_row_delete_icon()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
@@ -41,8 +39,6 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function can_soft_delete_resources_using_checkboxes()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create();
         DockFactory::new()->create();
         DockFactory::new()->create();
@@ -66,8 +62,6 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function can_restore_resources_using_checkboxes()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create();
         DockFactory::new()->create(['deleted_at' => now()]);
         DockFactory::new()->create(['deleted_at' => now()]);
@@ -95,8 +89,6 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function can_force_delete_resources_using_checkboxes()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create();
         DockFactory::new()->create();
         DockFactory::new()->create();
@@ -122,8 +114,6 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function can_soft_delete_all_matching_resources()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create();
         $dock->ships()->saveMany(ShipFactory::new()->times(3)->create());
 
@@ -153,8 +143,6 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function can_restore_all_matching_resources()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create();
         $dock->ships()->saveMany(ShipFactory::new()->times(3)->create(['deleted_at' => now()]));
 
@@ -183,8 +171,6 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function can_force_delete_all_matching_resources()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create();
         $dock->ships()->saveMany(ShipFactory::new()->times(3)->create(['deleted_at' => now()]));
 
@@ -214,8 +200,6 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function soft_deleted_resource_is_still_viewable_with_proper_trash_state()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
@@ -236,8 +220,6 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function only_soft_deleted_resources_may_be_listed()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->times(2)->create();
         Dock::find(2)->delete();
 
@@ -260,8 +242,6 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function soft_deleted_resources_may_be_restored_via_row_icon()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {

@@ -16,8 +16,6 @@ class PivotActionTest extends DuskTestCase
      */
     public function pivot_tables_can_be_referred_to_using_a_custom_name()
     {
-        $this->setupLaravel();
-
         $user = User::find(1);
         $role = RoleFactory::new()->create();
         $user->roles()->attach($role);
@@ -42,8 +40,6 @@ class PivotActionTest extends DuskTestCase
      */
     public function actions_can_be_executed_against_pivot_rows()
     {
-        $this->setupLaravel();
-
         $user = User::find(1);
         $role = RoleFactory::new()->create();
         $user->roles()->attach($role);

@@ -19,8 +19,6 @@ class DetailMorphToFieldTest extends DuskTestCase
      */
     public function morph_to_field_navigates_to_parent_resource_when_clicked()
     {
-        $this->setupLaravel();
-
         $post = PostFactory::new()->create();
         $post->comments()->save($comment = CommentFactory::new()->make());
 
@@ -44,8 +42,6 @@ class DetailMorphToFieldTest extends DuskTestCase
      */
     public function morph_to_field_should_honor_custom_labels()
     {
-        $this->setupLaravel();
-
         $post = PostFactory::new()->create();
         $post->comments()->save($comment = CommentFactory::new()->make());
 
@@ -64,8 +60,6 @@ class DetailMorphToFieldTest extends DuskTestCase
      */
     public function morph_to_field_should_honor_custom_labels_again()
     {
-        $this->setupLaravel();
-
         $video = VideoFactory::new()->create();
         $video->comments()->save($comment = CommentFactory::new()->make());
 
@@ -83,8 +77,6 @@ class DetailMorphToFieldTest extends DuskTestCase
      */
     public function morph_to_field_should_honor_custom_polymorphic_type()
     {
-        $this->setupLaravel();
-
         $link = LinkFactory::new()->create();
         $link->comments()->save($comment = CommentFactory::new()->make());
 
@@ -105,8 +97,6 @@ class DetailMorphToFieldTest extends DuskTestCase
      */
     public function morph_to_field_can_be_displayed_when_not_defined_using_types()
     {
-        $this->setupLaravel();
-
         $comment = CommentFactory::new()->create([
             'commentable_type' => \Illuminate\Foundation\Auth\User::class,
             'commentable_id' => 4,

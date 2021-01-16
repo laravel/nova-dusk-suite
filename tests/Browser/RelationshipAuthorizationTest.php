@@ -19,8 +19,6 @@ class RelationshipAuthorizationTest extends DuskTestCase
      */
     public function resource_cant_be_added_to_parent_if_not_authorized()
     {
-        $this->setupLaravel();
-
         $user = User::find(1);
         $user->shouldBlockFrom('user.addPost.'.$user->id);
 
@@ -41,8 +39,6 @@ class RelationshipAuthorizationTest extends DuskTestCase
     public function morphable_resource_cant_be_added_to_parent_if_not_authorized()
     {
         $this->markTestSkipped('Unable to use `assertSelectMissingOption` with search selection');
-
-        $this->setupLaravel();
 
         $user = User::find(1);
         $post = PostFactory::new()->create();
@@ -65,8 +61,6 @@ class RelationshipAuthorizationTest extends DuskTestCase
      */
     public function create_button_should_be_missing_from_detail_index_when_not_authorized()
     {
-        $this->setupLaravel();
-
         $user = User::find(1);
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.addComment.'.$post->id);
@@ -89,8 +83,6 @@ class RelationshipAuthorizationTest extends DuskTestCase
     {
         $this->markTestSkipped('Unable to use `assertSelectMissingOption` with search selection');
 
-        $this->setupLaravel();
-
         $user = User::find(1);
         $post = PostFactory::new()->create();
         $tag = TagFactory::new()->create();
@@ -111,8 +103,6 @@ class RelationshipAuthorizationTest extends DuskTestCase
      */
     public function attach_button_should_be_missing_from_detail_index_when_not_authorized()
     {
-        $this->setupLaravel();
-
         $user = User::find(1);
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.attachAnyTag.'.$post->id);

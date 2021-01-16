@@ -16,8 +16,6 @@ class UpdateTest extends DuskTestCase
      */
     public function cant_view_update_page_if_not_authorized_to_update()
     {
-        $this->setupLaravel();
-
         $post = PostFactory::new()->create();
         $post2 = PostFactory::new()->create();
 
@@ -41,8 +39,6 @@ class UpdateTest extends DuskTestCase
      */
     public function resource_can_be_updated()
     {
-        $this->setupLaravel();
-
         $user = User::find(1);
         $user->name = 'Taylor';
         $user->save();
@@ -68,8 +64,6 @@ class UpdateTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Update('users', 1))
@@ -87,8 +81,6 @@ class UpdateTest extends DuskTestCase
      */
     public function resource_can_be_updated_and_user_can_continue_editing()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Update('users', 1))

@@ -19,8 +19,6 @@ class FileAttachTest extends DuskTestCase
      */
     public function file_can_be_attached_to_resource()
     {
-        $this->setupLaravel();
-
         $this->artisan('storage:link')->run();
 
         $this->browse(function (Browser $browser) {

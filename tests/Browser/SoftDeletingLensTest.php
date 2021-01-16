@@ -17,8 +17,6 @@ class SoftDeletingLensTest extends DuskTestCase
      */
     public function can_soft_delete_a_resource_via_resource_table_row_delete_icon()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
@@ -37,8 +35,6 @@ class SoftDeletingLensTest extends DuskTestCase
      */
     public function can_soft_delete_resources_using_checkboxes()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create();
         DockFactory::new()->create();
         DockFactory::new()->create();
@@ -61,8 +57,6 @@ class SoftDeletingLensTest extends DuskTestCase
      */
     public function can_restore_resources_using_checkboxes()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create();
         DockFactory::new()->create(['deleted_at' => now()]);
         DockFactory::new()->create(['deleted_at' => now()]);
@@ -85,8 +79,6 @@ class SoftDeletingLensTest extends DuskTestCase
      */
     public function can_force_delete_resources_using_checkboxes()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create();
         DockFactory::new()->create();
         DockFactory::new()->create();
@@ -110,8 +102,6 @@ class SoftDeletingLensTest extends DuskTestCase
      */
     // public function can_soft_delete_all_matching_resources()
     // {
-    //     $this->setupLaravel();
-
     //     DockFactory::new()->create();
     //     DockFactory::new()->create();
     //     DockFactory::new()->create();
@@ -135,8 +125,6 @@ class SoftDeletingLensTest extends DuskTestCase
      */
     // public function can_restore_all_matching_resources()
     // {
-    //     $this->setupLaravel();
-
     //     DockFactory::new()->times(3)->create(['deleted_at' => now()]);
 
     //     $this->browse(function (Browser $browser) {
@@ -159,8 +147,6 @@ class SoftDeletingLensTest extends DuskTestCase
      */
     // public function can_force_delete_all_matching_resources()
     // {
-    //     $this->setupLaravel();
-
     //     DockFactory::new()->times(3)->create(['deleted_at' => now()]);
 
     //     $this->browse(function (Browser $browser) {
@@ -183,8 +169,6 @@ class SoftDeletingLensTest extends DuskTestCase
      */
     public function soft_deleted_resources_may_be_restored_via_row_icon()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {

@@ -17,24 +17,24 @@ class CreateWithMorphToTest extends DuskTestCase
      */
     public function resource_can_be_created()
     {
-        $this->setupLaravel();
+        $this->whileSearchable(function () {
+            $post = PostFactory::new()->create();
 
-        $post = PostFactory::new()->create();
+            $this->browse(function (Browser $browser) use ($post) {
+                $browser->loginAs(User::find(1))
+                        ->visit(new Create('comments'))
+                        ->select('@commentable-type', 'posts')
+                        ->pause(500)
+                        ->searchAndSelectFirstRelation('commentable', 1)
+                        ->type('@body', 'Test Comment')
+                        ->create();
 
-        $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Create('comments'))
-                    ->select('@commentable-type', 'posts')
-                    ->pause(500)
-                    ->searchAndSelectFirstRelation('commentable', 1)
-                    ->type('@body', 'Test Comment')
-                    ->create();
+                $browser->assertPathIs('/nova/resources/comments/1');
 
-            $browser->assertPathIs('/nova/resources/comments/1');
+                $this->assertCount(1, $post->fresh()->comments);
 
-            $this->assertCount(1, $post->fresh()->comments);
-
-            $browser->blank();
+                $browser->blank();
+            });
         });
     }
 
@@ -43,8 +43,6 @@ class CreateWithMorphToTest extends DuskTestCase
      */
     public function searchable_resource_can_be_created()
     {
-        $this->setupLaravel();
-
         $this->whileSearchable(function () {
             $post = PostFactory::new()->create();
 
@@ -86,14 +84,11 @@ class CreateWithMorphToTest extends DuskTestCase
 
     protected function resource_can_be_created_via_parent_resource()
     {
-        $this->setupLaravel();
-
         $post = PostFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('posts', $post->id))
-                    ->waitFor('@comments-index-component', 25)
                     ->within(new IndexComponent('comments'), function ($browser) {
                         $browser->click('@create-button');
                     })
@@ -116,8 +111,6 @@ class CreateWithMorphToTest extends DuskTestCase
      */
     public function morph_to_field_should_honor_custom_labels()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('comments'))
@@ -133,8 +126,6 @@ class CreateWithMorphToTest extends DuskTestCase
      */
     public function morph_to_field_should_honor_query_parameters_on_create()
     {
-        $this->setupLaravel();
-
         $post = PostFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($post) {

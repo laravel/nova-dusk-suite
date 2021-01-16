@@ -13,8 +13,6 @@ class CreateWithHasOneTest extends DuskTestCase
 {
     public function test_has_one_should_be_filled()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                 ->visit(new Create('people'))

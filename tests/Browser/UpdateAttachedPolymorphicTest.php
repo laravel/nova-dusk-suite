@@ -17,8 +17,6 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
      */
     public function attached_resource_can_be_updated()
     {
-        $this->setupLaravel();
-
         $post = PostFactory::new()->create();
         $tag = TagFactory::new()->create();
         $post->tags()->attach($tag, ['notes' => 'Test Notes']);
@@ -42,8 +40,6 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
      */
     public function attached_searchable_resource_is_locked()
     {
-        $this->setupLaravel();
-
         $this->whileSearchable(function () {
             $post = PostFactory::new()->create();
             $tag = TagFactory::new()->create();
@@ -69,8 +65,6 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
      */
     public function attached_resource_can_be_updated_and_can_continue_editing()
     {
-        $this->setupLaravel();
-
         $post = PostFactory::new()->create();
         $tag = TagFactory::new()->create();
         $post->tags()->attach($tag, ['notes' => 'Test Notes']);
@@ -94,8 +88,6 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $this->setupLaravel();
-
         $post = PostFactory::new()->create();
         $tag = TagFactory::new()->create();
         $post->tags()->attach($tag, ['notes' => 'Test Notes']);

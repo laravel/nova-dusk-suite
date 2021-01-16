@@ -21,43 +21,43 @@ class PivotFileAttachTest extends DuskTestCase
      */
     public function file_can_be_attached_to_resource()
     {
-        $this->setupLaravel();
+        $this->whileSearchable(function () {
+            $captain = CaptainFactory::new()->create();
+            $ship = ShipFactory::new()->create();
 
-        $captain = CaptainFactory::new()->create();
-        $ship = ShipFactory::new()->create();
+            $this->browse(function (Browser $browser) use ($captain, $ship) {
+                $browser->loginAs(User::find(1))
+                        ->visit(new Attach('captains', $captain->id, 'ships'))
+                        ->searchAndSelectFirstRelation('ships', $ship->id)
+                        ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
+                        ->clickAttach();
 
-        $this->browse(function (Browser $browser) use ($captain, $ship) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Attach('captains', $captain->id, 'ships'))
-                    ->searchAndSelectFirstRelation('ships', $ship->id)
-                    ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
-                    ->clickAttach();
+                // Verify the photo in the information in the database...
+                $captain = Captain::orderBy('id', 'desc')->first();
+                $ship = $captain->ships()->get()->first();
+                $this->assertNotNull($ship->pivot->contract);
+                $this->assertTrue(Storage::disk('public')->exists($ship->pivot->contract));
 
-            // Verify the photo in the information in the database...
-            $captain = Captain::orderBy('id', 'desc')->first();
-            $ship = $captain->ships()->get()->first();
-            $this->assertNotNull($ship->pivot->contract);
-            $this->assertTrue(Storage::disk('public')->exists($ship->pivot->contract));
+                // Ensure file is not removed on blank update...
+                $browser->visit(new UpdateAttached('captains', $captain->id, 'ships', $ship->id))
+                        ->update();
 
-            // Ensure file is not removed on blank update...
-            $browser->visit(new UpdateAttached('captains', $captain->id, 'ships', $ship->id))
-                    ->update();
+                $captain = Captain::orderBy('id', 'desc')->first();
+                $ship = $captain->ships()->get()->first();
+                $this->assertNotNull($path = $ship->pivot->contract);
+                $this->assertTrue(Storage::disk('public')->exists($ship->pivot->contract));
 
-            $captain = Captain::orderBy('id', 'desc')->first();
-            $ship = $captain->ships()->get()->first();
-            $this->assertNotNull($path = $ship->pivot->contract);
-            $this->assertTrue(Storage::disk('public')->exists($ship->pivot->contract));
+                // Detach the record...
+                $browser->visit(new Detail('captains', $captain->id))
+                        ->within(new IndexComponent('ships'), function ($browser) use ($ship) {
+                            $browser->deleteResourceById($ship->id);
+                        });
 
-            // Detach the record...
-            $browser->visit(new Detail('captains', $captain->id))
-                    ->within(new IndexComponent('ships'), function ($browser) use ($ship) {
-                        $browser->deleteResourceById($ship->id);
-                    });
+                // Clean up the file...
+                $this->assertFalse(Storage::disk('public')->exists($path));
 
-            // Clean up the file...
-            $this->assertFalse(Storage::disk('public')->exists($path));
-
-            $browser->blank();
+                $browser->blank();
+            });
         });
     }
 
@@ -66,35 +66,35 @@ class PivotFileAttachTest extends DuskTestCase
      */
     public function file_can_be_detached_from_edit_attached_screen()
     {
-        $this->setupLaravel();
+        $this->whileSearchable(function () {
+            $captain = CaptainFactory::new()->create();
+            $ship = ShipFactory::new()->create();
 
-        $captain = CaptainFactory::new()->create();
-        $ship = ShipFactory::new()->create();
+            $this->browse(function (Browser $browser) use ($captain, $ship) {
+                $browser->loginAs(User::find(1))
+                        ->visit(new Attach('captains', $captain->id, 'ships'))
+                        ->searchAndSelectFirstRelation('ships', $ship->id)
+                        ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
+                        ->clickAttach();
 
-        $this->browse(function (Browser $browser) use ($captain, $ship) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Attach('captains', $captain->id, 'ships'))
-                    ->searchAndSelectFirstRelation('ships', $ship->id)
-                    ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
-                    ->clickAttach();
+                // Verify the photo in the information in the database...
+                $captain = Captain::orderBy('id', 'desc')->first();
+                $ship = $captain->ships()->get()->first();
+                $this->assertNotNull($path = $ship->pivot->contract);
+                $this->assertTrue(Storage::disk('public')->exists($ship->pivot->contract));
 
-            // Verify the photo in the information in the database...
-            $captain = Captain::orderBy('id', 'desc')->first();
-            $ship = $captain->ships()->get()->first();
-            $this->assertNotNull($path = $ship->pivot->contract);
-            $this->assertTrue(Storage::disk('public')->exists($ship->pivot->contract));
+                // Delete the file...
+                $browser->visit(new UpdateAttached('captains', $captain->id, 'ships', $ship->id))
+                        ->click('@contract-internal-delete-link')
+                        ->pause(250)
+                        ->click('@confirm-upload-delete-button')
+                        ->pause(250);
 
-            // Delete the file...
-            $browser->visit(new UpdateAttached('captains', $captain->id, 'ships', $ship->id))
-                    ->click('@contract-internal-delete-link')
-                    ->pause(250)
-                    ->click('@confirm-upload-delete-button')
-                    ->pause(250);
+                // Clean up the file...
+                $this->assertFalse(Storage::disk('public')->exists($path));
 
-            // Clean up the file...
-            $this->assertFalse(Storage::disk('public')->exists($path));
-
-            $browser->blank();
+                $browser->blank();
+            });
         });
     }
 }

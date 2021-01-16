@@ -16,8 +16,6 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
      */
     public function morph_to_resource_can_be_created_with_attaching_file_to_parent()
     {
-        $this->setupLaravel();
-
         $this->whileInlineCreate(function () {
             $post = PostFactory::new()->create();
 
@@ -52,8 +50,6 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
      */
     public function morph_to_resource_can_be_created_with_attaching_file_to_child()
     {
-        $this->setupLaravel();
-
         $this->whileInlineCreate(function () {
             $post = PostFactory::new()->create();
 

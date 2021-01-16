@@ -17,14 +17,11 @@ class IndexTest extends DuskTestCase
      */
     public function resource_index_can_be_viewed()
     {
-        $this->setupLaravel();
-
         $users = User::find([1, 2, 3]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSeeResource(1)
                                 ->assertSeeResource(2)
@@ -42,8 +39,6 @@ class IndexTest extends DuskTestCase
      */
     public function resource_index_cant_be_viewed_on_invalid_resource()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Index('foobar'))
@@ -59,12 +54,9 @@ class IndexTest extends DuskTestCase
      */
     public function can_navigate_to_create_resource_screen()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->click('@create-button');
                     })
@@ -81,12 +73,9 @@ class IndexTest extends DuskTestCase
      */
     public function can_navigate_to_detail_screen()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->click('@1-view-button');
                     })
@@ -103,12 +92,9 @@ class IndexTest extends DuskTestCase
      */
     public function can_navigate_to_edit_screen()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->click('@1-edit-button');
                     })
@@ -125,13 +111,10 @@ class IndexTest extends DuskTestCase
      */
     public function resources_can_be_searched()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             // Search For Single User By ID...
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->searchFor('3')
                                 ->assertDontSeeResource(1)
@@ -143,7 +126,6 @@ class IndexTest extends DuskTestCase
             // Search For Single User By Name...
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->searchFor('Taylor')
                                 ->assertSeeResource(1)
@@ -160,13 +142,10 @@ class IndexTest extends DuskTestCase
      */
     public function resources_search_query_will_reset_on_revisit()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             // Search For Single User By ID...
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->searchFor('3')
                                 ->assertDontSeeResource(1)
@@ -176,7 +155,6 @@ class IndexTest extends DuskTestCase
                                 ->assertValue('@search', '3');
                     })
                     ->click('@users-resource-link')
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertValue('@search', '')
                                 ->assertSeeResource(1)
@@ -194,12 +172,9 @@ class IndexTest extends DuskTestCase
      */
     public function test_correct_select_all_matching_count_is_displayed()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSee('1-4 of 4')
                                 ->assertSelectAllMatchingCount(4)
@@ -218,14 +193,11 @@ class IndexTest extends DuskTestCase
      */
     public function resources_can_be_sorted_by_id()
     {
-        $this->setupLaravel();
-
         UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSeeResource(50)
                                 ->assertSeeResource(36)
@@ -249,12 +221,9 @@ class IndexTest extends DuskTestCase
      */
     public function resources_can_be_resorted_by_different_field_default_to_ascending_first()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSee('1-4 of 4')
                             ->assertSeeIn('table > tbody > tr:first-child', 'Laravel Nova');
@@ -276,14 +245,11 @@ class IndexTest extends DuskTestCase
      */
     public function resources_can_be_paginated()
     {
-        $this->setupLaravel();
-
         UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSeeResource(50)
                                 ->assertSeeResource(30)
@@ -314,14 +280,11 @@ class IndexTest extends DuskTestCase
      */
     public function number_of_resources_displayed_per_page_can_be_changed()
     {
-        $this->setupLaravel();
-
         UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->setPerPage('50')
                                 ->pause(1500)
@@ -340,14 +303,11 @@ class IndexTest extends DuskTestCase
      */
     public function number_of_resources_displayed_per_page_is_saved_in_query_params()
     {
-        $this->setupLaravel();
-
         UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->setPerPage('50')
                                 ->pause(1500)
@@ -357,7 +317,6 @@ class IndexTest extends DuskTestCase
                                 ->assertSee('1-50 of 54');
                     })
                     ->refresh()
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertSeeResource(50)
                                 ->assertSeeResource(25)
@@ -374,12 +333,9 @@ class IndexTest extends DuskTestCase
      */
     public function test_filters_can_be_applied_to_resources()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->applyFilter('Select First', '1')
                             ->pause(1500)
@@ -404,12 +360,9 @@ class IndexTest extends DuskTestCase
      */
     public function test_filters_can_be_deselected()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->applyFilter('Select First', '1')
                             ->pause(1500)
@@ -432,14 +385,40 @@ class IndexTest extends DuskTestCase
     /**
      * @test
      */
-    public function can_delete_a_resource_via_resource_table_row_delete_icon()
+    public function test_date_filter_interactions_does_not_close_filter_dropdown()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->assertMissing('@filter-per-page')
+                            ->click('@filter-selector')
+                            ->pause(500)
+                            ->elsewhere('', function ($browser) {
+                                $browser->assertVisible('@filter-per-page')
+                                    ->type('[dusk="date-filter"] + input', '')
+                                    ->elsewhere('', function ($browser) {
+                                        $browser->click('.flatpickr-prev-month');
+                                    })
+                                    ->assertVisible('@filter-per-page');
+
+                                $browser->click('@global-search')
+                                    ->assertMissing('@filter-per-page');
+                            });
+                    });
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_delete_a_resource_via_resource_table_row_delete_icon()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->deleteResourceById(3)
                                 ->assertSeeResource(1)
@@ -457,12 +436,9 @@ class IndexTest extends DuskTestCase
      */
     public function can_delete_resources_using_checkboxes()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
@@ -483,12 +459,9 @@ class IndexTest extends DuskTestCase
      */
     public function can_delete_all_matching_resources()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->searchFor('David')
                             ->selectAllMatching()
@@ -510,12 +483,9 @@ class IndexTest extends DuskTestCase
      */
     public function can_run_actions_on_selected_resources()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
@@ -535,14 +505,11 @@ class IndexTest extends DuskTestCase
      */
     public function can_run_table_row_actions_on_selected_resources()
     {
-        $this->setupLaravel();
-
         User::whereIn('id', [2, 3, 4])->update(['active' => true]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertDontSeeIn('@1-row', 'Mark As Inactive')
                             ->assertSeeIn('@2-row', 'Mark As Inactive')

@@ -19,8 +19,6 @@ class PanelTest extends DuskTestCase
      */
     public function fields_can_be_placed_into_panels()
     {
-        $this->setupLaravel();
-
         $address = AddressFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($address) {
@@ -37,8 +35,6 @@ class PanelTest extends DuskTestCase
      */
     public function fields_can_be_placed_into_edit_panels()
     {
-        $this->setupLaravel();
-
         $address = AddressFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($address) {

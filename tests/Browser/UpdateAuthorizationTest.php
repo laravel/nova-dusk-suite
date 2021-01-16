@@ -15,8 +15,6 @@ class UpdateAuthorizationTest extends DuskTestCase
      */
     public function update_page_should_not_be_accessible_if_not_authorized_to_view()
     {
-        $this->setupLaravel();
-
         $user = User::find(1);
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.update.'.$post->id);

@@ -15,8 +15,6 @@ class QueuedActionTest extends DuskTestCase
      */
     public function queued_action_status_is_displayed_in_action_events_list()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))

@@ -15,8 +15,6 @@ class CreateTest extends DuskTestCase
      */
     public function resource_can_be_created()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('users'))
@@ -43,8 +41,6 @@ class CreateTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('users'))
@@ -63,8 +59,6 @@ class CreateTest extends DuskTestCase
      */
     public function resource_can_be_created_and_another_resource_can_be_added()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('users'))

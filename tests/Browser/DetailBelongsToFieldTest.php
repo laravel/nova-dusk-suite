@@ -17,8 +17,6 @@ class DetailBelongsToFieldTest extends DuskTestCase
      */
     public function belongs_to_field_navigates_to_parent_resource_when_clicked()
     {
-        $this->setupLaravel();
-
         $user = User::find(1);
         $user->posts()->save($post = PostFactory::new()->create());
 
@@ -40,8 +38,6 @@ class DetailBelongsToFieldTest extends DuskTestCase
      */
     public function belongs_to_field_should_honor_custom_labels()
     {
-        $this->setupLaravel();
-
         InvoiceItemFactory::new()->create();
 
         $this->browse(function (Browser $browser) {

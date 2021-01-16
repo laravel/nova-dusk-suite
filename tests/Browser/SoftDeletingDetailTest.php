@@ -19,8 +19,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function can_view_resource_attributes()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create(['name' => 'Test Dock']);
 
         $this->browse(function (Browser $browser) {
@@ -37,8 +35,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function can_run_actions_on_resource()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
@@ -57,8 +53,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function can_navigate_to_edit_page()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
@@ -77,8 +71,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function resource_can_be_deleted()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
@@ -99,8 +91,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function resource_can_be_restored()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) {
@@ -121,8 +111,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function resource_can_be_edited_on_soft_deleted()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create([
             'name' => 'hello',
             'deleted_at' => now(),
@@ -148,8 +136,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function resource_can_run_action_on_soft_deleted()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create([
             'name' => 'hello',
             'deleted_at' => now(),
@@ -173,8 +159,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function resource_can_be_force_deleted()
     {
-        $this->setupLaravel();
-
         DockFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) {
@@ -195,8 +179,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function relationships_can_be_searched()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create();
         $dock->ships()->save($ship = ShipFactory::new()->create());
 
@@ -218,8 +200,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function soft_deleting_resources_can_be_manipulated_from_their_child_index()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create();
         $dock->ships()->save($ship = ShipFactory::new()->create());
 
@@ -244,8 +224,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function can_navigate_to_create_relationship_screen()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
@@ -268,8 +246,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function relations_can_be_paginated()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create();
         $dock->ships()->saveMany(ShipFactory::new()->times(10)->create());
 
@@ -296,8 +272,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function relations_can_be_sorted()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create();
         $dock->ships()->saveMany(ShipFactory::new()->times(10)->create());
 
@@ -324,8 +298,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function actions_on_all_matching_relations_should_be_scoped_to_the_relation()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create();
         $dock->ships()->save($ship = ShipFactory::new()->create());
 
@@ -352,8 +324,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function deleting_all_matching_relations_is_scoped_to_the_relationships()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create();
         $dock->ships()->save($ship = ShipFactory::new()->create());
 

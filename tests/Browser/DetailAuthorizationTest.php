@@ -15,8 +15,6 @@ class DetailAuthorizationTest extends DuskTestCase
      */
     public function detail_page_should_not_be_accessible_if_not_authorized_to_view()
     {
-        $this->setupLaravel();
-
         $user = User::find(1);
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.view.'.$post->id);
@@ -35,8 +33,6 @@ class DetailAuthorizationTest extends DuskTestCase
      */
     public function cant_navigate_to_edit_page_if_not_authorized()
     {
-        $this->setupLaravel();
-
         $user = User::find(1);
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.update.'.$post->id);
@@ -55,8 +51,6 @@ class DetailAuthorizationTest extends DuskTestCase
      */
     public function resource_cant_be_deleted_if_not_authorized()
     {
-        $this->setupLaravel();
-
         $user = User::find(1);
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.delete.'.$post->id);

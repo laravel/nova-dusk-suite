@@ -14,8 +14,6 @@ class DashboardTest extends DuskTestCase
      */
     public function show_default_dashboard()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Dashboard())
@@ -30,8 +28,6 @@ class DashboardTest extends DuskTestCase
      */
     public function invalid_dashboard_shows_404()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Dashboard('foobar'))

@@ -19,25 +19,24 @@ class AttachPolymorphicTest extends DuskTestCase
      */
     public function non_searchable_resource_can_be_attached()
     {
-        $this->setupLaravel();
+        $this->whileSearchable(function () {
+            $post = PostFactory::new()->create();
+            $tag = TagFactory::new()->create();
 
-        $post = PostFactory::new()->create();
-        $tag = TagFactory::new()->create();
+            $this->browse(function (Browser $browser) use ($tag) {
+                $browser->loginAs(User::find(1))
+                        ->visit(new Detail('posts', 1))
+                        ->within(new IndexComponent('tags'), function ($browser) {
+                            $browser->click('@attach-button');
+                        })
+                        ->on(new Attach('posts', 1, 'tags'))
+                        ->searchAndSelectFirstRelation('tags', $tag->id)
+                        ->clickAttach();
 
-        $this->browse(function (Browser $browser) use ($tag) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Detail('posts', 1))
-                    ->waitFor('@tags-index-component', 25)
-                    ->within(new IndexComponent('tags'), function ($browser) {
-                        $browser->click('@attach-button');
-                    })
-                    ->on(new Attach('posts', 1, 'tags'))
-                    ->searchAndSelectFirstRelation('tags', $tag->id)
-                    ->clickAttach();
+                $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
 
-            $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
-
-            $browser->blank();
+                $browser->blank();
+            });
         });
     }
 
@@ -46,8 +45,6 @@ class AttachPolymorphicTest extends DuskTestCase
      */
     public function searchable_resource_can_be_attached()
     {
-        $this->setupLaravel();
-
         $this->whileSearchable(function () {
             $post = PostFactory::new()->create();
             $tag = TagFactory::new()->create();
@@ -55,7 +52,6 @@ class AttachPolymorphicTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($tag) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Detail('posts', 1))
-                        ->waitFor('@tags-index-component', 25)
                         ->within(new IndexComponent('tags'), function ($browser) {
                             $browser->click('@attach-button');
                         })
@@ -75,27 +71,26 @@ class AttachPolymorphicTest extends DuskTestCase
      */
     public function fields_on_intermediate_table_should_be_stored()
     {
-        $this->setupLaravel();
+        $this->whileSearchable(function () {
+            $post = PostFactory::new()->create();
+            $tag = TagFactory::new()->create();
 
-        $post = PostFactory::new()->create();
-        $tag = TagFactory::new()->create();
+            $this->browse(function (Browser $browser) use ($tag) {
+                $browser->loginAs(User::find(1))
+                        ->visit(new Detail('posts', 1))
+                        ->within(new IndexComponent('tags'), function ($browser) {
+                            $browser->click('@attach-button');
+                        })
+                        ->on(new Attach('posts', 1, 'tags'))
+                        ->searchAndSelectFirstRelation('tags', $tag->id)
+                        ->type('@notes', 'Test Notes')
+                        ->clickAttach();
 
-        $this->browse(function (Browser $browser) use ($tag) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Detail('posts', 1))
-                    ->waitFor('@tags-index-component', 25)
-                    ->within(new IndexComponent('tags'), function ($browser) {
-                        $browser->click('@attach-button');
-                    })
-                    ->on(new Attach('posts', 1, 'tags'))
-                    ->searchAndSelectFirstRelation('tags', $tag->id)
-                    ->type('@notes', 'Test Notes')
-                    ->clickAttach();
+                $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
+                $this->assertEquals('Test Notes', Post::find(1)->tags->first()->pivot->notes);
 
-            $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
-            $this->assertEquals('Test Notes', Post::find(1)->tags->first()->pivot->notes);
-
-            $browser->blank();
+                $browser->blank();
+            });
         });
     }
 
@@ -104,15 +99,12 @@ class AttachPolymorphicTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $this->setupLaravel();
-
         $post = PostFactory::new()->create();
         $tag = TagFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('posts', 1))
-                    ->waitFor('@tags-index-component', 25)
                     ->within(new IndexComponent('tags'), function ($browser) {
                         $browser->click('@attach-button');
                     })
@@ -133,26 +125,26 @@ class AttachPolymorphicTest extends DuskTestCase
      */
     public function validation_errors_are_displayed_for_pivot_fields()
     {
-        $this->setupLaravel();
+        $this->whileSearchable(function () {
+            $post = PostFactory::new()->create();
+            $tag = TagFactory::new()->create();
 
-        $post = PostFactory::new()->create();
-        $tag = TagFactory::new()->create();
+            $this->browse(function (Browser $browser) use ($tag) {
+                $browser->loginAs(User::find(1))
+                        ->visit(new Detail('posts', 1))
+                        ->within(new IndexComponent('tags'), function ($browser) {
+                            $browser->click('@attach-button');
+                        })
+                        ->on(new Attach('posts', 1, 'tags'))
+                        ->searchAndSelectFirstRelation('tags', $tag->id)
+                        ->type('@notes', str_repeat('A', 30))
+                        ->clickAttach()
+                        ->assertSee('The notes may not be greater than 20 characters.');
 
-        $this->browse(function (Browser $browser) use ($tag) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Detail('posts', 1))
-                    ->within(new IndexComponent('tags'), function ($browser) {
-                        $browser->click('@attach-button');
-                    })
-                    ->on(new Attach('posts', 1, 'tags'))
-                    ->searchAndSelectFirstRelation('tags', $tag->id)
-                    ->type('@notes', str_repeat('A', 30))
-                    ->clickAttach()
-                    ->assertSee('The notes may not be greater than 20 characters.');
+                $this->assertNull(Post::find(1)->tags->first());
 
-            $this->assertNull(Post::find(1)->tags->first());
-
-            $browser->blank();
+                $browser->blank();
+            });
         });
     }
 }

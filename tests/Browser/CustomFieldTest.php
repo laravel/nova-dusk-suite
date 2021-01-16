@@ -19,8 +19,6 @@ class CustomFieldTest extends DuskTestCase
      */
     public function resource_can_be_created()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('flights'))
@@ -41,8 +39,6 @@ class CustomFieldTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('flights'))
@@ -59,14 +55,11 @@ class CustomFieldTest extends DuskTestCase
      */
     public function custom_index_field_displays_value()
     {
-        $this->setupLaravel();
-
         $flight = FlightFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($flight) {
             $browser->loginAs(User::find(1))
                     ->visit(new Index('flights'))
-                    ->waitFor('@flights-index-component', 25)
                     ->within(new IndexComponent('flights'), function ($browser) use ($flight) {
                         $browser->assertSee($flight->name);
                     });
@@ -80,8 +73,6 @@ class CustomFieldTest extends DuskTestCase
      */
     public function custom_detail_field_displays_value()
     {
-        $this->setupLaravel();
-
         $flight = FlightFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($flight) {

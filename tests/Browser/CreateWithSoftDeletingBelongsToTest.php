@@ -18,14 +18,11 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
      */
     public function test_parent_select_is_locked_when_creating_child_of_soft_deleted_resource()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', $dock->id))
-                    ->waitFor('@ships-index-component', 25)
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->click('@create-button');
                     })
@@ -45,8 +42,6 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
      */
     public function non_searchable_belongs_to_respects_with_trashed_checkbox_state()
     {
-        $this->setupLaravel();
-
         $ship = ShipFactory::new()->create(['deleted_at' => now()]);
         $ship2 = ShipFactory::new()->create();
 
@@ -73,8 +68,6 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
      */
     public function unable_to_uncheck_with_trashed_if_currently_selected_non_searchable_parent_is_trashed()
     {
-        $this->setupLaravel();
-
         $ship = ShipFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) use ($ship) {
@@ -100,8 +93,6 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
     public function searchable_belongs_to_respects_with_trashed_checkbox_state()
     {
         $this->whileSearchable(function () {
-            $this->setupLaravel();
-
             $dock = DockFactory::new()->create(['deleted_at' => now()]);
 
             $this->browse(function (Browser $browser) use ($dock) {

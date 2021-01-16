@@ -17,8 +17,6 @@ class CreateWithBelongsToTest extends DuskTestCase
      */
     public function resource_can_be_created()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('posts'))
@@ -41,8 +39,6 @@ class CreateWithBelongsToTest extends DuskTestCase
      */
     public function parent_resource_should_be_locked_when_creating_via_parents_detail_page()
     {
-        $this->setupLaravel();
-
         $user = User::find(1);
 
         $this->browse(function (Browser $browser) {
@@ -72,8 +68,6 @@ class CreateWithBelongsToTest extends DuskTestCase
      */
     public function searchable_resource_can_be_created()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($dock) {
@@ -94,14 +88,11 @@ class CreateWithBelongsToTest extends DuskTestCase
      */
     public function searchable_parent_resource_should_be_locked_when_creating_via_parents_detail_page()
     {
-        $this->setupLaravel();
-
         $dock = DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
-                    ->waitFor('@ships-index-component', 25)
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->click('@create-button');
                     })
@@ -121,8 +112,6 @@ class CreateWithBelongsToTest extends DuskTestCase
      */
     public function belongs_to_field_should_honor_custom_labels_on_create()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('invoice-items'))
@@ -137,8 +126,6 @@ class CreateWithBelongsToTest extends DuskTestCase
      */
     public function belongs_to_field_should_honor_query_parameters_on_create()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('posts', [

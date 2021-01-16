@@ -32,8 +32,6 @@ class PlaceFieldTest extends DuskTestCase
      */
     public function resource_can_be_created()
     {
-        $this->setupLaravel();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('addresses'))

@@ -16,15 +16,12 @@ class IndexBelongsToFieldTest extends DuskTestCase
      */
     public function belongs_to_field_navigates_to_parent_resource_when_clicked()
     {
-        $this->setupLaravel();
-
         $user = User::find(1);
         $user->posts()->save($post = PostFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(User::find(1))
                     ->visit(new Index('posts'))
-                    ->waitFor('@posts-index-component', 25)
                     ->within(new IndexComponent('posts'), function ($browser) use ($user) {
                         $browser->clickLink($user->name);
                     })
