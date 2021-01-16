@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.5"
     },
     "require-dev": {
+        "algolia/algoliasearch-client-php": "^2.2",
         "fakerphp/faker": "^1.9.1",
         "laravel/nova": "*",
         "mockery/mockery": "^1.4.2",
