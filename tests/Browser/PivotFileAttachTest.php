@@ -50,7 +50,8 @@ class PivotFileAttachTest extends DuskTestCase
                 // Detach the record...
                 $browser->visit(new Detail('captains', $captain->id))
                         ->within(new IndexComponent('ships'), function ($browser) use ($ship) {
-                            $browser->deleteResourceById($ship->id);
+                            $browser->waitForTable()
+                                    ->deleteResourceById($ship->id);
                         });
 
                 // Clean up the file...

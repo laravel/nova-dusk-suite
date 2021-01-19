@@ -23,7 +23,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->assertSeeResource(1)
+                        $browser->waitForTable()
+                                ->assertSeeResource(1)
                                 ->assertSeeResource(2)
                                 ->assertSeeResource(3)
                                 ->assertSee('1-4 of 4');
@@ -77,7 +78,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->click('@1-view-button');
+                        $browser->waitForTable()
+                                ->click('@1-view-button');
                     })
                     ->waitForText('User Details', 25)
                     ->assertSee('User Details')
@@ -96,7 +98,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->click('@1-edit-button');
+                        $browser->waitForTable()
+                                ->click('@1-edit-button');
                     })
                     ->waitForText('Update User', 25)
                     ->assertSee('Update User')
@@ -116,7 +119,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->searchFor('3')
+                        $browser->waitForTable()
+                                ->searchFor('3')
                                 ->assertDontSeeResource(1)
                                 ->assertDontSeeResource(2)
                                 ->assertSeeResource(3)
@@ -127,7 +131,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->searchFor('Taylor')
+                        $browser->waitForTable()
+                                ->searchFor('Taylor')
                                 ->assertSeeResource(1)
                                 ->assertDontSeeResource(2)
                                 ->assertDontSeeResource(3);
@@ -147,7 +152,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->searchFor('3')
+                        $browser->waitForTable()
+                                ->searchFor('3')
                                 ->assertDontSeeResource(1)
                                 ->assertDontSeeResource(2)
                                 ->assertSeeResource(3)
@@ -156,7 +162,8 @@ class IndexTest extends DuskTestCase
                     })
                     ->click('@users-resource-link')
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->assertValue('@search', '')
+                        $browser->waitForTable()
+                                ->assertValue('@search', '')
                                 ->assertSeeResource(1)
                                 ->assertSeeResource(2)
                                 ->assertSeeResource(3)
@@ -176,7 +183,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->assertSee('1-4 of 4')
+                        $browser->waitForTable()
+                                ->assertSee('1-4 of 4')
                                 ->assertSelectAllMatchingCount(4)
                                 ->click('')
                                 ->searchFor('Taylor')
@@ -199,7 +207,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->assertSeeResource(50)
+                        $browser->waitForTable()
+                                ->assertSeeResource(50)
                                 ->assertSeeResource(36)
                                 ->assertDontSeeResource(25)
                                 ->assertSee('1-25 of 54');
@@ -225,7 +234,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->assertSee('1-4 of 4')
+                        $browser->waitForTable()
+                            ->assertSee('1-4 of 4')
                             ->assertSeeIn('table > tbody > tr:first-child', 'Laravel Nova');
 
                         $browser->sortBy('name')
@@ -251,7 +261,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->assertSeeResource(50)
+                        $browser->waitForTable()
+                                ->assertSeeResource(50)
                                 ->assertSeeResource(30)
                                 ->assertDontSeeResource(25)
                                 ->assertSee('1-25 of 54');
@@ -286,7 +297,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->setPerPage('50')
+                        $browser->waitForTable()
+                                ->setPerPage('50')
                                 ->pause(1500)
                                 ->assertSeeResource(50)
                                 ->assertSeeResource(25)
@@ -309,7 +321,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->setPerPage('50')
+                        $browser->waitForTable()
+                                ->setPerPage('50')
                                 ->pause(1500)
                                 ->assertSeeResource(50)
                                 ->assertSeeResource(25)
@@ -318,7 +331,8 @@ class IndexTest extends DuskTestCase
                     })
                     ->refresh()
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->assertSeeResource(50)
+                        $browser->waitForTable()
+                                ->assertSeeResource(50)
                                 ->assertSeeResource(25)
                                 ->assertDontSeeResource(1)
                                 ->assertSee('1-50 of 54');
@@ -337,7 +351,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->applyFilter('Select First', '1')
+                        $browser->waitForTable()
+                            ->applyFilter('Select First', '1')
                             ->pause(1500)
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
@@ -364,7 +379,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->applyFilter('Select First', '1')
+                        $browser->waitForTable()
+                            ->applyFilter('Select First', '1')
                             ->pause(1500)
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
@@ -391,7 +407,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->assertMissing('@filter-per-page')
+                        $browser->waitForTable()
+                            ->assertMissing('@filter-per-page')
                             ->click('@filter-selector')
                             ->pause(500)
                             ->elsewhere('', function ($browser) {
@@ -420,7 +437,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->deleteResourceById(3)
+                        $browser->waitForTable()
+                                ->deleteResourceById(3)
                                 ->assertSeeResource(1)
                                 ->assertSeeResource(2)
                                 ->assertDontSeeResource(3)
@@ -440,7 +458,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->clickCheckboxForId(3)
+                        $browser->waitForTable()
+                            ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->deleteSelected()
                             ->assertSeeResource(1)
@@ -463,7 +482,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->searchFor('David')
+                        $browser->waitForTable()
+                            ->searchFor('David')
                             ->selectAllMatching()
                             ->deleteSelected()
                             ->clearSearch()
@@ -487,7 +507,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->clickCheckboxForId(3)
+                        $browser->waitForTable()
+                            ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->runAction('mark-as-active');
                     });
@@ -511,7 +532,8 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->assertDontSeeIn('@1-row', 'Mark As Inactive')
+                        $browser->waitForTable()
+                            ->assertDontSeeIn('@1-row', 'Mark As Inactive')
                             ->assertSeeIn('@2-row', 'Mark As Inactive')
                             ->runInlineAction(2, 'mark-as-inactive');
                     });

@@ -23,7 +23,8 @@ class SoftDeletingLensTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
                     ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
-                        $browser->deleteResourceById(1);
+                        $browser->waitForTable()
+                                ->deleteResourceById(1);
                     });
 
             $this->assertEquals(1, Dock::withTrashed()->count());
@@ -43,7 +44,8 @@ class SoftDeletingLensTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
                     ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
-                        $browser->clickCheckboxForId(3)
+                        $browser->waitForTable()
+                            ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->deleteSelected();
                     });
@@ -65,7 +67,8 @@ class SoftDeletingLensTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
                     ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
-                        $browser->clickCheckboxForId(3)
+                        $browser->waitForTable()
+                            ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->restoreSelected();
                     });
@@ -87,7 +90,8 @@ class SoftDeletingLensTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
                     ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
-                        $browser->clickCheckboxForId(3)
+                        $browser->waitForTable()
+                            ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->forceDeleteSelected()
                             ->assertSeeResource(1)
@@ -110,7 +114,8 @@ class SoftDeletingLensTest extends DuskTestCase
     //         $browser->loginAs(User::find(1))
     //                 ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
     //                 ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
-    //                     $browser->applyFilter('Select First', '2');
+    //                     $browser->waitForTable()
+    //                             ->applyFilter('Select First', '2');
 
     //                     $browser->selectAllMatching()
     //                             ->deleteSelected();
@@ -153,7 +158,8 @@ class SoftDeletingLensTest extends DuskTestCase
     //         $browser->loginAs(User::find(1))
     //                 ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
     //                 ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
-    //                     $browser->applyFilter('Select First', '2');
+    //                     $browser->waitForTable()
+    //                             ->applyFilter('Select First', '2');
 
     //                     $browser->selectAllMatching()
     //                         ->forceDeleteSelected();
@@ -175,7 +181,8 @@ class SoftDeletingLensTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
                     ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
-                        $browser->deleteResourceById(1)
+                        $browser->waitForTable()
+                                ->deleteResourceById(1)
                                 ->restoreResourceById(1);
                     });
 

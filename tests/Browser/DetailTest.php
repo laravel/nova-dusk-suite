@@ -106,7 +106,8 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->assertSeeResource(1)
+                        $browser->waitForTable()
+                                ->assertSeeResource(1)
                                 ->searchFor('No Matching Posts')
                                 ->assertDontSeeResource(1);
                     });
@@ -153,7 +154,8 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->assertSeeResource(10)
+                        $browser->waitForTable()
+                                ->assertSeeResource(10)
                                 ->assertDontSeeResource(1)
                                 ->nextPage()
                                 ->assertDontSeeResource(10)
@@ -182,7 +184,8 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->assertSeeResource(10)
+                        $browser->waitForTable()
+                                ->assertSeeResource(10)
                                 ->assertSeeResource(6)
                                 ->assertDontSeeResource(1)
                                 ->sortBy('id')
@@ -211,7 +214,8 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->selectAllMatching()
+                        $browser->waitForTable()
+                                ->selectAllMatching()
                                 ->runAction('mark-as-active');
                     });
 
@@ -237,7 +241,8 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->selectAllMatching()
+                        $browser->waitForTable()
+                                ->selectAllMatching()
                                 ->deleteSelected();
                     });
 

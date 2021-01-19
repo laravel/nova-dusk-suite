@@ -186,7 +186,8 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->assertSeeResource(1)
+                        $browser->waitForTable()
+                                ->assertSeeResource(1)
                                 ->searchFor('No Matching Ships')
                                 ->assertDontSeeResource(1);
                     });
@@ -209,7 +210,8 @@ class SoftDeletingDetailTest extends DuskTestCase
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed();
 
-                        $browser->assertSeeResource(1)
+                        $browser->waitForTable()
+                                ->assertSeeResource(1)
                                 ->deleteResourceById(1)
                                 ->restoreResourceById(1)
                                 ->assertSeeResource(1);
@@ -253,7 +255,8 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->assertSeeResource(10)
+                        $browser->waitForTable()
+                                ->assertSeeResource(10)
                                 ->assertDontSeeResource(1)
                                 ->nextPage()
                                 ->assertDontSeeResource(10)
@@ -279,7 +282,8 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->assertSeeResource(10)
+                        $browser->waitForTable()
+                                ->assertSeeResource(10)
                                 ->assertSeeResource(6)
                                 ->assertDontSeeResource(1)
                                 ->sortBy('id')
@@ -308,7 +312,8 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->selectAllMatching()
+                        $browser->waitForTable()
+                                ->selectAllMatching()
                                 ->runAction('mark-as-active');
                     });
 
@@ -334,7 +339,8 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->selectAllMatching()
+                        $browser->waitForTable()
+                                ->selectAllMatching()
                                 ->deleteSelected();
                     });
 

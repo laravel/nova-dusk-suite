@@ -25,7 +25,8 @@ class PivotActionTest extends DuskTestCase
                     ->visit(new Detail('users', 1))
                     ->pause(1500)
                     ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->clickCheckboxForId(1)
+                        $browser->waitForTable()
+                                ->clickCheckboxForId(1)
                                 ->openActionSelector()
                                 ->within('@action-select', function ($browser) {
                                     $label = $browser->attribute('optgroup.pivot-option-group', 'label');
@@ -49,7 +50,8 @@ class PivotActionTest extends DuskTestCase
                     ->visit(new Detail('users', 1))
                     ->pause(1500)
                     ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->clickCheckboxForId(1)
+                        $browser->waitForTable()
+                                ->clickCheckboxForId(1)
                                 ->runAction('update-pivot-notes');
                     });
 
