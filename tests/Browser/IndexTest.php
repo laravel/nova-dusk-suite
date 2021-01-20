@@ -439,6 +439,7 @@ class IndexTest extends DuskTestCase
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
                                 ->deleteResourceById(3)
+                                ->pause(1500)
                                 ->assertSeeResource(1)
                                 ->assertSeeResource(2)
                                 ->assertDontSeeResource(3)
