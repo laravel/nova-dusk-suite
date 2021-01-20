@@ -267,6 +267,7 @@ class LensTest extends DuskTestCase
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable()
                                 ->deleteResourceById(3)
+                                ->pause(1500)
                                 ->assertSeeResource(1)
                                 ->assertSeeResource(2)
                                 ->assertDontSeeResource(3);
@@ -290,6 +291,7 @@ class LensTest extends DuskTestCase
                             ->clickCheckboxForId(2)
                             ->pause(175)
                             ->deleteSelected()
+                            ->pause(1500)
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3);
