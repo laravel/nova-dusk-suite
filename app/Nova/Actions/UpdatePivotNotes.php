@@ -37,7 +37,7 @@ class UpdatePivotNotes extends Action
     {
         return [
             Text::make('Notes', 'notes')
-                ->helpText('Provide a description for notes.'),
+                ->help('Provide a description for notes.'),
         ];
     }
 }
