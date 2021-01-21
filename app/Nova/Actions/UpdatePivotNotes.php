@@ -36,7 +36,8 @@ class UpdatePivotNotes extends Action
     public function fields()
     {
         return [
-            Text::make('Notes', 'notes'),
+            Text::make('Notes', 'notes')
+                ->helpText('Provide a description for notes.'),
         ];
     }
 }
