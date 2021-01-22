@@ -48,7 +48,7 @@ class Post extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make('ID', 'id')->sortable(),
+            ID::make('ID', 'id')->asBigInt()->sortable(),
 
             BelongsTo::make('User', 'user')->display('name')->sortable(),
 
