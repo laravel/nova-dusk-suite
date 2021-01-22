@@ -47,6 +47,7 @@ class UpdateTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new Update('users', 1))
                     ->waitForTextIn('h1', 'Update User: 1', 25)
+                    ->assertSee('E-mail address should be unique')
                     ->type('@name', 'Taylor Otwell upDATED')
                     ->type('@password', 'secret')
                     ->update();
@@ -72,6 +73,7 @@ class UpdateTest extends DuskTestCase
                     ->type('@name', ' ')
                     ->update()
                     ->waitForText('There was a problem submitting the form.', 15)
+                    ->assertSee('E-mail address should be unique')
                     ->assertSee('The Name field is required.');
 
             $browser->blank();
@@ -89,6 +91,7 @@ class UpdateTest extends DuskTestCase
                     ->waitForTextIn('h1', 'Update User: 1', 25)
                     ->type('@name', 'Taylor Otwell Updated')
                     ->type('@password', 'secret')
+                    ->assertSee('E-mail address should be unique')
                     ->updateAndContinueEditing();
 
             $user = User::find(1);
