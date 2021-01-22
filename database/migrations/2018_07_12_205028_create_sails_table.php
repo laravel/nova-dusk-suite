@@ -14,8 +14,8 @@ class CreateSailsTable extends Migration
     public function up()
     {
         Schema::create('sails', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('ship_id')->index();
+            $table->id();
+            $table->foreignId('ship_id')->index();
             $table->integer('inches');
             $table->timestamps();
         });

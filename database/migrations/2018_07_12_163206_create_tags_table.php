@@ -14,14 +14,14 @@ class CreateTagsTable extends Migration
     public function up()
     {
         Schema::create('tags', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('name');
             $table->timestamps();
         });
 
         Schema::create('taggables', function (Blueprint $table) {
-            $table->unsignedInteger('tag_id');
-            $table->unsignedInteger('taggable_id');
+            $table->foreignId('tag_id');
+            $table->foreignId('taggable_id');
             $table->string('taggable_type');
             $table->string('notes')->nullable();
         });
