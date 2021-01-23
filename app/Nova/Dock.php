@@ -60,6 +60,7 @@ class Dock extends Resource
     public function lenses(Request $request)
     {
         return [
+            new Lenses\PassthroughLens,
             new Lenses\PassthroughWithTrashedLens,
         ];
     }
