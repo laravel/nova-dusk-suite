@@ -53,6 +53,17 @@ class PassthroughWithTrashedLens extends Lens
     }
 
     /**
+     * Get the actions available on the lens.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function actions(Request $request)
+    {
+        return [];
+    }
+
+    /**
      * Get the URI key for the lens.
      *
      * @return string
