@@ -29,6 +29,8 @@ class Ship extends Resource
         'id', 'name',
     ];
 
+    public static $relatableSearchResults = 5;
+
     /**
      * Get the fields displayed by the resource.
      *

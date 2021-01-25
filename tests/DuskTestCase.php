@@ -197,6 +197,17 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
         }
     }
 
+    protected function whileIndexQueryAscOrder(callable $callback)
+    {
+        touch(base_path('.index-query-asc-order'));
+
+        try {
+            $callback();
+        } finally {
+            @unlink(base_path('.index-query-asc-order'));
+        }
+    }
+
     /**
      * Create a new Browser instance.
      *
