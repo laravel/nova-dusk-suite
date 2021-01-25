@@ -15,6 +15,23 @@ abstract class Resource extends NovaResource
     public static $trafficCop = false;
 
     /**
+     * Build an "index" query for the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+
+        if (file_exists(base_path('.index-query-asc-order'))) {
+            $query->reorder('id', 'asc');
+        }
+
+        return $query;
+    }
+
+    /**
      * Build a "detail" query for the given resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
