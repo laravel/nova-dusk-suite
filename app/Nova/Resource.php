@@ -23,7 +23,6 @@ abstract class Resource extends NovaResource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-
         if (file_exists(base_path('.index-query-asc-order'))) {
             $query->reorder('id', 'asc');
         }
