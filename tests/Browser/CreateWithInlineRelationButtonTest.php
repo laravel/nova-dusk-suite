@@ -21,7 +21,6 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
         $this->whileIndexQueryAscOrder(function () {
             $this->whileInlineCreate(function () {
                 $this->whileSearchable(function () {
-
                     $dock = DockFactory::new()->create();
                     $ships = ShipFactory::new()->count(5)->create();
 
