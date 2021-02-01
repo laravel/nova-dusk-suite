@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Text;
@@ -65,6 +66,8 @@ class Post extends Resource
                             Text::make('Notes', 'notes')->rules('max:20'),
                         ];
                     })->searchable(file_exists(base_path('.searchable'))),
+
+            KeyValue::make('Meta')->nullable(),
         ];
     }
 

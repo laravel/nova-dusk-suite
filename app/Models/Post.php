@@ -7,6 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'active' => 'boolean',
+        'meta' => 'json',
+    ];
+
+    /**
      * Get the user that owns the post.
      */
     public function user()

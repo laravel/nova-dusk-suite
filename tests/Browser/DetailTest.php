@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
 use Database\Factories\PostFactory;
+use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
@@ -22,6 +23,25 @@ class DetailTest extends DuskTestCase
                     ->assertSee('User Details: 1')
                     ->assertSee('Taylor Otwell')
                     ->assertSee('taylor@laravel.com');
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_view_resource_as_big_int()
+    {
+        $user = UserFactory::new()->create([
+            'id' => 9121018173229432287,
+        ]);
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Detail('users', $user->id))
+                    ->assertSee('User Details: '.$user->id)
+                    ->assertSee($user->email);
 
             $browser->blank();
         });
@@ -71,6 +91,29 @@ class DetailTest extends DuskTestCase
                     ->click('@edit-resource-button')
                     ->waitForTextIn('h1', 'Update User', 25)
                     ->assertPathIs('/nova/resources/users/1/edit');
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_navigate_to_different_detail_screen()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Detail('users', 2))
+                    ->waitForTextIn('h1', 'User Details: 2', 25)
+                    ->assertSeeIn('@users-detail-component', 'Mohamed Said');
+
+            $browser->script([
+                'Nova.app.$router.push({ name: "detail", params: { resourceName: "users", resourceId: 3 }});',
+            ]);
+
+            $browser->waitForTextIn('h1', 'User Details: 3', 25)
+                    ->assertPathIs('/nova/resources/users/3')
+                    ->assertSeeIn('@users-detail-component', 'David Hemphill');
 
             $browser->blank();
         });

@@ -20,6 +20,7 @@ class CreatePostsTable extends Migration
             $table->text('body');
             $table->string('attachment')->nullable();
             $table->boolean('active')->default(false);
+            $table->json('meta')->nullable();
             $table->timestamps();
         });
     }

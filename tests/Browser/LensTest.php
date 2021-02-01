@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
+use Database\Factories\DockFactory;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\LensComponent;
@@ -68,6 +69,48 @@ class LensTest extends DuskTestCase
                     ->pause(1000)
                     ->assertSee('Update User')
                     ->assertPathIs('/nova/resources/users/1/edit');
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_navigate_to_different_lens_screen()
+    {
+        $dock = DockFactory::new()->create([
+            'active' => true,
+        ]);
+        $trashedDock = DockFactory::new()->create([
+            'active' => true,
+            'deleted_at' => now(),
+        ]);
+
+        $this->browse(function (Browser $browser) use ($dock, $trashedDock) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Lens('docks', 'passthrough-lens'))
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) use ($dock, $trashedDock) {
+                        $browser->waitForTextIn('h1', 'Passthrough Lens', 25)
+                                ->assertSee($dock->name)
+                                ->assertDontSee($trashedDock->name)
+                                ->selectAllMatching()
+                                ->assertPresent('@action-select')
+                                ->assertSelectHasOptions('@action-select', ['mark-as-active']);
+                    });
+
+            $browser->script([
+                'Nova.app.$router.push({ name: "lens", params: { resourceName: "docks", lens: "passthrough-with-trashed-lens" }});',
+            ]);
+
+            $browser->waitForTextIn('h1', 'Passthrough With Trashed Lens', 25)
+                    ->within(new LensComponent('users', 'passthrough-with-trashed-lens'), function ($browser) use ($dock, $trashedDock) {
+                        $browser->assertSee($dock->name)
+                                ->assertSee($trashedDock->name)
+                                ->selectAllMatching()
+                                ->assertMissing('@action-select');
+                    })
+                    ->assertPathIs('/nova/resources/docks/lens/passthrough-with-trashed-lens');
 
             $browser->blank();
         });
