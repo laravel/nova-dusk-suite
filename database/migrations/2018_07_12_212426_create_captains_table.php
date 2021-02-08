@@ -14,15 +14,15 @@ class CreateCaptainsTable extends Migration
     public function up()
     {
         Schema::create('captains', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('name');
             $table->string('photo');
             $table->timestamps();
         });
 
         Schema::create('captain_ship', function (Blueprint $table) {
-            $table->unsignedInteger('captain_id');
-            $table->unsignedInteger('ship_id');
+            $table->foreignId('captain_id');
+            $table->foreignId('ship_id');
             $table->string('notes')->nullable();
             $table->string('contract')->nullable();
 

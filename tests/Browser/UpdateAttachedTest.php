@@ -29,6 +29,9 @@ class UpdateAttachedTest extends DuskTestCase
                                 ->click('@1-edit-attached-button');
                     })
                     ->on(new UpdateAttached('users', 1, 'roles', 1))
+                    ->waitFor('.content form', 25)
+                    ->assertSeeIn('@via-resource-field', 'User')
+                    ->assertSeeIn('@via-resource-field', '1')
                     ->assertDisabled('@attachable-select')
                     ->assertInputValue('@notes', 'Test Notes')
                     ->type('@notes', 'Test Notes Updated')
@@ -57,6 +60,9 @@ class UpdateAttachedTest extends DuskTestCase
                                 ->click('@1-edit-attached-button');
                     })
                     ->on(new UpdateAttached('users', 1, 'roles', 1))
+                    ->waitFor('.content form', 25)
+                    ->assertSeeIn('@via-resource-field', 'User')
+                    ->assertSeeIn('@via-resource-field', '1')
                     ->type('@notes', 'Test Notes Updated')
                     ->updateAndContinueEditing();
 
@@ -85,6 +91,9 @@ class UpdateAttachedTest extends DuskTestCase
                                 ->click('@1-edit-attached-button');
                     })
                     ->on(new UpdateAttached('users', 1, 'roles', 1))
+                    ->waitFor('.content form', 25)
+                    ->assertSeeIn('@via-resource-field', 'User')
+                    ->assertSeeIn('@via-resource-field', '1')
                     ->type('@notes', str_repeat('A', 30))
                     ->update()
                     ->assertSee('The notes may not be greater than 20 characters.');

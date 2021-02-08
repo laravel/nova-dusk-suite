@@ -6,6 +6,7 @@ use App\Models\User;
 use Database\Factories\CommentFactory;
 use Database\Factories\LinkFactory;
 use Database\Factories\PostFactory;
+use Database\Factories\UserFactory;
 use Database\Factories\VideoFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\DetailComponent;
@@ -111,5 +112,54 @@ class DetailMorphToFieldTest extends DuskTestCase
 
             $browser->blank();
         });
+    }
+
+    /**
+     * @test
+     */
+    public function morph_to_field_accepts_parent_with_big_int_id()
+    {
+        $post = PostFactory::new()->create([
+            'id' => 9121018173229432287,
+        ]);
+        $post->comments()->save($comment = CommentFactory::new()->make());
+
+        $this->browse(function (Browser $browser) use ($post) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Detail('comments', 1))
+                    ->waitForText('Comment Details', 15)
+                    ->clickLink($post->title)
+                    ->waitForTextIn('h1', 'User Post Details', 25)
+                    ->assertSee('User Post Details: '.$post->id);
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function morph_to_field_accepts_not_defined_using_types_parent_with_big_int_id()
+    {
+        $user = UserFactory::new()->create([
+            'id' => 9121018173229432288,
+        ]);
+
+        $comment = CommentFactory::new()->create([
+            'commentable_type' => \Illuminate\Foundation\Auth\User::class,
+            'commentable_id' => 9121018173229432288,
+        ]);
+
+        $this->browse(function (Browser $browser) use ($comment) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Detail('comments', 1))
+                    ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($comment) {
+                        $browser->assertSee('Illuminate\Foundation\Auth\User: '.$comment->commentable->id);
+                    });
+
+            $browser->blank();
+        });
+
+        $this->assertSame(9121018173229432288, $comment->commentable->id);
     }
 }

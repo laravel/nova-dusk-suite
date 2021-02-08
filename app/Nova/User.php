@@ -40,7 +40,7 @@ class User extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make('ID', 'id')->sortable(),
+            ID::make('ID', 'id')->asBigInt()->sortable(),
 
             Text::make('Name', 'name')->sortable()->rules('required')
                 ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {

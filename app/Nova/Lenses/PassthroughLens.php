@@ -66,6 +66,12 @@ class PassthroughLens extends Lens
         return 'passthrough-lens';
     }
 
+    /**
+     * Get the actions available on the lens.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
     public function actions(Request $request)
     {
         return [

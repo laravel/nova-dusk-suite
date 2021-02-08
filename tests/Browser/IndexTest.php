@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
+use Database\Factories\PostFactory;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
@@ -64,6 +65,37 @@ class IndexTest extends DuskTestCase
                     ->waitForTextIn('h1', 'Create User', 25)
                     ->assertSee('Create & Add Another')
                     ->assertSee('Create User');
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_navigate_to_different_index_screen()
+    {
+        $post = PostFactory::new()->create();
+
+        $this->browse(function (Browser $browser) use ($post) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new UserIndex)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->waitForTextIn('h1', 'Users', 25)
+                            ->assertSee('Mohamed Said')
+                            ->assertSee('David Hemphill');
+                    });
+
+            $browser->script([
+                'Nova.app.$router.push({ name: "index", params: { resourceName: "posts" }});',
+            ]);
+
+            $browser->waitForTextIn('h1', 'User Post', 25)
+                    ->within(new IndexComponent('posts'), function ($browser) use ($post) {
+                        $browser->assertSee($post->title)
+                            ->assertDontSee('Mohamed Said')
+                            ->assertDontSee('David Hemphill');
+                    })->assertPathIs('/nova/resources/posts');
 
             $browser->blank();
         });

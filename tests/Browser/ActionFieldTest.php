@@ -42,7 +42,8 @@ class ActionFieldTest extends DuskTestCase
                         $browser->waitForTable()
                             ->clickCheckboxForId(1)
                             ->runAction('update-pivot-notes', function ($browser) {
-                                $browser->type('@notes', 'Custom Notes');
+                                $browser->assertSee('Provide a description for notes.')
+                                        ->type('@notes', 'Custom Notes');
                             });
                     })->waitForText('The action ran successfully!', 25);
 

@@ -27,6 +27,8 @@ class AttachTest extends DuskTestCase
                     })
                     ->on(new Attach('users', 1, 'roles'))
                     ->waitFor('.content form', 25)
+                    ->assertSeeIn('@via-resource-field', 'User')
+                    ->assertSeeIn('@via-resource-field', '1')
                     ->selectAttachable($role->id)
                     ->clickAttach();
 
@@ -56,6 +58,8 @@ class AttachTest extends DuskTestCase
                         })
                         ->on(new Attach('users', 1, 'roles'))
                         ->waitFor('.content form', 25)
+                        ->assertSeeIn('@via-resource-field', 'User')
+                        ->assertSeeIn('@via-resource-field', '1')
                         ->selectAttachable($role->id)
                         ->type('@notes', 'Test Notes')
                         ->clickAttach()
@@ -87,6 +91,8 @@ class AttachTest extends DuskTestCase
                     })
                     ->on(new Attach('users', 1, 'roles'))
                     ->waitFor('.content form', 25)
+                    ->assertSeeIn('@via-resource-field', 'User')
+                    ->assertSeeIn('@via-resource-field', '1')
                     ->clickAttach()
                     ->waitForText('There was a problem submitting the form.', 15)
                     ->assertSee('The role field is required.');
