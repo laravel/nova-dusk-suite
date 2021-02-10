@@ -28,7 +28,7 @@ class PostsDashboard extends Dashboard
      *
      * @return string
      */
-    public static function label()
+    public function label()
     {
         return 'Post Stats';
     }
@@ -38,7 +38,7 @@ class PostsDashboard extends Dashboard
      *
      * @return string
      */
-    public static function uriKey()
+    public function uriKey()
     {
         return 'posts-dashboard';
     }
