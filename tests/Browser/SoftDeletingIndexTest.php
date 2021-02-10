@@ -26,8 +26,9 @@ class SoftDeletingIndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
-                        $browser->waitForTable()
+                        $browser->waitForTable(25)
                                 ->deleteResourceById(1)
+                                ->waitForText('No dock matched the given criteria.', 25)
                                 ->assertDontSeeResource(1);
                     });
 
@@ -48,7 +49,7 @@ class SoftDeletingIndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
-                        $browser->waitForTable()
+                        $browser->waitForTable(25)
                             ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->deleteSelected()
@@ -74,7 +75,7 @@ class SoftDeletingIndexTest extends DuskTestCase
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->withTrashed();
 
-                        $browser->waitForTable()
+                        $browser->waitForTable(25)
                             ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->restoreSelected()
@@ -102,7 +103,7 @@ class SoftDeletingIndexTest extends DuskTestCase
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->withTrashed();
 
-                        $browser->waitForTable()
+                        $browser->waitForTable(25)
                             ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->forceDeleteSelected()
@@ -127,7 +128,7 @@ class SoftDeletingIndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->waitForTable()
+                        $browser->waitForTable(25)
                             ->selectAllMatching()
                             ->deleteSelected()
                             ->assertDontSeeResource(1)
@@ -159,7 +160,7 @@ class SoftDeletingIndexTest extends DuskTestCase
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed();
 
-                        $browser->waitForTable()
+                        $browser->waitForTable(25)
                             ->selectAllMatching()
                             ->restoreSelected()
                             ->assertSeeResource(1)
@@ -188,7 +189,7 @@ class SoftDeletingIndexTest extends DuskTestCase
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed();
 
-                        $browser->waitForTable()
+                        $browser->waitForTable(25)
                             ->selectAllMatching()
                             ->forceDeleteSelected()
                             ->assertDontSeeResource(1)
@@ -214,8 +215,9 @@ class SoftDeletingIndexTest extends DuskTestCase
                     ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->withTrashed()
-                                ->waitForTable()
+                                ->waitForTable(25)
                                 ->deleteResourceById(1)
+                                ->waitForTable(25)
                                 ->assertSeeResource(1);
                     });
 
@@ -235,7 +237,7 @@ class SoftDeletingIndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
-                        $browser->waitForTable()
+                        $browser->waitForTable(25)
                                 ->assertSeeResource(1)
                                 ->assertDontSeeResource(2);
 
@@ -258,9 +260,11 @@ class SoftDeletingIndexTest extends DuskTestCase
                     ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->withTrashed()
-                                ->waitForTable()
+                                ->waitForTable(25)
                                 ->deleteResourceById(1)
+                                ->waitForTable(25)
                                 ->restoreResourceById(1)
+                                ->waitForTable(25)
                                 ->assertSeeResource(1);
                     });
 

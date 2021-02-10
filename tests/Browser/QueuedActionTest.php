@@ -21,7 +21,7 @@ class QueuedActionTest extends DuskTestCase
                     ->runAction('sleep')
                     ->waitFor('[dusk="action-events-index-component"] table', 60)
                     ->within(new IndexComponent('action-events'), function ($browser) {
-                        $browser->waitForTable()
+                        $browser->waitForTable(25)
                                 ->scrollIntoView('')
                                 ->assertSee('Sleep')
                                 ->assertSee('Finished');
