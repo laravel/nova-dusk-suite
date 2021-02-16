@@ -3,8 +3,6 @@
 namespace App\Nova\Fields;
 
 use Laravel\Nova\Fields\Currency;
-use Laravel\Nova\Fields\Hidden;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 
