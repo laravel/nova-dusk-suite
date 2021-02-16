@@ -19,7 +19,7 @@ class CreateBookPurchasesTable extends Migration
             $table->foreignId('user_id');
             $table->unsignedInteger('price');
             $table->string('type')->default('personal');
-            $table->string('license_key');
+            $table->dateTime('purchased_at');
             $table->timestamps();
             //$table->softDeletes();
 

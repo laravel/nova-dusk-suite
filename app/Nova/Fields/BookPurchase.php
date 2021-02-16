@@ -3,8 +3,8 @@
 namespace App\Nova\Fields;
 
 use Laravel\Nova\Fields\Currency;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Text;
 
 class BookPurchase
 {
@@ -38,7 +38,7 @@ class BookPurchase
                 'personal' => 'Personal',
                 'gift' => 'Gift',
             ])->default($this->type),
-            Text::make('License Key')->exceptOnForms(),
+            DateTime::make('Purchased At'),
         ];
     }
 }
