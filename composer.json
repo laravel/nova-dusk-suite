@@ -56,6 +56,9 @@
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover"
         ],
+        "post-update-cmd": [
+            "@php artisan nova:publish"
+        ],
         "dusk:prepare": [
             "@php vendor/bin/dusk-updater detect --auto-update",
             "@php vendor/bin/testbench-dusk package:discover",
