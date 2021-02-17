@@ -90,8 +90,9 @@ class LensTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($dock, $trashedDock) {
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('docks', 'passthrough-lens'))
+                    ->waitForTextIn('h1', 'Passthrough Lens', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) use ($dock, $trashedDock) {
-                        $browser->waitForTextIn('h1', 'Passthrough Lens', 25)
+                        $browser->waitForTable(25)
                                 ->assertSee($dock->name)
                                 ->assertDontSee($trashedDock->name)
                                 ->selectAllMatching()
@@ -105,7 +106,8 @@ class LensTest extends DuskTestCase
 
             $browser->waitForTextIn('h1', 'Passthrough With Trashed Lens', 25)
                     ->within(new LensComponent('users', 'passthrough-with-trashed-lens'), function ($browser) use ($dock, $trashedDock) {
-                        $browser->assertSee($dock->name)
+                        $browser->waitForTable(25)
+                                ->assertSee($dock->name)
                                 ->assertSee($trashedDock->name)
                                 ->selectAllMatching()
                                 ->assertMissing('@action-select');
