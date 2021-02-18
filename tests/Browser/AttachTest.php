@@ -63,7 +63,7 @@ class AttachTest extends DuskTestCase
                         ->selectAttachable($role->id)
                         ->type('@notes', 'Test Notes')
                         ->clickAttach()
-                        ->waitFor('[dusk="roles-index-component"] table', 60);
+                        ->waitFor('[dusk="roles-index-component"] table', 30);
 
                 $this->assertDatabaseHas('role_user', [
                     'user_id' => '1',

@@ -193,6 +193,7 @@ class IndexTest extends DuskTestCase
                                 ->assertValue('@search', '3');
                     })
                     ->click('@users-resource-link')
+                    ->waitForTextIn('h1', 'Users', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable(25)
                                 ->assertValue('@search', '')
