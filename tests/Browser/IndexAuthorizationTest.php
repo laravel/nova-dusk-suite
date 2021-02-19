@@ -91,7 +91,7 @@ class IndexAuthorizationTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable()
+                        $browser->waitForTable(25)
                             ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->clickCheckboxForId(1)
@@ -119,7 +119,7 @@ class IndexAuthorizationTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable()
+                        $browser->waitForTable(25)
                             ->selectAllMatching()
                             ->deleteSelected()
                             ->assertSeeResource(1)

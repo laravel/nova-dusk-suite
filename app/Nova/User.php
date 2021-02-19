@@ -80,6 +80,12 @@ class User extends Resource
                         })
                         ->referToPivotAs('Role Assignment')
                         ->prunable(),
+
+            BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
+                ->fields(new Fields\BookPurchase()),
+
+            BelongsToMany::make('Gift Books', 'giftBooks', Book::class)
+                ->fields(new Fields\BookPurchase('gift')),
         ];
     }
 

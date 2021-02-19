@@ -39,7 +39,7 @@ class ActionFieldTest extends DuskTestCase
             $browser->loginAs($user = User::find(1))
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitForTable()
+                        $browser->waitForTable(25)
                             ->clickCheckboxForId(1)
                             ->runAction('update-pivot-notes', function ($browser) {
                                 $browser->assertSee('Provide a description for notes.')
@@ -66,7 +66,7 @@ class ActionFieldTest extends DuskTestCase
             $browser->loginAs($user = User::find(1))
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitForTable()
+                        $browser->waitForTable(25)
                             ->clickCheckboxForId(1)
                             ->runAction('update-required-pivot-notes')
                             ->elsewhere('.modal', function ($browser) {
@@ -89,7 +89,7 @@ class ActionFieldTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
+                        $browser->waitForTable(25)
                             ->assertSeeIn('@1-row', 'Mark As Inactive')
                             ->assertDontSeeIn('@2-row', 'Mark As Inactive')
                             ->assertDontSeeIn('@3-row', 'Mark As Inactive')

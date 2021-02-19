@@ -224,6 +224,8 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      */
     protected function newBrowser($driver)
     {
+        Browser::$waitSeconds = 25;
+
         return tap(new Browser($driver), function ($browser) {
             $browser->resize(env('DUSK_WIDTH'), env('DUSK_HEIGHT'));
         });

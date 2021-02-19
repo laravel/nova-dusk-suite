@@ -58,6 +58,30 @@ class User extends Authenticatable
     }
 
     /**
+     * Get all of the puchases that belong to the book.
+     */
+    public function personalBooks()
+    {
+        return $this->belongsToMany(Book::class, 'book_purchases')
+                    ->using(BookPurchase::class)
+                    ->withPivot('id', 'price', 'type', 'purchased_at')
+                    ->wherePivotIn('type', ['personal'])
+                    ->withTimestamps();
+    }
+
+    /**
+     * Get all of the puchases that belong to the book.
+     */
+    public function giftBooks()
+    {
+        return $this->belongsToMany(Book::class, 'book_purchases')
+                    ->using(BookPurchase::class)
+                    ->withPivot('id', 'price', 'type', 'purchased_at')
+                    ->wherePivotIn('type', ['gift'])
+                    ->withTimestamps();
+    }
+
+    /**
      * Store the actions the user should be blocked from.
      */
     public function shouldBlockFrom(...$block)
