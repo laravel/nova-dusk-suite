@@ -27,7 +27,8 @@ class AttachPolymorphicTest extends DuskTestCase
                 $browser->loginAs(User::find(1))
                         ->visit(new Detail('posts', 1))
                         ->within(new IndexComponent('tags'), function ($browser) {
-                            $browser->click('@attach-button');
+                            $browser->waitFor('@attach-button')
+                                    ->click('@attach-button');
                         })
                         ->on(new Attach('posts', 1, 'tags'))
                         ->searchAndSelectFirstRelation('tags', $tag->id)
@@ -53,7 +54,8 @@ class AttachPolymorphicTest extends DuskTestCase
                 $browser->loginAs(User::find(1))
                         ->visit(new Detail('posts', 1))
                         ->within(new IndexComponent('tags'), function ($browser) {
-                            $browser->click('@attach-button');
+                            $browser->waitFor('@attach-button')
+                                    ->click('@attach-button');
                         })
                         ->on(new Attach('posts', 1, 'tags'))
                         ->searchAndSelectFirstRelation('tags', $tag->id)
@@ -79,7 +81,8 @@ class AttachPolymorphicTest extends DuskTestCase
                 $browser->loginAs(User::find(1))
                         ->visit(new Detail('posts', 1))
                         ->within(new IndexComponent('tags'), function ($browser) {
-                            $browser->click('@attach-button');
+                            $browser->waitFor('@attach-button')
+                                    ->click('@attach-button');
                         })
                         ->on(new Attach('posts', 1, 'tags'))
                         ->searchAndSelectFirstRelation('tags', $tag->id)
@@ -106,7 +109,8 @@ class AttachPolymorphicTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('posts', 1))
                     ->within(new IndexComponent('tags'), function ($browser) {
-                        $browser->click('@attach-button');
+                        $browser->waitFor('@attach-button')
+                                ->click('@attach-button');
                     })
                     ->on(new Attach('posts', 1, 'tags'))
                     ->type('@notes', str_repeat('A', 30))
@@ -133,7 +137,8 @@ class AttachPolymorphicTest extends DuskTestCase
                 $browser->loginAs(User::find(1))
                         ->visit(new Detail('posts', 1))
                         ->within(new IndexComponent('tags'), function ($browser) {
-                            $browser->click('@attach-button');
+                            $browser->waitFor('@attach-button')
+                                    ->click('@attach-button');
                         })
                         ->on(new Attach('posts', 1, 'tags'))
                         ->searchAndSelectFirstRelation('tags', $tag->id)
