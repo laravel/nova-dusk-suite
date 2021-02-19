@@ -23,7 +23,8 @@ class AttachTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->click('@attach-button');
+                        $browser->waitFor('@attach-button')
+                                ->click('@attach-button');
                     })
                     ->on(new Attach('users', 1, 'roles'))
                     ->waitFor('.content form', 25)
@@ -54,7 +55,8 @@ class AttachTest extends DuskTestCase
                 $browser->loginAs(User::find(1))
                         ->visit(new Detail('users', 1))
                         ->within(new IndexComponent('roles'), function ($browser) {
-                            $browser->click('@attach-button');
+                            $browser->waitFor('@attach-button')
+                                    ->click('@attach-button');
                         })
                         ->on(new Attach('users', 1, 'roles'))
                         ->waitFor('.content form', 25)
@@ -63,7 +65,7 @@ class AttachTest extends DuskTestCase
                         ->selectAttachable($role->id)
                         ->type('@notes', 'Test Notes')
                         ->clickAttach()
-                        ->waitFor('[dusk="roles-index-component"] table', 30);
+                        ->waitFor('[dusk="roles-index-component"] table', 60);
 
                 $this->assertDatabaseHas('role_user', [
                     'user_id' => '1',
@@ -87,7 +89,8 @@ class AttachTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->click('@attach-button');
+                        $browser->waitFor('@attach-button')
+                                ->click('@attach-button');
                     })
                     ->on(new Attach('users', 1, 'roles'))
                     ->waitFor('.content form', 25)

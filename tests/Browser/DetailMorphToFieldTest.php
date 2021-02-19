@@ -106,6 +106,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($comment) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('comments', 1))
+                    ->waitForTextIn('h1', 'Comment Details')
                     ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($comment) {
                         $browser->assertSee('Illuminate\Foundation\Auth\User: '.$comment->commentable->id);
                     });
@@ -127,9 +128,9 @@ class DetailMorphToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('comments', 1))
-                    ->waitForText('Comment Details', 15)
+                    ->waitForTextIn('h1', 'Comment Details')
                     ->clickLink($post->title)
-                    ->waitForTextIn('h1', 'User Post Details', 25)
+                    ->waitForTextIn('h1', 'User Post Details')
                     ->assertSee('User Post Details: '.$post->id);
 
             $browser->blank();

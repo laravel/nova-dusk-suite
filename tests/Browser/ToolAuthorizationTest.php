@@ -84,6 +84,7 @@ class ToolAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
+                    ->pause(250)
                     ->assertSee('Resource Tool');
 
             $browser->blank();
@@ -101,6 +102,7 @@ class ToolAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
+                    ->pause(250)
                     ->assertDontSee('Resource Tool');
 
             $browser->blank();
