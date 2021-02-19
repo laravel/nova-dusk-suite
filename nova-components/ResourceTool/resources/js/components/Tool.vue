@@ -6,7 +6,7 @@
 
 <script>
     export default {
-        props: ['resourceName', 'resourceId', 'field'],
+        props: ['resourceName', 'resourceId', 'resource', 'panel'],
 
         mounted() {
             //
