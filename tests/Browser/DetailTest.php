@@ -20,6 +20,7 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
+                    ->waitForTextIn('h1', 'User Details: 1')
                     ->assertSee('User Details: 1')
                     ->assertSee('Taylor Otwell')
                     ->assertSee('taylor@laravel.com');
@@ -40,6 +41,7 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', $user->id))
+                    ->waitForTextIn('h1', 'User Details: '.$user->id)
                     ->assertSee('User Details: '.$user->id)
                     ->assertSee($user->email);
 
@@ -55,8 +57,9 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
+                    ->waitForTextIn('h1', 'User Details: 1')
                     ->runAction('mark-as-active')
-                    ->waitForText('The action ran successfully!', 25);
+                    ->waitForText('The action ran successfully!');
 
             $this->assertEquals(1, User::find(1)->active);
 
@@ -72,6 +75,7 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
+                    ->waitForTextIn('h1', 'User Details: 1')
                     ->cancelAction('mark-as-active');
 
             $this->assertEquals(0, User::find(1)->active);
@@ -88,8 +92,9 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
+                    ->waitForTextIn('h1', 'User Details: 1')
                     ->click('@edit-resource-button')
-                    ->waitForTextIn('h1', 'Update User', 25)
+                    ->waitForTextIn('h1', 'Update User')
                     ->assertPathIs('/nova/resources/users/1/edit');
 
             $browser->blank();
@@ -104,14 +109,14 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 2))
-                    ->waitForTextIn('h1', 'User Details: 2', 25)
+                    ->waitForTextIn('h1', 'User Details: 2')
                     ->assertSeeIn('@users-detail-component', 'Mohamed Said');
 
             $browser->script([
                 'Nova.app.$router.push({ name: "detail", params: { resourceName: "users", resourceId: 3 }});',
             ]);
 
-            $browser->waitForTextIn('h1', 'User Details: 3', 25)
+            $browser->waitForTextIn('h1', 'User Details: 3')
                     ->assertPathIs('/nova/resources/users/3')
                     ->assertSeeIn('@users-detail-component', 'David Hemphill');
 
@@ -127,8 +132,9 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 3))
+                    ->waitForTextIn('h1', 'User Details: 3')
                     ->delete()
-                    ->waitForText('The user was deleted', 25)
+                    ->waitForText('The user was deleted')
                     ->assertPathIs('/nova/resources/users');
 
             $this->assertNull(User::where('id', 3)->first());
@@ -148,8 +154,9 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
+                    ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->assertSeeResource(1)
                                 ->searchFor('No Matching Posts')
                                 ->assertDontSeeResource(1);
@@ -170,6 +177,7 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
+                    ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->click('@create-button')
                                 ->assertPathIs('/nova/resources/posts/new')
@@ -196,8 +204,9 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
+                    ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->assertSeeResource(10)
                                 ->assertDontSeeResource(1)
                                 ->nextPage()
@@ -226,6 +235,7 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
+                    ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable(25)
                                 ->assertSeeResource(10)
@@ -256,8 +266,9 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
+                    ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->selectAllMatching()
                                 ->runAction('mark-as-active');
                     });
@@ -283,8 +294,9 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
+                    ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->selectAllMatching()
                                 ->deleteSelected();
                     });
