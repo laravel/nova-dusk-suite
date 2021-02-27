@@ -2,6 +2,7 @@
 
 namespace Otwell\SidebarTool;
 
+use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 
@@ -26,5 +27,16 @@ class SidebarTool extends Tool
     public function renderNavigation()
     {
         return view('sidebar-tool::navigation');
+    }
+
+    /**
+     * Build the menu that renders the navigation links for the tool.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return mixed
+     */
+    public function menu(Request $request)
+    {
+        return new MenuItem('Sidebar Tool', 'sidebar-tool');
     }
 }
