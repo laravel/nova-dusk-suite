@@ -179,8 +179,6 @@ class IndexTest extends DuskTestCase
      */
     public function resources_search_query_will_reset_on_revisit()
     {
-        $this->markTestIncomplete();
-
         $this->browse(function (Browser $browser) {
             // Search For Single User By ID...
             $browser->loginAs(User::find(1))
@@ -194,7 +192,9 @@ class IndexTest extends DuskTestCase
                                 ->assertDontSeeResource(4)
                                 ->assertValue('@search', '3');
                     })
-                    ->click('@users-resource-link')
+                    ->within('.sidebar-menu', function ($browser) {
+                        $browser->clickLink('Users');
+                    })
                     ->waitForTextIn('h1', 'Users', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable(25)

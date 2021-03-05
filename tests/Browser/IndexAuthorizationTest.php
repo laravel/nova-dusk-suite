@@ -46,7 +46,8 @@ class IndexAuthorizationTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
-                        $browser->assertMissing('@'.$post->id.'-edit-button')
+                        $browser->waitForTable()
+                                ->assertMissing('@'.$post->id.'-edit-button')
                                 ->assertVisible('@'.$post2->id.'-edit-button');
                     });
 
@@ -69,7 +70,8 @@ class IndexAuthorizationTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
-                        $browser->assertMissing('@'.$post->id.'-delete-button')
+                        $browser->waitForTable()
+                                ->assertMissing('@'.$post->id.'-delete-button')
                                 ->assertVisible('@'.$post2->id.'-delete-button');
                     });
 
@@ -91,11 +93,12 @@ class IndexAuthorizationTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->clickCheckboxForId(1)
                             ->deleteSelected()
+                            ->waitForTable()
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3);
@@ -119,9 +122,10 @@ class IndexAuthorizationTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->selectAllMatching()
                             ->deleteSelected()
+                            ->waitForTable()
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3);

@@ -36,6 +36,7 @@ class FileAttachTest extends DuskTestCase
 
             // Download the file...
             $browser->on(new Detail('captains', $captain->id))
+                    ->waitFor('@photo-download-link')
                     ->click('@photo-download-link')
                     ->pause(250);
 

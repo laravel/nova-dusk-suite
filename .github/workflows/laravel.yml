@@ -41,8 +41,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12.x'
+
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
       - uses: actions/checkout@v2
         name: Checkout private tools
         with:
@@ -50,17 +55,26 @@ jobs:
           token: ${{ secrets.MY_GITHUB_TOKEN }}
           path: nova
           ref: "develop"
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, intl, fileinfo
           coverage: none
+
+      - name: Install NPM on Laravel Nova
+        run: yarn install -cmd=./nova/
+
+      - name: Compile Asset for Laravel Nova
+        run: yarn run dev -cmd=./nova/
+
       - name: Install dependencies
         uses: "ramsey/composer-install@v1"
         with:
           dependency-versions: "${{ matrix.dependencies }}"
           composer-options: "--prefer-dist --no-cache"
+
       - name: Generate key
         run: php artisan key:generate
       - name: Directory Permissions
@@ -69,6 +83,7 @@ jobs:
         run: php artisan nova:publish
       - name: Prepare storage
         run: php artisan storage:link
+
       - name: Upgrade Chrome Driver
         run: vendor/bin/dusk-updater detect --auto-update
       - name: Prepare Testbench
@@ -79,11 +94,13 @@ jobs:
         uses: jakejarvis/wait-action@master
         with:
           time: '5s'
+
       - name: Execute tests (Dusk tests) via PHPUnit
         run: vendor/bin/phpunit -c phpunit.dusk.xml --exclude-group=external-network --exclude-group=local-time
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
+
       - name: Upload Failed Screenshots
         uses: actions/upload-artifact@v2-preview
         if: failure()

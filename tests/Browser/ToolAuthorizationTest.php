@@ -92,7 +92,7 @@ class ToolAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->pause(250)
+                    ->waitForTextIn('h1', 'User Details')
                     ->assertSee('Resource Tool');
 
             $browser->blank();
