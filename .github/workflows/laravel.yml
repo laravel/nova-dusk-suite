@@ -49,7 +49,7 @@ jobs:
           repository: laravel/nova
           token: ${{ secrets.MY_GITHUB_TOKEN }}
           path: nova
-          ref: "master"
+          ref: "develop"
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
