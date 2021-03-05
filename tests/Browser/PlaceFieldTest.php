@@ -22,6 +22,8 @@ class PlaceFieldTest extends DuskTestCase
      */
     protected function defineEnvironment($app)
     {
+        parent::defineEnvironment($app);
+
         if (! class_exists(\Algolia\AlgoliaSearch\PlacesClient::class)) {
             $this->markTestSkipped('Missing "algolia/algoliasearch-client-php" requirement.');
         }

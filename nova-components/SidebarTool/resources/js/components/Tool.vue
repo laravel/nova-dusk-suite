@@ -13,6 +13,8 @@
 
 <script>
 export default {
+    layout: 'AppLayout',
+
     data() {
         return {sidebarResponse: null}
     },

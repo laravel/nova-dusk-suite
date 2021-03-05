@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Laravel\Nova\Tests\Feature;
 
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -8,7 +8,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
-use Tests\TestCase;
+use Laravel\Nova\Tests\TestCase;
 
 class EmailVerificationTest extends TestCase
 {

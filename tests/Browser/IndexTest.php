@@ -179,6 +179,8 @@ class IndexTest extends DuskTestCase
      */
     public function resources_search_query_will_reset_on_revisit()
     {
+        $this->markTestIncomplete();
+
         $this->browse(function (Browser $browser) {
             // Search For Single User By ID...
             $browser->loginAs(User::find(1))

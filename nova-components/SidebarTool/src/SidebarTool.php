@@ -21,16 +21,6 @@ class SidebarTool extends Tool
     }
 
     /**
-     * Build the view that renders the navigation links for the tool.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function renderNavigation()
-    {
-        return view('sidebar-tool::navigation');
-    }
-
-    /**
      * Build the menu that renders the navigation links for the tool.
      *
      * @param  \Illuminate\Http\Request $request
@@ -38,6 +28,6 @@ class SidebarTool extends Tool
      */
     public function menu(Request $request)
     {
-        return new MenuItem('Sidebar Tool', 'sidebar-tool');
+        return new MenuItem('Sidebar Tool', '/sidebar-tool');
     }
 }

@@ -44,7 +44,7 @@ class DetailBelongsToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('invoice-items', 1))
-                    ->assertSee('Client Invoice');
+                    ->assertSeeIn('.content', 'Invoice Item Details');
 
             $browser->blank();
         });

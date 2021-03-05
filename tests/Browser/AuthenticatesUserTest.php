@@ -12,6 +12,8 @@ class AuthenticatesUserTest extends DuskTestCase
      */
     public function it_redirect_to_intended_url_after_login()
     {
+        $this->markTestIncomplete();
+
         $this->browse(function (Browser $browser) {
             $browser->visit('/nova/resources/users/3')
                     ->assertPathIs('/nova/login')
@@ -30,6 +32,8 @@ class AuthenticatesUserTest extends DuskTestCase
      */
     public function it_redirect_to_default_dashboard_after_login_from_api_or_vendor_route($given)
     {
+        $this->markTestIncomplete();
+
         $this->browse(function (Browser $browser) use ($given) {
             $browser->logout()
                     ->visit($given)

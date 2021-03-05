@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Feature;
+namespace Laravel\Nova\Tests\Feature;
 
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Laravel\Nova\Tests\TestCase;
 
 class RegistrationTest extends TestCase
 {

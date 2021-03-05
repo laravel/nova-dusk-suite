@@ -118,7 +118,7 @@ class CreateWithBelongsToTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Create('invoice-items'))
                     ->waitFor('.content form')
-                    ->assertSee('Client Invoice');
+                    ->assertSeeIn('.content', 'Create Invoice Item');
 
             $browser->blank();
         });

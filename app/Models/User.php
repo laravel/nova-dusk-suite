@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Nova\Actions\Actionable;
 
 class User extends Authenticatable
 {
-    use Actionable, Notifiable;
+    use Actionable, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.

@@ -64,9 +64,9 @@ class DetailMorphToFieldTest extends DuskTestCase
         $video = VideoFactory::new()->create();
         $video->comments()->save($comment = CommentFactory::new()->make());
 
-        $this->browse(function (Browser $browser) {
+        $this->browse(function (Browser $browser) use ($comment) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Detail('comments', 1))
+                    ->visit(new Detail('comments', $comment->id))
                     ->assertSee('User Video');
 
             $browser->blank();
@@ -83,7 +83,7 @@ class DetailMorphToFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($comment, $link) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Detail('comments', 1))
+                    ->visit(new Detail('comments', $comment->id))
                     ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($link) {
                         $browser->assertSee('Link')
                                 ->assertSee($link->title);
@@ -105,7 +105,7 @@ class DetailMorphToFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($comment) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Detail('comments', 1))
+                    ->visit(new Detail('comments', $comment->id))
                     ->waitForTextIn('h1', 'Comment Details')
                     ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($comment) {
                         $browser->assertSee('Illuminate\Foundation\Auth\User: '.$comment->commentable->id);
@@ -125,11 +125,13 @@ class DetailMorphToFieldTest extends DuskTestCase
         ]);
         $post->comments()->save($comment = CommentFactory::new()->make());
 
-        $this->browse(function (Browser $browser) use ($post) {
+        $this->browse(function (Browser $browser) use ($post, $comment) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Detail('comments', 1))
+                    ->visit(new Detail('comments', $comment->id))
                     ->waitForTextIn('h1', 'Comment Details')
-                    ->clickLink($post->title)
+                    ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($post) {
+                        $browser->clickLink($post->title);
+                    })
                     ->waitForTextIn('h1', 'User Post Details')
                     ->assertSee('User Post Details: '.$post->id);
 
@@ -153,7 +155,7 @@ class DetailMorphToFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($comment) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Detail('comments', 1))
+                    ->visit(new Detail('comments', $comment->id))
                     ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($comment) {
                         $browser->assertSee('Illuminate\Foundation\Auth\User: '.$comment->commentable->id);
                     });

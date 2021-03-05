@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature;
+namespace Laravel\Nova\Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
-use Tests\TestCase;
+use Laravel\Nova\Tests\TestCase;
 
 class PasswordResetTest extends TestCase
 {

@@ -14,6 +14,8 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_tool_can_be_seen_if_authorized_to_view_it()
     {
+        $this->markTestIncomplete();
+
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit('/nova')
@@ -29,6 +31,8 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_tool_can_call_its_own_backend_routes()
     {
+        $this->markTestIncomplete();
+
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit('/nova/sidebar-tool')
@@ -62,6 +66,8 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_tool_cant_be_navigated_to_if_not_authorized_to_view_it()
     {
+        $this->markTestIncomplete();
+
         $user = User::find(1);
         $user->shouldBlockFrom('sidebarTool');
 
@@ -81,6 +87,8 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_resource_tool_can_be_seen_if_authorized_to_view_it()
     {
+        $this->markTestIncomplete();
+
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
