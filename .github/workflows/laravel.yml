@@ -64,10 +64,10 @@ jobs:
           coverage: none
 
       - name: Install NPM on Laravel Nova
-        run: yarn install -cmd=./nova/
+        run: yarn --cmd "./nova/" install
 
       - name: Compile Asset for Laravel Nova
-        run: yarn run dev -cmd=./nova/
+        run: yarn --cmd "./nova/" run dev
 
       - name: Install dependencies
         uses: "ramsey/composer-install@v1"
