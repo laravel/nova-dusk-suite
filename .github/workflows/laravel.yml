@@ -63,6 +63,9 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, intl, fileinfo
           coverage: none
 
+      - name: Publish webpack.mix.js
+        run: cp ./nova/webpack.mix.js.dist ./nova/webpack.mix.js
+
       - name: Install NPM on Laravel Nova
         run: yarn --cwd "./nova/" install
 
