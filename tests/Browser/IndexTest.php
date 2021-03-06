@@ -30,7 +30,7 @@ class IndexTest extends DuskTestCase
                                 ->assertSeeResource(3)
                                 ->assertSee('1-4 of 4');
                     })
-                    ->assertTitle('Users | Nova Dusk Suite');
+                    ->assertTitle('Users | Nova Site');
 
             $browser->blank();
         });
@@ -60,7 +60,7 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->click('@create-button');
+                        $browser->waitFor('@create-button')->click('@create-button');
                     })
                     ->waitForTextIn('h1', 'Create User', 25)
                     ->assertSee('Create & Add Another')
@@ -550,6 +550,30 @@ class IndexTest extends DuskTestCase
             $this->assertEquals(0, User::find(1)->active);
             $this->assertEquals(1, User::find(2)->active);
             $this->assertEquals(1, User::find(3)->active);
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_run_actions_on_all_matching_resources()
+    {
+        UserFactory::new()->times(300)->create();
+
+        $this->assertEquals(304, User::where('active', '=', 0)->count());
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new UserIndex)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->waitForTable(25)
+                            ->selectAllMatching()
+                            ->runAction('mark-as-active');
+                    })->waitForText('The action ran successfully!');
+
+            $this->assertEquals(0, User::where('active', '=', 0)->count());
 
             $browser->blank();
         });

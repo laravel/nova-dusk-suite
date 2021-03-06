@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\UserFactory;
+use Illuminate\Support\Str;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\LensComponent;
 use Laravel\Nova\Testing\Browser\Pages\Lens;
@@ -28,7 +29,7 @@ class LensTest extends DuskTestCase
                                 ->assertSeeResource(2)
                                 ->assertSeeResource(3);
                     })
-                    ->assertTitle('Passthrough Lens | Nova Dusk Suite');
+                    ->assertTitle('Passthrough Lens | Nova Site');
 
             $browser->blank();
         });
@@ -80,9 +81,11 @@ class LensTest extends DuskTestCase
     public function can_navigate_to_different_lens_screen()
     {
         $dock = DockFactory::new()->create([
+            'name' => 'Active Dock ('.Str::random(6).')',
             'active' => true,
         ]);
         $trashedDock = DockFactory::new()->create([
+            'name' => 'Inactive Dock ('.Str::random(6).')',
             'active' => true,
             'deleted_at' => now(),
         ]);

@@ -23,6 +23,7 @@ class CreateWithMorphToTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($post) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Create('comments'))
+                        ->waitForTextIn('.content form', 'Commentable')
                         ->select('@commentable-type', 'posts')
                         ->pause(500)
                         ->searchAndSelectFirstRelation('commentable', 1)
@@ -49,6 +50,7 @@ class CreateWithMorphToTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($post) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Create('comments'))
+                        ->waitForTextIn('.content form', 'Commentable')
                         ->select('@commentable-type', 'posts')
                         ->pause(500)
                         ->searchAndSelectFirstRelation('commentable', 1)
@@ -90,9 +92,10 @@ class CreateWithMorphToTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('posts', $post->id))
                     ->within(new IndexComponent('comments'), function ($browser) {
-                        $browser->click('@create-button');
+                        $browser->waitFor('@create-button')->click('@create-button');
                     })
                     ->on(new Create('comments'))
+                    ->waitForTextIn('.content form', 'Commentable')
                     ->assertDisabled('@commentable-type')
                     ->assertDisabled('@commentable-select')
                     ->type('@body', 'Test Comment')
@@ -114,6 +117,7 @@ class CreateWithMorphToTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('comments'))
+                    ->waitForTextIn('.content form', 'Commentable')
                     ->assertSee('User Post')
                     ->assertSee('User Video');
 
@@ -135,6 +139,7 @@ class CreateWithMorphToTest extends DuskTestCase
                     'viaResourceId' => $post->id,
                     'viaRelationship' => 'comments',
                 ]))
+                ->waitForTextIn('.content form', 'Commentable')
                 ->assertValue('@commentable-type', 'posts')
                 ->assertValue('@commentable-select', $post->id);
 

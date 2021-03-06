@@ -40,7 +40,8 @@ class SoftDeletingDetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
-                    ->runAction('mark-as-active');
+                    ->runAction('mark-as-active')
+                    ->waitForText('The action ran successfully!');
 
             $this->assertEquals(1, Dock::find(1)->active);
 
@@ -58,7 +59,7 @@ class SoftDeletingDetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
-                    ->click('@edit-resource-button')
+                    ->edit()
                     ->waitForTextIn('h1', 'Update Dock', 25)
                     ->assertPathIs('/nova/resources/docks/1/edit');
 
@@ -234,7 +235,8 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->click('@create-button')
+                        $browser->waitFor('@create-button')
+                                ->click('@create-button')
                                 ->assertPathIs('/nova/resources/ships/new')
                                 ->assertQueryStringHas('viaResource', 'docks')
                                 ->assertQueryStringHas('viaResourceId', '1')

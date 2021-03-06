@@ -46,7 +46,7 @@ class CreateWithBelongsToTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->click('@create-button');
+                        $browser->waitFor('@create-button')->click('@create-button');
                     })
                     ->on(new Create('posts'))
                     ->waitFor('.content form')
@@ -95,7 +95,7 @@ class CreateWithBelongsToTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->click('@create-button');
+                        $browser->waitFor('@create-button')->click('@create-button');
                     })
                     ->on(new Create('ships'))
                     ->waitFor('.content form')
@@ -118,7 +118,8 @@ class CreateWithBelongsToTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Create('invoice-items'))
                     ->waitFor('.content form')
-                    ->assertSee('Client Invoice');
+                    ->waitFor('.content form')
+                    ->assertSeeIn('.content', 'Create Invoice Item');
 
             $browser->blank();
         });
