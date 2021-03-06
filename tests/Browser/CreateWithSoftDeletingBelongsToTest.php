@@ -24,7 +24,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', $dock->id))
                     ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->click('@create-button');
+                        $browser->waitFor('@create-button')->click('@create-button');
                     })
                     ->on(new Create('ships'))
                     ->assertDisabled('@dock')

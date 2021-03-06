@@ -178,7 +178,8 @@ class DetailTest extends DuskTestCase
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->click('@create-button')
+                        $browser->waitFor('@create-button')
+                                ->click('@create-button')
                                 ->assertPathIs('/nova/resources/posts/new')
                                 ->assertQueryStringHas('viaResource', 'users')
                                 ->assertQueryStringHas('viaResourceId', '1')

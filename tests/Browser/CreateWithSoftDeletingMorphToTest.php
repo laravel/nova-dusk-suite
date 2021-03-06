@@ -38,7 +38,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('videos', $video->id))
                     ->within(new IndexComponent('comments'), function ($browser) {
-                        $browser->click('@create-button');
+                        $browser->waitFor('@create-button')->click('@create-button');
                     })
                     ->on(new Create('comments'))
                     ->assertDisabled('@commentable-type')
