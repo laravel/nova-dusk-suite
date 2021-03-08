@@ -54,7 +54,7 @@ class Post extends Resource
             BelongsTo::make('User', 'user')->display('name')->sortable(),
 
             Text::make('Title', 'title')->sortable(),
-            Textarea::make('Body', 'body'),
+            Textarea::make('Body', 'body')->stacked(),
             File::make('Attachment')->nullable(),
 
             MorphMany::make('Comments', 'comments'),
