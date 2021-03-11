@@ -99,9 +99,13 @@ return [
 
     'middleware' => [
         'web',
-        Authenticate::class,
         DispatchServingNovaEvent::class,
         BootTools::class,
+    ],
+
+    'api_middleware' => [
+        'nova',
+        Authenticate::class,
         Authorize::class,
     ],
 
@@ -154,7 +158,7 @@ return [
     */
 
     'routes' => [
-        'login' => '/login',
+        'login' => false,
         'logout' => false,
         'forgot_password' => '/forgot-password',
         'reset_password' => false,
