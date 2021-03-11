@@ -146,4 +146,18 @@ return [
 
     'currency' => 'USD',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Nova Authentication Routes
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'routes' => [
+        'login' => '/login',
+        'logout' => false,
+        'forgot_password' => '/forgot-password',
+        'reset_password' => false,
+    ],
+
 ];
