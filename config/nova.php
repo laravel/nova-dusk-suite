@@ -36,19 +36,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Nova App URL
-    |--------------------------------------------------------------------------
-    |
-    | This URL is where users will be directed when clicking the application
-    | name in the Nova navigation bar. You are free to change this URL to
-    | any location you wish depending on the needs of your application.
-    |
-    */
-
-    'url' => env('APP_URL', '/'),
-
-    /*
-    |--------------------------------------------------------------------------
     | Nova Path
     |--------------------------------------------------------------------------
     |
@@ -160,8 +147,7 @@ return [
     'routes' => [
         'login' => false,
         'logout' => false,
-        'forgot_password' => '/forgot-password',
+        'forgot_password' => false,
         'reset_password' => false,
     ],
-
 ];
