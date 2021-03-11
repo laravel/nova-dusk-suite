@@ -17,6 +17,12 @@ import axios from 'axios'
 export default {
     layout: 'AppLayout',
 
+    metaInfo() {
+        return {
+          title: 'Sidebar Tool',
+        }
+    },
+
     data() {
         return {sidebarResponse: null}
     },
