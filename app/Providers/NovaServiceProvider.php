@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Nova\Dashboards\PostsDashboard;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
+use Laravel\Nova\Dashboards\Main;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Otwell\SidebarTool\SidebarTool;
@@ -68,6 +69,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function dashboards()
     {
         return [
+            new Main,
             new PostsDashboard,
         ];
     }
