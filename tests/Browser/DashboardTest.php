@@ -14,8 +14,6 @@ class DashboardTest extends DuskTestCase
      */
     public function show_default_dashboard()
     {
-        $this->markTestIncomplete();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Dashboard())

@@ -79,7 +79,11 @@ class Post extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            Metrics\PostCountOverTime::make(),
+            Metrics\PostCountByUser::make(),
+            Metrics\PostCount::make(),
+        ];
     }
 
     /**
