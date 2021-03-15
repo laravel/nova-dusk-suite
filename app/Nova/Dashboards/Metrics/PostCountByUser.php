@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Nova\Metrics;
+namespace App\Nova\Dashboards\Metrics;
 
 use App\Models\Post;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Contracts\Metrics\InteractsWithFilters;
 use Laravel\Nova\Metrics\Partition;
 
-class PostCountByUser extends Partition implements InteractsWithFilters
+class PostCountByUser extends Partition
 {
     /**
      * Calculate the value of the metric.

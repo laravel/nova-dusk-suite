@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Nova\Metrics;
+namespace App\Nova\Dashboards\Metrics;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Laravel\Nova\Contracts\Metrics\InteractsWithFilters;
 use Laravel\Nova\Metrics\Value;
 
-class PostCount extends Value implements InteractsWithFilters
+class PostCount extends Value
 {
     /**
      * Calculate the value of the metric.
@@ -17,13 +16,7 @@ class PostCount extends Value implements InteractsWithFilters
      */
     public function calculate(Request $request)
     {
-        return $this->count(
-            $request,
-            Post::query()
-                ->when($request->resourceId, function ($query) use ($request) {
-                    return $query->where('user_id', $request->resourceId);
-                })
-        );
+        return $this->count($request, Post::class);
     }
 
     /**

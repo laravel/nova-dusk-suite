@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Nova\Metrics;
+namespace App\Nova\Dashboards\Metrics;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Laravel\Nova\Contracts\Metrics\InteractsWithFilters;
-use Laravel\Nova\Metrics\Value;
+use Laravel\Nova\Metrics\Trend;
 
-class PostCount extends Value implements InteractsWithFilters
+class PostCountOverTime extends Trend
 {
     /**
      * Calculate the value of the metric.
@@ -17,13 +16,7 @@ class PostCount extends Value implements InteractsWithFilters
      */
     public function calculate(Request $request)
     {
-        return $this->count(
-            $request,
-            Post::query()
-                ->when($request->resourceId, function ($query) use ($request) {
-                    return $query->where('user_id', $request->resourceId);
-                })
-        );
+        return $this->countByDays($request, Post::class);
     }
 
     /**
@@ -36,10 +29,7 @@ class PostCount extends Value implements InteractsWithFilters
         return [
             30 => '30 Days',
             60 => '60 Days',
-            365 => '365 Days',
-            'MTD' => 'Month To Date',
-            'QTD' => 'Quarter To Date',
-            'YTD' => 'Year To Date',
+            90 => '90 Days',
         ];
     }
 
@@ -60,6 +50,6 @@ class PostCount extends Value implements InteractsWithFilters
      */
     public function uriKey()
     {
-        return 'post-count';
+        return 'post-count-over-time';
     }
 }

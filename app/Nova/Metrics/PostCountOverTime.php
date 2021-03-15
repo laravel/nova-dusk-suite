@@ -4,9 +4,10 @@ namespace App\Nova\Metrics;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Laravel\Nova\Contracts\Metrics\InteractsWithFilters;
 use Laravel\Nova\Metrics\Trend;
 
-class PostCountOverTime extends Trend
+class PostCountOverTime extends Trend implements InteractsWithFilters
 {
     /**
      * Calculate the value of the metric.
