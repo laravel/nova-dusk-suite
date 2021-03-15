@@ -16,7 +16,13 @@ class PostCount extends Value
      */
     public function calculate(Request $request)
     {
-        return $this->count($request, Post::where('user_id', $request->resourceId));
+        return $this->count(
+            $request,
+            Post::query()
+                ->when($request->resourceId, function ($query) use ($request) {
+                    return $query->where('user_id', $request->resourceId);
+                })
+        );
     }
 
     /**

@@ -8,6 +8,23 @@ use Laravel\Nova\Filters\Filter;
 class SelectFirst extends Filter
 {
     /**
+     * Key name for filter.
+     *
+     * @var string
+     */
+    public $keyName;
+
+    /**
+     * Construct a new filter.
+     *
+     * @param  string  $keyName
+     */
+    public function __construct($keyName = 'id')
+    {
+        $this->keyName = $keyName;
+    }
+
+    /**
      * Apply the filter to the given query.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -17,7 +34,7 @@ class SelectFirst extends Filter
      */
     public function apply(Request $request, $query, $value)
     {
-        return $query->where('id', $value);
+        return $query->where($this->keyName, $value);
     }
 
     /**
