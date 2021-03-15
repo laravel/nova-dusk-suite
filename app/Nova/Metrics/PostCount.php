@@ -4,10 +4,10 @@ namespace App\Nova\Metrics;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Laravel\Nova\Contracts\Metrics\InteractsWithFilters;
+use Laravel\Nova\Contracts\Metrics\ObservesFilterChanges;
 use Laravel\Nova\Metrics\Value;
 
-class PostCount extends Value implements InteractsWithFilters
+class PostCount extends Value implements ObservesFilterChanges
 {
     /**
      * Calculate the value of the metric.
