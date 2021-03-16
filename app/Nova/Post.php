@@ -82,7 +82,7 @@ class Post extends Resource
         return [
             Metrics\PostCountOverTime::make()->refreshWhenFilterChanged(),
             Metrics\PostCountByUser::make()->refreshWhenFilterChanged(),
-            Metrics\PostCount::make()->refreshWhenFilterChanged(),
+            Metrics\PostCount::make(), //->refreshWhenFilterChanged(),
         ];
     }
 
