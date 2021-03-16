@@ -3,11 +3,10 @@
 namespace App\Nova\Metrics;
 
 use App\Models\Post;
-use Laravel\Nova\Contracts\Metrics\ObservesFilterChanges;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Partition;
 
-class PostCountByUser extends Partition implements ObservesFilterChanges
+class PostCountByUser extends Partition
 {
     /**
      * Calculate the value of the metric.
