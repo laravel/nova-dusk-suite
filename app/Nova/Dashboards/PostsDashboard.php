@@ -2,9 +2,6 @@
 
 namespace App\Nova\Dashboards;
 
-use App\Nova\Metrics\PostCount;
-use App\Nova\Metrics\PostCountByUser;
-use App\Nova\Metrics\PostCountOverTime;
 use Laravel\Nova\Dashboard;
 
 class PostsDashboard extends Dashboard
@@ -17,9 +14,9 @@ class PostsDashboard extends Dashboard
     public function cards()
     {
         return [
-            PostCountOverTime::make(),
-            PostCountByUser::make(),
-            PostCount::make(),
+            Metrics\PostCountOverTime::make(),
+            Metrics\PostCountByUser::make(),
+            Metrics\PostCount::make(),
         ];
     }
 

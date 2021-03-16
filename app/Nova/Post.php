@@ -80,9 +80,9 @@ class Post extends Resource
     public function cards(Request $request)
     {
         return [
-            Metrics\PostCountOverTime::make(),
-            Metrics\PostCountByUser::make(),
-            Metrics\PostCount::make(),
+            Metrics\PostCountOverTime::make(), //->refreshWhenFilterChanged(),
+            Metrics\PostCountByUser::make(), //->refreshWhenFilterChanged(),
+            Metrics\PostCount::make(), //->refreshWhenFilterChanged(),
         ];
     }
 
