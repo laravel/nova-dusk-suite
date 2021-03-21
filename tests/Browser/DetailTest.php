@@ -103,22 +103,6 @@ class DetailTest extends DuskTestCase
     /**
      * @test
      */
-    public function can_navigate_to_edit_page_using_shortcut()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Detail('users', 1))
-                    ->keys('', ['e'])
-                    ->waitForTextIn('h1', 'Update User')
-                    ->assertPathIs('/nova/resources/users/1/edit');
-
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
     public function can_navigate_to_different_detail_screen()
     {
         $this->browse(function (Browser $browser) {

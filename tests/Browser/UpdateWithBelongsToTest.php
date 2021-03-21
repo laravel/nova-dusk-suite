@@ -49,6 +49,7 @@ class UpdateWithBelongsToTest extends DuskTestCase
                     'viaRelationship' => 'posts',
                 ]))
                 ->waitForTextIn('h1', 'Update User Post: '.$post->id, 25)
+                ->waitFor('@user')
                 ->assertValue('@user', 1); // not 2
 
             $browser->blank();
