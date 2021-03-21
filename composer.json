@@ -22,7 +22,7 @@
         "laravel/nova": "*",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "orchestra/testbench-dusk": "^6.12",
+        "orchestra/testbench-dusk": "^6.15",
         "phpunit/phpunit": "^9.3.3"
     },
     "autoload": {
@@ -66,6 +66,7 @@
         ],
         "dusk:test": [
             "@composer run dusk:prepare",
+            "@php vendor/bin/testbench-dusk package:dusk-purge",
             "@php vendor/bin/phpunit -c phpunit.dusk.xml --color"
         ]
     },
