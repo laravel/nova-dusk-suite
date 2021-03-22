@@ -20,7 +20,7 @@ class IndexActionTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->runAction('mark-as-active');
@@ -29,6 +29,28 @@ class IndexActionTest extends DuskTestCase
             $this->assertEquals(0, User::find(1)->active);
             $this->assertEquals(1, User::find(2)->active);
             $this->assertEquals(1, User::find(3)->active);
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function cannot_run_actions_on_deleted_resources()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new UserIndex)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->waitForTable()
+                            ->clickCheckboxForId(3);
+
+                        User::where('id', '=', 3)->delete();
+
+                        $browser->runAction('mark-as-active');
+                    })->waitForText('Sorry! You are not authorized to perform this action.')
+                    ->assertSee('Sorry! You are not authorized to perform this action.');
 
             $browser->blank();
         });
@@ -47,7 +69,7 @@ class IndexActionTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->selectAllMatching()
                             ->runAction('mark-as-active');
                     })->waitForText('The action ran successfully!');
@@ -69,7 +91,7 @@ class IndexActionTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->assertDontSeeIn('@1-row', 'Mark As Inactive')
                             ->assertSeeIn('@2-row', 'Mark As Inactive')
                             ->runInlineAction(2, 'mark-as-inactive');

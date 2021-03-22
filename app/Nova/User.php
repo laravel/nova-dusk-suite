@@ -76,6 +76,7 @@ class User extends Resource
                         ->actions(function ($request) {
                             return [
                                 new Actions\UpdatePivotNotes,
+                                Actions\StandaloneTask::make()->standalone(),
                             ];
                         })
                         ->referToPivotAs('Role Assignment')
@@ -127,14 +128,16 @@ class User extends Resource
     {
         return [
             new Actions\MarkAsActive,
-            (new Actions\MarkAsInactive)->showOnTableRow()->showOnDetail()->canSee(function ($request) {
-                return $request instanceof ActionRequest
-                    || ($this->resource->exists && $this->resource->active === true);
-            })->canRun(function ($request, $model) {
-                return (int) $model->getKey() !== 1;
-            }),
+            Actions\MarkAsInactive::make()
+                ->showOnTableRow()->showOnDetail()->canSee(function ($request) {
+                    return $request instanceof ActionRequest
+                        || ($this->resource->exists && $this->resource->active === true);
+                })->canRun(function ($request, $model) {
+                    return (int) $model->getKey() !== 1;
+                }),
             new Actions\Sleep,
-            (new Actions\RedirectToGoogle)->withoutConfirmation(),
+            Actions\StandaloneTask::make()->standalone(),
+            Actions\RedirectToGoogle::make()->withoutConfirmation(),
         ];
     }
 
