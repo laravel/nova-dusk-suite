@@ -21,7 +21,7 @@ class StandaloneTask extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        Action::message('Action executed!');
+        return Action::message('Action executed!');
     }
 
     /**
