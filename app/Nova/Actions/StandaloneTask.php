@@ -7,6 +7,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
+use Laravel\Nova\Fields\Text;
 
 class StandaloneTask extends Action
 {
@@ -21,6 +22,10 @@ class StandaloneTask extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
+        if (! empty($fields->notes)) {
+            return Action::message('Action executed with ['.$fields->notes.']');
+        }
+
         return Action::message('Action executed!');
     }
 
@@ -31,6 +36,9 @@ class StandaloneTask extends Action
      */
     public function fields()
     {
-        return [];
+        return [
+            Text::make('Notes', 'notes')
+                ->help('Provide a description for notes.'),
+        ];
     }
 }
