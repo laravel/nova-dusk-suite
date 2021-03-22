@@ -105,6 +105,7 @@ class Post extends Resource
     {
         return [
             new Actions\MarkAsActive,
+            Actions\StandaloneTask::make()->standalone(),
         ];
     }
 
