@@ -111,7 +111,6 @@ class DetailTest extends DuskTestCase
 
             User::where('id', '=', 4)->delete();
 
-            $browser->tinker();
             $browser->runAction('standalone-task')
                 ->waitForText('This resource no longer exists')
                 ->assertSee('This resource no longer exists');
