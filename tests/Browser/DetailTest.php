@@ -113,6 +113,7 @@ class DetailTest extends DuskTestCase
 
             $browser->runAction('standalone-task')
                 ->waitForText('This resource no longer exists')
+                ->assertSee('Action executed!')
                 ->assertSee('This resource no longer exists');
 
             $browser->blank();
