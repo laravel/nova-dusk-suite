@@ -58,6 +58,18 @@ class PostPolicy
     }
 
     /**
+     * Determine whether the user can replicate the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Post  $post
+     * @return mixed
+     */
+    public function replicate(User $user, Post $model)
+    {
+        return ! $user->isBlockedFrom('post.replicate.'.$model->id);
+    }
+
+    /**
      * Determine whether the user can add a comment to the post.
      *
      * @param  \App\Models\User  $user
