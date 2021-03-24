@@ -2,14 +2,11 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Post;
 use App\Models\User;
-use Database\Factories\PostFactory;
 use Database\Factories\RoleFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
-use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -100,32 +97,6 @@ class ActionFieldTest extends DuskTestCase
                     })->waitForText('Sorry! You are not authorized to perform this action.', 25);
 
             $this->assertEquals(1, User::find(1)->active);
-
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function cannot_run_standalone_actions_on_deleted_resource()
-    {
-        PostFactory::new()->times(5)->create();
-
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Index('posts'))
-                    ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable();
-
-                        Post::query()->delete();
-
-                        $browser->runAction('standalone-task', function ($browser) {
-                            $browser->assertSee('Provide a description for notes.')
-                                    ->type('@notes', 'Custom Notes');
-                        });
-                    })->waitForText('Action executed with [Custom Notes]')
-                    ->assertSee('Action executed with [Custom Notes]');
 
             $browser->blank();
         });
