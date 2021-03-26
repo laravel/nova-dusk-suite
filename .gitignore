@@ -21,3 +21,5 @@ yarn-error.log
 /resources/views/vendor/nova/*
 /nova*
 /nova-*.zip
+
+/rr
