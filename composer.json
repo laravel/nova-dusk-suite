@@ -12,9 +12,11 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.12",
+        "laravel/framework": "^8.35",
+        "laravel/octane": "dev-rr2",
         "laravel/scout": "^8.3",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "spiral/roadrunner": "^2.0"
     },
     "require-dev": {
         "algolia/algoliasearch-client-php": "^2.2",
@@ -75,6 +77,10 @@
         {
             "type": "path",
             "url": "./nova"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laravel/octane.git"
         }
     ],
     "config": {
