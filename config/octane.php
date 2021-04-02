@@ -65,6 +65,8 @@ return [
         RequestReceived::class => [
             ...Octane::prepareApplicationForNextOperation(),
             ...Octane::prepareApplicationForNextRequest(),
+            ...Nova::prepareApplicationForNextOperation(),
+            ...Nova::prepareApplicationForNextRequest(),
             //
         ],
 
@@ -73,18 +75,18 @@ return [
         ],
 
         RequestTerminated::class => [
-            ...Nova::prepareApplicationForNextOperation(),
-            ...Nova::prepareApplicationForNextRequest(),
             //
         ],
 
         TaskReceived::class => [
             ...Octane::prepareApplicationForNextOperation(),
+            ...Nova::prepareApplicationForNextOperation(),
             //
         ],
 
         TickReceived::class => [
             ...Octane::prepareApplicationForNextOperation(),
+            ...Nova::prepareApplicationForNextOperation(),
             //
         ],
 
