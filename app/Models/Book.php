@@ -18,7 +18,7 @@ class Book extends Model
     protected static function booted()
     {
         static::addGlobalScope('active', function (Builder $builder) {
-            $builder->where('active', '=', 0);
+            $builder->where('active', '=', 1);
         });
     }
 
