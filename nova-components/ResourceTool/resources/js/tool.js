@@ -1,3 +1,3 @@
 Nova.booting(function (Vue, router, store) {
-    Vue.component('resource-tool', require('./components/Tool').default);
+    Vue.component('detail-resource-tool', require('./components/Tool').default);
 })
