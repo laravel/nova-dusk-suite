@@ -62,7 +62,30 @@ class IndexTest extends DuskTestCase
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitFor('@create-button')->click('@create-button');
                     })
-                    ->waitForTextIn('h1', 'Create User', 25)
+                    ->waitForTextIn('h1', 'Create User')
+                    ->assertPathIs('/nova/resources/users/new')
+                    ->assertSee('Create & Add Another')
+                    ->assertSee('Create User');
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_navigate_to_create_resource_screen_using_shortcut()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new UserIndex)
+                    ->waitFor('@users-index-component')
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->waitFor('@create-button');
+                    })
+                    ->keys('', ['c'])
+                    ->waitForTextIn('h1', 'Create User')
+                    ->assertPathIs('/nova/resources/users/new')
                     ->assertSee('Create & Add Another')
                     ->assertSee('Create User');
 

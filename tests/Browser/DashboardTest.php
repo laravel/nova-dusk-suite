@@ -37,4 +37,19 @@ class DashboardTest extends DuskTestCase
             $browser->blank();
         });
     }
+
+    /**
+     * @test
+     */
+    public function it_can_focus_global_search_using_shortcut()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Dashboard())
+                    ->keys('', ['/'])
+                    ->assertFocused('@global-search');
+
+            $browser->blank();
+        });
+    }
 }

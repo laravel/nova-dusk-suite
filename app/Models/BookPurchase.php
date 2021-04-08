@@ -26,7 +26,6 @@ class BookPurchase extends Pivot
      * @var array
      */
     protected $casts = [
-        'active' => 'boolean',
         'purchased_at' => 'datetime',
     ];
 }

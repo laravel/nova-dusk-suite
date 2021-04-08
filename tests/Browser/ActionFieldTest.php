@@ -59,6 +59,41 @@ class ActionFieldTest extends DuskTestCase
     /**
      * @test
      */
+    public function actions_modal_shouldnt_closed_when_user_using_shortcut()
+    {
+        $user = User::find(1);
+        $role = RoleFactory::new()->create();
+        $user->roles()->attach($role);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($user = User::find(1))
+                    ->visit(new Detail('users', 1))
+                    ->within(new IndexComponent('roles'), function ($browser) {
+                        $browser->waitForTable(25)
+                            ->assertScript('Nova.usesKeyShortcut', true)
+                            ->clickCheckboxForId(1)
+                            ->waitFor('@action-select')
+                            ->select('@action-select', 'update-pivot-notes')
+                            ->pause(100)
+                            ->click('@run-action-button');
+
+                        $browser->elsewhere('', function ($browser) {
+                            $browser->whenAvailable('.modal', function ($browser) {
+                                $browser->assertScript('Nova.usesKeyShortcut', false)
+                                        ->assertSee('Provide a description for notes.');
+                            })->keys('', ['e']);
+                        });
+                    })
+                    ->assertPresent('.modal')
+                    ->assertPathIs('/nova/resources/users/1');
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
     public function actions_can_be_validated()
     {
         $user = User::find(1);
