@@ -70,7 +70,7 @@ class ActionFieldTest extends DuskTestCase
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable(25)
-                            ->assertScript('Nova.usesKeyShortcut', true)
+                            ->assertScript('Nova.useShortcuts', true)
                             ->clickCheckboxForId(1)
                             ->waitFor('@action-select')
                             ->select('@action-select', 'update-pivot-notes')
@@ -79,7 +79,7 @@ class ActionFieldTest extends DuskTestCase
 
                         $browser->elsewhere('', function ($browser) {
                             $browser->whenAvailable('.modal', function ($browser) {
-                                $browser->assertScript('Nova.usesKeyShortcut', false)
+                                $browser->assertScript('Nova.useShortcuts', false)
                                         ->assertSee('Provide a description for notes.');
                             })->keys('', ['e']);
                         });
