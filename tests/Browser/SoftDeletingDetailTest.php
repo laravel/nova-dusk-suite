@@ -54,6 +54,8 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function can_navigate_to_edit_page()
     {
+        $this->markTestIncomplete('Missing edit button');
+
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
@@ -211,12 +213,12 @@ class SoftDeletingDetailTest extends DuskTestCase
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed();
 
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->assertSeeResource(1)
                                 ->deleteResourceById(1)
-                                ->waitForTable(25)
+                                ->waitForTable()
                                 ->restoreResourceById(1)
-                                ->waitForTable(25)
+                                ->waitForTable()
                                 ->assertSeeResource(1);
                     });
 

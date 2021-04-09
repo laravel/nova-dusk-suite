@@ -22,7 +22,8 @@ class IndexMorphToFieldTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Index('comments'))
                     ->within(new IndexComponent('comments'), function ($browser) use ($comment) {
-                        $browser->clickLink('Post: '.$comment->commentable->title);
+                        $browser->waitForTable()
+                                ->clickLink('Post: '.$comment->commentable->title);
                     })
                     ->waitForTextIn('h1', 'User Post Details', 25)
                     ->assertPathIs('/nova/resources/posts/'.$comment->commentable->id);
@@ -45,7 +46,8 @@ class IndexMorphToFieldTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Index('comments'))
                     ->within(new IndexComponent('comments'), function ($browser) use ($comment) {
-                        $browser->assertSee('Illuminate\Foundation\Auth\User: '.$comment->commentable->id);
+                        $browser->waitForTable()
+                                ->assertSee('Illuminate\Foundation\Auth\User: '.$comment->commentable->id);
                     });
 
             $browser->blank();

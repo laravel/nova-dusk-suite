@@ -78,13 +78,13 @@ class ActionFieldTest extends DuskTestCase
                             ->click('@run-action-button');
 
                         $browser->elsewhere('', function ($browser) {
-                            $browser->whenAvailable('.modal', function ($browser) {
+                            $browser->whenAvailable('.modal[data-modal-open=true]', function ($browser) {
                                 $browser->assertScript('Nova.useShortcuts', false)
                                         ->assertSee('Provide a description for notes.');
                             })->keys('', ['e']);
                         });
                     })
-                    ->assertPresent('.modal')
+                    ->assertPresent('.modal[data-modal-open=true]')
                     ->assertPathIs('/nova/resources/users/1');
 
             $browser->blank();
@@ -107,7 +107,7 @@ class ActionFieldTest extends DuskTestCase
                         $browser->waitForTable(25)
                             ->clickCheckboxForId(1)
                             ->runAction('update-required-pivot-notes')
-                            ->elsewhere('.modal', function ($browser) {
+                            ->elsewhere('.modal[data-modal-open=true]', function ($browser) {
                                 $browser->assertSee('The Notes field is required.');
                             });
                     });

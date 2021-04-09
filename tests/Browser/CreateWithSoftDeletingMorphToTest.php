@@ -41,8 +41,8 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
                         $browser->waitFor('@create-button')->click('@create-button');
                     })
                     ->on(new Create('comments'))
-                    ->assertDisabled('@commentable-type')
-                    ->assertDisabled('@commentable-select')
+                    ->assertDisabled('select[dusk="commentable-type"]')
+                    ->assertDisabled('select[dusk="commentable-select"]')
                     ->type('@body', 'Test Comment')
                     ->create();
 

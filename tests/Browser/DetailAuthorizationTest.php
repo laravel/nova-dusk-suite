@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -21,7 +22,8 @@ class DetailAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Detail('posts', $post->id))
+                    ->visit(Nova::path()."/resources/posts/{$post->id}")
+                    ->waitForText('403', 15)
                     ->assertPathIs('/nova/403');
 
             $browser->blank();

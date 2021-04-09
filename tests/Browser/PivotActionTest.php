@@ -29,7 +29,7 @@ class PivotActionTest extends DuskTestCase
                                 ->clickCheckboxForId(1)
                                 ->openActionSelector()
                                 ->within('@action-select', function ($browser) {
-                                    $label = $browser->attribute('optgroup.pivot-option-group', 'label');
+                                    $label = $browser->attribute('optgroup', 'label');
                                     $this->assertEquals('Role Assignment', $label);
                                 });
                     });

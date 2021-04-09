@@ -73,9 +73,9 @@ class ToolAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit('/nova/sidebar-tool')
-                    ->pause(250)
-                    ->assertSee('404')
+                    ->visit(Nova::path().'/sidebar-tool')
+                    ->waitForText('404', 15)
+                    ->assertPathIs('/nova/404')
                     ->assertDontSee('Sidebar Tool');
 
             $browser->blank();

@@ -34,7 +34,7 @@ class UpdateAttachedTest extends DuskTestCase
                     ->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })
-                    ->assertDisabled('@attachable-select')
+                    ->assertDisabled('select[dusk="attachable-select"]')
                     ->assertInputValue('@notes', 'Test Notes')
                     ->type('@notes', 'Test Notes Updated')
                     ->update();
@@ -128,7 +128,6 @@ class UpdateAttachedTest extends DuskTestCase
                             });
                     })
                     ->on(new UpdateAttached('users', 1, 'books', 4))
-                    ->waitFor('.content form', 25)
                     ->type('@price', '43')
                     ->update()
                     ->waitForText('The resource was updated!', 15)

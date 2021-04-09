@@ -5,7 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Testing\Browser\Pages\Update;
+use Laravel\Nova\Nova;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateAuthorizationTest extends DuskTestCase
@@ -21,7 +21,8 @@ class UpdateAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Update('posts', $post->id))
+                    ->visit(Nova::path()."/resources/posts/{$post->id}/edit")
+                    ->waitForText('403', 15)
                     ->assertPathIs('/nova/403');
 
             $browser->blank();

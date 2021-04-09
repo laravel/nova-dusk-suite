@@ -20,10 +20,9 @@ class CreateWithBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('posts'))
-                    ->waitFor('.content form')
-                    ->select('@user', 1)
                     ->type('@title', 'Test Post')
                     ->type('@body', 'Test Post Body')
+                    ->select('select[dusk="user"]', 1)
                     ->create();
 
             $user = User::find(1);
@@ -40,8 +39,6 @@ class CreateWithBelongsToTest extends DuskTestCase
      */
     public function parent_resource_should_be_locked_when_creating_via_parents_detail_page()
     {
-        $user = User::find(1);
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
@@ -49,8 +46,7 @@ class CreateWithBelongsToTest extends DuskTestCase
                         $browser->waitFor('@create-button')->click('@create-button');
                     })
                     ->on(new Create('posts'))
-                    ->waitFor('.content form')
-                    ->assertDisabled('@user')
+                    ->assertDisabled('select[dusk="user"]')
                     ->type('@title', 'Test Post')
                     ->type('@body', 'Test Post Body')
                     ->create();
@@ -98,8 +94,7 @@ class CreateWithBelongsToTest extends DuskTestCase
                         $browser->waitFor('@create-button')->click('@create-button');
                     })
                     ->on(new Create('ships'))
-                    ->waitFor('.content form')
-                    ->assertDisabled('@dock')
+                    ->assertDisabled('select[dusk="dock"]')
                     ->type('@name', 'Test Ship')
                     ->create();
 
@@ -117,8 +112,7 @@ class CreateWithBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('invoice-items'))
-                    ->waitFor('.content form')
-                    ->assertSeeIn('.content', 'Create Invoice Item');
+                    ->assertSeeIn('[data-testid="content"]', 'Create Invoice Item');
 
             $browser->blank();
         });
@@ -136,8 +130,8 @@ class CreateWithBelongsToTest extends DuskTestCase
                         'viaResourceId' => 1,
                         'viaRelationship' => 'posts',
                     ]))
-                    ->waitFor('.content form')
-                    ->assertValue('@user', 1);
+                    ->waitForTextIn('#app [data-testid="content"] form', 'Taylor Otwell')
+                    ->assertValue('select[dusk="user"]', 1);
 
             $browser->blank();
         });

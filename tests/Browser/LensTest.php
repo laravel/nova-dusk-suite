@@ -132,7 +132,7 @@ class LensTest extends DuskTestCase
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable(25)
                                 ->assertSelectAllMatchingCount(4)
-                                ->click('')
+                                ->closeCurrentDropdown()
                                 ->applyFilter('Select First', '1')
                                 ->assertSelectAllMatchingCount(1);
                     });

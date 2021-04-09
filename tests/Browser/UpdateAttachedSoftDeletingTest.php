@@ -27,12 +27,11 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
                     ->visit(new Detail('captains', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed()
-                                ->waitForTable(25)
-                                ->pause(175)
+                                ->waitFor('@1-edit-attached-button')
                                 ->click('@1-edit-attached-button');
                     })
                     ->on(new UpdateAttached('captains', 1, 'ships', 1))
-                    ->assertDisabled('@attachable-select')
+                    ->assertDisabled('select[dusk="attachable-select"]')
                     ->type('@notes', 'Test Notes')
                     ->update();
 
@@ -59,11 +58,11 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
                     ->visit(new Detail('captains', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed()
-                                ->waitForTable(25)
+                                ->waitFor('@1-edit-attached-button')
                                 ->click('@1-edit-attached-button');
                     })
                     ->on(new UpdateAttached('captains', 1, 'ships', 1))
-                    ->assertDisabled('@attachable-select')
+                    ->assertDisabled('select[dusk="attachable-select"]')
                     ->type('@notes', 'Test Notes')
                     ->updateAndContinueEditing();
 

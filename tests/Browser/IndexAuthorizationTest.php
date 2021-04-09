@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -23,8 +24,8 @@ class IndexAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(new Index('posts'))
-                    ->pause(250)
+                    ->visit(Nova::path().'/resources/posts')
+                    ->waitForText('403', 15)
                     ->assertPathIs('/nova/403');
 
             $browser->blank();

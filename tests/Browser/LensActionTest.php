@@ -67,7 +67,7 @@ class LensActionTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->applyFilter('Select First', '2');
 
                         $browser->selectAllMatching()

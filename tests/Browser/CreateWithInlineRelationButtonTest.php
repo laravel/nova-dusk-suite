@@ -28,16 +28,16 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                         $browser->loginAs(User::find(1))
                             ->visit(new Create('sails'))
                             ->runInlineCreate('ship', function ($browser) use ($dock) {
-                                $browser->waitForText('Create Ship', 25)
+                                $browser->waitForText('Create Ship')
                                     ->searchAndSelectFirstRelation('docks', $dock->id)
                                     ->type('@name', 'Ship name');
                             })
-                            ->waitForText('The ship was created!', 25)
+                            ->waitForText('The ship was created!')
                             ->pause(500)
                             ->assertSee('Ship name')
                             ->type('@inches', 25)
                             ->create()
-                            ->waitForText('The sail was created!', 25);
+                            ->waitForText('The sail was created!');
                     });
                 });
             });

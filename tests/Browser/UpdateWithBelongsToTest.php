@@ -50,7 +50,7 @@ class UpdateWithBelongsToTest extends DuskTestCase
                 ]))
                 ->waitForTextIn('h1', 'Update User Post: '.$post->id, 25)
                 ->waitFor('@user')
-                ->assertValue('@user', 1); // not 2
+                ->assertValue('select[dusk="user"]', 1); // not 2
 
             $browser->blank();
         });

@@ -6,6 +6,7 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -24,7 +25,8 @@ class UpdateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user, $post, $post2) {
             $browser->loginAs($user)
-                    ->visit(new Update('posts', $post->id))
+                    ->visit(Nova::path()."/resources/posts/{$post->id}/edit")
+                    ->waitForText('403', 15)
                     ->assertPathIs('/nova/403');
 
             $browser->visit(new Update('posts', $post2->id))

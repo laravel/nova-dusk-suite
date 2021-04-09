@@ -51,9 +51,9 @@ class FileAttachTest extends DuskTestCase
             // Delete the file...
             $browser->visit(new Update('captains', $captain->id))
                     ->click('@photo-delete-link')
-                    ->pause(250)
-                    ->click('@confirm-upload-delete-button')
-                    ->pause(250);
+                    ->whenAvailable('.modal[data-modal-open="true"]', function ($browser) {
+                        $browser->click('@confirm-upload-delete-button')->pause(250);
+                    });
 
             // Clean up the file...
             $this->assertFalse(Storage::disk('public')->exists($captain->photo));

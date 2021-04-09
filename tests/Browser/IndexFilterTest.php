@@ -143,10 +143,9 @@ class IndexFilterTest extends DuskTestCase
                                     $browser->click('.flatpickr-prev-month');
                                 })
                                 ->assertVisible('@filter-per-page');
-
-                            $browser->click('@global-search')
-                                ->assertMissing('@filter-per-page');
-                        });
+                        })
+                        ->closeCurrentDropdown()
+                        ->assertMissing('@filter-per-page');
                 });
 
             $browser->blank();

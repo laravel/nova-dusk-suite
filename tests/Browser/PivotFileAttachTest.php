@@ -50,9 +50,9 @@ class PivotFileAttachTest extends DuskTestCase
                 // Detach the record...
                 $browser->visit(new Detail('captains', $captain->id))
                         ->within(new IndexComponent('ships'), function ($browser) use ($ship) {
-                            $browser->waitForTable(25)
+                            $browser->waitForTable()
                                     ->deleteResourceById($ship->id)
-                                    ->waitForText('No ship matched the given criteria.', 25);
+                                    ->waitForText('No Ship matched the given criteria.');
                         });
 
                 // Clean up the file...
@@ -88,9 +88,10 @@ class PivotFileAttachTest extends DuskTestCase
                 // Delete the file...
                 $browser->visit(new UpdateAttached('captains', $captain->id, 'ships', $ship->id))
                         ->click('@contract-internal-delete-link')
-                        ->pause(250)
-                        ->click('@confirm-upload-delete-button')
-                        ->pause(250);
+                        ->whenAvailable('.modal[data-modal-open="true"]', function ($browser) {
+                            $browser->click('@confirm-upload-delete-button');
+                        })
+                        ->waitForText('The file was deleted!');
 
                 // Clean up the file...
                 $this->assertFalse(Storage::disk('public')->exists($path));
