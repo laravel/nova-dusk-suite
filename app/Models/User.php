@@ -43,6 +43,14 @@ class User extends Authenticatable
     ];
 
     /**
+     * Get the user's profile.
+     */
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    /**
      * Get all of the user's posts.
      */
     public function posts()
