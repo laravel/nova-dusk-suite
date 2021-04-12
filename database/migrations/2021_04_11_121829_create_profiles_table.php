@@ -20,6 +20,9 @@ class CreateProfilesTable extends Migration
             $table->string('github_url')->nullable();
             $table->string('twitter_url')->nullable();
 
+            $table->string('timezone')->default('UTC');
+            $table->json('languages')->nullable();
+
             $table->timestamps();
         });
     }
