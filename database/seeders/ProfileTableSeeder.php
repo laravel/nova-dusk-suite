@@ -22,14 +22,14 @@ class ProfileTableSeeder extends Seeder
 
         Profile::forceCreate([
             'user_id' => 2,
-            'github_url' => 'https://github.com/davidhemphill',
-            'twitter_url' => 'https://twitter.com/davidhemphill',
+            'github_url' => 'https://github.com/themsaid',
+            'twitter_url' => 'https://twitter.com/themsaid',
         ]);
 
         Profile::forceCreate([
             'user_id' => 3,
-            'github_url' => 'https://github.com/themsaid',
-            'twitter_url' => 'https://twitter.com/themsaid',
+            'github_url' => 'https://github.com/davidhemphill',
+            'twitter_url' => 'https://twitter.com/davidhemphill',
         ]);
     }
 }
