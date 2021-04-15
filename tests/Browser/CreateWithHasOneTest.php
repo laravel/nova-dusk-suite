@@ -23,7 +23,7 @@ class CreateWithHasOneTest extends DuskTestCase
                     $browser->waitFor('@create-button')->click('@create-button');
                 })
                 ->waitFor('#app [data-testid="content"] form')
-                ->assertDisabled('[dusk="people"] select');
+                ->assertDisabled('select[dusk="people"]');
 
             $browser->blank();
         });

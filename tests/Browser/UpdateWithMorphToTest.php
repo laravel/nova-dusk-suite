@@ -49,11 +49,11 @@ class UpdateWithMorphToTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($comment, $link) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Update('comments', $comment->id))
-                        //->assertEnabled('@commentable-type')
-                        ->within('@commentable-type', function ($browser) {
+                        ->assertEnabled('select[dusk="commentable-type"]')
+                        ->within('select[dusk="commentable-type"]', function ($browser) {
                             $browser->assertSee('Link');
                         })
-                        //->assertEnabled('@commentable-search-input')
+                        ->waitFor('@commentable-search-input')
                         ->within('@commentable-search-input', function ($browser) use ($link) {
                             $browser->assertSee($link->title);
                         });
@@ -80,7 +80,7 @@ class UpdateWithMorphToTest extends DuskTestCase
                             'viaRelationship' => 'comments',
                         ]))
                         ->assertValue('select[dusk="commentable-type"]', 'posts')
-                        //->assertEnabled('@commentable-search-input')
+                        ->assertEnabled('@commentable-search-input')
                         ->within('@commentable-search-input', function ($browser) use ($post) {
                             $browser->assertSee($post->title);
                         });

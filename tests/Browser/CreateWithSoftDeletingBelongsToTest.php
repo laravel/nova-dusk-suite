@@ -48,12 +48,13 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('sails'))
-                    ->assertSelectMissingOption('[dusk="ship"] select', $ship->id)
-                    ->assertSelectHasOption('[dusk="ship"] select', $ship2->id)
+                    ->waitFor('select[dusk="ship"]')
+                    ->assertSelectMissingOption('select[dusk="ship"]', $ship->id)
+                    ->assertSelectHasOption('select[dusk="ship"]', $ship2->id)
                     ->withTrashedRelation('ships')
-                    ->assertSelectHasOption('[dusk="ship"] select', $ship->id)
-                    ->assertSelectHasOption('[dusk="ship"] select', $ship2->id)
-                    ->select('[dusk="ship"] select', $ship->id)
+                    ->assertSelectHasOption('select[dusk="ship"]', $ship->id)
+                    ->assertSelectHasOption('select[dusk="ship"]', $ship2->id)
+                    ->select('select[dusk="ship"]', $ship->id)
                     ->type('@inches', 25)
                     ->create();
 

@@ -1,5 +1,5 @@
 <template>
-    <default-field :field="field">
+    <DefaultField :field="field" :errors="errors">
         <template slot="field">
             <input :id="field.name" type="text"
                 :dusk="field.attribute"
@@ -13,7 +13,7 @@
                 {{ firstError }}
             </p>
         </template>
-    </default-field>
+    </DefaultField>
 </template>
 
 <script>
