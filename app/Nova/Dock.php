@@ -5,6 +5,7 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Color;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\HasManyThrough;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 
@@ -39,6 +40,8 @@ class Dock extends Resource
             Text::make('Name', 'name')->sortable(),
             Color::make('color')->nullable(),
             HasMany::make('Ships', 'ships'),
+
+            HasManyThrough::make('Sails'),
         ];
     }
 
