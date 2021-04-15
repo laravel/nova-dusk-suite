@@ -17,4 +17,12 @@ class Dock extends Model
     {
         return $this->hasMany(Ship::class);
     }
+
+    /**
+     * Get all of the sails that belongs to the dock.
+     */
+    public function sails()
+    {
+        return $this->hasManyThrough(Sail::class, Ship::class);
+    }
 }
