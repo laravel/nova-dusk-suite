@@ -22,6 +22,7 @@ class CreateProfilesTable extends Migration
 
             $table->string('timezone')->default('UTC');
             $table->json('languages')->nullable();
+            $table->json('interests')->nullable();
 
             $table->timestamps();
         });

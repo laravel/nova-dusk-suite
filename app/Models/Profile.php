@@ -9,6 +9,17 @@ class Profile extends Model
 {
     use HasFactory;
 
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'languages' => 'array',
+        'interests' => 'array',
+    ];
+
     /**
      * Get the user the profile is belongs to.
      */

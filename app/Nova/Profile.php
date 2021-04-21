@@ -5,6 +5,7 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Multiselect;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Timezone;
 
@@ -50,6 +51,16 @@ class Profile extends Resource
             Text::make('Twitter URL'),
 
             Timezone::make('Timezone'),
+
+            // Multiselect::make('Interests')->options([
+            //     'laravel' => ['label' => 'Laravel', 'group' => 'PHP'],
+            //     'phpunit' => ['label' => 'PHPUnit', 'group' => 'PHP'],
+            //     'livewire' => ['label' => 'Livewire', 'group' => 'PHP'],
+            //     'swoole' => ['label' => 'Swoole', 'group' => 'PHP'],
+            //     'react' => ['label' => 'React', 'group' => 'JavaScript'],
+            //     'vue' => ['label' => 'Vue', 'group' => 'JavaScript'],
+            //     'hack' => ['label' => 'Hack'],
+            // ]),
         ];
     }
 
