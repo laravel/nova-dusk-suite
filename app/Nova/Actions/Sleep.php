@@ -27,14 +27,4 @@ class Sleep extends Action implements ShouldQueue
             $this->markAsFinished($model);
         }
     }
-
-    /**
-     * Get the fields available on the action.
-     *
-     * @return array
-     */
-    public function fields()
-    {
-        return [];
-    }
 }
