@@ -13,7 +13,6 @@
 
 <script>
 import { layout } from '@/mixins'
-import axios from 'axios'
 
 export default {
     layout: layout('AppLayout'),
@@ -29,7 +28,7 @@ export default {
     },
 
     mounted() {
-        axios.get('/nova-api/custom-sidebar-tool').then(response => {
+        Nova.request().get('/nova-api/custom-sidebar-tool').then(response => {
             this.sidebarResponse = response.data
         })
     },
