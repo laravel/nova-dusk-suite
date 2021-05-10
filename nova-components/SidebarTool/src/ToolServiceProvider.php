@@ -37,8 +37,8 @@ class ToolServiceProvider extends ServiceProvider
 
         Nova::router(['nova', Authorize::class])
             ->group(function ($router) {
-                $router->get(function () {
-                    return inertia('sidebar-tool', 'SidebarTool');
+                $router->get('sidebar-tool', function () {
+                    return inertia('SidebarTool');
                 });
             });
 
