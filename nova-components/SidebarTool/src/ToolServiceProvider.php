@@ -4,7 +4,6 @@ namespace Otwell\SidebarTool;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Inertia\Inertia;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
 use Otwell\SidebarTool\Http\Middleware\Authorize;
@@ -38,7 +37,7 @@ class ToolServiceProvider extends ServiceProvider
 
         Nova::router(['nova', Authorize::class])
             ->group(function ($router) {
-                 $router->inertia('sidebar-tool', 'SidebarTool');
+                $router->inertia('sidebar-tool', 'SidebarTool');
             });
 
         Route::middleware(['nova', Authorize::class])
