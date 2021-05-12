@@ -49,8 +49,10 @@ class AttachSoftDeletingTest extends DuskTestCase
                         ->searchAndSelectFirstRelation('ships', $ship->id)
                         ->clickAttach();
 
-                $this->assertCount(0, $captain->fresh()->ships);
-                $this->assertCount(1, $captain->fresh()->ships()->withTrashed()->get());
+                tap($captain->fresh(), function ($captain) {
+                    $this->assertCount(0, $captain->fresh()->ships);
+                    $this->assertCount(1, $captain->fresh()->ships()->withTrashed()->get());
+                });
 
                 $browser->blank();
             });
@@ -97,8 +99,10 @@ class AttachSoftDeletingTest extends DuskTestCase
                         ->searchAndSelectFirstRelation('ships', $ship->id)
                         ->clickAttach();
 
-                $this->assertCount(0, $captain->fresh()->ships);
-                $this->assertCount(1, $captain->fresh()->ships()->withTrashed()->get());
+                tap($captain->fresh(), function ($captain) {
+                    $this->assertCount(0, $captain->ships);
+                    $this->assertCount(1, $captain->ships()->withTrashed()->get());
+                });
 
                 $browser->blank();
             });

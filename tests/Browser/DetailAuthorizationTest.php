@@ -20,8 +20,8 @@ class DetailAuthorizationTest extends DuskTestCase
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.view.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $post) {
+            $browser->loginAs($user)
                     ->visit(Nova::path()."/resources/posts/{$post->id}")
                     ->waitForText('403', 15)
                     ->assertPathIs('/nova/403');
@@ -39,8 +39,8 @@ class DetailAuthorizationTest extends DuskTestCase
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.update.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $post) {
+            $browser->loginAs($user)
                     ->visit(new Detail('posts', $post->id))
                     ->assertMissing('@edit-resource-button');
 
@@ -57,8 +57,8 @@ class DetailAuthorizationTest extends DuskTestCase
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.delete.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $post) {
+            $browser->loginAs($user)
                     ->visit(new Detail('posts', $post->id))
                     ->assertMissing('@open-delete-modal-button');
 

@@ -19,8 +19,8 @@ class UpdateAuthorizationTest extends DuskTestCase
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.update.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $post) {
+            $browser->loginAs($user)
                     ->visit(Nova::path()."/resources/posts/{$post->id}/edit")
                     ->waitForText('403', 15)
                     ->assertPathIs('/nova/403');

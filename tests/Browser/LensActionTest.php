@@ -25,9 +25,12 @@ class LensActionTest extends DuskTestCase
                             ->runAction('mark-as-active');
                     });
 
-            $this->assertEquals(0, User::find(1)->active);
-            $this->assertEquals(1, User::find(2)->active);
-            $this->assertEquals(1, User::find(3)->active);
+            $this->assertEquals([
+                1 => false,
+                2 => true,
+                3 => true,
+                4 => false,
+            ], User::findMany([1, 2, 3, 4])->pluck('active', 'id')->all());
 
             $browser->blank();
         });
@@ -50,9 +53,12 @@ class LensActionTest extends DuskTestCase
                             ->runInlineAction(2, 'mark-as-inactive');
                     });
 
-            $this->assertEquals(0, User::find(1)->active);
-            $this->assertEquals(0, User::find(2)->active);
-            $this->assertEquals(1, User::find(3)->active);
+            $this->assertEquals([
+                1 => false,
+                2 => false,
+                3 => true,
+                4 => true,
+            ], User::findMany([1, 2, 3, 4])->pluck('active', 'id')->all());
 
             $browser->blank();
         });
@@ -73,10 +79,15 @@ class LensActionTest extends DuskTestCase
                         $browser->selectAllMatching()
                                 ->runAction('mark-as-active');
                     });
-        });
 
-        $this->assertEquals(0, User::find(1)->active);
-        $this->assertEquals(1, User::find(2)->active);
-        $this->assertEquals(0, User::find(3)->active);
+            $this->assertEquals([
+                1 => false,
+                2 => true,
+                3 => false,
+                4 => false,
+            ], User::findMany([1, 2, 3, 4])->pluck('active', 'id')->all());
+
+            $browser->blank();
+        });
     }
 }

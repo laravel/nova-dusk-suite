@@ -23,7 +23,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $user->shouldBlockFrom('user.addPost.'.$user->id);
 
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user)
                     ->visit(new Create('posts'))
                     ->pause(500)
                     ->assertSelectMissingOption('@user', $user->id)
@@ -44,8 +44,8 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.addComment.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $post) {
+            $browser->loginAs($user)
                     ->visit(new Create('comments'))
                     ->select('@commentable-type', 'posts')
                     ->pause(500)
@@ -67,8 +67,8 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.addComment.'.$post->id);
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('posts', 1))
                     ->within(new IndexComponent('comments'), function ($browser) {
                         $browser->assertMissing('@create-button');
@@ -90,8 +90,8 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $tag = TagFactory::new()->create();
         $user->shouldBlockFrom('post.attachTag.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($tag) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $tag) {
+            $browser->loginAs($user)
                     ->visit(new Attach('posts', 1, 'tags'))
                     ->assertSelectMissingOption('@attachable-select', $tag->name)
                     ->assertSelectMissingOption('@attachable-select', $tag->id);
@@ -111,8 +111,8 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.attachAnyTag.'.$post->id);
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('posts', 1))
                     ->within(new IndexComponent('tags'), function ($browser) {
                         $browser->assertMissing('@attach-button');

@@ -38,8 +38,8 @@ class ActionFieldTest extends DuskTestCase
         $role = RoleFactory::new()->create();
         $user->roles()->attach($role);
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs($user = User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable(25)
@@ -65,8 +65,8 @@ class ActionFieldTest extends DuskTestCase
         $role = RoleFactory::new()->create();
         $user->roles()->attach($role);
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs($user = User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable(25)
@@ -100,8 +100,8 @@ class ActionFieldTest extends DuskTestCase
         $role = RoleFactory::new()->create();
         $user->roles()->attach($role);
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs($user = User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable(25)
@@ -124,7 +124,7 @@ class ActionFieldTest extends DuskTestCase
         User::whereIn('id', [1])->update(['active' => true]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user = User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable(25)
@@ -134,7 +134,7 @@ class ActionFieldTest extends DuskTestCase
                             ->runInlineAction(1, 'mark-as-inactive');
                     })->waitForText('Sorry! You are not authorized to perform this action.', 25);
 
-            $this->assertEquals(1, User::find(1)->active);
+            $this->assertEquals(1, $user->fresh()->active);
 
             $browser->blank();
         });

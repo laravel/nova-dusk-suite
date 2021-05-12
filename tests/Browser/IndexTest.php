@@ -170,7 +170,7 @@ class IndexTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             // Search For Single User By ID...
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user = User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
@@ -182,7 +182,7 @@ class IndexTest extends DuskTestCase
                     });
 
             // Search For Single User By Name...
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()

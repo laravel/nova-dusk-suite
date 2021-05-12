@@ -20,8 +20,8 @@ class PivotActionTest extends DuskTestCase
         $role = RoleFactory::new()->create();
         $user->roles()->attach($role);
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->pause(1500)
                     ->within(new IndexComponent('roles'), function ($browser) {
@@ -33,6 +33,8 @@ class PivotActionTest extends DuskTestCase
                                     $this->assertEquals('Role Assignment', $label);
                                 });
                     });
+
+            $browser->blank();
         });
     }
 
@@ -46,7 +48,7 @@ class PivotActionTest extends DuskTestCase
         $user->roles()->attach($role);
 
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->pause(1500)
                     ->within(new IndexComponent('roles'), function ($browser) {

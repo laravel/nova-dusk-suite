@@ -2,6 +2,7 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
+use App\Models\Sail;
 use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\ShipFactory;
@@ -82,7 +83,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                     ->type('@inches', 25)
                     ->create();
 
-            $this->assertCount(1, $ship->fresh()->sails);
+            $this->assertSame(1, Sail::where('ship_id', $ship->id)->count());
 
             $browser->blank();
         });
