@@ -16,4 +16,14 @@ class Profile extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get the profile latest post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function latestPost()
+    {
+        return $this->hasOne(Post::class, 'user_id')->latestOfMany();
+    }
 }
