@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Nova\Actions\Actionable;
@@ -37,7 +38,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'settings' => Cast\AsArrayObject::class,
+        'settings' => Casts\AsArrayObject::class,
         'blocked_from' => 'json',
         'active' => 'boolean',
     ];
