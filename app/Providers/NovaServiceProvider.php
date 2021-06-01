@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Nova\Dashboards\PostsDashboard;
+use App\Nova\Dashboards\Main;
+use App\Nova\Dashboards\Posts;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;
-use Laravel\Nova\Dashboards\Main;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Otwell\SidebarTool\SidebarTool;
@@ -50,18 +50,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     }
 
     /**
-     * Get the cards that should be displayed on the default Nova dashboard.
-     *
-     * @return array
-     */
-    protected function cards()
-    {
-        return [
-            new Help,
-        ];
-    }
-
-    /**
      * Get the extra dashboards that should be displayed on the Nova dashboard.
      *
      * @return array
@@ -70,7 +58,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
             new Main,
-            new PostsDashboard,
+            new Posts,
         ];
     }
 

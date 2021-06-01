@@ -4,7 +4,7 @@ namespace App\Nova\Dashboards;
 
 use Laravel\Nova\Dashboard;
 
-class PostsDashboard extends Dashboard
+class Posts extends Dashboard
 {
     /**
      * Get the cards for the dashboard.
