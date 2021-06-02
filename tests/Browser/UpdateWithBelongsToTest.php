@@ -2,6 +2,7 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
+use App\Models\Post;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
@@ -18,16 +19,18 @@ class UpdateWithBelongsToTest extends DuskTestCase
         $user = User::find(1);
         $user->posts()->save($post = PostFactory::new()->make());
 
-        $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $post) {
+            $browser->loginAs($user)
                     ->visit(new Update('posts', $post->id))
                     ->waitForTextIn('h1', 'Update User Post: '.$post->id, 25)
                     ->select('@user', 2)
                     ->update()
                     ->waitForText('The user post was updated');
 
-            $this->assertCount(0, User::find(1)->posts);
-            $this->assertCount(1, User::find(2)->posts);
+            $posts = Post::all();
+
+            $this->assertCount(0, $posts->where('user_id', 1));
+            $this->assertCount(1, $posts->where('user_id', 2));
 
             $browser->blank();
         });
@@ -41,8 +44,8 @@ class UpdateWithBelongsToTest extends DuskTestCase
         $user = User::find(1);
         $user->posts()->save($post = PostFactory::new()->make());
 
-        $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $post) {
+            $browser->loginAs($user)
                 ->visit(new Update('posts', $post->id, [
                     'viaResource' => 'users',
                     'viaResourceId' => 2,

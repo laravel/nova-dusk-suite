@@ -43,8 +43,8 @@ class IndexAuthorizationTest extends DuskTestCase
         $user = User::find(1);
         $user->shouldBlockFrom('post.update.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post, $post2) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $post, $post2) {
+            $browser->loginAs($user)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                         $browser->waitForTable()
@@ -67,8 +67,8 @@ class IndexAuthorizationTest extends DuskTestCase
         $user = User::find(1);
         $user->shouldBlockFrom('post.delete.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post, $post2) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $post, $post2) {
+            $browser->loginAs($user)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                         $browser->waitForTable()
@@ -90,8 +90,8 @@ class IndexAuthorizationTest extends DuskTestCase
         $user = User::find(1);
         $user->shouldBlockFrom('post.delete.1');
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable()
@@ -119,8 +119,8 @@ class IndexAuthorizationTest extends DuskTestCase
         $user = User::find(1);
         $user->shouldBlockFrom('post.delete.1');
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable()

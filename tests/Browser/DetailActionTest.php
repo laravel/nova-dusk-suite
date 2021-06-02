@@ -18,13 +18,13 @@ class DetailActionTest extends DuskTestCase
     public function can_run_actions_on_resource()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user = User::find(1))
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->runAction('mark-as-active')
                     ->waitForText('The action ran successfully!');
 
-            $this->assertEquals(1, User::find(1)->active);
+            $this->assertEquals(1, $user->fresh()->active);
 
             $browser->blank();
         });
@@ -88,12 +88,12 @@ class DetailActionTest extends DuskTestCase
     public function actions_can_be_cancelled_without_effect()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user = User::find(1))
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->cancelAction('mark-as-active');
 
-            $this->assertEquals(0, User::find(1)->active);
+            $this->assertEquals(0, $user->fresh()->active);
 
             $browser->blank();
         });
@@ -104,11 +104,13 @@ class DetailActionTest extends DuskTestCase
      */
     public function actions_on_all_matching_relations_should_be_scoped_to_the_relation()
     {
-        $user = User::find(1);
-        $user->posts()->save($post = PostFactory::new()->create());
+        $post = PostFactory::new()->create([
+            'user_id' => 1,
+        ]);
 
-        $user2 = User::find(2);
-        $user2->posts()->save($post2 = PostFactory::new()->create());
+        $post2 = PostFactory::new()->create([
+            'user_id' => 2,
+        ]);
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))

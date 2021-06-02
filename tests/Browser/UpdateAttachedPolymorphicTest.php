@@ -49,8 +49,10 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                 $browser->loginAs(User::find(1))
                         ->visit(new UpdateAttached('posts', 1, 'tags', 1))
                         ->assertDisabled('select[dusk="attachable-select"]')
-                        ->assertInputValue('@notes', 'Test Notes')
-                        ->type('@notes', 'Test Notes Updated')
+                        ->whenAvailable('@notes', function ($browser) {
+                            $browser->assertInputValue('', 'Test Notes')
+                                    ->type('', 'Test Notes Updated');
+                        })
                         ->update();
 
                 $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);

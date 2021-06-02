@@ -23,8 +23,8 @@ class UpdateAttachedTest extends DuskTestCase
         $role = RoleFactory::new()->create();
         $user->roles()->attach($role, ['notes' => 'Test Notes']);
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
@@ -39,7 +39,9 @@ class UpdateAttachedTest extends DuskTestCase
                     ->type('@notes', 'Test Notes Updated')
                     ->update();
 
-            $this->assertEquals('Test Notes Updated', User::find(1)->roles->first()->pivot->notes);
+            $user->refresh();
+
+            $this->assertEquals('Test Notes Updated', $user->roles->first()->pivot->notes);
 
             $browser->blank();
         });
@@ -54,8 +56,8 @@ class UpdateAttachedTest extends DuskTestCase
         $role = RoleFactory::new()->create();
         $user->roles()->attach($role, ['notes' => 'Test Notes']);
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
@@ -65,12 +67,22 @@ class UpdateAttachedTest extends DuskTestCase
                     ->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })
+                    ->whenAvailable('select[dusk="attachable-select"]', function ($browser) {
+                        $browser->assertDisabled('')
+                                ->assertValue('', '1');
+                    })
                     ->type('@notes', 'Test Notes Updated')
-                    ->updateAndContinueEditing();
+                    ->updateAndContinueEditing()
+                    ->waitForText('The resource was updated!')
+                    ->assertPathIs('/nova/resources/users/1/edit-attached/roles/1')
+                    ->whenAvailable('select[dusk="attachable-select"]', function ($browser) {
+                        $browser->assertDisabled('')
+                                ->assertValue('', '1');
+                    });
 
-            $browser->assertPathIs('/nova/resources/users/1/edit-attached/roles/1');
+            $user->refresh();
 
-            $this->assertEquals('Test Notes Updated', User::find(1)->roles->first()->pivot->notes);
+            $this->assertEquals('Test Notes Updated', $user->roles->first()->pivot->notes);
 
             $browser->blank();
         });
@@ -85,8 +97,8 @@ class UpdateAttachedTest extends DuskTestCase
         $role = RoleFactory::new()->create();
         $user->roles()->attach($role, ['notes' => 'Test Notes']);
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
@@ -100,7 +112,9 @@ class UpdateAttachedTest extends DuskTestCase
                     ->update()
                     ->assertSee('The notes may not be greater than 20 characters.');
 
-            $this->assertEquals('Test Notes', User::find(1)->roles->first()->pivot->notes);
+            $user->refresh();
+
+            $this->assertEquals('Test Notes', $user->roles->first()->pivot->notes);
 
             $browser->blank();
         });

@@ -136,6 +136,8 @@ class AttachTest extends DuskTestCase
                             ->assertSeeResource(3)
                             ->assertDontSeeResource(4);
                     });
+
+            $browser->blank();
         });
     }
 
@@ -166,6 +168,8 @@ class AttachTest extends DuskTestCase
                     ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
                         $browser->assertSee('No Book matched the given criteria.');
                     });
+
+            $browser->blank();
         });
 
         $this->assertDatabaseHas('book_purchases', [
@@ -208,6 +212,8 @@ class AttachTest extends DuskTestCase
                         $browser->waitForTable(25)
                             ->assertSeeResource(4);
                     });
+
+            $browser->blank();
         });
     }
 
@@ -240,6 +246,8 @@ class AttachTest extends DuskTestCase
                     ->clickAttach()
                     ->waitForText('There was a problem submitting the form.', 15)
                     ->assertSee('This books is already attached.');
+
+            $browser->blank();
         });
     }
 }

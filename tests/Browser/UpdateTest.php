@@ -88,7 +88,7 @@ class UpdateTest extends DuskTestCase
     public function resource_can_be_updated_and_user_can_continue_editing()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user = User::find(1))
                     ->visit(new Update('users', 1))
                     ->waitForTextIn('h1', 'Update User: 1', 25)
                     ->type('@name', 'Taylor Otwell Updated')
@@ -96,7 +96,7 @@ class UpdateTest extends DuskTestCase
                     ->assertSee('E-mail address should be unique')
                     ->updateAndContinueEditing();
 
-            $user = User::find(1);
+            $user->refresh();
 
             $browser->assertPathIs('/nova/resources/users/'.$user->id.'/edit');
 

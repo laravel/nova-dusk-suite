@@ -38,6 +38,8 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                             ->type('@inches', 25)
                             ->create()
                             ->waitForText('The sail was created!');
+
+                        $browser->blank();
                     });
                 });
             });

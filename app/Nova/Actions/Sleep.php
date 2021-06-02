@@ -23,8 +23,10 @@ class Sleep extends Action implements ShouldQueue
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        foreach ($models as $model) {
-            $this->markAsFinished($model);
+        if (! $this->isStandalone()) {
+            foreach ($models as $model) {
+                $this->markAsFinished($model);
+            }
         }
     }
 

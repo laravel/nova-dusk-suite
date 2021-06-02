@@ -23,7 +23,7 @@ class PostFactory extends Factory
     {
         return [
             'user_id' => UserFactory::new()->create(),
-            'title' => $this->faker->word,
+            'title' => $this->faker->word(),
             'body' => $this->faker->words(10, true),
         ];
     }

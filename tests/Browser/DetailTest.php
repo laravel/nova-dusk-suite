@@ -133,8 +133,8 @@ class DetailTest extends DuskTestCase
         $user = User::find(1);
         $user->posts()->save($post = PostFactory::new()->create());
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
@@ -158,8 +158,8 @@ class DetailTest extends DuskTestCase
         $user = User::find(1);
         $user->posts()->save($post = PostFactory::new()->create());
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
@@ -180,11 +180,13 @@ class DetailTest extends DuskTestCase
      */
     public function relations_can_be_paginated()
     {
-        $user = User::find(1);
-        $user->posts()->saveMany(PostFactory::new()->times(10)->create());
+        PostFactory::new()->times(10)->create([
+            'user_id' => 1,
+        ]);
 
-        $user2 = User::find(2);
-        $user2->posts()->save(PostFactory::new()->create());
+        PostFactory::new()->create([
+            'user_id' => 2,
+        ]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -211,11 +213,13 @@ class DetailTest extends DuskTestCase
      */
     public function relations_can_be_sorted()
     {
-        $user = User::find(1);
-        $user->posts()->saveMany(PostFactory::new()->times(10)->create());
+        PostFactory::new()->times(10)->create([
+            'user_id' => 1,
+        ]);
 
-        $user2 = User::find(2);
-        $user2->posts()->save(PostFactory::new()->create());
+        PostFactory::new()->create([
+            'user_id' => 2,
+        ]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -242,11 +246,13 @@ class DetailTest extends DuskTestCase
      */
     public function deleting_all_matching_relations_is_scoped_to_the_relationships()
     {
-        $user = User::find(1);
-        $user->posts()->save($post = PostFactory::new()->create());
+        $post = PostFactory::new()->create([
+            'user_id' => 1,
+        ]);
 
-        $user2 = User::find(2);
-        $user2->posts()->save($post2 = PostFactory::new()->create());
+        $post2 = PostFactory::new()->create([
+            'user_id' => 2,
+        ]);
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))
