@@ -18,8 +18,6 @@ class LensTest extends DuskTestCase
      */
     public function resource_lens_can_be_viewed()
     {
-        $users = User::find([1, 2, 3]);
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Lens('users', 'passthrough-lens'))
@@ -136,6 +134,8 @@ class LensTest extends DuskTestCase
                                 ->applyFilter('Select First', '1')
                                 ->assertSelectAllMatchingCount(1);
                     });
+
+            $browser->blank();
         });
     }
 
@@ -264,6 +264,8 @@ class LensTest extends DuskTestCase
                             ->assertSeeResource(2)
                             ->assertDontSeeResource(3);
                     });
+
+            $browser->blank();
         });
     }
 }

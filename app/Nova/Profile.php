@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Multiselect;
 use Laravel\Nova\Fields\Text;
@@ -51,6 +52,8 @@ class Profile extends Resource
             Text::make('Twitter URL'),
 
             Timezone::make('Timezone'),
+
+            HasOne::make('Latest Post', 'latestPost', Post::class),
 
             // Multiselect::make('Interests')->options([
             //     'laravel' => ['label' => 'Laravel', 'group' => 'PHP'],

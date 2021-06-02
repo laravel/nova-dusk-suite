@@ -51,8 +51,8 @@ class ToolAuthorizationTest extends DuskTestCase
         $user = User::find(1);
         $user->shouldBlockFrom('sidebarTool');
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit('/nova')
                     ->pause(250)
                     ->assertDontSee('Sidebar Tool');
@@ -71,8 +71,8 @@ class ToolAuthorizationTest extends DuskTestCase
         $user = User::find(1);
         $user->shouldBlockFrom('sidebarTool');
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(Nova::path().'/sidebar-tool')
                     ->waitForText('404', 15)
                     ->assertPathIs('/nova/404')
@@ -92,8 +92,8 @@ class ToolAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details')
-                    ->assertSee('Resource Tool');
+                    ->waitForText('Resource Tool')
+                    ->assertSee('Resource Tool for Taylor Otwell');
 
             $browser->blank();
         });
@@ -107,8 +107,8 @@ class ToolAuthorizationTest extends DuskTestCase
         $user = User::find(1);
         $user->shouldBlockFrom('resourceTool');
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->pause(250)
                     ->assertDontSee('Resource Tool');

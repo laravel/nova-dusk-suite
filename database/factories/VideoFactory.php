@@ -22,7 +22,7 @@ class VideoFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->word,
+            'title' => $this->faker->word(),
         ];
     }
 }

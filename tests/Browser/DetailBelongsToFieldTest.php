@@ -22,7 +22,7 @@ class DetailBelongsToFieldTest extends DuskTestCase
         $user->posts()->save($post = PostFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($user, $post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user)
                     ->visit(new Detail('posts', $post->id))
                     ->within(new DetailComponent('posts', $post->id), function ($browser) use ($user) {
                         $browser->clickLink($user->name);

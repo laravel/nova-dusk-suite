@@ -61,7 +61,9 @@ class AttachPolymorphicTest extends DuskTestCase
                         ->searchAndSelectFirstRelation('tags', $tag->id)
                         ->clickAttach();
 
-                $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
+                $post = Post::with('tags')->find(1);
+
+                $this->assertEquals($tag->id, $post->tags->first()->id);
 
                 $browser->blank();
             });
@@ -89,8 +91,10 @@ class AttachPolymorphicTest extends DuskTestCase
                         ->type('@notes', 'Test Notes')
                         ->clickAttach();
 
-                $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
-                $this->assertEquals('Test Notes', Post::find(1)->tags->first()->pivot->notes);
+                $post = Post::with('tags')->find(1);
+
+                $this->assertEquals($tag->id, $post->tags->first()->id);
+                $this->assertEquals('Test Notes', $post->tags->first()->pivot->notes);
 
                 $browser->blank();
             });
@@ -118,7 +122,9 @@ class AttachPolymorphicTest extends DuskTestCase
                     ->waitForText('There was a problem submitting the form.', 15)
                     ->assertSee('The tag field is required.');
 
-            $this->assertNull(Post::find(1)->tags->first());
+            $post = Post::with('tags')->find(1);
+
+            $this->assertNull($post->tags->first());
 
             $browser->blank();
         });
@@ -146,7 +152,9 @@ class AttachPolymorphicTest extends DuskTestCase
                         ->clickAttach()
                         ->assertSee('The notes may not be greater than 20 characters.');
 
-                $this->assertNull(Post::find(1)->tags->first());
+                $post = Post::with('tags')->find(1);
+
+                $this->assertNull($post->tags->first());
 
                 $browser->blank();
             });

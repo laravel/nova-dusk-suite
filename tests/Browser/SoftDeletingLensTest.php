@@ -29,6 +29,8 @@ class SoftDeletingLensTest extends DuskTestCase
                     });
 
             $this->assertEquals(1, Dock::withTrashed()->count());
+
+            $browser->blank();
         });
     }
 
@@ -50,6 +52,8 @@ class SoftDeletingLensTest extends DuskTestCase
                             ->clickCheckboxForId(2)
                             ->deleteSelected();
                     });
+
+            $browser->blank();
         });
 
         $this->assertEquals(2, Dock::onlyTrashed()->count());
@@ -73,6 +77,8 @@ class SoftDeletingLensTest extends DuskTestCase
                             ->clickCheckboxForId(2)
                             ->restoreSelected();
                     });
+
+            $browser->blank();
         });
 
         $this->assertEquals(3, Dock::count());
@@ -99,6 +105,8 @@ class SoftDeletingLensTest extends DuskTestCase
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3);
                     });
+
+            $browser->blank();
         });
     }
 
@@ -123,6 +131,8 @@ class SoftDeletingLensTest extends DuskTestCase
                     });
 
             $this->assertEquals(2, Dock::count());
+
+            $browser->blank();
         });
     }
 
@@ -145,6 +155,8 @@ class SoftDeletingLensTest extends DuskTestCase
 
             $this->assertEquals(1, Dock::count());
             $this->assertEquals(2, Dock::onlyTrashed()->count());
+
+            $browser->blank();
         });
     }
 
@@ -168,6 +180,8 @@ class SoftDeletingLensTest extends DuskTestCase
 
             $this->assertEquals(0, Dock::count());
             $this->assertEquals(2, Dock::onlyTrashed()->count());
+
+            $browser->blank();
         });
     }
 
@@ -188,6 +202,8 @@ class SoftDeletingLensTest extends DuskTestCase
                     });
 
             $this->assertEquals(1, Dock::count());
+
+            $browser->blank();
         });
     }
 }
