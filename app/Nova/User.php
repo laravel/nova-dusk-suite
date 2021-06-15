@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
@@ -56,8 +57,8 @@ class User extends Resource
 
             Password::make('Password', 'password')
                 ->onlyOnForms()
-                ->creationRules('required', 'string', 'min:6')
-                ->updateRules('nullable', 'string', 'min:6'),
+                ->creationRules('required', Rules\Password::defaults())
+                ->updateRules('nullable', Rules\Password::defaults()),
 
             Boolean::make('Active', 'active')->default(true)->hideFromIndex(),
 
