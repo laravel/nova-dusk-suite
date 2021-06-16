@@ -87,8 +87,7 @@ class User extends Resource
                         ->prunable(),
 
             BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
-                ->fields(new Fields\BookPurchase())
-                ->allowDuplicateRelations(),
+                ->fields(new Fields\BookPurchase()),
 
             BelongsToMany::make('Gift Books', 'giftBooks', Book::class)
                 ->fields(new Fields\BookPurchase('gift'))
