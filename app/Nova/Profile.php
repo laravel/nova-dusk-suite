@@ -7,8 +7,8 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Multiselect;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Timezone;
+use Laravel\Nova\Fields\URL;
 
 class Profile extends Resource
 {
@@ -48,8 +48,8 @@ class Profile extends Resource
 
             BelongsTo::make('User'),
 
-            Text::make('GitHub URL'),
-            Text::make('Twitter URL'),
+            URL::make('GitHub URL'),
+            URL::make('Twitter URL'),
 
             Timezone::make('Timezone'),
 
