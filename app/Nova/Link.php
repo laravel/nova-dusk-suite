@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\URL;
 
 class Link extends Resource
 {
@@ -36,7 +37,7 @@ class Link extends Resource
         return [
             ID::make('ID', 'id')->sortable(),
             Text::make('Title', 'title')->sortable(),
-            Text::make('Url', 'url'),
+            URL::make('Url', 'url'),
 
             MorphMany::make('Comments', 'comments'),
         ];
