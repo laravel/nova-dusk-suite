@@ -2,12 +2,10 @@
 
 namespace App\Nova\Fields;
 
-use App\Nova\Book;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Resource;
 
 class BookPurchase
 {
