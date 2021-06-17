@@ -40,7 +40,7 @@ class BookPurchase
 
                     if ($request->relatedResource === 'books' && ! is_null($request->relatedResourceId)) {
                         $bookId = $request->relatedResourceId;
-                    } elseif ($request->resource === 'books') {
+                    } elseif ($request->resource === 'books' && ! is_null($request->resourceId)) {
                         $bookId = $request->resourceId;
                     }
 
