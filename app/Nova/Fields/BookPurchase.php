@@ -36,13 +36,7 @@ class BookPurchase
         return [
             Currency::make('Price')
                 ->dependsOn(['books'], function ($field, NovaRequest $request, $fields) {
-                    $bookId = (int) $fields->books;
-
-                    if ($request->relatedResource === 'books' && ! is_null($request->relatedResourceId)) {
-                        $bookId = $request->relatedResourceId;
-                    } elseif ($request->resource === 'books' && ! is_null($request->resourceId)) {
-                        $bookId = $request->resourceId;
-                    }
+                    $bookId = (int) $fields->resource('books', $fields->books);
 
                     if ($bookId == 1) {
                         $field->rules(['required', 'numeric', 'min:10', 'max:199'])
