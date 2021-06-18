@@ -68,7 +68,7 @@ class Project extends Resource
                         return $type === 'service';
                     }))->default('service');
                 }
-            })->nullable()->rules([Rule::in(array_keys($productTypes))]),
+            })->nullable()->rules(['nullable', Rule::in(array_keys($productTypes))]),
         ];
     }
 
