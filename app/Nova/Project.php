@@ -56,12 +56,12 @@ class Project extends Resource
 
             Select::make('Type')->options($productTypes)->displayUsing(function ($value) use ($productTypes) {
                 return $productTypes[$value] ?? null;
-            })->dependsOn('name', function ($field, $request, $fields) use ($productTypes) {
-                if (in_array($fields->name, ['Nova', 'Spark'])) {
+            })->dependsOn('name', function ($field, $request, $formData) use ($productTypes) {
+                if (in_array($formData->name, ['Nova', 'Spark'])) {
                     $field->options(collect($productTypes)->filter(function ($title, $type) {
                         return $type === 'product';
                     }))->default('product');
-                } elseif (in_array($fields->name, ['Forge', 'Envoyer', 'Vapor'])) {
+                } elseif (in_array($formData->name, ['Forge', 'Envoyer', 'Vapor'])) {
                     $field->options(collect($productTypes)->filter(function ($title, $type) {
                         return $type === 'service';
                     }))->default('service');
