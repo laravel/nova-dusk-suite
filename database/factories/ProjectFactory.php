@@ -23,7 +23,7 @@ class ProjectFactory extends Factory
     {
         return [
             'name' => $this->faker->word(),
-            'type' => $this->faker->randomElements(['product', 'service']),
+            'type' => $this->faker->randomElement(['product', 'service']),
         ];
     }
 }
