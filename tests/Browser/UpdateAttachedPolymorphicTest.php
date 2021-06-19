@@ -4,12 +4,9 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Post;
 use App\Models\User;
-use Database\Factories\CommentFactory;
 use Database\Factories\PostFactory;
 use Database\Factories\TagFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Testing\Browser\Components\IndexComponent;
-use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UpdateAttached;
 use Laravel\Nova\Tests\DuskTestCase;
 
