@@ -22,8 +22,8 @@ class ProjectFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker()->word(),
-            'type' => $this->faker()->randomElements(['product', 'service']),
+            'name' => $this->faker->word(),
+            'type' => $this->faker->randomElements(['product', 'service']),
         ];
     }
 }
