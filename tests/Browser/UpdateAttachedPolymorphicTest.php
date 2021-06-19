@@ -104,4 +104,27 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
             $browser->blank();
         });
     }
+
+    /**
+     * @test
+     */
+    public function it_cant_edit_unsupported_polymorphic_relationship_type()
+    {
+        $comment = CommentFactory::new()->create([
+            'commentable_type' => \Illuminate\Foundation\Auth\User::class,
+            'commentable_id' => 4,
+        ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Index('comments'))
+                    ->within(new IndexComponent('comments'), function ($browser) {
+                        $browser->waitForTable()
+                            ->click('@1-edit-button');
+                    })->waitForText('403')
+                    ->assertPathIs('/nova/403');
+
+            $browser->blank();
+        });
+    }
 }
