@@ -16,13 +16,6 @@ class UpdateRequiredPivotNotes extends Action
     use InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * Indicates whether Nova should prevent the user from leaving an unsaved form, losing their data.
-     *
-     * @var bool
-     */
-    public $preventFormAbandonment = true;
-
-    /**
      * Perform the action on the given models.
      *
      * @param  \Laravel\Nova\Fields\ActionFields  $fields
