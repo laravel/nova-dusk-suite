@@ -26,6 +26,13 @@ class Video extends Resource
     ];
 
     /**
+     * Indicates whether Nova should prevent the user from leaving an unsaved form, losing their data.
+     *
+     * @var bool
+     */
+    public static $preventFormAbandonment = true;
+
+    /**
      * Get the displayable label of the resource.
      *
      * @return string
