@@ -65,6 +65,11 @@
             "@php vendor/bin/testbench-dusk package:discover",
             "@php artisan nova:publish"
         ],
+        "dusk:assets": [
+            "yarn --cwd=./nova/ install",
+            "yarn --cwd=./nova/ run prod",
+            "@php artisan nova:publish"
+        ],
         "dusk:test": [
             "@composer run dusk:prepare",
             "@php vendor/bin/testbench-dusk package:dusk-purge",
