@@ -21,7 +21,8 @@ class CreateTest extends DuskTestCase
                     ->type('@name', 'Adam Wathan')
                     ->type('@email', 'adam@laravel.com')
                     ->type('@password', 'secret')
-                    ->create();
+                    ->create()
+                    ->waitForText('The user was created!');
 
             $user = User::orderBy('id', 'desc')->first();
 
@@ -65,7 +66,8 @@ class CreateTest extends DuskTestCase
                     ->type('@name', 'Adam Wathan')
                     ->type('@email', 'adam@laravel.com')
                     ->type('@password', 'secret')
-                    ->createAndAddAnother();
+                    ->createAndAddAnother()
+                    ->waitForText('The user was created!');
 
             $user = User::orderBy('id', 'desc')->first();
 

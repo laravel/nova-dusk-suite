@@ -4,9 +4,12 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Post;
 use App\Models\User;
+use Database\Factories\CommentFactory;
 use Database\Factories\PostFactory;
 use Database\Factories\TagFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UpdateAttached;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -102,6 +105,29 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                     ->assertSee('The notes may not be greater than 20 characters.');
 
             $this->assertEquals('Test Notes', Post::find(1)->tags->first()->pivot->notes);
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function it_cant_edit_unsupported_polymorphic_relationship_type()
+    {
+        $comment = CommentFactory::new()->create([
+            'commentable_type' => \Illuminate\Foundation\Auth\User::class,
+            'commentable_id' => 4,
+        ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Index('comments'))
+                    ->within(new IndexComponent('comments'), function ($browser) {
+                        $browser->waitForTable()
+                            ->click('@1-edit-button');
+                    })->waitForText('403')
+                    ->assertPathIs('/nova/403');
 
             $browser->blank();
         });
