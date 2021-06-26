@@ -29,14 +29,4 @@ class Sleep extends Action implements ShouldQueue
             }
         }
     }
-
-    /**
-     * Get the fields available on the action.
-     *
-     * @return array
-     */
-    public function fields()
-    {
-        return [];
-    }
 }
