@@ -75,10 +75,10 @@ jobs:
           php artisan tinker --execute="file_put_contents('nova/webpack.mix.js', str_replace('../nova-app/public', '../public', file_get_contents('nova/webpack.mix.js')))"
 
       - name: Install NPM on Laravel Nova
-        run: yarn --cwd "./nova/" install
+        run: npm --prefix "./nova/" install
 
       - name: Compile Asset for Laravel Nova
-        run: yarn --cwd "./nova/" run dev
+        run: npm --prefix "./nova/" run dev
 
       - name: Generate key
         run: php artisan key:generate
