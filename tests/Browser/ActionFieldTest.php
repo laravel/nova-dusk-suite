@@ -42,7 +42,7 @@ class ActionFieldTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->clickCheckboxForId(1)
                             ->runAction('update-pivot-notes', function ($browser) {
                                 $browser->assertSee('Provide a description for notes.')
@@ -69,7 +69,7 @@ class ActionFieldTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->assertScript('Nova.useShortcuts', true)
                             ->clickCheckboxForId(1)
                             ->waitFor('@action-select')
@@ -104,13 +104,51 @@ class ActionFieldTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->clickCheckboxForId(1)
                             ->runAction('update-required-pivot-notes')
                             ->elsewhere('.modal[data-modal-open=true]', function ($browser) {
                                 $browser->assertSee('The Notes field is required.');
                             });
                     });
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function actions_can_be_toggle_between_similar_fields()
+    {
+        $user = User::find(1);
+        $role = RoleFactory::new()->create();
+        $user->roles()->attach($role);
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
+                    ->visit(new Detail('users', 1))
+                    ->within(new IndexComponent('roles'), function ($browser) {
+                        $browser->waitForTable()
+                            ->clickCheckboxForId(1)
+                            ->waitFor('@action-select')
+                            ->select('@action-select', 'update-pivot-notes')
+                            ->pause(100)
+                            ->click('@run-action-button')
+                            ->elsewhere('', function ($browser) {
+                                $browser->whenAvailable('.modal[data-modal-open=true]', function ($browser) {
+                                    $browser->assertSee('Provide a description for notes.')
+                                        ->type('@notes', 'Custom Notes')
+                                        ->click('[dusk="cancel-action-button"]')
+                                        ->pause(250);
+                                });
+                            })
+                            ->runAction('update-required-pivot-notes', function ($browser) {
+                                $browser->type('@notes', 'Custom Notes Updated');
+                            });
+                    })->waitForText('The action ran successfully!');
+
+            $this->assertEquals('Custom Notes Updated', $user->fresh()->roles->first()->pivot->notes);
 
             $browser->blank();
         });
@@ -127,7 +165,7 @@ class ActionFieldTest extends DuskTestCase
             $browser->loginAs($user = User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->assertSeeIn('@1-row', 'Mark As Inactive')
                             ->assertDontSeeIn('@2-row', 'Mark As Inactive')
                             ->assertDontSeeIn('@3-row', 'Mark As Inactive')

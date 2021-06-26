@@ -67,8 +67,8 @@
             "@php artisan nova:publish"
         ],
         "dusk:assets": [
-            "yarn --cwd=./nova/ install",
-            "yarn --cwd=./nova/ run prod",
+            "npm --prefix=./nova/ install",
+            "TAILWIND_MODE=build npm --prefix=./nova/ run prod",
             "@php artisan nova:publish"
         ],
         "dusk:test": [

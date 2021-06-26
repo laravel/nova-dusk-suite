@@ -77,10 +77,12 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UpdateAttached('posts', 1, 'tags', 1))
-                    ->type('@notes', 'Test Notes Updated')
-                    ->updateAndContinueEditing();
-
-            $browser->assertPathIs('/nova/resources/posts/1/edit-attached/tags/1');
+                    ->whenAvailable('@notes', function ($browser) {
+                        $browser->type('', 'Test Notes Updated');
+                    })
+                    ->updateAndContinueEditing()
+                    ->waitForText('The resource was updated!')
+                    ->assertPathIs('/nova/resources/posts/1/edit-attached/tags/1');
 
             $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);
 

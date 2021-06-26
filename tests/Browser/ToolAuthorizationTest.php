@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -14,8 +15,6 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_tool_can_be_seen_if_authorized_to_view_it()
     {
-        $this->markTestIncomplete();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit('/nova')
@@ -31,12 +30,11 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_tool_can_call_its_own_backend_routes()
     {
-        $this->markTestIncomplete();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit('/nova/sidebar-tool')
-                    ->pause(250)
+                    ->waitForTextIn('#app [data-testid="content"]', "We're in a black hole.")
+                    ->pause(1500)
                     ->assertSee('Hello World');
 
             $browser->blank();
@@ -66,16 +64,14 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_tool_cant_be_navigated_to_if_not_authorized_to_view_it()
     {
-        $this->markTestIncomplete();
-
         $user = User::find(1);
         $user->shouldBlockFrom('sidebarTool');
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
                     ->visit(Nova::path().'/sidebar-tool')
-                    ->waitForText('404', 15)
-                    ->assertPathIs('/nova/404')
+                    ->waitForText('Whoops', 15)
+                    ->assertSee('Nova experienced an unrecoverable error.')
                     ->assertDontSee('Sidebar Tool');
 
             $browser->blank();
@@ -87,8 +83,6 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_resource_tool_can_be_seen_if_authorized_to_view_it()
     {
-        $this->markTestIncomplete();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
