@@ -16,8 +16,6 @@ class HasOneRelationTest extends DuskTestCase
      */
     public function has_one_relation_does_not_add_duplicate_using_create_button()
     {
-        $this->markTestIncomplete('Missing create button');
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))

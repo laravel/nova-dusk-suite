@@ -61,8 +61,6 @@ class RelationshipAuthorizationTest extends DuskTestCase
      */
     public function create_button_should_be_missing_from_detail_index_when_not_authorized()
     {
-        $this->markTestIncomplete('Create button still shown');
-
         $user = User::find(1);
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.addComment.'.$post->id);
@@ -105,8 +103,6 @@ class RelationshipAuthorizationTest extends DuskTestCase
      */
     public function attach_button_should_be_missing_from_detail_index_when_not_authorized()
     {
-        $this->markTestIncomplete('Attach button still shown');
-
         $user = User::find(1);
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.attachAnyTag.'.$post->id);
