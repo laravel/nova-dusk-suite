@@ -34,6 +34,13 @@ class User extends Resource
     ];
 
     /**
+     * The relationships that should be eager loaded when performing an index query.
+     *
+     * @var array
+     */
+    public static $with = ['profile'];
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -133,14 +140,25 @@ class User extends Resource
             new Actions\MarkAsActive,
             Actions\MarkAsInactive::make()
                 ->showOnTableRow()->showOnDetail()->canSee(function ($request) {
-                    return $request instanceof ActionRequest
-                        || ($this->resource->exists && $this->resource->active === true);
+                    if ($request instanceof ActionRequest) {
+                        return true;
+                    }
+
+                    return $this->resource->exists && $this->resource->active === true;
                 })->canRun(function ($request, $model) {
                     return (int) $model->getKey() !== 1;
                 }),
             new Actions\Sleep,
             Actions\StandaloneTask::make()->standalone(),
             Actions\RedirectToGoogle::make()->withoutConfirmation(),
+            Actions\CreateUserProfile::make()
+                ->showOnTableRow()->showOnDetail()->canSee(function ($request) {
+                    if ($request instanceof ActionRequest) {
+                        return true;
+                    }
+
+                    return $this->resource->exists && is_null($this->resource->profile);
+                })
         ];
     }
 
