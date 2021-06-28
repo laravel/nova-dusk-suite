@@ -80,7 +80,7 @@ jobs:
       - name: Compile Asset for Laravel Nova
         run: npm --prefix "./nova/" run dev
         env:
-          TAILWIND_MODE=build
+          TAILWIND_MODE: build
 
       - name: Generate key
         run: php artisan key:generate
