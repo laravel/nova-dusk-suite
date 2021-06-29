@@ -92,7 +92,10 @@ class CreateWithBelongsToTest extends DuskTestCase
                         $browser->waitFor('@create-button')->click('@create-button');
                     })
                     ->on(new Create('ships'))
-                    ->assertDisabled('select[dusk="dock"]')
+                    ->whenAvailable('select[dusk="dock"]', function ($browser) {
+                        $browser->assertDisabled('')
+                                ->assertSelected('', 1);
+                    })
                     ->type('@name', 'Test Ship')
                     ->create();
 
@@ -129,7 +132,10 @@ class CreateWithBelongsToTest extends DuskTestCase
                         'viaRelationship' => 'posts',
                     ]))
                     ->waitForTextIn('#app [data-testid="content"] form', 'Taylor Otwell')
-                    ->assertValue('select[dusk="user"]', 1);
+                    ->whenAvailable('select[dusk="user"]', function ($browser) {
+                        $browser->assertDisabled('')
+                                ->assertSelected('', 1);
+                    });
 
             $browser->blank();
         });
