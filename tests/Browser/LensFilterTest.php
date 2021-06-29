@@ -114,4 +114,31 @@ class LensFilterTest extends DuskTestCase
             $browser->blank();
         });
     }
+
+    /**
+     * @test
+     * @dataProvider userResourceLenUrlWithFilterApplied
+     */
+    public function test_filters_can_be_applied_to_lenses_received_from_url($url)
+    {
+        $this->browse(function (Browser $browser) use ($url) {
+            $browser->loginAs(User::find(1))
+                    ->visit($url)
+                    ->waitFor('@passthrough-lens-lens-component', 25)
+                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                        $browser->assertDontSeeResource(1)
+                            ->assertDontSeeResource(2)
+                            ->assertSeeResource(3)
+                            ->assertDontSeeResource(4);
+                    });
+
+            $browser->blank();
+        });
+    }
+
+    public function userResourceLenUrlWithFilterApplied()
+    {
+        yield ['nova/resources/users/lens/passthrough-lens?users_page=1&users_filter=W3siQXBwXFxOb3ZhXFxGaWx0ZXJzXFxTZWxlY3RGaXJzdCI6IjMifV0'];
+        yield ['nova/resources/users/lens/passthrough-lens?users_page=1&users_filter=W3siY2xhc3MiOiJBcHBcXE5vdmFcXEZpbHRlcnNcXFNlbGVjdEZpcnN0IiwidmFsdWUiOiIzIn1d'];
+    }
 }

@@ -28,9 +28,9 @@ class CreateWithMorphToTest extends DuskTestCase
                         ->pause(500)
                         ->searchAndSelectFirstRelation('commentable', 1)
                         ->type('@body', 'Test Comment')
-                        ->create();
-
-                $browser->assertPathIs('/nova/resources/comments/1');
+                        ->create()
+                        ->waitForText('The comment was created!')
+                        ->assertPathIs('/nova/resources/comments/1');
 
                 $this->assertCount(1, $post->fresh()->comments);
 
@@ -55,9 +55,9 @@ class CreateWithMorphToTest extends DuskTestCase
                         ->pause(500)
                         ->searchAndSelectFirstRelation('commentable', 1)
                         ->type('@body', 'Test Comment')
-                        ->create();
-
-                $browser->assertPathIs('/nova/resources/comments/1');
+                        ->create()
+                        ->waitForText('The comment was created!')
+                        ->assertPathIs('/nova/resources/comments/1');
 
                 $this->assertCount(1, $post->fresh()->comments);
 
@@ -140,8 +140,14 @@ class CreateWithMorphToTest extends DuskTestCase
                     'viaRelationship' => 'comments',
                 ]))
                 ->waitForTextIn('#app [data-testid="content"] form', 'Commentable')
-                ->assertValue('select[dusk="commentable-type"]', 'posts')
-                ->assertValue('select[dusk="commentable-select"]', $post->id);
+                ->whenAvailable('select[dusk="commentable-type"]', function ($browser) {
+                    $browser->assertDisabled('')
+                        ->assertSelected('', 'posts');
+                })
+                ->whenAvailable('select[dusk="commentable-select"]', function ($browser) use ($post) {
+                    $browser->assertDisabled('')
+                        ->assertSelected('', $post->id);
+                });
 
             $browser->blank();
         });

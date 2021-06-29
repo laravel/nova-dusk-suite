@@ -142,7 +142,9 @@ class UpdateAttachedTest extends DuskTestCase
                             });
                     })
                     ->on(new UpdateAttached('users', 1, 'books', 4))
-                    ->type('@price', '43')
+                    ->whenAvailable('@price', function ($browser) {
+                        $browser->type('', '43');
+                    })
                     ->update()
                     ->waitForText('The resource was updated!', 15)
                     ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {

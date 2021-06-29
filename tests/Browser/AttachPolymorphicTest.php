@@ -32,7 +32,7 @@ class AttachPolymorphicTest extends DuskTestCase
                         })
                         ->on(new Attach('posts', 1, 'tags'))
                         ->searchAndSelectFirstRelation('tags', $tag->id)
-                        ->clickAttach();
+                        ->create();
 
                 $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
 
@@ -59,7 +59,7 @@ class AttachPolymorphicTest extends DuskTestCase
                         })
                         ->on(new Attach('posts', 1, 'tags'))
                         ->searchAndSelectFirstRelation('tags', $tag->id)
-                        ->clickAttach();
+                        ->create();
 
                 $post = Post::with('tags')->find(1);
 
@@ -89,7 +89,7 @@ class AttachPolymorphicTest extends DuskTestCase
                         ->on(new Attach('posts', 1, 'tags'))
                         ->searchAndSelectFirstRelation('tags', $tag->id)
                         ->type('@notes', 'Test Notes')
-                        ->clickAttach();
+                        ->create();
 
                 $post = Post::with('tags')->find(1);
 
@@ -118,7 +118,7 @@ class AttachPolymorphicTest extends DuskTestCase
                     })
                     ->on(new Attach('posts', 1, 'tags'))
                     ->type('@notes', str_repeat('A', 30))
-                    ->clickAttach()
+                    ->create()
                     ->waitForText('There was a problem submitting the form.', 15)
                     ->assertSee('The tag field is required.');
 
@@ -149,7 +149,7 @@ class AttachPolymorphicTest extends DuskTestCase
                         ->on(new Attach('posts', 1, 'tags'))
                         ->searchAndSelectFirstRelation('tags', $tag->id)
                         ->type('@notes', str_repeat('A', 30))
-                        ->clickAttach()
+                        ->create()
                         ->assertSee('The notes may not be greater than 20 characters.');
 
                 $post = Post::with('tags')->find(1);
