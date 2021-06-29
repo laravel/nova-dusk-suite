@@ -158,7 +158,7 @@ class User extends Resource
                     }
 
                     return $this->resource->exists && is_null($this->resource->profile);
-                })
+                }),
         ];
     }
 
