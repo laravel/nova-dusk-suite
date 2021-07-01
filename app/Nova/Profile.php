@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Multiselect;
+use Laravel\Nova\Fields\MultiSelect;
 use Laravel\Nova\Fields\Timezone;
 use Laravel\Nova\Fields\URL;
 
@@ -55,15 +55,15 @@ class Profile extends Resource
 
             HasOne::make('Latest Post', 'latestPost', Post::class),
 
-            // Multiselect::make('Interests')->options([
-            //     'laravel' => ['label' => 'Laravel', 'group' => 'PHP'],
-            //     'phpunit' => ['label' => 'PHPUnit', 'group' => 'PHP'],
-            //     'livewire' => ['label' => 'Livewire', 'group' => 'PHP'],
-            //     'swoole' => ['label' => 'Swoole', 'group' => 'PHP'],
-            //     'react' => ['label' => 'React', 'group' => 'JavaScript'],
-            //     'vue' => ['label' => 'Vue', 'group' => 'JavaScript'],
-            //     'hack' => ['label' => 'Hack'],
-            // ]),
+            MultiSelect::make('Interests')->options([
+                'laravel' => ['label' => 'Laravel', 'group' => 'PHP'],
+                'phpunit' => ['label' => 'PHPUnit', 'group' => 'PHP'],
+                'livewire' => ['label' => 'Livewire', 'group' => 'PHP'],
+                'swoole' => ['label' => 'Swoole', 'group' => 'PHP'],
+                'react' => ['label' => 'React', 'group' => 'JavaScript'],
+                'vue' => ['label' => 'Vue', 'group' => 'JavaScript'],
+                'hack' => ['label' => 'Hack'],
+            ]),
         ];
     }
 
