@@ -4,8 +4,6 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Testing\Browser\Components\IndexComponent;
-use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -18,15 +16,18 @@ class ResourceFormAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Index('videos'))
-                    ->within(new IndexComponent('videos'), function ($browser) {
-                        $browser->waitFor('@create-button')->click('@create-button');
-                    })
-                    ->on(new Create('videos'))
+                    ->runCreate()
                     ->keys('@title', 'Hello World', '{tab}')
-                    ->click('@users-resource-link')
+                    ->within('.sidebar-menu', function ($browser) {
+                        $browser->clickLink('Users');
+                    })
                     ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                     ->acceptDialog()
                     ->on(new UserIndex);
+
+            $this->assertDatabaseMissing('videos', [
+                'title' => 'Hello World',
+            ]);
 
             $browser->blank();
         });
@@ -38,15 +39,16 @@ class ResourceFormAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Index('videos'))
-                    ->within(new IndexComponent('videos'), function ($browser) {
-                        $browser->waitFor('@create-button')->click('@create-button');
-                    })
-                    ->on(new Create('videos'))
+                    ->runCreate()
                     ->keys('@title', 'Hello World', '{tab}')
-                    ->clickLink('Cancel')
+                    ->click('@cancel-create-button')
                     ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                     ->acceptDialog()
                     ->on(new Index('videos'));
+
+            $this->assertDatabaseMissing('videos', [
+                'title' => 'Hello World',
+            ]);
 
             $browser->blank();
         });
@@ -58,16 +60,17 @@ class ResourceFormAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Index('videos'))
-                    ->within(new IndexComponent('videos'), function ($browser) {
-                        $browser->waitFor('@create-button')->click('@create-button');
-                    })
-                    ->on(new Create('videos'))
+                    ->runCreate()
                     ->keys('@title', 'Hello World', '{tab}')
                     ->pause(500)
                     ->back()
                     ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                     ->acceptDialog()
                     ->on(new Index('videos'));
+
+            $this->assertDatabaseMissing('videos', [
+                'title' => 'Hello World',
+            ]);
 
             $browser->blank();
         });

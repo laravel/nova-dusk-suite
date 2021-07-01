@@ -4,7 +4,9 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Pages\Dashboard;
+use Laravel\Nova\Testing\Browser\Pages\Login;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class AuthenticatesUserTest extends DuskTestCase
@@ -17,14 +19,13 @@ class AuthenticatesUserTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) use ($targetUrl, $expectedUrl) {
             $browser->logout()
-                    ->visit($targetUrl)
-                    ->waitForLocation('/nova/login')
-                    ->assertPathIs('/nova/login')
+                    ->visit(Nova::path().$targetUrl)
+                    ->on(new Login)
                     ->type('email', 'nova@laravel.com')
                     ->type('password', 'password')
                     ->click('button[type="submit"]')
-                    ->waitForLocation($expectedUrl)
-                    ->assertPathIs($expectedUrl);
+                    ->waitForLocation(Nova::path().$expectedUrl)
+                    ->assertPathIs(Nova::path().$expectedUrl);
 
             $browser->blank();
         });
@@ -40,8 +41,7 @@ class AuthenticatesUserTest extends DuskTestCase
                     ->visit(new Dashboard())
                     ->press('Taylor Otwell')
                     ->press('Logout')
-                    ->waitForLocation('/nova/login')
-                    ->assertPathIs('/nova/login')
+                    ->on(new Login)
                     ->assertGuest();
 
             $browser->blank();
@@ -50,9 +50,9 @@ class AuthenticatesUserTest extends DuskTestCase
 
     public function intendedUrlDataProvider()
     {
-        yield ['/nova/resources/users/3', '/nova/resources/users/3'];
-        yield ['/nova/dashboards/posts-dashboard', '/nova/dashboards/posts-dashboard'];
-        yield ['/nova/resources/users/lens/passthrough-lens', '/nova/resources/users/lens/passthrough-lens'];
-        yield ['/nova/', '/nova/dashboards/main'];
+        yield ['/resources/users/3', '/resources/users/3'];
+        yield ['/dashboards/posts-dashboard', '/dashboards/posts-dashboard'];
+        yield ['/resources/users/lens/passthrough-lens', '/resources/users/lens/passthrough-lens'];
+        yield ['/', '/dashboards/main'];
     }
 }

@@ -5,7 +5,6 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\VideoFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -37,10 +36,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($video) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('videos', $video->id))
-                    ->within(new IndexComponent('comments'), function ($browser) {
-                        $browser->waitFor('@create-button')->click('@create-button');
-                    })
-                    ->on(new Create('comments'))
+                    ->runCreateRelation('comments')
                     ->assertDisabled('select[dusk="commentable-type"]')
                     ->assertDisabled('select[dusk="commentable-select"]')
                     ->type('@body', 'Test Comment')

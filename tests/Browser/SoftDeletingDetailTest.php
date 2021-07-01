@@ -9,6 +9,7 @@ use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -62,8 +63,8 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
                     ->edit()
-                    ->waitForTextIn('h1', 'Update Dock', 25)
-                    ->assertPathIs('/nova/resources/docks/1/edit');
+                    ->on(new Update('docks', 1))
+                    ->assertSeeIn('h1', 'Update Dock');
 
             $browser->blank();
         });
@@ -79,9 +80,8 @@ class SoftDeletingDetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
-                    ->delete();
-
-            $browser->assertPathIs('/nova/resources/docks/1');
+                    ->delete()
+                    ->on(new Detail('docks', 1));
 
             $this->assertEquals(1, Dock::onlyTrashed()->count());
 
@@ -100,8 +100,8 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
                     ->restore()
-                    ->waitForText('The dock was restored!', 25)
-                    ->assertPathIs('/nova/resources/docks/1');
+                    ->waitForText('The dock was restored!')
+                    ->on(new Detail('docks', 1));
 
             $this->assertEquals(1, Dock::count());
 
@@ -124,8 +124,8 @@ class SoftDeletingDetailTest extends DuskTestCase
                     ->visit(new Update('docks', 1))
                     ->type('@name', 'world')
                     ->update()
-                    ->waitForText('The dock was updated!', 25)
-                    ->assertPathIs('/nova/resources/docks/1');
+                    ->waitForText('The dock was updated!')
+                    ->on(new Detail('docks', 1));
 
             $browser->blank();
 
@@ -167,9 +167,8 @@ class SoftDeletingDetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
-                    ->forceDelete();
-
-            $browser->assertPathIs('/nova/resources/docks');
+                    ->forceDelete()
+                    ->on(new Index('docks'));
 
             $this->assertEquals(0, Dock::count());
 
@@ -236,14 +235,10 @@ class SoftDeletingDetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->waitFor('@create-button')
-                                ->click('@create-button')
-                                ->assertPathIs('/nova/resources/ships/new')
-                                ->assertQueryStringHas('viaResource', 'docks')
-                                ->assertQueryStringHas('viaResourceId', '1')
-                                ->assertQueryStringHas('viaRelationship', 'ships');
-                    });
+                    ->runCreateRelation('ships')
+                    ->assertQueryStringHas('viaResource', 'docks')
+                    ->assertQueryStringHas('viaResourceId', '1')
+                    ->assertQueryStringHas('viaRelationship', 'ships');
 
             $browser->blank();
         });
