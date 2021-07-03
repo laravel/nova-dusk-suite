@@ -17,7 +17,7 @@ class ToolAuthorizationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit('/nova')
+                    ->visit(Nova::path())
                     ->pause(250)
                     ->assertSee('Sidebar Tool');
 
@@ -32,7 +32,7 @@ class ToolAuthorizationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit('/nova/sidebar-tool')
+                    ->visit(Nova::path().'/sidebar-tool')
                     ->waitForTextIn('#app [data-testid="content"]', "We're in a black hole.")
                     ->pause(1500)
                     ->assertSee('Hello World');
@@ -51,7 +51,7 @@ class ToolAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
-                    ->visit('/nova')
+                    ->visit(Nova::path())
                     ->pause(250)
                     ->assertDontSee('Sidebar Tool');
 

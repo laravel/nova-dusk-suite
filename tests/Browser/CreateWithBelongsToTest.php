@@ -5,7 +5,6 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\DockFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -41,10 +40,7 @@ class CreateWithBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs($user = User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitFor('@create-button')->click('@create-button');
-                    })
-                    ->on(new Create('posts'))
+                    ->runCreateRelation('posts')
                     ->assertDisabled('select[dusk="user"]')
                     ->type('@title', 'Test Post')
                     ->type('@body', 'Test Post Body')
@@ -88,10 +84,7 @@ class CreateWithBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->waitFor('@create-button')->click('@create-button');
-                    })
-                    ->on(new Create('ships'))
+                    ->runCreateRelation('ships')
                     ->whenAvailable('select[dusk="dock"]', function ($browser) {
                         $browser->assertDisabled('')
                                 ->assertSelected('', 1);

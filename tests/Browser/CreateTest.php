@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Create;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateTest extends DuskTestCase
@@ -26,7 +27,7 @@ class CreateTest extends DuskTestCase
 
             $user = User::orderBy('id', 'desc')->first();
 
-            $browser->assertPathIs('/nova/resources/users/'.$user->id);
+            $browser->on(new Detail('users', $user->id));
 
             $this->assertEquals('Adam Wathan', $user->name);
             $this->assertEquals('adam@laravel.com', $user->email);
@@ -67,11 +68,10 @@ class CreateTest extends DuskTestCase
                     ->type('@email', 'adam@laravel.com')
                     ->type('@password', 'secret')
                     ->createAndAddAnother()
-                    ->waitForText('The user was created!');
+                    ->waitForText('The user was created!')
+                    ->on(new Create('users'));
 
             $user = User::orderBy('id', 'desc')->first();
-
-            $browser->assertPathIs('/nova/resources/users/new');
 
             $this->assertEquals('Adam Wathan', $user->name);
             $this->assertEquals('adam@laravel.com', $user->email);

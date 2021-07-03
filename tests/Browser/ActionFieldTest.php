@@ -48,7 +48,7 @@ class ActionFieldTest extends DuskTestCase
                                 $browser->assertSee('Provide a description for notes.')
                                         ->type('@notes', 'Custom Notes');
                             });
-                    })->waitForText('The action ran successfully!', 25);
+                    })->waitForText('The action ran successfully!');
 
             $this->assertEquals('Custom Notes', $user->fresh()->roles->first()->pivot->notes);
 
@@ -85,7 +85,7 @@ class ActionFieldTest extends DuskTestCase
                         });
                     })
                     ->assertPresent('.modal[data-modal-open=true]')
-                    ->assertPathIs('/nova/resources/users/1');
+                    ->on(new Detail('users', 1));
 
             $browser->blank();
         });
@@ -170,7 +170,7 @@ class ActionFieldTest extends DuskTestCase
                             ->assertDontSeeIn('@2-row', 'Mark As Inactive')
                             ->assertDontSeeIn('@3-row', 'Mark As Inactive')
                             ->runInlineAction(1, 'mark-as-inactive');
-                    })->waitForText('Sorry! You are not authorized to perform this action.', 25);
+                    })->waitForText('Sorry! You are not authorized to perform this action.');
 
             $this->assertEquals(1, $user->fresh()->active);
 

@@ -74,7 +74,7 @@ class UpdateAttachedTest extends DuskTestCase
                     ->type('@notes', 'Test Notes Updated')
                     ->updateAndContinueEditing()
                     ->waitForText('The resource was updated!')
-                    ->assertPathIs('/nova/resources/users/1/edit-attached/roles/1')
+                    ->on(new UpdateAttached('users', 1, 'roles', 1))
                     ->whenAvailable('select[dusk="attachable-select"]', function ($browser) {
                         $browser->assertDisabled('')
                                 ->assertValue('', '1');
@@ -147,6 +147,7 @@ class UpdateAttachedTest extends DuskTestCase
                     })
                     ->update()
                     ->waitForText('The resource was updated!', 15)
+                    ->on(new Detail('users', 1))
                     ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
                         $browser->waitForTable()
                             ->within('tr[data-pivot-id="1"]', function ($browser) {

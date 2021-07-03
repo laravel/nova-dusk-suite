@@ -82,10 +82,7 @@ class AttachPolymorphicTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($tag) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Detail('posts', 1))
-                        ->within(new IndexComponent('tags'), function ($browser) {
-                            $browser->waitFor('@attach-button')
-                                    ->click('@attach-button');
-                        })
+                        ->runAttachRelation('tags')
                         ->on(new Attach('posts', 1, 'tags'))
                         ->searchAndSelectFirstRelation('tags', $tag->id)
                         ->type('@notes', 'Test Notes')
@@ -112,12 +109,10 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('posts', 1))
-                    ->within(new IndexComponent('tags'), function ($browser) {
-                        $browser->waitFor('@attach-button')
-                                ->click('@attach-button');
+                    ->runAttachRelation('tags')
+                    ->whenAvailable('@notes', function ($browser) {
+                        $browser->type('', str_repeat('A', 30));
                     })
-                    ->on(new Attach('posts', 1, 'tags'))
-                    ->type('@notes', str_repeat('A', 30))
                     ->create()
                     ->waitForText('There was a problem submitting the form.', 15)
                     ->assertSee('The tag field is required.');
@@ -142,11 +137,7 @@ class AttachPolymorphicTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($tag) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Detail('posts', 1))
-                        ->within(new IndexComponent('tags'), function ($browser) {
-                            $browser->waitFor('@attach-button')
-                                    ->click('@attach-button');
-                        })
-                        ->on(new Attach('posts', 1, 'tags'))
+                        ->runAttachRelation('tags')
                         ->searchAndSelectFirstRelation('tags', $tag->id)
                         ->type('@notes', str_repeat('A', 30))
                         ->create()
