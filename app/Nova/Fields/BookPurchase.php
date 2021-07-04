@@ -39,7 +39,7 @@ class BookPurchase
                 'gift' => 'Gift',
             ])->default($this->type),
             DateTime::make('Purchased At')
-                ->default(now())
+                ->default(now()->second(0))
                 ->incrementPickerMinuteBy(1),
         ];
     }
