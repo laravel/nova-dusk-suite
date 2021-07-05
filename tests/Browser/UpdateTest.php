@@ -7,6 +7,7 @@ use Database\Factories\PostFactory;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Nova;
+use Laravel\Nova\Testing\Browser\Pages\Forbidden;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -26,11 +27,10 @@ class UpdateTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $post, $post2) {
             $browser->loginAs($user)
                     ->visit(Nova::path()."/resources/posts/{$post->id}/edit")
-                    ->waitForText('403', 15)
-                    ->assertPathIs('/nova/403');
+                    ->on(new Forbidden);
 
             $browser->visit(new Update('posts', $post2->id))
-                    ->assertPathIsNot('/nova/403');
+                    ->assertPathIsNot(Nova::path().'/403');
 
             $browser->blank();
         });
@@ -98,7 +98,7 @@ class UpdateTest extends DuskTestCase
 
             $user->refresh();
 
-            $browser->assertPathIs('/nova/resources/users/'.$user->id.'/edit');
+            $browser->on(new Update('users', $user->id));
 
             $this->assertEquals('Taylor Otwell Updated', $user->name);
             $this->assertTrue(Hash::check('secret', $user->password));

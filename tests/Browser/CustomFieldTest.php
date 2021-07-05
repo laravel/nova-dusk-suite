@@ -26,7 +26,8 @@ class CustomFieldTest extends DuskTestCase
                     ->create();
 
             $flight = Flight::latest()->first();
-            $browser->assertPathIs('/nova/resources/flights/'.$flight->id);
+
+            $browser->on(new Detail('flights', $flight->id));
 
             $this->assertEquals('Test Flight', $flight->name);
 

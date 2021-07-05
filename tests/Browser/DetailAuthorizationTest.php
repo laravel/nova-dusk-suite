@@ -7,6 +7,7 @@ use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\Forbidden;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class DetailAuthorizationTest extends DuskTestCase
@@ -23,8 +24,7 @@ class DetailAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $post) {
             $browser->loginAs($user)
                     ->visit(Nova::path()."/resources/posts/{$post->id}")
-                    ->waitForText('403', 15)
-                    ->assertPathIs('/nova/403');
+                    ->on(new Forbidden);
 
             $browser->blank();
         });

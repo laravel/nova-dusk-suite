@@ -7,6 +7,7 @@ use Database\Factories\CaptainFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class AttachSoftDeletingTest extends DuskTestCase
@@ -24,7 +25,8 @@ class AttachSoftDeletingTest extends DuskTestCase
                 $browser->loginAs(User::find(1))
                         ->visit(new Attach('captains', $captain->id, 'ships'))
                         ->searchAndSelectFirstRelation('ships', $ship->id)
-                        ->create();
+                        ->create()
+                        ->on(new Detail('captains', $captain->id));
 
                 $this->assertCount(1, $captain->fresh()->ships);
 
@@ -47,7 +49,8 @@ class AttachSoftDeletingTest extends DuskTestCase
                         ->visit(new Attach('captains', $captain->id, 'ships'))
                         ->withTrashedRelation('ships')
                         ->searchAndSelectFirstRelation('ships', $ship->id)
-                        ->create();
+                        ->create()
+                        ->on(new Detail('captains', $captain->id));
 
                 tap($captain->fresh(), function ($captain) {
                     $this->assertCount(0, $captain->fresh()->ships);
@@ -73,7 +76,8 @@ class AttachSoftDeletingTest extends DuskTestCase
                     $browser->loginAs(User::find(1))
                             ->visit(new Attach('captains', $captain->id, 'ships'))
                             ->searchAndSelectFirstRelation('ships', $ship->id)
-                            ->create();
+                            ->create()
+                            ->on(new Detail('captains', $captain->id));
 
                     $this->assertCount(1, $captain->fresh()->ships);
 
@@ -97,7 +101,8 @@ class AttachSoftDeletingTest extends DuskTestCase
                         ->visit(new Attach('captains', $captain->id, 'ships'))
                         ->withTrashedRelation('ships')
                         ->searchAndSelectFirstRelation('ships', $ship->id)
-                        ->create();
+                        ->create()
+                        ->on(new Detail('captains', $captain->id));
 
                 tap($captain->fresh(), function ($captain) {
                     $this->assertCount(0, $captain->ships);

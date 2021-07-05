@@ -8,6 +8,9 @@ use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\Replicate;
+use Laravel\Nova\Testing\Browser\Pages\Update;
+use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class DetailTest extends DuskTestCase
@@ -60,8 +63,8 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->edit()
-                    ->waitForTextIn('h1', 'Update User')
-                    ->assertPathIs('/nova/resources/users/1/edit');
+                    ->on(new Update('users', 1))
+                    ->assertSeeIn('h1', 'Update User');
 
             $browser->blank();
         });
@@ -76,8 +79,8 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->keys('', ['e'])
-                    ->waitForTextIn('h1', 'Update User')
-                    ->assertPathIs('/nova/resources/users/1/edit');
+                    ->on(new Update('users', 1))
+                    ->assertSeeIn('h1', 'Update User');
 
             $browser->blank();
         });
@@ -92,8 +95,8 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 2))
                     ->replicate()
-                    ->waitForTextIn('h1', 'Create User')
-                    ->assertPathIs('/nova/resources/users/2/replicate')
+                    ->on(new Replicate('users', 2))
+                    ->assertSeeIn('h1', 'Create User')
                     ->assertInputValue('@name', 'Mohamed Said')
                     ->assertInputValue('@email', 'mohamed@laravel.com')
                     ->assertSee('Create & Add Another')
@@ -138,8 +141,8 @@ class DetailTest extends DuskTestCase
                 'Nova.app.$router.push({ name: "detail", params: { resourceName: "users", resourceId: 3 }});',
             ]);
 
-            $browser->waitForTextIn('h1', 'User Details: 3')
-                    ->assertPathIs('/nova/resources/users/3')
+            $browser->on(new Detail('users', 3))
+                    ->assertSeeIn('h1', 'User Details: 3')
                     ->assertSeeIn('@users-detail-component', 'David Hemphill');
 
             $browser->blank();
@@ -157,7 +160,7 @@ class DetailTest extends DuskTestCase
                     ->waitForTextIn('h1', 'User Details: 3')
                     ->delete()
                     ->waitForText('The user was deleted')
-                    ->assertPathIs('/nova/resources/users');
+                    ->on(new UserIndex);
 
             $this->assertNull(User::where('id', 3)->first());
 
@@ -200,14 +203,10 @@ class DetailTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
-                    ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitFor('@create-button')
-                                ->click('@create-button')
-                                ->assertPathIs('/nova/resources/posts/new')
-                                ->assertQueryStringHas('viaResource', 'users')
-                                ->assertQueryStringHas('viaResourceId', '1')
-                                ->assertQueryStringHas('viaRelationship', 'posts');
-                    });
+                    ->runCreateRelation('posts')
+                    ->assertQueryStringHas('viaResource', 'users')
+                    ->assertQueryStringHas('viaResourceId', '1')
+                    ->assertQueryStringHas('viaRelationship', 'posts');
 
             $browser->blank();
         });
@@ -264,7 +263,7 @@ class DetailTest extends DuskTestCase
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->assertSeeResource(10)
                                 ->assertSeeResource(6)
                                 ->assertDontSeeResource(1)

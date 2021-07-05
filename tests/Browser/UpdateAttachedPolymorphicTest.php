@@ -9,6 +9,7 @@ use Database\Factories\PostFactory;
 use Database\Factories\TagFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Forbidden;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UpdateAttached;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -82,7 +83,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                     })
                     ->updateAndContinueEditing()
                     ->waitForText('The resource was updated!')
-                    ->assertPathIs('/nova/resources/posts/1/edit-attached/tags/1');
+                    ->on(new UpdateAttached('posts', 1, 'tags', 1));
 
             $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);
 
@@ -102,7 +103,9 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UpdateAttached('posts', 1, 'tags', 1))
-                    ->type('@notes', str_repeat('A', 30))
+                    ->whenAvailable('@notes', function ($browser) {
+                        $browser->type('', str_repeat('A', 30));
+                    })
                     ->update()
                     ->assertSee('The notes may not be greater than 20 characters.');
 
@@ -128,8 +131,8 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                     ->within(new IndexComponent('comments'), function ($browser) {
                         $browser->waitForTable()
                             ->click('@1-edit-button');
-                    })->waitForText('403')
-                    ->assertPathIs('/nova/403');
+                    })
+                    ->on(new Forbidden);
 
             $browser->blank();
         });
