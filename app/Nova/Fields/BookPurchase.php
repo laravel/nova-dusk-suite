@@ -59,7 +59,10 @@ class BookPurchase
                     return ! is_null($this->type);
                 }),
 
-            DateTime::make('Purchased At')->rules('required'),
+            DateTime::make('Purchased At')
+                ->rules('required')
+                ->default(now()->second(0))
+                ->incrementPickerMinuteBy(1),
         ];
     }
 }

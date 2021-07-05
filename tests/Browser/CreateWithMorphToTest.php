@@ -5,7 +5,6 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -30,7 +29,7 @@ class CreateWithMorphToTest extends DuskTestCase
                         ->type('@body', 'Test Comment')
                         ->create()
                         ->waitForText('The comment was created!')
-                        ->assertPathIs('/nova/resources/comments/1');
+                        ->on(new Detail('comments', 1));
 
                 $this->assertCount(1, $post->fresh()->comments);
 
@@ -57,7 +56,7 @@ class CreateWithMorphToTest extends DuskTestCase
                         ->type('@body', 'Test Comment')
                         ->create()
                         ->waitForText('The comment was created!')
-                        ->assertPathIs('/nova/resources/comments/1');
+                        ->on(new Detail('comments', 1));
 
                 $this->assertCount(1, $post->fresh()->comments);
 
@@ -91,17 +90,13 @@ class CreateWithMorphToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('posts', $post->id))
-                    ->within(new IndexComponent('comments'), function ($browser) {
-                        $browser->waitFor('@create-button')->click('@create-button');
-                    })
-                    ->on(new Create('comments'))
+                    ->runCreateRelation('comments')
                     ->waitForTextIn('#app [data-testid="content"] form', 'Commentable')
                     ->assertDisabled('select[dusk="commentable-type"]')
                     ->assertDisabled('select[dusk="commentable-select"]')
                     ->type('@body', 'Test Comment')
-                    ->create();
-
-            $browser->assertPathIs('/nova/resources/comments/1');
+                    ->create()
+                    ->on(new Detail('comments', 1));
 
             $this->assertCount(1, $post->fresh()->comments);
 

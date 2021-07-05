@@ -6,6 +6,7 @@ use App\Models\User;
 use Database\Factories\CommentFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -25,8 +26,8 @@ class IndexMorphToFieldTest extends DuskTestCase
                         $browser->waitForTable()
                                 ->clickLink('Post: '.$comment->commentable->title);
                     })
-                    ->waitForTextIn('h1', 'User Post Details', 25)
-                    ->assertPathIs('/nova/resources/posts/'.$comment->commentable->id);
+                    ->on(new Detail('posts', $comment->commentable->id))
+                    ->assertSeeIn('h1', 'User Post Details');
 
             $browser->blank();
         });

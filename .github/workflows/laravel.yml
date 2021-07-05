@@ -18,7 +18,6 @@ jobs:
           - "8.0"
         dependencies:
           - "locked"
-          - "highest"
         experimental:
           - false
 
