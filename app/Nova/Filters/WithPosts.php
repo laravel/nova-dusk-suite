@@ -2,6 +2,7 @@
 
 namespace App\Nova\Filters;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;
 
@@ -24,7 +25,11 @@ class WithPosts extends Filter
      */
     public function apply(Request $request, $query, $value)
     {
-        if ($value === 'with') {
+        if ($value === 'with-post-and-comment') {
+            return $query->whereHas('posts', function ($query) {
+                return $query->has('comments');
+            });
+        } elseif ($value === 'with') {
             return $query->has('posts');
         } elseif ($value === 'without') {
             return $query->doesntHave('posts');
@@ -42,6 +47,7 @@ class WithPosts extends Filter
     public function options(Request $request)
     {
         return [
+            'With Commented Posts' => 'with-post-and-comment',
             'With Posts' => 'with',
             'Without Posts' => 'without',
         ];
