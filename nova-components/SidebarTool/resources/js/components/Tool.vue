@@ -28,7 +28,7 @@ export default {
     },
 
     mounted() {
-        Nova.request().get('/nova-sidebar-tool/custom-sidebar-tool').then(response => {
+        Nova.request().get('/nova-vendor/custom-sidebar-tool').then(response => {
             this.sidebarResponse = response.data
         })
     },
