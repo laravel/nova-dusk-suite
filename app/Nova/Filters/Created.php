@@ -3,7 +3,6 @@
 namespace App\Nova\Filters;
 
 use Carbon\CarbonImmutable;
-use Illuminate\Http\Request;
 use Laravel\Nova\Filters\DateFilter;
 
 class Created extends DateFilter
@@ -11,7 +10,7 @@ class Created extends DateFilter
     /**
      * Apply the filter to the given query.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder
