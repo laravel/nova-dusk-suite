@@ -2,13 +2,13 @@
 
 namespace App\Nova;
 
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Multiselect;
 use Laravel\Nova\Fields\Timezone;
 use Laravel\Nova\Fields\URL;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Profile extends Resource
 {
