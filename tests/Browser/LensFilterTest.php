@@ -126,7 +126,8 @@ class LensFilterTest extends DuskTestCase
                     ->visit($url)
                     ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->assertDontSeeResource(1)
+                        $browser->waitForTable()
+                            ->assertDontSeeResource(1)
                             ->assertDontSeeResource(2)
                             ->assertSeeResource(3)
                             ->assertDontSeeResource(4);
