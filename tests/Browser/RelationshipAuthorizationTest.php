@@ -38,8 +38,6 @@ class RelationshipAuthorizationTest extends DuskTestCase
      */
     public function morphable_resource_cant_be_added_to_parent_if_not_authorized()
     {
-        $this->markTestSkipped('Unable to use `assertSelectMissingOption` with search selection');
-
         $user = User::find(1);
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.addComment.'.$post->id);
@@ -81,8 +79,6 @@ class RelationshipAuthorizationTest extends DuskTestCase
      */
     public function resource_cant_be_attached_to_parent_if_not_authorized()
     {
-        $this->markTestSkipped('Unable to use `assertSelectMissingOption` with search selection');
-
         $user = User::find(1);
         $post = PostFactory::new()->create();
         $tag = TagFactory::new()->create();

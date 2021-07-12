@@ -142,7 +142,7 @@ class DetailTest extends DuskTestCase
             ]);
 
             $browser->on(new Detail('users', 3))
-                    ->assertSeeIn('h1', 'User Details: 3')
+                    ->waitForTextIn('h1', 'User Details: 3')
                     ->assertSeeIn('@users-detail-component', 'David Hemphill');
 
             $browser->blank();

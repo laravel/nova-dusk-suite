@@ -171,6 +171,7 @@ class User extends Resource
     public function filters(Request $request)
     {
         return [
+            new Filters\WithPosts,
             new Filters\SelectFirst,
             new Filters\Created,
         ];

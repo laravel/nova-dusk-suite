@@ -23,7 +23,8 @@ class ResourceFormAbandonmentTest extends DuskTestCase
                     })
                     ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                     ->acceptDialog()
-                    ->on(new UserIndex);
+                    ->on(new UserIndex)
+                    ->waitForTextIn('h1', 'Users');
 
             $this->assertDatabaseMissing('videos', [
                 'title' => 'Hello World',

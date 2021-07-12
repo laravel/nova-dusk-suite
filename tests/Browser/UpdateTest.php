@@ -7,6 +7,7 @@ use Database\Factories\PostFactory;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Nova;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Forbidden;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -52,7 +53,9 @@ class UpdateTest extends DuskTestCase
                     ->assertSee('E-mail address should be unique')
                     ->type('@name', 'Taylor Otwell upDATED')
                     ->type('@password', 'secret')
-                    ->update();
+                    ->update()
+                    ->waitForText('The user was updated!')
+                    ->on(new Detail('users', 1));
 
             $user = User::find(1);
 
@@ -94,7 +97,9 @@ class UpdateTest extends DuskTestCase
                     ->type('@name', 'Taylor Otwell Updated')
                     ->type('@password', 'secret')
                     ->assertSee('E-mail address should be unique')
-                    ->updateAndContinueEditing();
+                    ->updateAndContinueEditing()
+                    ->waitForText('The user was updated!')
+                    ->on(new Update('users', 1));
 
             $user->refresh();
 
