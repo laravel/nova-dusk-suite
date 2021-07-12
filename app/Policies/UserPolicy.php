@@ -72,10 +72,10 @@ class UserPolicy
      * Determine whether the user can add a post to the user.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $model
+     * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function addPost(User $user, Post $model)
+    public function addPost(User $user, User $model)
     {
         return ! $user->isBlockedFrom('user.addPost.'.$model->id);
     }
