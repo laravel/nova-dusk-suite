@@ -28,7 +28,7 @@ export default {
     },
 
     mounted() {
-        axios.get('/nova-api/custom-sidebar-tool').then(response => {
+        axios.get('/nova-vendor/custom-sidebar-tool').then(response => {
             this.sidebarResponse = response.data
         })
     },

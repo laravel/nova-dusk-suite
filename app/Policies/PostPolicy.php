@@ -61,7 +61,7 @@ class PostPolicy
      * Determine whether the user can replicate the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Post  $model
      * @return mixed
      */
     public function replicate(User $user, Post $model)
