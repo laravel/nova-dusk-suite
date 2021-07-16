@@ -50,7 +50,9 @@ class FileAttachTest extends DuskTestCase
 
             // Delete the file...
             $browser->visit(new Update('captains', $captain->id))
-                    ->click('@photo-delete-link')
+                    ->whenAvailable('@photo-delete-link', function ($browser) {
+                        $browser->click('');
+                    })
                     ->whenAvailable('.modal[data-modal-open="true"]', function ($browser) {
                         $browser->click('@confirm-upload-delete-button')->pause(250);
                     });
