@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Slug;
+use Laravel\Nova\Fields\Text;
 
 class Sail extends Resource
 {
@@ -35,11 +37,13 @@ class Sail extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
+            Text::make('Name', 'name')->nullable(),
             BelongsTo::make('Ship', 'ship')
                 ->display('name')
                 ->showCreateRelationButton(file_exists(base_path('.inline-create')))
                 ->searchable(file_exists(base_path('.searchable'))),
             Number::make('Inches', 'inches')->sortable(),
+            Slug::make('Slug', 'slug')->from('Name')->showOnUpdating(false),
         ];
     }
 

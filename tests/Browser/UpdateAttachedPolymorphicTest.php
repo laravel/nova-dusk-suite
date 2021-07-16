@@ -29,7 +29,9 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UpdateAttached('posts', 1, 'tags', 1))
                     ->assertDisabled('select[dusk="attachable-select"]')
-                    ->assertInputValue('@notes', 'Test Notes')
+                    ->whenAvailable('@notes', function ($browser) {
+                        $browser->assertInputValue('', 'Test Notes');
+                    })
                     ->type('@notes', 'Test Notes Updated')
                     ->update();
 
@@ -79,7 +81,8 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UpdateAttached('posts', 1, 'tags', 1))
                     ->whenAvailable('@notes', function ($browser) {
-                        $browser->type('', 'Test Notes Updated');
+                        $browser->assertInputValue('', 'Test Notes')
+                                ->type('', 'Test Notes Updated');
                     })
                     ->updateAndContinueEditing()
                     ->waitForText('The resource was updated!')
