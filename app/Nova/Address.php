@@ -8,6 +8,9 @@ use Laravel\Nova\Fields\Place;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Panel;
 
+/**
+ * @mixin \App\Models\Address
+ */
 class Address extends Resource
 {
     /**

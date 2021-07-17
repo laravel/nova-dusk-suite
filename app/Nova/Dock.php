@@ -9,6 +9,9 @@ use Laravel\Nova\Fields\HasManyThrough;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 
+/**
+ * @mixin \App\Models\Dock
+ */
 class Dock extends Resource
 {
     /**

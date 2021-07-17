@@ -7,6 +7,9 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Text;
 
+/**
+ * @mixin \App\Models\Video
+ */
 class Video extends Resource
 {
     /**

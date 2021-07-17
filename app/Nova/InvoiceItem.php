@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 
+/**
+ * @mixin \App\Models\InvoiceItem
+ */
 class InvoiceItem extends Resource
 {
     /**
