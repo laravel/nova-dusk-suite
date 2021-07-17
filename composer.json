@@ -22,6 +22,7 @@
         "laravel/nova": "*",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
+        "nunomaduro/larastan": "^0.7.10",
         "orchestra/testbench-dusk": "^6.17",
         "phpunit/phpunit": "^9.3.3",
         "spatie/laravel-ray": "^1.17"

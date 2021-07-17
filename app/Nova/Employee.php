@@ -7,6 +7,9 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 
+/**
+ * @mixin \App\Models\Employee
+ */
 class Employee extends Resource
 {
     /**

@@ -7,6 +7,9 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+/**
+ * @mixin \App\Models\Company
+ */
 class Company extends Resource
 {
     /**
@@ -94,7 +97,6 @@ class Company extends Resource
      * Return the location to redirect the user after deleton.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Laravel\Nova\Resource  $resource
      * @return string
      */
     public static function redirectAfterDelete(NovaRequest $request)

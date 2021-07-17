@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 
+/**
+ * @mixin \App\Models\Invoice
+ */
 class Invoice extends Resource
 {
     /**

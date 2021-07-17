@@ -9,6 +9,9 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
 
+/**
+ * @mixin \App\Models\Sail
+ */
 class Sail extends Resource
 {
     /**

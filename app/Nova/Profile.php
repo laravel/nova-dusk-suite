@@ -9,6 +9,9 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Timezone;
 
+/**
+ * @mixin \App\Models\Profile
+ */
 class Profile extends Resource
 {
     /**
