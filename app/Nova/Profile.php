@@ -10,6 +10,9 @@ use Laravel\Nova\Fields\Multiselect;
 use Laravel\Nova\Fields\Timezone;
 use Laravel\Nova\Fields\URL;
 
+/**
+ * @mixin \App\Models\Profile
+ */
 class Profile extends Resource
 {
     /**

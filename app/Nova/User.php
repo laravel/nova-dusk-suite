@@ -15,6 +15,10 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\ActionRequest;
 use Otwell\ResourceTool\ResourceTool;
 
+/**
+ * @property \App\Models\User|null  $resource
+ * @mixin \App\Models\User
+ */
 class User extends Resource
 {
     /**

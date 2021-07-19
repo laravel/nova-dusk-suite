@@ -13,6 +13,9 @@ use Laravel\Nova\Http\Requests\ActionRequest;
 use Laravel\Nova\Http\Requests\LensRequest;
 use Laravel\Nova\Lenses\Lens;
 
+/**
+ * @property \App\Models\User|\stdClass  $resource
+ */
 class PassthroughLens extends Lens
 {
     /**

@@ -7,6 +7,9 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+/**
+ * @mixin \App\Models\Company
+ */
 class Company extends Resource
 {
     /**

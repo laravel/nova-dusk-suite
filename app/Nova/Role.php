@@ -7,6 +7,9 @@ use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 
+/**
+ * @mixin \App\Models\Role
+ */
 class Role extends Resource
 {
     /**

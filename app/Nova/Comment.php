@@ -8,6 +8,9 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
 
+/**
+ * @mixin \App\Models\Comment
+ */
 class Comment extends Resource
 {
     /**

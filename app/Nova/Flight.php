@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Otwell\CustomField\CustomField;
 
+/**
+ * @mixin \App\Models\Flight
+ */
 class Flight extends Resource
 {
     /**
