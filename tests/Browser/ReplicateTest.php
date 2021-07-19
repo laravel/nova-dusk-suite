@@ -6,8 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Nova;
-use Laravel\Nova\Testing\Browser\Pages\Forbidden;
+use Laravel\Nova\Testing\Browser\Pages\Page;
 use Laravel\Nova\Testing\Browser\Pages\Replicate;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -82,8 +81,8 @@ class ReplicateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
-                    ->visit(Nova::path().'/resources/users/4/replicate')
-                    ->on(new Forbidden);
+                    ->visit(new Page('/resources/users/4/replicate'))
+                    ->assertForbidden();
 
             $browser->blank();
         });

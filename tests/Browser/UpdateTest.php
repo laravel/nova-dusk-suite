@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
-use Laravel\Nova\Testing\Browser\Pages\Forbidden;
+use Laravel\Nova\Testing\Browser\Pages\Page;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -27,8 +27,8 @@ class UpdateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user, $post, $post2) {
             $browser->loginAs($user)
-                    ->visit(Nova::path()."/resources/posts/{$post->id}/edit")
-                    ->on(new Forbidden);
+                    ->visit(new Page("/resources/posts/{$post->id}/edit"))
+                    ->assertForbidden();
 
             $browser->visit(new Update('posts', $post2->id))
                     ->assertPathIsNot(Nova::path().'/403');

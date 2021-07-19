@@ -5,10 +5,9 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
-use Laravel\Nova\Testing\Browser\Pages\Forbidden;
 use Laravel\Nova\Testing\Browser\Pages\Index;
+use Laravel\Nova\Testing\Browser\Pages\Page;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexAuthorizationTest extends DuskTestCase
@@ -25,8 +24,8 @@ class IndexAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(Nova::path().'/resources/posts')
-                    ->on(new Forbidden);
+                    ->visit(new Page('/resources/posts'))
+                    ->assertForbidden();
 
             $browser->blank();
         });

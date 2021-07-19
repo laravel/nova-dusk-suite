@@ -4,8 +4,9 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Nova;
+use Laravel\Nova\Testing\Browser\Pages\Dashboard;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\Page;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class ToolAuthorizationTest extends DuskTestCase
@@ -17,7 +18,7 @@ class ToolAuthorizationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(Nova::path())
+                    ->visit(new Dashboard())
                     ->pause(250)
                     ->assertSee('Sidebar Tool');
 
@@ -32,8 +33,9 @@ class ToolAuthorizationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(Nova::path().'/sidebar-tool')
-                    ->waitForTextIn('#app [data-testid="content"]', "We're in a black hole.")
+                    ->visit(new Page('/sidebar-tool'))
+                    ->assertOk()
+                    ->waitForTextIn('@nova-content', "We're in a black hole.")
                     ->pause(1500)
                     ->assertSee('Hello World');
 
@@ -51,7 +53,7 @@ class ToolAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
-                    ->visit(Nova::path())
+                    ->visit(new Dashboard())
                     ->pause(250)
                     ->assertDontSee('Sidebar Tool');
 
@@ -69,8 +71,8 @@ class ToolAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
-                    ->visit(Nova::path().'/sidebar-tool')
-                    ->waitForText('Whoops', 15)
+                    ->visit(new Page('/sidebar-tool'))
+                    ->waitForText('Whoops')
                     ->assertSee('Nova experienced an unrecoverable error.')
                     ->assertDontSee('Sidebar Tool');
 

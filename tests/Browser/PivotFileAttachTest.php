@@ -28,7 +28,7 @@ class PivotFileAttachTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($captain, $ship) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Attach('captains', $captain->id, 'ships'))
-                        ->searchAndSelectFirstRelation('ships', $ship->id)
+                        ->searchFirstRelation('ships', $ship->id)
                         ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
                         ->create();
 
@@ -75,7 +75,7 @@ class PivotFileAttachTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($captain, $ship) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Attach('captains', $captain->id, 'ships'))
-                        ->searchAndSelectFirstRelation('ships', $ship->id)
+                        ->searchFirstRelation('ships', $ship->id)
                         ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
                         ->create();
 

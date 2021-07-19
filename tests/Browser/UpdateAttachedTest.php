@@ -37,7 +37,8 @@ class UpdateAttachedTest extends DuskTestCase
                     ->assertDisabled('select[dusk="attachable-select"]')
                     ->assertInputValue('@notes', 'Test Notes')
                     ->type('@notes', 'Test Notes Updated')
-                    ->update();
+                    ->update()
+                    ->waitForText('The resource was updated!');
 
             $user->refresh();
 
@@ -146,7 +147,7 @@ class UpdateAttachedTest extends DuskTestCase
                         $browser->type('', '43');
                     })
                     ->update()
-                    ->waitForText('The resource was updated!', 15)
+                    ->waitForText('The resource was updated!')
                     ->on(new Detail('users', 1))
                     ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
                         $browser->waitForTable()

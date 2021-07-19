@@ -33,7 +33,8 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                         $browser->assertInputValue('', 'Test Notes');
                     })
                     ->type('@notes', 'Test Notes Updated')
-                    ->update();
+                    ->update()
+                    ->waitForText('The resource was updated!');
 
             $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);
 
@@ -59,7 +60,8 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                             $browser->assertInputValue('', 'Test Notes')
                                     ->type('', 'Test Notes Updated');
                         })
-                        ->update();
+                        ->update()
+                        ->waitForText('The resource was updated!');
 
                 $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);
 

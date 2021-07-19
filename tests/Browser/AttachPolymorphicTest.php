@@ -31,8 +31,9 @@ class AttachPolymorphicTest extends DuskTestCase
                                     ->click('@attach-button');
                         })
                         ->on(new Attach('posts', 1, 'tags'))
-                        ->searchAndSelectFirstRelation('tags', $tag->id)
-                        ->create();
+                        ->searchFirstRelation('tags', $tag->id)
+                        ->create()
+                        ->waitForText('The resource was attached!');
 
                 $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
 
@@ -58,8 +59,9 @@ class AttachPolymorphicTest extends DuskTestCase
                                     ->click('@attach-button');
                         })
                         ->on(new Attach('posts', 1, 'tags'))
-                        ->searchAndSelectFirstRelation('tags', $tag->id)
-                        ->create();
+                        ->searchFirstRelation('tags', $tag->id)
+                        ->create()
+                        ->waitForText('The resource was attached!');
 
                 $post = Post::with('tags')->find(1);
 
@@ -84,9 +86,10 @@ class AttachPolymorphicTest extends DuskTestCase
                         ->visit(new Detail('posts', 1))
                         ->runAttachRelation('tags')
                         ->on(new Attach('posts', 1, 'tags'))
-                        ->searchAndSelectFirstRelation('tags', $tag->id)
+                        ->searchFirstRelation('tags', $tag->id)
                         ->type('@notes', 'Test Notes')
-                        ->create();
+                        ->create()
+                        ->waitForText('The resource was attached!');
 
                 $post = Post::with('tags')->find(1);
 
@@ -138,7 +141,7 @@ class AttachPolymorphicTest extends DuskTestCase
                 $browser->loginAs(User::find(1))
                         ->visit(new Detail('posts', 1))
                         ->runAttachRelation('tags')
-                        ->searchAndSelectFirstRelation('tags', $tag->id)
+                        ->searchFirstRelation('tags', $tag->id)
                         ->type('@notes', str_repeat('A', 30))
                         ->create()
                         ->assertSee('The notes may not be greater than 20 characters.');

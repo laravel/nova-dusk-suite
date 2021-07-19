@@ -6,12 +6,11 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Index;
-use Laravel\Nova\Testing\Browser\Pages\NotFound;
+use Laravel\Nova\Testing\Browser\Pages\Page;
 use Laravel\Nova\Testing\Browser\Pages\Replicate;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
@@ -49,8 +48,8 @@ class IndexTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(Nova::path().'/resources/foobar')
-                    ->on(new NotFound);
+                    ->visit(new Page('/resources/foobar'))
+                    ->assertNotFound();
 
             $browser->blank();
         });

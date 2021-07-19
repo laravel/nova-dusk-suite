@@ -29,7 +29,8 @@ class AttachTest extends DuskTestCase
                         $browser->assertSee('User')->assertSee('1');
                     })
                     ->selectAttachable($role->id)
-                    ->create();
+                    ->create()
+                    ->waitForText('The resource was attached!');
 
             $this->assertDatabaseHas('role_user', [
                 'user_id' => '1',
@@ -59,6 +60,7 @@ class AttachTest extends DuskTestCase
                         ->selectAttachable($role->id)
                         ->type('@notes', 'Test Notes')
                         ->create()
+                        ->waitForText('The resource was attached!')
                         ->waitFor('[dusk="roles-index-component"] table', 30);
 
                 $this->assertDatabaseHas('role_user', [
@@ -146,6 +148,7 @@ class AttachTest extends DuskTestCase
                     ->assertSelectHasOptions('@attachable-select', [$role->id])
                     ->selectAttachable($role->id)
                     ->create()
+                    ->waitForText('The resource was attached!')
                     ->on(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->visit(new Attach('users', 1, 'roles'))
@@ -180,6 +183,7 @@ class AttachTest extends DuskTestCase
                     ->type('@price', '39')
                     ->type('[dusk="purchased_at"] + input', $now->toDatetimeString())
                     ->create()
+                    ->waitForText('The resource was attached!')
                     ->on(new Detail('users', 1))
                     ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
                         $browser->waitForTable()
@@ -220,6 +224,7 @@ class AttachTest extends DuskTestCase
                     ->type('@price', '34')
                     ->type('[dusk="purchased_at"] + input', $now->toDatetimeString())
                     ->create()
+                    ->waitForText('The resource was attached!')
                     ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
                         $browser->waitForTable()
                             ->assertSeeResource(4);
