@@ -9,7 +9,7 @@ use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\DateTime;
 
-class ChangeUpdatedAt extends Action
+class ChangeCreatedAt extends Action
 {
     use InteractsWithQueue, Queueable;
 
@@ -23,7 +23,7 @@ class ChangeUpdatedAt extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         $models->each(function ($model) use ($fields) {
-            $model->updated_at = $fields->updated_at;
+            $model->created_at = $fields->created_at;
             $model->save();
         });
     }
@@ -36,7 +36,7 @@ class ChangeUpdatedAt extends Action
     public function fields()
     {
         return [
-            DateTime::make('Updated At', 'updated_at')
+            DateTime::make('Created At', 'created_at')
                 ->required()
                 ->rules('required'),
         ];

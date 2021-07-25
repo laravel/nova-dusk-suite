@@ -147,7 +147,7 @@ class User extends Resource
             new Actions\Sleep,
             Actions\StandaloneTask::make()->standalone(),
             Actions\RedirectToGoogle::make()->withoutConfirmation(),
-            Actions\ChangeUpdatedAt::make()->showOnDetail(),
+            Actions\ChangeCreatedAt::make()->showOnDetail(),
         ];
     }
 
