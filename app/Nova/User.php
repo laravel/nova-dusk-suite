@@ -136,7 +136,9 @@ class User extends Resource
         return [
             new Actions\MarkAsActive,
             Actions\MarkAsInactive::make()
-                ->showOnTableRow()->showOnDetail()->canSee(function ($request) {
+                ->showOnTableRow()
+                ->showOnDetail()
+                ->canSee(function ($request) {
                     return $request instanceof ActionRequest
                         || ($this->resource->exists && $this->resource->active === true);
                 })->canRun(function ($request, $model) {
@@ -145,6 +147,7 @@ class User extends Resource
             new Actions\Sleep,
             Actions\StandaloneTask::make()->standalone(),
             Actions\RedirectToGoogle::make()->withoutConfirmation(),
+            Actions\ChangeUpdatedAt::make()->showOnDetail(),
         ];
     }
 
