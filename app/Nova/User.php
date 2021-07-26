@@ -14,6 +14,10 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\ActionRequest;
 use Otwell\ResourceTool\ResourceTool;
 
+/**
+ * @property \App\Models\User|null  $resource
+ * @mixin \App\Models\User
+ */
 class User extends Resource
 {
     /**
@@ -132,7 +136,9 @@ class User extends Resource
         return [
             new Actions\MarkAsActive,
             Actions\MarkAsInactive::make()
-                ->showOnTableRow()->showOnDetail()->canSee(function ($request) {
+                ->showOnTableRow()
+                ->showOnDetail()
+                ->canSee(function ($request) {
                     return $request instanceof ActionRequest
                         || ($this->resource->exists && $this->resource->active === true);
                 })->canRun(function ($request, $model) {
@@ -141,6 +147,7 @@ class User extends Resource
             new Actions\Sleep,
             Actions\StandaloneTask::make()->standalone(),
             Actions\RedirectToGoogle::make()->withoutConfirmation(),
+            Actions\ChangeCreatedAt::make()->showOnDetail(),
         ];
     }
 
@@ -153,6 +160,7 @@ class User extends Resource
     public function filters(Request $request)
     {
         return [
+            new Filters\WithPosts,
             new Filters\SelectFirst,
             new Filters\Created,
         ];

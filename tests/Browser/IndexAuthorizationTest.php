@@ -35,6 +35,30 @@ class IndexAuthorizationTest extends DuskTestCase
     /**
      * @test
      */
+    public function shouldnt_see_id_link_if_blocked_from_viewing()
+    {
+        $user = User::find(1);
+        $post = PostFactory::new()->create();
+        PostFactory::new()->times(2)->create();
+        $user->shouldBlockFrom('post.view.'.$post->id);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Index('posts'))
+                    ->within(new IndexComponent('posts'), function ($browser) {
+                        $browser->waitForTable()
+                                ->assertDontSeeLink('1')
+                                ->assertSeeLink('2')
+                                ->assertSeeLink('3');
+                    });
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
     public function shouldnt_see_edit_button_if_blocked_from_updating()
     {
         $post = PostFactory::new()->create();

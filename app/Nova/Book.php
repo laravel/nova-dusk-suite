@@ -7,7 +7,11 @@ use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
+/**
+ * @mixin \App\Models\Book
+ */
 class Book extends Resource
 {
     /**
@@ -94,5 +98,21 @@ class Book extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    /**
+     * Build an "index" query for the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if (empty($request->orderByDirection)) {
+            $query->reorder()->orderBy('sku', 'asc');
+        }
+
+        return $query;
     }
 }

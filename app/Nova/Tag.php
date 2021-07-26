@@ -7,6 +7,9 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Text;
 
+/**
+ * @mixin \App\Models\Tag
+ */
 class Tag extends Resource
 {
     /**

@@ -12,6 +12,9 @@ use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 
+/**
+ * @mixin \App\Models\Post
+ */
 class Post extends Resource
 {
     /**

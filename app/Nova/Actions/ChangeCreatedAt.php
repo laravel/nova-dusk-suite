@@ -6,10 +6,10 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
-use Laravel\Nova\Actions\DestructiveAction;
 use Laravel\Nova\Fields\ActionFields;
+use Laravel\Nova\Fields\DateTime;
 
-class MarkAsInactive extends DestructiveAction
+class ChangeCreatedAt extends Action
 {
     use InteractsWithQueue, Queueable;
 
@@ -22,9 +22,10 @@ class MarkAsInactive extends DestructiveAction
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        foreach ($models as $model) {
-            $model->forceFill(['active' => false])->save();
-        }
+        $models->each(function ($model) use ($fields) {
+            $model->created_at = $fields->created_at;
+            $model->save();
+        });
     }
 
     /**
@@ -34,6 +35,10 @@ class MarkAsInactive extends DestructiveAction
      */
     public function fields()
     {
-        return [];
+        return [
+            DateTime::make('Created At', 'created_at')
+                ->required()
+                ->rules('required'),
+        ];
     }
 }

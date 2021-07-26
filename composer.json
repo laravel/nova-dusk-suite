@@ -12,8 +12,8 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.35.1",
-        "laravel/scout": "^8.3",
+        "laravel/framework": "^8.42.1",
+        "laravel/scout": "^8.3|^9.2",
         "laravel/tinker": "^2.5"
     },
     "require-dev": {
@@ -23,6 +23,7 @@
         "laravel/nova": "*",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
+        "nunomaduro/larastan": "^0.7.10",
         "orchestra/testbench-dusk": "^6.17",
         "phpunit/phpunit": "^9.3.3",
         "spatie/laravel-ray": "^1.17"
@@ -64,6 +65,11 @@
         "dusk:prepare": [
             "@php vendor/bin/dusk-updater detect --auto-update",
             "@php vendor/bin/testbench-dusk package:discover",
+            "@php artisan nova:publish"
+        ],
+        "dusk:assets": [
+            "yarn --cwd=./nova/ install",
+            "yarn --cwd=./nova/ run prod",
             "@php artisan nova:publish"
         ],
         "dusk:test": [

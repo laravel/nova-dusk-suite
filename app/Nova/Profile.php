@@ -4,11 +4,15 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Multiselect;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Timezone;
 
+/**
+ * @mixin \App\Models\Profile
+ */
 class Profile extends Resource
 {
     /**
@@ -61,6 +65,8 @@ class Profile extends Resource
             //     'vue' => ['label' => 'Vue', 'group' => 'JavaScript'],
             //     'hack' => ['label' => 'Hack'],
             // ]),
+
+            HasOne::make('Latest Post', 'latestPost', Post::class),
         ];
     }
 

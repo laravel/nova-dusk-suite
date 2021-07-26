@@ -65,10 +65,18 @@ class UpdateAttachedTest extends DuskTestCase
                     ->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })
+                    ->whenAvailable('@attachable-select', function ($browser) {
+                        $browser->assertDisabled('')
+                                ->assertValue('', '1');
+                    })
                     ->type('@notes', 'Test Notes Updated')
-                    ->updateAndContinueEditing();
-
-            $browser->assertPathIs('/nova/resources/users/1/edit-attached/roles/1');
+                    ->updateAndContinueEditing()
+                    ->waitForText('The resource was updated!')
+                    ->assertPathIs('/nova/resources/users/1/edit-attached/roles/1')
+                    ->whenAvailable('@attachable-select', function ($browser) {
+                        $browser->assertDisabled('')
+                                ->assertValue('', '1');
+                    });
 
             $this->assertEquals('Test Notes Updated', User::find(1)->roles->first()->pivot->notes);
 

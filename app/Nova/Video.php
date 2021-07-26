@@ -7,6 +7,9 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Text;
 
+/**
+ * @mixin \App\Models\Video
+ */
 class Video extends Resource
 {
     /**
@@ -24,6 +27,13 @@ class Video extends Resource
     public static $search = [
         'id',
     ];
+
+    /**
+     * Indicates whether Nova should prevent the user from leaving an unsaved form, losing their data.
+     *
+     * @var bool
+     */
+    public static $preventFormAbandonment = true;
 
     /**
      * Get the displayable label of the resource.

@@ -8,6 +8,7 @@ jobs:
   laravel-tests:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
+    timeout-minutes: 30
     strategy:
       matrix:
         os:
@@ -18,7 +19,6 @@ jobs:
           - "8.0"
         dependencies:
           - "locked"
-          - "highest"
         experimental:
           - false
 
