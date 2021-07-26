@@ -106,7 +106,8 @@ class UpdateAttachedTest extends DuskTestCase
                     })
                     ->type('@notes', str_repeat('A', 30))
                     ->update()
-                    ->assertSee('The notes may not be greater than 20 characters.');
+                    ->waitForText('There was a problem submitting the form.')
+                    ->assertSee('The notes must not be greater than 20 characters.');
 
             $this->assertEquals('Test Notes', User::find(1)->roles->first()->pivot->notes);
 
@@ -139,7 +140,7 @@ class UpdateAttachedTest extends DuskTestCase
                     ->waitFor('.content form', 25)
                     ->type('@price', '43')
                     ->update()
-                    ->waitForText('The resource was updated!', 15)
+                    ->waitForText('The resource was updated!')
                     ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
                         $browser->waitForTable()
                             ->within('tr[data-pivot-id="1"]', function ($browser) {

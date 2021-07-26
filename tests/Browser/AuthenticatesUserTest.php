@@ -13,7 +13,8 @@ class AuthenticatesUserTest extends DuskTestCase
     public function it_redirect_to_intended_url_after_login()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit('/nova/resources/users/3')
+            $browser->assertGuest()
+                    ->visit('/nova/resources/users/3')
                     ->assertPathIs('/nova/login')
                     ->type('email', 'nova@laravel.com')
                     ->type('password', 'password')
@@ -32,6 +33,7 @@ class AuthenticatesUserTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) use ($given) {
             $browser->logout()
+                    ->assertGuest()
                     ->visit($given)
                     ->type('email', 'nova@laravel.com')
                     ->type('password', 'password')

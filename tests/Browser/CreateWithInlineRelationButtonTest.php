@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Comment;
+use App\Models\Sail;
 use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\PostFactory;
@@ -108,6 +109,39 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                 $comment = Comment::with('commentable')->latest()->first();
                 $this->assertNotNull($comment->attachment);
                 $this->assertNull($comment->commentable->attachment);
+            });
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function slug_not_affected_by_create_relation_modal()
+    {
+        $this->whileInlineCreate(function () {
+            $this->browse(function (Browser $browser) {
+                $dock = DockFactory::new()->create();
+
+                $browser->loginAs(User::find(1))
+                        ->visit(new Create('sails'))
+                        ->waitFor('.content form')
+                        ->keys('@name', 'Test Sail', '{tab}')
+                        ->type('@inches', 350)
+                        ->runInlineCreate('ship', function ($browser) use ($dock) {
+                            $browser->waitForText('Create Ship')
+                                ->searchAndSelectFirstRelation('docks', $dock->id)
+                                ->keys('@name', 'Test Ship', '{tab}');
+                        })
+                        ->waitForText('The ship was created!')
+                        ->pause(500)
+                        ->create()
+                        ->waitForText('The sail was created!');
+
+                $sail = Sail::latest()->first();
+                $this->assertSame('Test Sail', $sail->name);
+                $this->assertSame('test-sail', $sail->slug);
+
+                $browser->blank();
             });
         });
     }
