@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
@@ -37,6 +38,13 @@ class User extends Resource
     ];
 
     /**
+     * The relationships that should be eager loaded when performing an index query.
+     *
+     * @var array
+     */
+    public static $with = ['profile'];
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -60,8 +68,8 @@ class User extends Resource
 
             Password::make('Password', 'password')
                 ->onlyOnForms()
-                ->creationRules('required', 'string', 'min:6')
-                ->updateRules('nullable', 'string', 'min:6'),
+                ->creationRules('required', Rules\Password::defaults())
+                ->updateRules('nullable', Rules\Password::defaults()),
 
             Boolean::make('Active', 'active')->default(true)->hideFromIndex(),
 
@@ -90,8 +98,7 @@ class User extends Resource
                         ->prunable(),
 
             BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
-                ->fields(new Fields\BookPurchase())
-                ->allowDuplicateRelations(),
+                ->fields(new Fields\BookPurchase()),
 
             BelongsToMany::make('Gift Books', 'giftBooks', Book::class)
                 ->fields(new Fields\BookPurchase('gift'))
@@ -139,8 +146,11 @@ class User extends Resource
                 ->showOnTableRow()
                 ->showOnDetail()
                 ->canSee(function ($request) {
-                    return $request instanceof ActionRequest
-                        || ($this->resource->exists && $this->resource->active === true);
+                    if ($request instanceof ActionRequest) {
+                        return true;
+                    }
+
+                    return $this->resource->exists && $this->resource->active === true;
                 })->canRun(function ($request, $model) {
                     return (int) $model->getKey() !== 1;
                 }),
@@ -148,6 +158,16 @@ class User extends Resource
             Actions\StandaloneTask::make()->standalone(),
             Actions\RedirectToGoogle::make()->withoutConfirmation(),
             Actions\ChangeCreatedAt::make()->showOnDetail(),
+            Actions\CreateUserProfile::make()
+                ->showOnTableRow()
+                ->showOnDetail()
+                ->canSee(function ($request) {
+                    if ($request instanceof ActionRequest) {
+                        return true;
+                    }
+
+                    return $this->resource->exists && is_null($this->resource->profile);
+                }),
         ];
     }
 

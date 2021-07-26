@@ -6,8 +6,13 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Create;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\Index;
+use Laravel\Nova\Testing\Browser\Pages\Page;
+use Laravel\Nova\Testing\Browser\Pages\Replicate;
+use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -43,9 +48,8 @@ class IndexTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(Nova::path().'/resources/foobar')
-                    ->waitForText('404', 15)
-                    ->assertPathIs('/nova/404');
+                    ->visit(new Page('/resources/foobar'))
+                    ->assertNotFound();
 
             $browser->blank();
         });
@@ -56,16 +60,14 @@ class IndexTest extends DuskTestCase
      */
     public function can_navigate_to_create_resource_screen()
     {
-        $this->markTestIncomplete('Missing create button');
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitFor('@create-button')->click('@create-button');
                     })
-                    ->waitForTextIn('h1', 'Create User')
-                    ->assertPathIs('/nova/resources/users/new')
+                    ->on(new Create('users'))
+                    ->assertSeeIn('h1', 'Create User')
                     ->assertSee('Create & Add Another')
                     ->assertSee('Create User');
 
@@ -83,10 +85,55 @@ class IndexTest extends DuskTestCase
                     ->visit(new UserIndex)
                     ->waitFor('@users-index-component')
                     ->keys('', ['c'])
-                    ->waitForTextIn('h1', 'Create User')
-                    ->assertPathIs('/nova/resources/users/new')
+                    ->on(new Create('users'))
+                    ->assertSeeIn('h1', 'Create User')
                     ->assertSee('Create & Add Another')
                     ->assertSee('Create User');
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_navigate_to_replicate_resource_screen()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new UserIndex)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->waitForTable()->click('@2-replicate-button');
+                    })
+                    ->on(new Replicate('users', 2))
+                    ->assertSeeIn('h1', 'Create User')
+                    ->assertInputValue('@name', 'Mohamed Said')
+                    ->assertInputValue('@email', 'mohamed@laravel.com')
+                    ->assertSee('Create & Add Another')
+                    ->assertSee('Create User');
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function cannot_navigate_to_replicate_resource_screen_when_blocked_via_policy()
+    {
+        $user = User::find(1);
+        $user->shouldBlockFrom('user.replicate.4');
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
+                    ->visit(new UserIndex)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->waitForTable()
+                            ->assertNotPresent('@4-replicate-button')
+                            ->assertPresent('@3-replicate-button')
+                            ->assertPresent('@2-replicate-button')
+                            ->assertPresent('@1-replicate-button');
+                    });
 
             $browser->blank();
         });
@@ -112,12 +159,13 @@ class IndexTest extends DuskTestCase
                 'Nova.app.$router.push({ name: "index", params: { resourceName: "posts" }});',
             ]);
 
-            $browser->waitForTextIn('h1', 'User Post')
+            $browser->on(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) use ($post) {
-                        $browser->assertSee($post->title)
+                        $browser->assertSeeIn('h1', 'User Post')
+                            ->assertSee($post->title)
                             ->assertDontSee('Mohamed Said')
                             ->assertDontSee('David Hemphill');
-                    })->assertPathIs('/nova/resources/posts');
+                    });
 
             $browser->blank();
         });
@@ -135,9 +183,8 @@ class IndexTest extends DuskTestCase
                         $browser->waitForTable()
                                 ->click('@1-view-button');
                     })
-                    ->waitForText('User Details')
-                    ->assertSee('User Details')
-                    ->assertPathIs('/nova/resources/users/1');
+                    ->on(new Detail('users', 1))
+                    ->assertSeeIn('h1', 'User Details');
 
             $browser->blank();
         });
@@ -155,9 +202,8 @@ class IndexTest extends DuskTestCase
                         $browser->waitForTable()
                                 ->click('@1-edit-button');
                     })
-                    ->waitForText('Update User')
-                    ->assertSee('Update User')
-                    ->assertPathIs('/nova/resources/users/1/edit');
+                    ->on(new Update('users', 1))
+                    ->assertSeeIn('h1', 'Update User');
 
             $browser->blank();
         });
@@ -170,7 +216,7 @@ class IndexTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             // Search For Single User By ID...
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user = User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
@@ -182,7 +228,7 @@ class IndexTest extends DuskTestCase
                     });
 
             // Search For Single User By Name...
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
@@ -212,7 +258,7 @@ class IndexTest extends DuskTestCase
                                 ->assertDontSeeResource(2)
                                 ->assertSeeResource(3)
                                 ->assertDontSeeResource(4)
-                                ->assertValue('@search', '3');
+                                ->assertQueryStringHas('users_search', '3');
                     })
                     ->within('.sidebar-menu', function ($browser) {
                         $browser->clickLink('Users');
@@ -221,6 +267,7 @@ class IndexTest extends DuskTestCase
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
                                 ->assertValue('@search', '')
+                                ->assertQueryStringHas('users_search', '')
                                 ->assertSeeResource(1)
                                 ->assertSeeResource(2)
                                 ->assertSeeResource(3)
@@ -382,8 +429,7 @@ class IndexTest extends DuskTestCase
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3)
                             ->assertSee('1-2 of 2');
-                    })
-                    ->assertPathIs('/nova/resources/users');
+                    });
 
             $browser->blank();
         });
@@ -403,12 +449,12 @@ class IndexTest extends DuskTestCase
                             ->selectAllMatching()
                             ->deleteSelected()
                             ->clearSearch()
+                            ->waitForTable()
                             ->assertSeeResource(1)
                             ->assertSeeResource(2)
                             ->assertDontSeeResource(3)
                             ->assertSee('1-3 of 3');
-                    })
-                    ->assertPathIs('/nova/resources/users');
+                    });
 
             $browser->blank();
         });

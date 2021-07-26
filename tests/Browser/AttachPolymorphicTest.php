@@ -31,8 +31,9 @@ class AttachPolymorphicTest extends DuskTestCase
                                     ->click('@attach-button');
                         })
                         ->on(new Attach('posts', 1, 'tags'))
-                        ->searchAndSelectFirstRelation('tags', $tag->id)
-                        ->clickAttach();
+                        ->searchFirstRelation('tags', $tag->id)
+                        ->create()
+                        ->waitForText('The resource was attached!');
 
                 $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
 
@@ -58,10 +59,13 @@ class AttachPolymorphicTest extends DuskTestCase
                                     ->click('@attach-button');
                         })
                         ->on(new Attach('posts', 1, 'tags'))
-                        ->searchAndSelectFirstRelation('tags', $tag->id)
-                        ->clickAttach();
+                        ->searchFirstRelation('tags', $tag->id)
+                        ->create()
+                        ->waitForText('The resource was attached!');
 
-                $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
+                $post = Post::with('tags')->find(1);
+
+                $this->assertEquals($tag->id, $post->tags->first()->id);
 
                 $browser->blank();
             });
@@ -80,17 +84,17 @@ class AttachPolymorphicTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($tag) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Detail('posts', 1))
-                        ->within(new IndexComponent('tags'), function ($browser) {
-                            $browser->waitFor('@attach-button')
-                                    ->click('@attach-button');
-                        })
+                        ->runAttachRelation('tags')
                         ->on(new Attach('posts', 1, 'tags'))
-                        ->searchAndSelectFirstRelation('tags', $tag->id)
+                        ->searchFirstRelation('tags', $tag->id)
                         ->type('@notes', 'Test Notes')
-                        ->clickAttach();
+                        ->create()
+                        ->waitForText('The resource was attached!');
 
-                $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
-                $this->assertEquals('Test Notes', Post::find(1)->tags->first()->pivot->notes);
+                $post = Post::with('tags')->find(1);
+
+                $this->assertEquals($tag->id, $post->tags->first()->id);
+                $this->assertEquals('Test Notes', $post->tags->first()->pivot->notes);
 
                 $browser->blank();
             });
@@ -108,17 +112,17 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('posts', 1))
-                    ->within(new IndexComponent('tags'), function ($browser) {
-                        $browser->waitFor('@attach-button')
-                                ->click('@attach-button');
+                    ->runAttachRelation('tags')
+                    ->whenAvailable('@notes', function ($browser) {
+                        $browser->type('', str_repeat('A', 30));
                     })
-                    ->on(new Attach('posts', 1, 'tags'))
-                    ->type('@notes', str_repeat('A', 30))
-                    ->clickAttach()
+                    ->create()
                     ->waitForText('There was a problem submitting the form.', 15)
                     ->assertSee('The tag field is required.');
 
-            $this->assertNull(Post::find(1)->tags->first());
+            $post = Post::with('tags')->find(1);
+
+            $this->assertNull($post->tags->first());
 
             $browser->blank();
         });
@@ -136,17 +140,15 @@ class AttachPolymorphicTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($tag) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Detail('posts', 1))
-                        ->within(new IndexComponent('tags'), function ($browser) {
-                            $browser->waitFor('@attach-button')
-                                    ->click('@attach-button');
-                        })
-                        ->on(new Attach('posts', 1, 'tags'))
-                        ->searchAndSelectFirstRelation('tags', $tag->id)
+                        ->runAttachRelation('tags')
+                        ->searchFirstRelation('tags', $tag->id)
                         ->type('@notes', str_repeat('A', 30))
-                        ->clickAttach()
+                        ->create()
                         ->assertSee('The notes may not be greater than 20 characters.');
 
-                $this->assertNull(Post::find(1)->tags->first());
+                $post = Post::with('tags')->find(1);
+
+                $this->assertNull($post->tags->first());
 
                 $browser->blank();
             });

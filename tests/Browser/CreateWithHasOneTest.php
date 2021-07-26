@@ -4,7 +4,6 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -19,10 +18,7 @@ class CreateWithHasOneTest extends DuskTestCase
                 ->type('@name', 'Adam Wathan')
                 ->create()
                 ->visit(new Detail('people', 1))
-                ->within(new IndexComponent('employees'), function ($browser) {
-                    $browser->waitFor('@create-button')->click('@create-button');
-                })
-                ->waitFor('#app [data-testid="content"] form')
+                ->runCreateRelation('employees')
                 ->assertDisabled('select[dusk="people"]');
 
             $browser->blank();

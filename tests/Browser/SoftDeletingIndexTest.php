@@ -33,6 +33,8 @@ class SoftDeletingIndexTest extends DuskTestCase
                     });
 
             $this->assertEquals(1, Dock::withTrashed()->count());
+
+            $browser->blank();
         });
     }
 
@@ -57,6 +59,8 @@ class SoftDeletingIndexTest extends DuskTestCase
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3);
                     });
+
+            $browser->blank();
         });
     }
 
@@ -85,6 +89,8 @@ class SoftDeletingIndexTest extends DuskTestCase
                             ->assertSeeResource(2)
                             ->assertSeeResource(3);
                     });
+
+            $browser->blank();
         });
     }
 
@@ -111,6 +117,8 @@ class SoftDeletingIndexTest extends DuskTestCase
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3);
                     });
+
+            $browser->blank();
         });
     }
 
@@ -142,6 +150,8 @@ class SoftDeletingIndexTest extends DuskTestCase
                     });
 
             $this->assertNull($separateShip->fresh()->deleted_at);
+
+            $browser->blank();
         });
     }
 
@@ -171,6 +181,8 @@ class SoftDeletingIndexTest extends DuskTestCase
 
             $this->assertEquals(4, Ship::count());
             $this->assertEquals(0, Ship::onlyTrashed()->count());
+
+            $browser->blank();
         });
     }
 
@@ -201,6 +213,8 @@ class SoftDeletingIndexTest extends DuskTestCase
             $this->assertNotNull($separateShip->fresh());
             $this->assertEquals(1, Ship::count());
             $this->assertEquals(0, Ship::onlyTrashed()->count());
+
+            $browser->blank();
         });
     }
 
@@ -223,6 +237,8 @@ class SoftDeletingIndexTest extends DuskTestCase
                     });
 
             $this->assertEquals(1, Dock::withTrashed()->count());
+
+            $browser->blank();
         });
     }
 
@@ -247,6 +263,8 @@ class SoftDeletingIndexTest extends DuskTestCase
                                 ->assertDontSeeResource(1)
                                 ->assertSeeResource(2);
                     });
+
+            $browser->blank();
         });
     }
 
@@ -271,6 +289,8 @@ class SoftDeletingIndexTest extends DuskTestCase
                     });
 
             $this->assertEquals(1, Dock::count());
+
+            $browser->blank();
         });
     }
 }

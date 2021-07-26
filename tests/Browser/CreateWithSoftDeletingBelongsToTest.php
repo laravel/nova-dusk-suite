@@ -2,11 +2,11 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
+use App\Models\Sail;
 use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -23,10 +23,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', $dock->id))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->waitFor('@create-button')->click('@create-button');
-                    })
-                    ->on(new Create('ships'))
+                    ->runCreateRelation('ships')
                     ->assertDisabled('select[dusk="dock"]')
                     ->type('@name', 'Test Ship')
                     ->create();
@@ -54,7 +51,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                     ->withTrashedRelation('ships')
                     ->assertSelectHasOption('select[dusk="ship"]', $ship->id)
                     ->assertSelectHasOption('select[dusk="ship"]', $ship2->id)
-                    ->select('select[dusk="ship"]', $ship->id)
+                    ->selectRelation('ship', $ship->id)
                     ->type('@inches', 25)
                     ->create();
 
@@ -75,14 +72,14 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Create('sails'))
                     ->withTrashedRelation('ships')
-                    ->select('@ship', $ship->id)
+                    ->selectRelation('ship', $ship->id)
                     ->withoutTrashedRelation('ships')
                     // Ideally would use assertChecked here but RemoteWebDriver
                     // returns unchecked when it clearly is checked?
                     ->type('@inches', 25)
                     ->create();
 
-            $this->assertCount(1, $ship->fresh()->sails);
+            $this->assertSame(1, Sail::where('ship_id', $ship->id)->count());
 
             $browser->blank();
         });
@@ -103,7 +100,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                         ->pause(1500)
                         ->assertNoRelationSearchResults('docks')
                         ->withTrashedRelation('docks')
-                        ->searchAndSelectFirstRelation('docks', '1')
+                        ->searchFirstRelation('docks', '1')
                         ->type('@name', 'Test Ship')
                         ->create();
 

@@ -25,7 +25,7 @@ class UpdateWithMorphToTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($comment) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Update('comments', $comment->id))
-                        ->searchAndSelectFirstRelation('commentable', 2)
+                        ->searchFirstRelation('commentable', 2)
                         ->update()
                         ->waitForText('The comment was updated');
 
@@ -79,7 +79,10 @@ class UpdateWithMorphToTest extends DuskTestCase
                             'viaResourceId' => 1,
                             'viaRelationship' => 'comments',
                         ]))
-                        ->assertValue('select[dusk="commentable-type"]', 'posts')
+                        ->whenAvailable('select[dusk="commentable-type"]', function ($browser) {
+                            $browser->assertEnabled('')
+                                    ->assertSelected('', 'posts');
+                        })
                         ->assertEnabled('@commentable-search-input')
                         ->within('@commentable-search-input', function ($browser) use ($post) {
                             $browser->assertSee($post->title);

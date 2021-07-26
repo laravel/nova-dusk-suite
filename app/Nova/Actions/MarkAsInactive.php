@@ -26,14 +26,4 @@ class MarkAsInactive extends DestructiveAction
             $model->forceFill(['active' => false])->save();
         }
     }
-
-    /**
-     * Get the fields available on the action.
-     *
-     * @return array
-     */
-    public function fields()
-    {
-        return [];
-    }
 }

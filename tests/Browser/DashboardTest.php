@@ -4,8 +4,8 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Pages\Dashboard;
+use Laravel\Nova\Testing\Browser\Pages\Page;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class DashboardTest extends DuskTestCase
@@ -31,9 +31,8 @@ class DashboardTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                    ->visit(Nova::path().'/dashboards/foobar')
-                    ->waitForText('404', 15)
-                    ->assertPathIs('/nova/404');
+                    ->visit(new Page('/dashboards/foobar'))
+                    ->assertNotFound();
 
             $browser->blank();
         });

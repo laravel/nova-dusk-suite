@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Comment;
+use App\Models\Sail;
 use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\PostFactory;
@@ -29,7 +30,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                             ->visit(new Create('sails'))
                             ->runInlineCreate('ship', function ($browser) use ($dock) {
                                 $browser->waitForText('Create Ship')
-                                    ->searchAndSelectFirstRelation('docks', $dock->id)
+                                    ->searchFirstRelation('docks', $dock->id)
                                     ->type('@name', 'Ship name');
                             })
                             ->waitForText('The ship was created!')
@@ -38,6 +39,8 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                             ->type('@inches', 25)
                             ->create()
                             ->waitForText('The sail was created!');
+
+                        $browser->blank();
                     });
                 });
             });
@@ -55,11 +58,11 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
             $this->browse(function (Browser $browser) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Create('comments'))
-                        ->select('@commentable-type', 'posts')
+                        ->selectRelation('commentable-type', 'posts')
                         ->pause(500)
                         ->runInlineCreate('commentable', function ($browser) {
                             $browser->waitForText('Create User Post', 25)
-                                ->select('@user', 1)
+                                ->selectRelation('user', 1)
                                 ->type('@title', 'Test Post')
                                 ->type('@body', 'Test Post Body')
                                 ->attach('@attachment', __DIR__.'/Fixtures/Document.pdf');
@@ -89,11 +92,11 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
             $this->browse(function (Browser $browser) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Create('comments'))
-                        ->select('@commentable-type', 'posts')
+                        ->selectRelation('commentable-type', 'posts')
                         ->pause(500)
                         ->runInlineCreate('commentable', function ($browser) {
                             $browser->waitForText('Create User Post', 25)
-                                ->select('@user', 1)
+                                ->selectRelation('user', 1)
                                 ->type('@title', 'Test Post')
                                 ->type('@body', 'Test Post Body');
                         })
@@ -108,6 +111,38 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                 $comment = Comment::with('commentable')->latest()->first();
                 $this->assertNotNull($comment->attachment);
                 $this->assertNull($comment->commentable->attachment);
+            });
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function slug_not_affected_by_create_relation_modal()
+    {
+        $this->whileInlineCreate(function () {
+            $this->browse(function (Browser $browser) {
+                $dock = DockFactory::new()->create();
+
+                $browser->loginAs(User::find(1))
+                        ->visit(new Create('sails'))
+                        ->keys('@name', 'Test Sail', '{tab}')
+                        ->type('@inches', 350)
+                        ->runInlineCreate('ship', function ($browser) use ($dock) {
+                            $browser->waitForText('Create Ship')
+                                ->searchFirstRelation('docks', $dock->id)
+                                ->keys('@name', 'Test Ship', '{tab}');
+                        })
+                        ->waitForText('The ship was created!')
+                        ->pause(500)
+                        ->create()
+                        ->waitForText('The sail was created!');
+
+                $sail = Sail::latest()->first();
+                $this->assertSame('Test Sail', $sail->name);
+                $this->assertSame('test-sail', $sail->slug);
+
+                $browser->blank();
             });
         });
     }

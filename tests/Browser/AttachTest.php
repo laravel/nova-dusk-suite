@@ -24,16 +24,13 @@ class AttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitFor('@attach-button')
-                                ->click('@attach-button');
-                    })
-                    ->on(new Attach('users', 1, 'roles'))
+                    ->runAttachRelation('roles')
                     ->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })
                     ->selectAttachable($role->id)
-                    ->clickAttach();
+                    ->create()
+                    ->waitForText('The resource was attached!');
 
             $this->assertDatabaseHas('role_user', [
                 'user_id' => '1',
@@ -56,17 +53,14 @@ class AttachTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($role) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Detail('users', 1))
-                        ->within(new IndexComponent('roles'), function ($browser) {
-                            $browser->waitFor('@attach-button')
-                                    ->click('@attach-button');
-                        })
-                        ->on(new Attach('users', 1, 'roles'))
+                        ->runAttachRelation('roles')
                         ->whenAvailable('@via-resource-field', function ($browser) {
                             $browser->assertSee('User')->assertSee('1');
                         })
                         ->selectAttachable($role->id)
                         ->type('@notes', 'Test Notes')
-                        ->clickAttach()
+                        ->create()
+                        ->waitForText('The resource was attached!')
                         ->waitFor('[dusk="roles-index-component"] table', 30);
 
                 $this->assertDatabaseHas('role_user', [
@@ -90,15 +84,11 @@ class AttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitFor('@attach-button')
-                                ->click('@attach-button');
-                    })
-                    ->on(new Attach('users', 1, 'roles'))
+                    ->runAttachRelation('roles')
                     ->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })
-                    ->clickAttach()
+                    ->create()
                     ->waitForText('There was a problem submitting the form.', 15)
                     ->assertSee('The role field is required.');
 
@@ -127,15 +117,53 @@ class AttachTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->assertSeeResource(4)
                             ->assertDontSeeResource(3);
                     })
                     ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->assertSeeResource(3)
                             ->assertDontSeeResource(4);
                     });
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function it_cant_attach_different_unique_relation()
+    {
+        $role = RoleFactory::new()->create();
+
+        $this->browse(function (Browser $browser) use ($role) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Detail('users', 1))
+                    ->runAttachRelation('roles')
+                    ->whenAvailable('@via-resource-field', function ($browser) {
+                        $browser->assertSee('User')->assertSee('1');
+                    })
+                    ->assertSelectHasOptions('@attachable-select', [$role->id])
+                    ->selectAttachable($role->id)
+                    ->create()
+                    ->waitForText('The resource was attached!')
+                    ->on(new Detail('users', 1))
+                    ->waitForTextIn('h1', 'User Details: 1')
+                    ->visit(new Attach('users', 1, 'roles'))
+                    ->whenAvailable('@via-resource-field', function ($browser) {
+                        $browser->assertSee('User')->assertSee('1');
+                    })
+                    ->assertSelectMissingOptions('@attachable-select', [$role->id]);
+
+            $this->assertDatabaseHas('role_user', [
+                'user_id' => '1',
+                'role_id' => '1',
+                'notes' => null,
+            ]);
+
+            $browser->blank();
         });
     }
 
@@ -149,23 +177,23 @@ class AttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($now) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
-                        $browser->waitFor('@attach-button')
-                                ->click('@attach-button');
-                    })
-                    ->on(new Attach('users', 1, 'books'))
+                    ->runAttachRelation('books', 'giftBooks')
                     ->assertSeeIn('h1', 'Attach Book')
                     ->selectAttachable(4)
                     ->type('@price', '39')
                     ->type('[dusk="purchased_at"] + input', $now->toDatetimeString())
-                    ->clickAttach()
+                    ->create()
+                    ->waitForText('The resource was attached!')
+                    ->on(new Detail('users', 1))
                     ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->assertSeeResource(4);
                     })
                     ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
                         $browser->assertSee('No Book matched the given criteria.');
                     });
+
+            $browser->blank();
         });
 
         $this->assertDatabaseHas('book_purchases', [
@@ -190,24 +218,23 @@ class AttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($now) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
-                        $browser->waitFor('@attach-button')
-                                ->click('@attach-button');
-                    })
-                    ->on(new Attach('users', 1, 'books'))
+                    ->runAttachRelation('books', 'personalBooks')
                     ->assertSeeIn('h1', 'Attach Book')
                     ->selectAttachable(4)
                     ->type('@price', '34')
                     ->type('[dusk="purchased_at"] + input', $now->toDatetimeString())
-                    ->clickAttach()
+                    ->create()
+                    ->waitForText('The resource was attached!')
                     ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->assertSeeResource(4);
                     })
                     ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->assertSeeResource(4);
                     });
+
+            $browser->blank();
         });
     }
 
@@ -217,8 +244,6 @@ class AttachTest extends DuskTestCase
      */
     public function it_cannot_attach_duplicate_relations_with_same_pivot()
     {
-        $this->markTestIncomplete('Missing attach button');
-
         Carbon::setTestNow($now = Carbon::parse('2021-02-16 12:55:29'));
 
         DB::table('book_purchases')->insert([
@@ -228,18 +253,16 @@ class AttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($now) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
-                        $browser->waitFor('@attach-button')
-                                ->click('@attach-button');
-                    })
-                    ->on(new Attach('users', 1, 'books'))
+                    ->runAttachRelation('books', 'giftBooks')
                     ->assertSeeIn('h1', 'Attach Book')
                     ->selectAttachable(4)
                     ->type('@price', '34')
-                    ->type('[dusk="purchased_at"] + input', $now->copy()->timezone(env('DUSK_TIMEZONE'))->toDatetimeString())
-                    ->clickAttach()
-                    ->waitForText('There was a problem submitting the form.', 15)
+                    ->type('[dusk="purchased_at"] + input', $now->toDatetimeString())
+                    ->create()
+                    ->waitForText('There was a problem submitting the form.')
                     ->assertSee('This books is already attached.');
+
+            $browser->blank();
         });
     }
 }

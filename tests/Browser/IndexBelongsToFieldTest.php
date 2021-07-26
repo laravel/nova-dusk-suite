@@ -6,6 +6,7 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -20,14 +21,14 @@ class IndexBelongsToFieldTest extends DuskTestCase
         $user->posts()->save($post = PostFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) use ($user) {
                         $browser->waitForTable()
                                 ->clickLink($user->name);
                     })
-                    ->waitForTextIn('h1', 'User Details', 25)
-                    ->assertPathIs('/nova/resources/users/'.$user->id);
+                    ->on(new Detail('users', $user->id))
+                    ->assertSeeIn('h1', 'User Details');
 
             $browser->blank();
         });

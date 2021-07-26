@@ -94,7 +94,7 @@ class Company extends Resource
     }
 
     /**
-     * Return the location to redirect the user after deleton.
+     * Return the location to redirect the user after deletion.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return string

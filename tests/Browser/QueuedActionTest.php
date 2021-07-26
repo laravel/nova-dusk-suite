@@ -26,6 +26,8 @@ class QueuedActionTest extends DuskTestCase
                                 ->assertSee('Sleep')
                                 ->assertSee('Finished');
                     });
+
+            $browser->blank();
         });
     }
 }

@@ -33,7 +33,8 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
                     ->on(new UpdateAttached('captains', 1, 'ships', 1))
                     ->assertDisabled('select[dusk="attachable-select"]')
                     ->type('@notes', 'Test Notes')
-                    ->update();
+                    ->update()
+                    ->waitForText('The resource was updated!');
 
             $this->assertEquals(
                 'Test Notes',
@@ -63,10 +64,13 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
                     })
                     ->on(new UpdateAttached('captains', 1, 'ships', 1))
                     ->assertDisabled('select[dusk="attachable-select"]')
-                    ->type('@notes', 'Test Notes')
-                    ->updateAndContinueEditing();
+                    ->whenAvailable('@notes', function ($browser) {
+                        $browser->type('', 'Test Notes');
+                    })
+                    ->updateAndContinueEditing()
+                    ->waitForText('The resource was updated!');
 
-            $browser->assertPathIs('/nova/resources/captains/1/edit-attached/ships/1');
+            $browser->on(new UpdateAttached('captains', 1, 'ships', 1));
 
             $this->assertEquals(
                 'Test Notes',

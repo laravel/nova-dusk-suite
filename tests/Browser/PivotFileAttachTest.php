@@ -28,9 +28,9 @@ class PivotFileAttachTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($captain, $ship) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Attach('captains', $captain->id, 'ships'))
-                        ->searchAndSelectFirstRelation('ships', $ship->id)
+                        ->searchFirstRelation('ships', $ship->id)
                         ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
-                        ->clickAttach();
+                        ->create();
 
                 // Verify the photo in the information in the database...
                 $captain = Captain::orderBy('id', 'desc')->first();
@@ -75,9 +75,9 @@ class PivotFileAttachTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($captain, $ship) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Attach('captains', $captain->id, 'ships'))
-                        ->searchAndSelectFirstRelation('ships', $ship->id)
+                        ->searchFirstRelation('ships', $ship->id)
                         ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
-                        ->clickAttach();
+                        ->create();
 
                 // Verify the photo in the information in the database...
                 $captain = Captain::orderBy('id', 'desc')->first();

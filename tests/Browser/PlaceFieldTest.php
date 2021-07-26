@@ -6,6 +6,7 @@ use App\Models\Address;
 use App\Models\User;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Create;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 /**
@@ -46,7 +47,7 @@ class PlaceFieldTest extends DuskTestCase
 
             $address = Address::latest('id')->first();
 
-            $browser->assertPathIs('/nova/resources/addresses/'.$address->id);
+            $browser->on(new Detail('addresses', $address->id));
 
             $this->assertEquals('110 Kingsbrook Street', $address->address_line_1);
             $this->assertNull($address->address_line_2);

@@ -5,7 +5,6 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\DockFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -18,14 +17,13 @@ class CreateWithBelongsToTest extends DuskTestCase
     public function resource_can_be_created()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user = User::find(1))
                     ->visit(new Create('posts'))
                     ->type('@title', 'Test Post')
                     ->type('@body', 'Test Post Body')
-                    ->select('select[dusk="user"]', 1)
+                    ->selectRelation('user', 1)
                     ->create();
 
-            $user = User::find(1);
             $post = $user->posts->first();
             $this->assertEquals('Test Post', $post->title);
             $this->assertEquals('Test Post Body', $post->body);
@@ -40,19 +38,15 @@ class CreateWithBelongsToTest extends DuskTestCase
     public function parent_resource_should_be_locked_when_creating_via_parents_detail_page()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user = User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitFor('@create-button')->click('@create-button');
-                    })
-                    ->on(new Create('posts'))
+                    ->runCreateRelation('posts')
                     ->assertDisabled('select[dusk="user"]')
                     ->type('@title', 'Test Post')
                     ->type('@body', 'Test Post Body')
                     ->create();
 
-            $user = User::find(1);
-            $post = $user->posts->first();
+            $post = $user->posts()->first();
             $this->assertEquals('Test Post', $post->title);
             $this->assertEquals('Test Post Body', $post->body);
 
@@ -70,7 +64,7 @@ class CreateWithBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('ships'))
-                    ->searchAndSelectFirstRelation('docks', '1')
+                    ->searchFirstRelation('docks', '1')
                     ->type('@name', 'Test Ship')
                     ->create();
 
@@ -90,11 +84,11 @@ class CreateWithBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->waitFor('@create-button')->click('@create-button');
+                    ->runCreateRelation('ships')
+                    ->whenAvailable('select[dusk="dock"]', function ($browser) {
+                        $browser->assertDisabled('')
+                                ->assertSelected('', 1);
                     })
-                    ->on(new Create('ships'))
-                    ->assertDisabled('select[dusk="dock"]')
                     ->type('@name', 'Test Ship')
                     ->create();
 
@@ -130,8 +124,11 @@ class CreateWithBelongsToTest extends DuskTestCase
                         'viaResourceId' => 1,
                         'viaRelationship' => 'posts',
                     ]))
-                    ->waitForTextIn('#app [data-testid="content"] form', 'Taylor Otwell')
-                    ->assertValue('select[dusk="user"]', 1);
+                    ->waitForTextIn('@nova-form', 'Taylor Otwell')
+                    ->whenAvailable('select[dusk="user"]', function ($browser) {
+                        $browser->assertDisabled('')
+                                ->assertSelected('', 1);
+                    });
 
             $browser->blank();
         });

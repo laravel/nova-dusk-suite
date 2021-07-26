@@ -5,8 +5,8 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\Page;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class DetailAuthorizationTest extends DuskTestCase
@@ -20,11 +20,10 @@ class DetailAuthorizationTest extends DuskTestCase
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.view.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
-                    ->visit(Nova::path()."/resources/posts/{$post->id}")
-                    ->waitForText('403', 15)
-                    ->assertPathIs('/nova/403');
+        $this->browse(function (Browser $browser) use ($user, $post) {
+            $browser->loginAs($user)
+                    ->visit(new Page("/resources/posts/{$post->id}"))
+                    ->assertForbidden();
 
             $browser->blank();
         });
@@ -39,8 +38,8 @@ class DetailAuthorizationTest extends DuskTestCase
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.update.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $post) {
+            $browser->loginAs($user)
                     ->visit(new Detail('posts', $post->id))
                     ->assertMissing('@edit-resource-button');
 
@@ -57,8 +56,8 @@ class DetailAuthorizationTest extends DuskTestCase
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.delete.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $post) {
+            $browser->loginAs($user)
                     ->visit(new Detail('posts', $post->id))
                     ->assertMissing('@open-delete-modal-button');
 

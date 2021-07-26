@@ -23,7 +23,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $user->shouldBlockFrom('user.addPost.'.$user->id);
 
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user)
                     ->visit(new Create('posts'))
                     ->pause(500)
                     ->assertSelectMissingOption('@user', $user->id)
@@ -38,16 +38,14 @@ class RelationshipAuthorizationTest extends DuskTestCase
      */
     public function morphable_resource_cant_be_added_to_parent_if_not_authorized()
     {
-        $this->markTestSkipped('Unable to use `assertSelectMissingOption` with search selection');
-
         $user = User::find(1);
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.addComment.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $post) {
+            $browser->loginAs($user)
                     ->visit(new Create('comments'))
-                    ->select('@commentable-type', 'posts')
+                    ->selectRelation('commentable-type', 'posts')
                     ->pause(500)
                     ->assertSelectMissingOption('@commentable-select', $post->title)
                     ->assertSelectMissingOption('@commentable-select', $post->id);
@@ -61,14 +59,12 @@ class RelationshipAuthorizationTest extends DuskTestCase
      */
     public function create_button_should_be_missing_from_detail_index_when_not_authorized()
     {
-        $this->markTestIncomplete('Create button still shown');
-
         $user = User::find(1);
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.addComment.'.$post->id);
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('posts', 1))
                     ->within(new IndexComponent('comments'), function ($browser) {
                         $browser->assertMissing('@create-button');
@@ -83,15 +79,13 @@ class RelationshipAuthorizationTest extends DuskTestCase
      */
     public function resource_cant_be_attached_to_parent_if_not_authorized()
     {
-        $this->markTestSkipped('Unable to use `assertSelectMissingOption` with search selection');
-
         $user = User::find(1);
         $post = PostFactory::new()->create();
         $tag = TagFactory::new()->create();
         $user->shouldBlockFrom('post.attachTag.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($tag) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $tag) {
+            $browser->loginAs($user)
                     ->visit(new Attach('posts', 1, 'tags'))
                     ->assertSelectMissingOption('@attachable-select', $tag->name)
                     ->assertSelectMissingOption('@attachable-select', $tag->id);
@@ -105,14 +99,12 @@ class RelationshipAuthorizationTest extends DuskTestCase
      */
     public function attach_button_should_be_missing_from_detail_index_when_not_authorized()
     {
-        $this->markTestIncomplete('Attach button still shown');
-
         $user = User::find(1);
         $post = PostFactory::new()->create();
         $user->shouldBlockFrom('post.attachAnyTag.'.$post->id);
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('posts', 1))
                     ->within(new IndexComponent('tags'), function ($browser) {
                         $browser->assertMissing('@attach-button');

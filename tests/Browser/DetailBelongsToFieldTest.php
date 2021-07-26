@@ -22,13 +22,12 @@ class DetailBelongsToFieldTest extends DuskTestCase
         $user->posts()->save($post = PostFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($user, $post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user)
                     ->visit(new Detail('posts', $post->id))
                     ->within(new DetailComponent('posts', $post->id), function ($browser) use ($user) {
                         $browser->clickLink($user->name);
                     })
-                    ->waitForTextIn('h1', 'User Details', 25)
-                    ->assertPathIs('/nova/resources/users/'.$user->id);
+                    ->on(new Detail('users', $user->id));
 
             $browser->blank();
         });
@@ -45,7 +44,7 @@ class DetailBelongsToFieldTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('invoice-items', 1))
                     ->waitForText('Invoice Item Details', 15)
-                    ->assertSeeIn('[data-testid="content"]', 'Invoice Item Details');
+                    ->assertSeeIn('@nova-resource-detail', 'Invoice Item Details');
 
             $browser->blank();
         });
@@ -67,8 +66,8 @@ class DetailBelongsToFieldTest extends DuskTestCase
                     ->within(new DetailComponent('posts', $post->id), function ($browser) use ($user) {
                         $browser->clickLink($user->name);
                     })
-                    ->waitForTextIn('h1', 'User Details: '.$user->id, 25)
-                    ->assertPathIs('/nova/resources/users/'.$user->id);
+                    ->on(new Detail('users', $user->id))
+                    ->assertSeeIn('h1', 'User Details: '.$user->id);
 
             $browser->blank();
         });

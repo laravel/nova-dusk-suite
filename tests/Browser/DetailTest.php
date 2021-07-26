@@ -8,6 +8,9 @@ use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\Replicate;
+use Laravel\Nova\Testing\Browser\Pages\Update;
+use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class DetailTest extends DuskTestCase
@@ -60,8 +63,8 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->edit()
-                    ->waitForTextIn('h1', 'Update User')
-                    ->assertPathIs('/nova/resources/users/1/edit');
+                    ->on(new Update('users', 1))
+                    ->assertSeeIn('h1', 'Update User');
 
             $browser->blank();
         });
@@ -76,8 +79,48 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->keys('', ['e'])
-                    ->waitForTextIn('h1', 'Update User')
-                    ->assertPathIs('/nova/resources/users/1/edit');
+                    ->on(new Update('users', 1))
+                    ->assertSeeIn('h1', 'Update User');
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_navigate_to_replicate_resource_screen()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Detail('users', 2))
+                    ->replicate()
+                    ->on(new Replicate('users', 2))
+                    ->assertSeeIn('h1', 'Create User')
+                    ->assertInputValue('@name', 'Mohamed Said')
+                    ->assertInputValue('@email', 'mohamed@laravel.com')
+                    ->assertSee('Create & Add Another')
+                    ->assertSee('Create User');
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function cannot_navigate_to_replicate_resource_screen_when_blocked_via_policy()
+    {
+        $this->markTestIncomplete('Missing edit button');
+
+        $user = User::find(1);
+        $user->shouldBlockFrom('user.replicate.4');
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
+                    ->visit(new Detail('users', 4))
+                    ->waitFor('@edit-resource-button')
+                    ->assertNotPresent('@replicate-resource-button');
 
             $browser->blank();
         });
@@ -98,8 +141,8 @@ class DetailTest extends DuskTestCase
                 'Nova.app.$router.push({ name: "detail", params: { resourceName: "users", resourceId: 3 }});',
             ]);
 
-            $browser->waitForTextIn('h1', 'User Details: 3')
-                    ->assertPathIs('/nova/resources/users/3')
+            $browser->on(new Detail('users', 3))
+                    ->waitForTextIn('h1', 'User Details: 3')
                     ->assertSeeIn('@users-detail-component', 'David Hemphill');
 
             $browser->blank();
@@ -117,7 +160,7 @@ class DetailTest extends DuskTestCase
                     ->waitForTextIn('h1', 'User Details: 3')
                     ->delete()
                     ->waitForText('The user was deleted')
-                    ->assertPathIs('/nova/resources/users');
+                    ->on(new UserIndex);
 
             $this->assertNull(User::where('id', 3)->first());
 
@@ -133,8 +176,8 @@ class DetailTest extends DuskTestCase
         $user = User::find(1);
         $user->posts()->save($post = PostFactory::new()->create());
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
@@ -153,23 +196,17 @@ class DetailTest extends DuskTestCase
      */
     public function can_navigate_to_create_relationship_screen()
     {
-        $this->markTestIncomplete('Missing create button');
-
         $user = User::find(1);
         $user->posts()->save($post = PostFactory::new()->create());
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
-                    ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitFor('@create-button')
-                                ->click('@create-button')
-                                ->assertPathIs('/nova/resources/posts/new')
-                                ->assertQueryStringHas('viaResource', 'users')
-                                ->assertQueryStringHas('viaResourceId', '1')
-                                ->assertQueryStringHas('viaRelationship', 'posts');
-                    });
+                    ->runCreateRelation('posts')
+                    ->assertQueryStringHas('viaResource', 'users')
+                    ->assertQueryStringHas('viaResourceId', '1')
+                    ->assertQueryStringHas('viaRelationship', 'posts');
 
             $browser->blank();
         });
@@ -180,11 +217,13 @@ class DetailTest extends DuskTestCase
      */
     public function relations_can_be_paginated()
     {
-        $user = User::find(1);
-        $user->posts()->saveMany(PostFactory::new()->times(10)->create());
+        PostFactory::new()->times(10)->create([
+            'user_id' => 1,
+        ]);
 
-        $user2 = User::find(2);
-        $user2->posts()->save(PostFactory::new()->create());
+        PostFactory::new()->create([
+            'user_id' => 2,
+        ]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -211,18 +250,20 @@ class DetailTest extends DuskTestCase
      */
     public function relations_can_be_sorted()
     {
-        $user = User::find(1);
-        $user->posts()->saveMany(PostFactory::new()->times(10)->create());
+        PostFactory::new()->times(10)->create([
+            'user_id' => 1,
+        ]);
 
-        $user2 = User::find(2);
-        $user2->posts()->save(PostFactory::new()->create());
+        PostFactory::new()->create([
+            'user_id' => 2,
+        ]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->assertSeeResource(10)
                                 ->assertSeeResource(6)
                                 ->assertDontSeeResource(1)
@@ -242,11 +283,13 @@ class DetailTest extends DuskTestCase
      */
     public function deleting_all_matching_relations_is_scoped_to_the_relationships()
     {
-        $user = User::find(1);
-        $user->posts()->save($post = PostFactory::new()->create());
+        $post = PostFactory::new()->create([
+            'user_id' => 1,
+        ]);
 
-        $user2 = User::find(2);
-        $user2->posts()->save($post2 = PostFactory::new()->create());
+        $post2 = PostFactory::new()->create([
+            'user_id' => 2,
+        ]);
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(User::find(1))

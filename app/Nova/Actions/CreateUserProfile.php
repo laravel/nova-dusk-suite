@@ -2,15 +2,17 @@
 
 namespace App\Nova\Actions;
 
+use App\Models\Profile;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Timezone;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class StandaloneTask extends Action
+class CreateUserProfile extends Action
 {
     use InteractsWithQueue, Queueable;
 
@@ -23,11 +25,23 @@ class StandaloneTask extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        if (! empty($fields->notes)) {
-            return Action::message('Action executed with ['.$fields->notes.']');
+        $user = $models->first();
+
+        $profile = new Profile();
+        $profile->user_id = $user->getKey();
+        $profile->timezone = $fields->timezone;
+
+        if (! is_null($fields->twitter)) {
+            $profile->twitter_url = "https://twitter.com/{$fields->twitter}";
         }
 
-        return Action::message('Action executed!');
+        if (! is_null($fields->github)) {
+            $profile->github_url = "https://github.com/{$fields->github}";
+        }
+
+        $profile->save();
+
+        return Action::message('User Profile created');
     }
 
     /**
@@ -39,8 +53,9 @@ class StandaloneTask extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            Text::make('Notes', 'notes')
-                ->help('Provide a description for notes.'),
+            Text::make('Twitter Profile', 'twitter')->nullable(),
+            Text::make('GitHub Username', 'github')->nullable(),
+            Timezone::make('Timezone')->default('UTC'),
         ];
     }
 }

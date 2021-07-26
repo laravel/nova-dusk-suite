@@ -26,14 +26,4 @@ class MarkAsActive extends Action
             $model->forceFill(['active' => true])->save();
         }
     }
-
-    /**
-     * Get the fields available on the action.
-     *
-     * @return array
-     */
-    public function fields()
-    {
-        return [];
-    }
 }

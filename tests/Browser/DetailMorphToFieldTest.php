@@ -31,8 +31,8 @@ class DetailMorphToFieldTest extends DuskTestCase
                                 ->assertSee('Post')
                                 ->clickLink($post->title);
                     })
-                    ->waitForText('User Post Details: '.$post->id)
-                    ->assertPathIs('/nova/resources/posts/'.$post->id);
+                    ->on(new Detail('posts', $post->id))
+                    ->assertSee('User Post Details: '.$post->id);
 
             $browser->blank();
         });
@@ -157,7 +157,8 @@ class DetailMorphToFieldTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('comments', $comment->id))
                     ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($comment) {
-                        $browser->assertSee('Illuminate\Foundation\Auth\User: '.$comment->commentable->id);
+                        $browser->waitForText('Commentable')
+                                ->assertSee('Illuminate\Foundation\Auth\User: '.$comment->commentable->id);
                     });
 
             $browser->blank();

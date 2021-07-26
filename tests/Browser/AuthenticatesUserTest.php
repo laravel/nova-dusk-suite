@@ -2,25 +2,30 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
+use App\Models\User;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Nova;
+use Laravel\Nova\Testing\Browser\Pages\Dashboard;
+use Laravel\Nova\Testing\Browser\Pages\Login;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class AuthenticatesUserTest extends DuskTestCase
 {
     /**
      * @test
+     * @dataProvider intendedUrlDataProvider
      */
-    public function it_redirect_to_intended_url_after_login()
+    public function it_redirect_to_intended_url_after_login($targetUrl, $expectedUrl)
     {
-        $this->markTestIncomplete();
-
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/nova/resources/users/3')
-                    ->assertPathIs('/nova/login')
+        $this->browse(function (Browser $browser) use ($targetUrl, $expectedUrl) {
+            $browser->logout()
+                    ->visit(Nova::path().$targetUrl)
+                    ->on(new Login)
                     ->type('email', 'nova@laravel.com')
                     ->type('password', 'password')
                     ->click('button[type="submit"]')
-                    ->assertPathIs('/nova/resources/users/3');
+                    ->waitForLocation(Nova::path().$expectedUrl)
+                    ->assertPathIs(Nova::path().$expectedUrl);
 
             $browser->blank();
         });
@@ -28,27 +33,26 @@ class AuthenticatesUserTest extends DuskTestCase
 
     /**
      * @test
-     * @dataProvider novaApiOrVendorRoutes
      */
-    public function it_redirect_to_default_dashboard_after_login_from_api_or_vendor_route($given)
+    public function it_redirect_to_login_after_logout()
     {
-        $this->markTestIncomplete();
-
-        $this->browse(function (Browser $browser) use ($given) {
-            $browser->logout()
-                    ->visit($given)
-                    ->type('email', 'nova@laravel.com')
-                    ->type('password', 'password')
-                    ->click('button[type="submit"]')
-                    ->assertPathIs('/nova/dashboards/main');
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Dashboard())
+                    ->press('Taylor Otwell')
+                    ->press('Logout')
+                    ->on(new Login)
+                    ->assertGuest();
 
             $browser->blank();
         });
     }
 
-    public function novaApiOrVendorRoutes()
+    public function intendedUrlDataProvider()
     {
-        yield ['/nova-api/scripts/sidebar-tool'];
-        yield ['/nova-api/scripts/custom-field'];
+        yield ['/resources/users/3', '/resources/users/3'];
+        yield ['/dashboards/posts-dashboard', '/dashboards/posts-dashboard'];
+        yield ['/resources/users/lens/passthrough-lens', '/resources/users/lens/passthrough-lens'];
+        yield ['/', '/dashboards/main'];
     }
 }

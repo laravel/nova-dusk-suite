@@ -32,8 +32,8 @@ class RemoveAttachedTest extends DuskTestCase
                             ->within('tr[data-pivot-id="2"]', function ($browser) {
                                 $browser->click('@4-delete-button')
                                     ->elsewhere('', function ($browser) {
-                                        $browser->whenAvailable('.modal', function ($browser) {
-                                            $browser->click('#confirm-delete-button');
+                                        $browser->whenAvailable('.modal[data-modal-open="true"]', function ($browser) {
+                                            $browser->click('@confirm-delete-button');
                                         });
                                     })->pause(500);
                             });

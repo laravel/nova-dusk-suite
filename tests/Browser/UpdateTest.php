@@ -7,6 +7,8 @@ use Database\Factories\PostFactory;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Nova;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\Page;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -25,12 +27,11 @@ class UpdateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user, $post, $post2) {
             $browser->loginAs($user)
-                    ->visit(Nova::path()."/resources/posts/{$post->id}/edit")
-                    ->waitForText('403', 15)
-                    ->assertPathIs('/nova/403');
+                    ->visit(new Page("/resources/posts/{$post->id}/edit"))
+                    ->assertForbidden();
 
             $browser->visit(new Update('posts', $post2->id))
-                    ->assertPathIsNot('/nova/403');
+                    ->assertPathIsNot(Nova::path().'/403');
 
             $browser->blank();
         });
@@ -52,7 +53,9 @@ class UpdateTest extends DuskTestCase
                     ->assertSee('E-mail address should be unique')
                     ->type('@name', 'Taylor Otwell upDATED')
                     ->type('@password', 'secret')
-                    ->update();
+                    ->update()
+                    ->waitForText('The user was updated!')
+                    ->on(new Detail('users', 1));
 
             $user = User::find(1);
 
@@ -88,17 +91,19 @@ class UpdateTest extends DuskTestCase
     public function resource_can_be_updated_and_user_can_continue_editing()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user = User::find(1))
                     ->visit(new Update('users', 1))
                     ->waitForTextIn('h1', 'Update User: 1', 25)
                     ->type('@name', 'Taylor Otwell Updated')
                     ->type('@password', 'secret')
                     ->assertSee('E-mail address should be unique')
-                    ->updateAndContinueEditing();
+                    ->updateAndContinueEditing()
+                    ->waitForText('The user was updated!')
+                    ->on(new Update('users', 1));
 
-            $user = User::find(1);
+            $user->refresh();
 
-            $browser->assertPathIs('/nova/resources/users/'.$user->id.'/edit');
+            $browser->on(new Update('users', $user->id));
 
             $this->assertEquals('Taylor Otwell Updated', $user->name);
             $this->assertTrue(Hash::check('secret', $user->password));
