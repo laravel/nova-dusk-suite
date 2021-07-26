@@ -10,12 +10,14 @@
     "production": "mix --production"
   },
   "devDependencies": {
+    "@tailwindcss/jit": "^0.1.18",
     "laravel-mix": "^6.0",
     "postcss": "^8.2",
     "vue-loader": "^15.9.5",
     "vue-template-compiler": "^2.6.12"
   },
   "dependencies": {
+    "tailwindcss": "^2.0.4",
     "vue": "^2.5.0"
   }
 }

@@ -9,6 +9,9 @@
     "require": {
         "php": ">=7.1.0"
     },
+    "require-dev": {
+        "laravel/nova": "*"
+    },
     "autoload": {
         "psr-4": {
             "Otwell\\SidebarTool\\": "src/"
@@ -21,6 +24,12 @@
             ]
         }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../nova/"
+        }
+    ],
     "config": {
         "sort-packages": true
     },
