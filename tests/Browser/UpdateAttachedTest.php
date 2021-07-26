@@ -111,7 +111,8 @@ class UpdateAttachedTest extends DuskTestCase
                     })
                     ->type('@notes', str_repeat('A', 30))
                     ->update()
-                    ->assertSee('The notes may not be greater than 20 characters.');
+                    ->waitForText('There was a problem submitting the form.')
+                    ->assertSee('The notes must not be greater than 20 characters.');
 
             $user->refresh();
 

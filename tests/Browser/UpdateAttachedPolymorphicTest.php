@@ -112,7 +112,8 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                         $browser->type('', str_repeat('A', 30));
                     })
                     ->update()
-                    ->assertSee('The notes may not be greater than 20 characters.');
+                    ->waitForText('There was a problem submitting the form.')
+                    ->assertSee('The notes must not be greater than 20 characters.');
 
             $this->assertEquals('Test Notes', Post::find(1)->tags->first()->pivot->notes);
 
