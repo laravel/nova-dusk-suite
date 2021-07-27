@@ -20,7 +20,7 @@ jobs:
         dependencies:
           - "locked"
         experimental:
-          - false
+          - true
 
     name: PHP${{ matrix.php }} on ${{ matrix.os }} (${{ matrix.dependencies }})
 
