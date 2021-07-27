@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="sidebar-tool">
         <heading class="mb-6">Sidebar Tool</heading>
 
         <card class="flex flex-col items-center justify-center" style="min-height: 300px">
