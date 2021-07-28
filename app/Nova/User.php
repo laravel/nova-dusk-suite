@@ -168,7 +168,9 @@ class User extends Resource
                         return true;
                     }
 
-                    return $this->resource->exists && is_null($this->resource->profile);
+                    return ! is_null($this->resource)
+                            && $this->resource->exists === true
+                            && is_null($this->resource->profile);
                 }),
         ];
     }
