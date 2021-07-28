@@ -11,6 +11,8 @@ class People extends Model
 
     /**
      * get employee from people.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function employee()
     {

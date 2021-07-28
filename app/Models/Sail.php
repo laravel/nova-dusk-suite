@@ -8,6 +8,8 @@ class Sail extends Model
 {
     /**
      * Get the ship that the sail belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function ship()
     {

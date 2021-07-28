@@ -8,6 +8,8 @@ class Link extends Model
 {
     /**
      * Get all of the link's comments.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function comments()
     {

@@ -150,7 +150,9 @@ class User extends Resource
                         return true;
                     }
 
-                    return $this->resource->exists && $this->resource->active === true;
+                    return ! is_null($this->resource)
+                            && $this->resource->exists === true
+                            && $this->resource->active === true;
                 })->canRun(function ($request, $model) {
                     return (int) $model->getKey() !== 1;
                 }),

@@ -8,6 +8,8 @@ class Invoice extends Model
 {
     /**
      * Get all of the items that belongs to the dock.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function items()
     {
