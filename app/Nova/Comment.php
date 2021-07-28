@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
 
 /**
+ * @property \App\Models\Comment|null  $resource
  * @mixin \App\Models\Comment
  */
 class Comment extends Resource
@@ -47,6 +48,8 @@ class Comment extends Resource
 
     /**
      * Get the commentable field definition.
+     *
+     * @return \Laravel\Nova\Fields\MorphTo
      */
     protected function commentable()
     {

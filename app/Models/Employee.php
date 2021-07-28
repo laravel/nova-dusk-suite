@@ -9,8 +9,10 @@ class Employee extends Model
 {
     use HasFactory;
 
-    /*
+    /**
      * get people from employee
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function people()
     {

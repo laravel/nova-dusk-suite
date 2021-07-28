@@ -8,6 +8,8 @@ class Comment extends Model
 {
     /**
      * Get all of the commentable models.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function commentable()
     {

@@ -140,7 +140,7 @@ class User extends Resource
                 ->showOnDetail()
                 ->canSee(function ($request) {
                     return $request instanceof ActionRequest
-                        || ($this->resource->exists && $this->resource->active === true);
+                        || (! is_null($this->resource) && $this->resource->exists && $this->resource->active === true);
                 })->canRun(function ($request, $model) {
                     return (int) $model->getKey() !== 1;
                 }),

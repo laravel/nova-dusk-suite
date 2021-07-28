@@ -18,6 +18,8 @@ class Post extends Model
 
     /**
      * Get the user that owns the post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
@@ -26,6 +28,8 @@ class Post extends Model
 
     /**
      * Get all of the post's comments.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function comments()
     {
@@ -34,6 +38,8 @@ class Post extends Model
 
     /**
      * Get all of the tags for the post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function tags()
     {
