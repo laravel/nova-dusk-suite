@@ -56,8 +56,6 @@ class Profile extends Resource
 
             Timezone::make('Timezone'),
 
-            HasOne::make('Latest Post', 'latestPost', Post::class),
-
             // Multiselect::make('Interests')->options([
             //     'laravel' => ['label' => 'Laravel', 'group' => 'PHP'],
             //     'phpunit' => ['label' => 'PHPUnit', 'group' => 'PHP'],
@@ -67,6 +65,8 @@ class Profile extends Resource
             //     'vue' => ['label' => 'Vue', 'group' => 'JavaScript'],
             //     'hack' => ['label' => 'Hack'],
             // ]),
+
+            HasOne::make('Latest Post', 'latestPost', Post::class),
         ];
     }
 

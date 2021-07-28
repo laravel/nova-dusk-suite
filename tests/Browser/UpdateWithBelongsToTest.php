@@ -23,7 +23,7 @@ class UpdateWithBelongsToTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new Update('posts', $post->id))
                     ->waitForTextIn('h1', 'Update User Post: '.$post->id, 25)
-                    ->select('@user', 2)
+                    ->selectRelation('user', 2)
                     ->update()
                     ->waitForText('The user post was updated');
 

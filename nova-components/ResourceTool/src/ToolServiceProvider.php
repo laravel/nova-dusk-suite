@@ -17,7 +17,6 @@ class ToolServiceProvider extends ServiceProvider
     {
         Nova::serving(function (ServingNova $event) {
             Nova::script('resource-tool', __DIR__.'/../dist/js/tool.js');
-            Nova::style('resource-tool', __DIR__.'/../dist/css/tool.css');
         });
     }
 

@@ -19,6 +19,7 @@ class AuthenticatesUserTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) use ($targetUrl, $expectedUrl) {
             $browser->logout()
+                    ->assertGuest()
                     ->visit(Nova::path().$targetUrl)
                     ->on(new Login)
                     ->type('email', 'nova@laravel.com')

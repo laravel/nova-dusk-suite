@@ -21,7 +21,7 @@ class CreateWithBelongsToTest extends DuskTestCase
                     ->visit(new Create('posts'))
                     ->type('@title', 'Test Post')
                     ->type('@body', 'Test Post Body')
-                    ->select('select[dusk="user"]', 1)
+                    ->selectRelation('user', 1)
                     ->create();
 
             $post = $user->posts->first();
@@ -64,7 +64,7 @@ class CreateWithBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('ships'))
-                    ->searchAndSelectFirstRelation('docks', '1')
+                    ->searchFirstRelation('docks', '1')
                     ->type('@name', 'Test Ship')
                     ->create();
 
@@ -124,7 +124,7 @@ class CreateWithBelongsToTest extends DuskTestCase
                         'viaResourceId' => 1,
                         'viaRelationship' => 'posts',
                     ]))
-                    ->waitForTextIn('#app [data-testid="content"] form', 'Taylor Otwell')
+                    ->waitForTextIn('@nova-form', 'Taylor Otwell')
                     ->whenAvailable('select[dusk="user"]', function ($browser) {
                         $browser->assertDisabled('')
                                 ->assertSelected('', 1);

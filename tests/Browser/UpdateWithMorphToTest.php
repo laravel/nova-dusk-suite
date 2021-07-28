@@ -25,7 +25,7 @@ class UpdateWithMorphToTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($comment) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Update('comments', $comment->id))
-                        ->searchAndSelectFirstRelation('commentable', 2)
+                        ->searchFirstRelation('commentable', 2)
                         ->update()
                         ->waitForText('The comment was updated');
 

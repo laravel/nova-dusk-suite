@@ -143,7 +143,9 @@ class User extends Resource
         return [
             new Actions\MarkAsActive,
             Actions\MarkAsInactive::make()
-                ->showOnTableRow()->showOnDetail()->canSee(function ($request) {
+                ->showOnTableRow()
+                ->showOnDetail()
+                ->canSee(function ($request) {
                     if ($request instanceof ActionRequest) {
                         return true;
                     }
@@ -155,8 +157,11 @@ class User extends Resource
             new Actions\Sleep,
             Actions\StandaloneTask::make()->standalone(),
             Actions\RedirectToGoogle::make()->withoutConfirmation(),
+            Actions\ChangeCreatedAt::make()->showOnDetail(),
             Actions\CreateUserProfile::make()
-                ->showOnTableRow()->showOnDetail()->canSee(function ($request) {
+                ->showOnTableRow()
+                ->showOnDetail()
+                ->canSee(function ($request) {
                     if ($request instanceof ActionRequest) {
                         return true;
                     }

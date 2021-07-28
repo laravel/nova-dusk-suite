@@ -24,8 +24,9 @@ class AttachSoftDeletingTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($captain, $ship) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Attach('captains', $captain->id, 'ships'))
-                        ->searchAndSelectFirstRelation('ships', $ship->id)
+                        ->searchFirstRelation('ships', $ship->id)
                         ->create()
+                        ->waitForText('The resource was attached!')
                         ->on(new Detail('captains', $captain->id));
 
                 $this->assertCount(1, $captain->fresh()->ships);
@@ -48,8 +49,9 @@ class AttachSoftDeletingTest extends DuskTestCase
                 $browser->loginAs(User::find(1))
                         ->visit(new Attach('captains', $captain->id, 'ships'))
                         ->withTrashedRelation('ships')
-                        ->searchAndSelectFirstRelation('ships', $ship->id)
+                        ->searchFirstRelation('ships', $ship->id)
                         ->create()
+                        ->waitForText('The resource was attached!')
                         ->on(new Detail('captains', $captain->id));
 
                 tap($captain->fresh(), function ($captain) {
@@ -75,8 +77,9 @@ class AttachSoftDeletingTest extends DuskTestCase
                 $this->browse(function (Browser $browser) use ($captain, $ship) {
                     $browser->loginAs(User::find(1))
                             ->visit(new Attach('captains', $captain->id, 'ships'))
-                            ->searchAndSelectFirstRelation('ships', $ship->id)
+                            ->searchFirstRelation('ships', $ship->id)
                             ->create()
+                            ->waitForText('The resource was attached!')
                             ->on(new Detail('captains', $captain->id));
 
                     $this->assertCount(1, $captain->fresh()->ships);
@@ -100,8 +103,9 @@ class AttachSoftDeletingTest extends DuskTestCase
                 $browser->loginAs(User::find(1))
                         ->visit(new Attach('captains', $captain->id, 'ships'))
                         ->withTrashedRelation('ships')
-                        ->searchAndSelectFirstRelation('ships', $ship->id)
+                        ->searchFirstRelation('ships', $ship->id)
                         ->create()
+                        ->waitForText('The resource was attached!')
                         ->on(new Detail('captains', $captain->id));
 
                 tap($captain->fresh(), function ($captain) {

@@ -7,11 +7,9 @@
     ],
     "license": "MIT",
     "require": {
-        "php": ">=7.1.0",
-        "inertiajs/inertia-laravel": "^0.4.1"
+        "php": ">=7.1.0"
     },
     "require-dev": {
-        "php": ">=7.1.0",
         "laravel/nova": "*"
     },
     "autoload": {
@@ -29,7 +27,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../../nova"
+            "url": "../../nova/"
         }
     ],
     "config": {

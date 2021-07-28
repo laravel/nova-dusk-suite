@@ -1,6 +1,6 @@
 <template>
     <div>
-        Resource Tool for {{ fieldName }}
+        Resource Tool for <span class="field-name">{{ fieldName }}</span>
     </div>
 </template>
 
@@ -23,3 +23,9 @@
         }
     }
 </script>
+
+<style lang="postcss" scoped>
+    .field-name {
+        @apply text-indigo-900 font-semibold;
+    }
+</style>
