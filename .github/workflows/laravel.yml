@@ -8,7 +8,7 @@ jobs:
   laravel-tests:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
-    timeout-minutes: 20
+    timeout-minutes: 35
     strategy:
       matrix:
         os:
@@ -20,7 +20,7 @@ jobs:
         dependencies:
           - "locked"
         experimental:
-          - false
+          - true
 
     name: PHP${{ matrix.php }} on ${{ matrix.os }} (${{ matrix.dependencies }})
 
@@ -103,7 +103,7 @@ jobs:
           time: '5s'
 
       - name: Execute tests (Dusk tests) via PHPUnit
-        run: vendor/bin/phpunit -c phpunit.dusk.xml --exclude-group=external-network --exclude-group=local-time
+        run: vendor/bin/phpunit -c phpunit.dusk.xml --exclude-group=external-network,local-time --stop-on-error --stop-on-failure
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root

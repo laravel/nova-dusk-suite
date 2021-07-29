@@ -10,6 +10,9 @@ use Laravel\Nova\Fields\Multiselect;
 use Laravel\Nova\Fields\Timezone;
 use Laravel\Nova\Fields\URL;
 
+/**
+ * @mixin \App\Models\Profile
+ */
 class Profile extends Resource
 {
     /**
@@ -53,8 +56,6 @@ class Profile extends Resource
 
             Timezone::make('Timezone'),
 
-            HasOne::make('Latest Post', 'latestPost', Post::class),
-
             // Multiselect::make('Interests')->options([
             //     'laravel' => ['label' => 'Laravel', 'group' => 'PHP'],
             //     'phpunit' => ['label' => 'PHPUnit', 'group' => 'PHP'],
@@ -64,6 +65,8 @@ class Profile extends Resource
             //     'vue' => ['label' => 'Vue', 'group' => 'JavaScript'],
             //     'hack' => ['label' => 'Hack'],
             // ]),
+
+            HasOne::make('Latest Post', 'latestPost', Post::class),
         ];
     }
 

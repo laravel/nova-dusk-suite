@@ -4,4 +4,17 @@ mix
   .setPublicPath('dist')
   .js('resources/js/tool.js', 'js')
   .vue({ version: 2})
-  .css('resources/css/tool.css', 'css')
+  .webpackConfig({
+    module: {
+      rules: [
+        {
+          test: /\.(postcss)$/,
+          use: [
+            'vue-style-loader',
+            { loader: 'css-loader', options: { importLoaders: 1 } },
+            'postcss-loader'
+          ]
+        }
+      ],
+    },
+  })

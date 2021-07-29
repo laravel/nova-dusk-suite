@@ -11,6 +11,9 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 
+/**
+ * @mixin \App\Models\Ship
+ */
 class Ship extends Resource
 {
     /**

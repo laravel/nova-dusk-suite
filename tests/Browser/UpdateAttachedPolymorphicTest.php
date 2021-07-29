@@ -33,7 +33,8 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                         $browser->assertInputValue('', 'Test Notes');
                     })
                     ->type('@notes', 'Test Notes Updated')
-                    ->update();
+                    ->update()
+                    ->waitForText('The resource was updated!');
 
             $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);
 
@@ -59,7 +60,8 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                             $browser->assertInputValue('', 'Test Notes')
                                     ->type('', 'Test Notes Updated');
                         })
-                        ->update();
+                        ->update()
+                        ->waitForText('The resource was updated!');
 
                 $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);
 
@@ -110,7 +112,8 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                         $browser->type('', str_repeat('A', 30));
                     })
                     ->update()
-                    ->assertSee('The notes may not be greater than 20 characters.');
+                    ->waitForText('There was a problem submitting the form.')
+                    ->assertSee('The notes must not be greater than 20 characters.');
 
             $this->assertEquals('Test Notes', Post::find(1)->tags->first()->pivot->notes);
 

@@ -22,8 +22,7 @@ class CreateWithHasManyThroughTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                 ->visit(new Detail('docks', $dock->id))
                 ->runCreateRelation('sails')
-                ->waitFor('[data-testid="content"] form')
-                ->select('@ship', $ship->id)
+                ->selectRelation('ship', $ship->id)
                 ->type('@inches', '25')
                 ->create()
                 ->waitForText('The sail was created!');

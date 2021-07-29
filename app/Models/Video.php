@@ -11,6 +11,8 @@ class Video extends Model
 
     /**
      * Get all of the post's comments.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function comments()
     {

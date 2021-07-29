@@ -22,10 +22,10 @@ class CreateWithMorphToTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($post) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Create('comments'))
-                        ->waitForTextIn('#app [data-testid="content"] form', 'Commentable')
-                        ->select('@commentable-type', 'posts')
+                        ->waitForTextIn('@nova-form', 'Commentable')
+                        ->selectRelation('commentable-type', 'posts')
                         ->pause(500)
-                        ->searchAndSelectFirstRelation('commentable', 1)
+                        ->searchFirstRelation('commentable', 1)
                         ->type('@body', 'Test Comment')
                         ->create()
                         ->waitForText('The comment was created!')
@@ -49,10 +49,10 @@ class CreateWithMorphToTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($post) {
                 $browser->loginAs(User::find(1))
                         ->visit(new Create('comments'))
-                        ->waitForTextIn('#app [data-testid="content"] form', 'Commentable')
-                        ->select('@commentable-type', 'posts')
+                        ->waitForTextIn('@nova-form', 'Commentable')
+                        ->selectRelation('commentable-type', 'posts')
                         ->pause(500)
-                        ->searchAndSelectFirstRelation('commentable', 1)
+                        ->searchFirstRelation('commentable', 1)
                         ->type('@body', 'Test Comment')
                         ->create()
                         ->waitForText('The comment was created!')
@@ -91,7 +91,7 @@ class CreateWithMorphToTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('posts', $post->id))
                     ->runCreateRelation('comments')
-                    ->waitForTextIn('#app [data-testid="content"] form', 'Commentable')
+                    ->waitForTextIn('@nova-form', 'Commentable')
                     ->assertDisabled('select[dusk="commentable-type"]')
                     ->assertDisabled('select[dusk="commentable-select"]')
                     ->type('@body', 'Test Comment')
@@ -112,7 +112,7 @@ class CreateWithMorphToTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('comments'))
-                    ->waitForTextIn('#app [data-testid="content"] form', 'Commentable')
+                    ->waitForTextIn('@nova-form', 'Commentable')
                     ->assertSee('User Post')
                     ->assertSee('User Video');
 
@@ -134,7 +134,7 @@ class CreateWithMorphToTest extends DuskTestCase
                     'viaResourceId' => $post->id,
                     'viaRelationship' => 'comments',
                 ]))
-                ->waitForTextIn('#app [data-testid="content"] form', 'Commentable')
+                ->waitForTextIn('@nova-form', 'Commentable')
                 ->whenAvailable('select[dusk="commentable-type"]', function ($browser) {
                     $browser->assertDisabled('')
                         ->assertSelected('', 'posts');

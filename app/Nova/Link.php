@@ -8,6 +8,9 @@ use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 
+/**
+ * @mixin \App\Models\Link
+ */
 class Link extends Resource
 {
     /**

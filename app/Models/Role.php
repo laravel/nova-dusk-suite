@@ -8,6 +8,8 @@ class Role extends Model
 {
     /**
      * Get the users the role is attached to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
     {

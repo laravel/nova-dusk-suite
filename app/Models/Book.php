@@ -24,6 +24,8 @@ class Book extends Model
 
     /**
      * Get all of the puchases that belong to the book.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
     {

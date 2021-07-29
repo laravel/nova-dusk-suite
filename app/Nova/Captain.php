@@ -9,6 +9,9 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Text;
 
+/**
+ * @mixin \App\Models\Captain
+ */
 class Captain extends Resource
 {
     /**

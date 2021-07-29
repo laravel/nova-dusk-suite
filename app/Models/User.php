@@ -8,6 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Nova\Actions\Actionable;
 
+/**
+ * @property bool  $active
+ * @property bool  $exists
+ * @property \App\Models\Profile|null  $profile
+ */
 class User extends Authenticatable
 {
     use Actionable, HasFactory, Notifiable;
@@ -46,6 +51,8 @@ class User extends Authenticatable
 
     /**
      * Get the user's profile.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function profile()
     {
@@ -54,6 +61,8 @@ class User extends Authenticatable
 
     /**
      * Get all of the user's posts.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function posts()
     {
@@ -62,6 +71,8 @@ class User extends Authenticatable
 
     /**
      * Get all of the roles attached to the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function roles()
     {
@@ -70,6 +81,8 @@ class User extends Authenticatable
 
     /**
      * Get all of the puchases that belong to the book.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function personalBooks()
     {
@@ -82,6 +95,8 @@ class User extends Authenticatable
 
     /**
      * Get all of the puchases that belong to the book.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function giftBooks()
     {
@@ -94,6 +109,9 @@ class User extends Authenticatable
 
     /**
      * Store the actions the user should be blocked from.
+     *
+     * @param string[]  $block
+     * @return void
      */
     public function shouldBlockFrom(...$block)
     {
@@ -106,6 +124,9 @@ class User extends Authenticatable
 
     /**
      * Determine if the user is blocked from performing the given action.
+     *
+     * @param  string  $action
+     * @return bool
      */
     public function isBlockedFrom($action)
     {
