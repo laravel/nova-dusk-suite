@@ -66,7 +66,7 @@ class Profile extends Resource
             //     'hack' => ['label' => 'Hack'],
             // ]),
 
-            HasOne::make('Latest Post', 'latestPost', Post::class),
+            HasOne::ofMany('Latest Post', 'latestPost', Post::class),
         ];
     }
 
