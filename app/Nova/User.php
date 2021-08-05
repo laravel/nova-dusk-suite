@@ -77,25 +77,28 @@ class User extends Resource
                 return ! $request->user()->isBlockedFrom('resourceTool');
             }),
 
-            HasOne::make('Profile'),
+            HasOne::make('Profile')
+                ->nullable()
+                ->showOnCreating()
+                ->showOnUpdating(),
 
             HasMany::make('Posts', 'posts', Post::class),
 
             BelongsToMany::make('Roles')
-                        ->display('name')
-                        ->fields(function ($request) {
-                            return [
-                                Text::make('Notes', 'notes')->rules('max:20'),
-                            ];
-                        })
-                        ->actions(function ($request) {
-                            return [
-                                new Actions\UpdatePivotNotes,
-                                Actions\StandaloneTask::make()->standalone(),
-                            ];
-                        })
-                        ->referToPivotAs('Role Assignment')
-                        ->prunable(),
+                ->display('name')
+                ->fields(function ($request) {
+                    return [
+                        Text::make('Notes', 'notes')->rules('max:20'),
+                    ];
+                })
+                ->actions(function ($request) {
+                    return [
+                        new Actions\UpdatePivotNotes,
+                        Actions\StandaloneTask::make()->standalone(),
+                    ];
+                })
+                ->referToPivotAs('Role Assignment')
+                ->prunable(),
 
             BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
                 ->fields(new Fields\BookPurchase()),
