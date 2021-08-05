@@ -51,10 +51,10 @@ class Profile extends Resource
 
             BelongsTo::make('User'),
 
-            URL::make('GitHub URL'),
+            URL::make('GitHub URL')->rules('required'),
             URL::make('Twitter URL'),
 
-            Timezone::make('Timezone'),
+            Timezone::make('Timezone')->rules('required'),
 
             // Multiselect::make('Interests')->options([
             //     'laravel' => ['label' => 'Laravel', 'group' => 'PHP'],
