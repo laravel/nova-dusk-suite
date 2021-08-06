@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Multiselect;
+use Laravel\Nova\Fields\MultiSelect;
 use Laravel\Nova\Fields\Timezone;
 use Laravel\Nova\Fields\URL;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
  * @mixin \App\Models\Profile
@@ -56,15 +57,15 @@ class Profile extends Resource
 
             Timezone::make('Timezone')->rules('required'),
 
-            // Multiselect::make('Interests')->options([
-            //     'laravel' => ['label' => 'Laravel', 'group' => 'PHP'],
-            //     'phpunit' => ['label' => 'PHPUnit', 'group' => 'PHP'],
-            //     'livewire' => ['label' => 'Livewire', 'group' => 'PHP'],
-            //     'swoole' => ['label' => 'Swoole', 'group' => 'PHP'],
-            //     'react' => ['label' => 'React', 'group' => 'JavaScript'],
-            //     'vue' => ['label' => 'Vue', 'group' => 'JavaScript'],
-            //     'hack' => ['label' => 'Hack'],
-            // ]),
+            MultiSelect::make('Interests')->options([
+                'laravel' => ['label' => 'Laravel', 'group' => 'PHP'],
+                'phpunit' => ['label' => 'PHPUnit', 'group' => 'PHP'],
+                'livewire' => ['label' => 'Livewire', 'group' => 'PHP'],
+                'swoole' => ['label' => 'Swoole', 'group' => 'PHP'],
+                'react' => ['label' => 'React', 'group' => 'JavaScript'],
+                'vue' => ['label' => 'Vue', 'group' => 'JavaScript'],
+                'hack' => ['label' => 'Hack'],
+            ]),
 
             HasOne::ofMany('Latest Post', 'latestPost', Post::class),
         ];
@@ -112,5 +113,21 @@ class Profile extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    /**
+     * Return the location to redirect the user after creation.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Resource  $resource
+     * @return string
+     */
+    public static function redirectAfterCreate(NovaRequest $request, $resource)
+    {
+        if ($request->viaResource === 'users' && $request->viaRelationship === 'profile') {
+            return '/resources/users/'.$resource->user_id;
+        }
+
+        return parent::redirectAfterCreate($request, $resource);
     }
 }
