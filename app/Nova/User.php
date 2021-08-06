@@ -207,6 +207,6 @@ class User extends Resource
             return '/resources/profiles/new?viaResource='.static::uriKey().'&viaResourceId='.$resource->getKey().'&viaRelationship=profile';
         }
 
-        return '/resources/users/'.static::uriKey();
+        return '/resources/'.static::uriKey().'/'.$resource->getKey();
     }
 }
