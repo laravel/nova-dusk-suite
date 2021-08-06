@@ -20,6 +20,8 @@ class Ship extends Model
 
     /**
      * Get the dock that the ship belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function dock()
     {
@@ -28,6 +30,8 @@ class Ship extends Model
 
     /**
      * Get all of the captains for the ship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function captains()
     {
@@ -36,6 +40,8 @@ class Ship extends Model
 
     /**
      * Get all of the sails for the ship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function sails()
     {

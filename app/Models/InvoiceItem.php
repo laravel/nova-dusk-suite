@@ -8,6 +8,8 @@ class InvoiceItem extends Model
 {
     /**
      * Get the invoice this item belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function invoice()
     {

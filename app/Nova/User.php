@@ -13,6 +13,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\ActionRequest;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Otwell\ResourceTool\ResourceTool;
 
 /**
@@ -150,7 +151,9 @@ class User extends Resource
                         return true;
                     }
 
-                    return $this->resource->exists && $this->resource->active === true;
+                    return ! is_null($this->resource)
+                            && $this->resource->exists === true
+                            && $this->resource->active === true;
                 })->canRun(function ($request, $model) {
                     return (int) $model->getKey() !== 1;
                 }),
@@ -166,7 +169,9 @@ class User extends Resource
                         return true;
                     }
 
-                    return $this->resource->exists && is_null($this->resource->profile);
+                    return ! is_null($this->resource)
+                            && $this->resource->exists === true
+                            && is_null($this->resource->profile);
                 }),
         ];
     }
@@ -184,5 +189,17 @@ class User extends Resource
             new Filters\SelectFirst,
             new Filters\Created,
         ];
+    }
+
+    /**
+     * Return the location to redirect the user after creation.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Resource  $resource
+     * @return string
+     */
+    public static function redirectAfterCreate(NovaRequest $request, $resource)
+    {
+        return '/resources/profiles/new?viaResource='.static::uriKey().'&viaResourceId='.$resource->getKey().'&viaRelationship=profile';
     }
 }

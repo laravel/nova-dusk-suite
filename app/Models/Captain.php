@@ -8,6 +8,8 @@ class Captain extends Model
 {
     /**
      * Get all of the ships that belong to the captain.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function ships()
     {

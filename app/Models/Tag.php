@@ -8,6 +8,8 @@ class Tag extends Model
 {
     /**
      * Get all of the posts that are assigned this tag.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function posts()
     {
