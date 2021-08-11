@@ -49,7 +49,7 @@ class People extends Resource
             Text::make(__('Name')),
 
             /** RELATION */
-            HasOne::make(__('Employee'), 'employee', Employee::class),
+            HasOne::make(__('Employee'), 'employee', Employee::class)->exceptOnForms(),
         ];
     }
 

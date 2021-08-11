@@ -78,10 +78,7 @@ class User extends Resource
                 return ! $request->user()->isBlockedFrom('resourceTool');
             }),
 
-            HasOne::make('Profile')
-                ->nullable()
-                ->showOnCreating()
-                ->showOnUpdating(),
+            HasOne::make('Profile')->nullable(),
 
             HasMany::make('Posts', 'posts', Post::class),
 
