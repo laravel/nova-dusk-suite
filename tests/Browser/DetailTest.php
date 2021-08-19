@@ -57,8 +57,6 @@ class DetailTest extends DuskTestCase
      */
     public function can_navigate_to_edit_page()
     {
-        $this->markTestIncomplete('Missing edit button');
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
@@ -111,8 +109,6 @@ class DetailTest extends DuskTestCase
      */
     public function cannot_navigate_to_replicate_resource_screen_when_blocked_via_policy()
     {
-        $this->markTestIncomplete('Missing edit button');
-
         $user = User::find(1);
         $user->shouldBlockFrom('user.replicate.4');
 
@@ -120,6 +116,7 @@ class DetailTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new Detail('users', 4))
                     ->waitFor('@edit-resource-button')
+                    ->openControlSelector()
                     ->assertNotPresent('@replicate-resource-button');
 
             $browser->blank();
@@ -138,7 +135,7 @@ class DetailTest extends DuskTestCase
                     ->assertSeeIn('@users-detail-component', 'Mohamed Said');
 
             $browser->script([
-                'Nova.app.$router.push({ name: "detail", params: { resourceName: "users", resourceId: 3 }});',
+                'Nova.visit("/resources/users/3");',
             ]);
 
             $browser->on(new Detail('users', 3))

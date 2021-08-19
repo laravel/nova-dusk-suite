@@ -55,8 +55,6 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function can_navigate_to_edit_page()
     {
-        $this->markTestIncomplete('Missing edit button');
-
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {

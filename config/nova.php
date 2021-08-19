@@ -20,7 +20,7 @@ return [
     |
     */
 
-    'name' => 'Nova Site',
+    'name' => env('NOVA_APP_NAME', env('APP_NAME')),
 
     /*
     |--------------------------------------------------------------------------
@@ -125,6 +125,19 @@ return [
     'actions' => [
         'resource' => ActionResource::class,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Nova Storage Disk
+    |--------------------------------------------------------------------------
+    |
+    | This configuration option allows you to define the default driver
+    | used to storing file related fields, based on filesystems base
+    | configuration in your Laravel application.
+    |
+     */
+
+    'storage_disk' => env('NOVA_STORAGE_DISK', 'public'),
 
     /*
     |--------------------------------------------------------------------------

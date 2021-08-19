@@ -102,7 +102,7 @@ class LensTest extends DuskTestCase
                     });
 
             $browser->script([
-                'Nova.app.$router.push({ name: "lens", params: { resourceName: "docks", lens: "passthrough-with-trashed-lens" }});',
+                'Nova.visit("/resources/docks/lens/passthrough-with-trashed-lens");',
             ]);
 
             $browser->on(new Lens('docks', 'passthrough-with-trashed-lens'))
