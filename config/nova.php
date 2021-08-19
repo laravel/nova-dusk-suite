@@ -5,6 +5,7 @@ use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Http\Middleware\Authorize;
 use Laravel\Nova\Http\Middleware\BootTools;
 use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
+use Laravel\Nova\Http\Middleware\HandleInertiaRequests;
 
 return [
 
@@ -86,6 +87,7 @@ return [
 
     'middleware' => [
         'web',
+        HandleInertiaRequests::class,
         DispatchServingNovaEvent::class,
         BootTools::class,
     ],
