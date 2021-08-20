@@ -72,8 +72,8 @@ class ToolAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
                     ->visit(new Page('/sidebar-tool'))
-                    ->waitForText('Whoops')
-                    ->assertSee('Nova experienced an unrecoverable error.')
+                    ->waitForText('403')
+                    ->assertSee("The government won't let us show you what's behind these doors…")
                     ->assertDontSee('Sidebar Tool');
 
             $browser->blank();

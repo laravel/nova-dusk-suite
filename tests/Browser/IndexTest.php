@@ -156,7 +156,7 @@ class IndexTest extends DuskTestCase
                     });
 
             $browser->script([
-                'Nova.app.$router.push({ name: "index", params: { resourceName: "posts" }});',
+                'Nova.visit("/resources/posts");',
             ]);
 
             $browser->on(new Index('posts'))
@@ -267,7 +267,7 @@ class IndexTest extends DuskTestCase
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
                                 ->assertValue('@search', '')
-                                ->assertQueryStringHas('users_search', '')
+                                ->assertQueryStringMissing('users_search', '')
                                 ->assertSeeResource(1)
                                 ->assertSeeResource(2)
                                 ->assertSeeResource(3)

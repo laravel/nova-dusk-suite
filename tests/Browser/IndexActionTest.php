@@ -27,7 +27,7 @@ class IndexActionTest extends DuskTestCase
                             ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->runAction('mark-as-active');
-                    });
+                    })->waitForText('The action ran successfully!');
 
             $this->assertEquals([
                 1 => false,

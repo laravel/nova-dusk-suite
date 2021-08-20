@@ -195,7 +195,7 @@ class User extends Resource
      * Return the location to redirect the user after creation.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Laravel\Nova\Resource  $resource
+     * @param  static  $resource
      * @return string
      */
     public static function redirectAfterCreate(NovaRequest $request, $resource)
