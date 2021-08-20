@@ -27,12 +27,28 @@ class CreateTest extends DuskTestCase
 
             $user = User::orderBy('id', 'desc')->first();
 
-            $browser->on(new Detail('users', $user->id));
+            $browser->on(new Create('profiles'))
+                    ->assertQueryStringHas('viaResource', 'users')
+                    ->assertQueryStringHas('viaResourceId', $user->id)
+                    ->assertQueryStringHas('viaRelationship', 'profile')
+                    ->type('@github_url', 'https://github.com/adamwathan')
+                    ->type('@twitter_url', 'https://twitter.com/adamwathan')
+                    ->select('select[dusk="timezone"]', 'UTC')
+                    ->select('select[dusk="interests"]', ['laravel', 'phpunit'])
+                    ->create()
+                    ->waitForText('The profile was created!')
+                    ->on(new Detail('users', $user->id));
 
-            $this->assertEquals('Adam Wathan', $user->name);
-            $this->assertEquals('adam@laravel.com', $user->email);
+            $user->refresh()->load('profile');
+
+            $this->assertSame('Adam Wathan', $user->name);
+            $this->assertSame('adam@laravel.com', $user->email);
             $this->assertTrue(Hash::check('secret', $user->password));
             $this->assertTrue($user->active);
+            $this->assertSame('https://github.com/adamwathan', $user->profile->github_url);
+            $this->assertSame('https://twitter.com/adamwathan', $user->profile->twitter_url);
+            $this->assertSame('UTC', $user->profile->timezone);
+            $this->assertSame(['laravel', 'phpunit'], $user->profile->interests);
 
             $browser->blank();
         });

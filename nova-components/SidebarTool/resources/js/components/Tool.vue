@@ -12,10 +12,10 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { layout } from '@/mixins'
 
 export default {
-    layout: 'AppLayout',
+    ...layout('AppLayout'),
 
     metaInfo() {
         return {
@@ -28,7 +28,7 @@ export default {
     },
 
     mounted() {
-        axios.get('/nova-vendor/custom-sidebar-tool').then(response => {
+        Nova.request().get('/nova-vendor/custom-sidebar-tool').then(response => {
             this.sidebarResponse = response.data
         })
     },

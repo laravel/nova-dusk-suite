@@ -2,6 +2,7 @@
 
 namespace Otwell\SidebarTool\Http\Middleware;
 
+use Laravel\Nova\Nova;
 use Otwell\SidebarTool\SidebarTool;
 
 class Authorize
@@ -15,6 +16,18 @@ class Authorize
      */
     public function handle($request, $next)
     {
-        return resolve(SidebarTool::class)->authorize($request) ? $next($request) : abort(403);
+        $tool = collect(Nova::$tools)->filter(function ($tool) {
+            return $tool instanceof SidebarTool;
+        })->first();
+
+        if (is_null($tool)) {
+            abort(404);
+        }
+
+        if (! $tool->authorize($request)) {
+            abort(403);
+        }
+
+        return $next($request);
     }
 }

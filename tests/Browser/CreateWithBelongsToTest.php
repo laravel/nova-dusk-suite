@@ -106,7 +106,7 @@ class CreateWithBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Create('invoice-items'))
-                    ->assertSeeIn('[data-testid="content"]', 'Create Invoice Item');
+                    ->assertSeeIn('@nova-form', 'Create Invoice Item');
 
             $browser->blank();
         });

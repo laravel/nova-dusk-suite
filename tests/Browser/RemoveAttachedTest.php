@@ -20,14 +20,14 @@ class RemoveAttachedTest extends DuskTestCase
         Carbon::setTestNow($now = Carbon::now());
 
         DB::table('book_purchases')->insert([
-            ['user_id' => 1, 'book_id' => 4, 'type' => 'personal', 'price' => 34, 'purchased_at' => $now->toDatetimeString()],
-            ['user_id' => 1, 'book_id' => 4, 'type' => 'personal', 'price' => 32, 'purchased_at' => $now->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 34, 'purchased_at' => $now->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 32, 'purchased_at' => $now->toDatetimeString()],
         ]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
+                    ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
                         $browser->waitForTable()
                             ->within('tr[data-pivot-id="2"]', function ($browser) {
                                 $browser->click('@4-delete-button')
@@ -44,12 +44,14 @@ class RemoveAttachedTest extends DuskTestCase
             'user_id' => 1,
             'book_id' => 4,
             'price' => 34,
+            'type' => 'gift',
         ]);
 
         $this->assertDatabaseMissing('book_purchases', [
             'user_id' => 1,
             'book_id' => 4,
             'price' => 32,
+            'type' => 'gift',
         ]);
     }
 }
