@@ -27,7 +27,7 @@ class Book extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users()
+    public function purchasers()
     {
         return $this->belongsToMany(User::class, 'book_purchases')
                     ->using(BookPurchase::class)
