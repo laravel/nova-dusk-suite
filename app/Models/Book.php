@@ -49,7 +49,7 @@ class Book extends Model
                     ->withTimestamps();
     }
 
-     /**
+    /**
      * Get all of the gift puchases that belong to the book.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
