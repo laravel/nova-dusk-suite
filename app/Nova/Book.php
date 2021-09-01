@@ -51,14 +51,14 @@ class Book extends Resource
             Text::make('Title')->readonly(),
             Boolean::make('Active'),
 
-            BelongsToMany::make('Purchasers', 'users', User::class)
+            BelongsToMany::make('Purchasers', 'purchasers', User::class)
                 ->fields(new Fields\BookPurchase(null, true)),
 
-            // BelongsToMany::make('Personal Purchasers', 'personalPurchasers', User::class)
-            //     ->fields(new Fields\BookPurchase('personal')),
+            BelongsToMany::make('Personal Purchasers', 'personalPurchasers', User::class)
+                ->fields(new Fields\BookPurchase('personal')),
 
-            // BelongsToMany::make('Gift Purchasers', 'giftPurchasers', User::class)
-            //     ->fields(new Fields\BookPurchase('gift')),
+            BelongsToMany::make('Gift Purchasers', 'giftPurchasers', User::class)
+                ->fields(new Fields\BookPurchase('gift')),
         ];
     }
 
