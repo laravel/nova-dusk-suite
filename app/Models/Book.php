@@ -34,4 +34,32 @@ class Book extends Model
                     ->withPivot('id', 'price', 'type', 'purchased_at')
                     ->withTimestamps();
     }
+
+    /**
+     * Get all of the personal puchases that belong to the book.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function personalPurchasers()
+    {
+        return $this->belongsToMany(User::class, 'book_purchases')
+                    ->using(BookPurchase::class)
+                    ->withPivot('id', 'price', 'type', 'purchased_at')
+                    ->wherePivotIn('type', ['personal'])
+                    ->withTimestamps();
+    }
+
+     /**
+     * Get all of the gift puchases that belong to the book.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function giftPurchasers()
+    {
+        return $this->belongsToMany(User::class, 'book_purchases')
+                    ->using(BookPurchase::class)
+                    ->withPivot('id', 'price', 'type')
+                    ->wherePivotIn('type', ['gift'])
+                    ->withTimestamps();
+    }
 }

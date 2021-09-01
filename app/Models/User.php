@@ -102,8 +102,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Book::class, 'book_purchases')
                     ->using(BookPurchase::class)
                     ->withPivot('id', 'price', 'type', 'purchased_at')
-                    ->wherePivotIn('type', ['gift'])
-                    ->withTimestamps();
+                    ->wherePivotIn('type', ['gift']);
     }
 
     /**
