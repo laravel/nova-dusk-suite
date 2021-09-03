@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use DateTimeInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -94,8 +95,17 @@ class User extends Resource
                 ->allowDuplicateRelations(),
 
             BelongsToMany::make('Gift Books', 'giftBooks', Book::class)
-                ->fields(new Fields\BookPurchase('gift'))
-                ->allowDuplicateRelations(),
+                ->fields(
+                    (new Fields\BookPurchase('gift'))->appends([
+                        Text::make('Relative Time', function ($resource) {
+                            $purchased_at = $resource->purchased_at;
+
+                            return $purchased_at instanceof DateTimeInterface
+                                        ? $purchased_at->diffForHumans()
+                                        : null;
+                        }),
+                    ])
+                )->allowDuplicateRelations(),
         ];
     }
 

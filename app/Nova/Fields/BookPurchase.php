@@ -26,6 +26,13 @@ class BookPurchase
     protected $showTimestamps;
 
     /**
+     * Appends fields.
+     *
+     * @var array
+     */
+    protected $appends = [];
+
+    /**
      * Construct a new object.
      *
      * @param string|null  $type
@@ -35,6 +42,19 @@ class BookPurchase
     {
         $this->type = $type ?? 'personal';
         $this->showTimestamps = $showTimestamps;
+    }
+
+    /**
+     * Appends with following fields.
+     *
+     * @param  array  $fields
+     * @return $this
+     */
+    public function appends(array $fields)
+    {
+        $this->appends = $fields;
+
+        return $this;
     }
 
     /**
@@ -62,6 +82,8 @@ class BookPurchase
                         return now()->second(0);
                     }
                 })->incrementPickerMinuteBy(1),
+
+            $this->merge($this->appends),
 
             $this->mergeWhen($this->showTimestamps, function () {
                 return [
