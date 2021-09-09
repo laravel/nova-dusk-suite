@@ -2,6 +2,7 @@
 
 namespace App\Nova\Fields;
 
+use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Select;
@@ -9,6 +10,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class BookPurchase
 {
+    use ConditionallyLoadsAttributes;
+
     /**
      * Purchase type.
      *
@@ -17,13 +20,42 @@ class BookPurchase
     protected $type;
 
     /**
+     * Show timestamps.
+     *
+     * @var bool
+     */
+    protected $showTimestamps;
+
+    /**
+     * Appends fields.
+     *
+     * @var array
+     */
+    protected $appends = [];
+
+    /**
      * Construct a new object.
      *
      * @param string|null  $type
+     * @param bool  $showTimestamps
      */
-    public function __construct($type = null)
+    public function __construct($type = null, $showTimestamps = false)
     {
-        $this->type = $type;
+        $this->type = $type ?? 'personal';
+        $this->showTimestamps = $showTimestamps;
+    }
+
+    /**
+     * Appends with following fields.
+     *
+     * @param  array  $fields
+     * @return $this
+     */
+    public function appends(array $fields)
+    {
+        $this->appends = $fields;
+
+        return $this;
     }
 
     /**
@@ -63,6 +95,15 @@ class BookPurchase
                 ->rules('required')
                 ->default(now()->second(0))
                 ->incrementPickerMinuteBy(1),
+
+            $this->merge($this->appends),
+
+            $this->mergeWhen($this->showTimestamps, function () {
+                return [
+                    DateTime::make('Created At'),
+                    DateTime::make('Updated At'),
+                ];
+            }),
         ];
     }
 }
