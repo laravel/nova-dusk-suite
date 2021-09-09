@@ -12,7 +12,7 @@ use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
- * @property \App\Models\Profile|null  $resource
+ * @property \App\Models\Profile|null $resource
  * @mixin \App\Models\Profile
  */
 class Profile extends Resource

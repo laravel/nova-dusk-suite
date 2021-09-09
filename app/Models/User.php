@@ -9,9 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Nova\Actions\Actionable;
 
 /**
- * @property bool  $active
- * @property bool  $exists
- * @property \App\Models\Profile|null  $profile
+ * @property bool $active
+ * @property bool $exists
+ * @property \App\Models\Profile|null $profile
  */
 class User extends Authenticatable
 {
@@ -109,7 +109,7 @@ class User extends Authenticatable
     /**
      * Store the actions the user should be blocked from.
      *
-     * @param string[]  $block
+     * @param  string[]  $block
      * @return void
      */
     public function shouldBlockFrom(...$block)

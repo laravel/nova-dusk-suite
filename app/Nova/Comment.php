@@ -9,7 +9,7 @@ use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
 
 /**
- * @property \App\Models\Comment|null  $resource
+ * @property \App\Models\Comment|null $resource
  * @mixin \App\Models\Comment
  */
 class Comment extends Resource
