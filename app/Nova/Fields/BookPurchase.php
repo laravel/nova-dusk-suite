@@ -36,8 +36,8 @@ class BookPurchase
     /**
      * Construct a new object.
      *
-     * @param string|null  $type
-     * @param bool  $showTimestamps
+     * @param  string|null  $type
+     * @param  bool  $showTimestamps
      */
     public function __construct($type = null, $showTimestamps = false)
     {

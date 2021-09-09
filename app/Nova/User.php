@@ -18,7 +18,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Otwell\ResourceTool\ResourceTool;
 
 /**
- * @property \App\Models\User|null  $resource
+ * @property \App\Models\User|null $resource
  * @mixin \App\Models\User
  */
 class User extends Resource
