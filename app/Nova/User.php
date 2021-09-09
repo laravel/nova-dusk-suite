@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use DateTimeInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
@@ -17,7 +18,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Otwell\ResourceTool\ResourceTool;
 
 /**
- * @property \App\Models\User|null  $resource
+ * @property \App\Models\User|null $resource
  * @mixin \App\Models\User
  */
 class User extends Resource
@@ -102,8 +103,17 @@ class User extends Resource
                 ->fields(new Fields\BookPurchase()),
 
             BelongsToMany::make('Gift Books', 'giftBooks', Book::class)
-                ->fields(new Fields\BookPurchase('gift'))
-                ->allowDuplicateRelations(),
+                ->fields(
+                    (new Fields\BookPurchase('gift'))->appends([
+                        Text::make('Relative Time', function ($resource) {
+                            $purchased_at = $resource->purchased_at;
+
+                            return $purchased_at instanceof DateTimeInterface
+                                        ? $purchased_at->diffForHumans()
+                                        : null;
+                        }),
+                    ])
+                )->allowDuplicateRelations(),
         ];
     }
 

@@ -11,7 +11,7 @@ use Laravel\Nova\Http\Requests\LensRequest;
 use Laravel\Nova\Lenses\Lens;
 
 /**
- * @property \App\Models\Post|\stdClass  $resource
+ * @property \App\Models\Post|\stdClass $resource
  */
 class PostLens extends Lens
 {
