@@ -23,7 +23,7 @@ class LensActionTest extends DuskTestCase
                             ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->runAction('mark-as-active');
-                    });
+                    })->waitForText('The action ran successfully!');
 
             $this->assertEquals([
                 1 => false,
@@ -51,7 +51,7 @@ class LensActionTest extends DuskTestCase
                             ->assertDontSeeIn('@1-row', 'Mark As Inactive')
                             ->assertSeeIn('@2-row', 'Mark As Inactive')
                             ->runInlineAction(2, 'mark-as-inactive');
-                    });
+                    })->waitForText('The action ran successfully!');
 
             $this->assertEquals([
                 1 => false,
@@ -78,7 +78,7 @@ class LensActionTest extends DuskTestCase
 
                         $browser->selectAllMatching()
                                 ->runAction('mark-as-active');
-                    });
+                    })->waitForText('The action ran successfully!');
 
             $this->assertEquals([
                 1 => false,
