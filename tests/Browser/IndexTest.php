@@ -11,7 +11,6 @@ use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\Page;
-use Laravel\Nova\Testing\Browser\Pages\Replicate;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -103,9 +102,9 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()->click('@2-replicate-button');
+                        $browser->waitForTable()->replicateResourceById(2);
                     })
-                    ->on(new Replicate('users', 2))
+                    ->waitForText('Create User')
                     ->assertSeeIn('h1', 'Create User')
                     ->assertInputValue('@name', 'Mohamed Said')
                     ->assertInputValue('@email', 'mohamed@laravel.com')
@@ -129,10 +128,18 @@ class IndexTest extends DuskTestCase
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
-                            ->assertNotPresent('@4-replicate-button')
-                            ->assertPresent('@3-replicate-button')
-                            ->assertPresent('@2-replicate-button')
-                            ->assertPresent('@1-replicate-button');
+                            ->openControlSelectorById(4)->elsewhere('', function ($browser) {
+                                $browser->assertNotPresent('@4-replicate-button');
+                            })
+                            ->openControlSelectorById(3)->elsewhere('', function ($browser) {
+                                $browser->assertPresent('@3-replicate-button');
+                            })
+                            ->openControlSelectorById(2)->elsewhere('', function ($browser) {
+                                $browser->assertPresent('@2-replicate-button');
+                            })
+                            ->openControlSelectorById(1)->elsewhere('', function ($browser) {
+                                $browser->assertPresent('@1-replicate-button');
+                            });
                     });
 
             $browser->blank();
