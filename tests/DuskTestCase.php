@@ -53,7 +53,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      * Get package providers.
      *
      * @param  \Illuminate\Foundation\Application  $app
-     *
      * @return array
      */
     protected function getPackageProviders($app)
@@ -69,7 +68,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      * Get application aliases.
      *
      * @param  \Illuminate\Foundation\Application  $app
-     *
      * @return array
      */
     protected function getApplicationAliases($app)
@@ -81,7 +79,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      * Get application providers.
      *
      * @param  \Illuminate\Foundation\Application  $app
-     *
      * @return array
      */
     protected function getApplicationProviders($app)
@@ -109,7 +106,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      * Resolve application core configuration implementation.
      *
      * @param  \Illuminate\Foundation\Application  $app
-     *
      * @return void
      */
     protected function resolveApplicationConfiguration($app)
@@ -123,7 +119,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      * Resolve application Console Kernel implementation.
      *
      * @param  \Illuminate\Foundation\Application  $app
-     *
      * @return void
      */
     protected function resolveApplicationConsoleKernel($app)
@@ -135,7 +130,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      * Resolve application HTTP Kernel implementation.
      *
      * @param  \Illuminate\Foundation\Application  $app
-     *
      * @return void
      */
     protected function resolveApplicationHttpKernel($app)
@@ -147,7 +141,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      * Resolve application HTTP exception handler.
      *
      * @param  \Illuminate\Foundation\Application  $app
-     *
      * @return void
      */
     protected function resolveApplicationExceptionHandler($app)
