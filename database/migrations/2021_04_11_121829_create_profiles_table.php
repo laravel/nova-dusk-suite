@@ -15,7 +15,7 @@ class CreateProfilesTable extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->index();
+            $table->foreignId('user_id')->unique();
 
             $table->string('github_url')->nullable();
             $table->string('twitter_url')->nullable();
