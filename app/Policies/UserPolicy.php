@@ -34,7 +34,7 @@ class UserPolicy
             return $user->is($model);
         }
 
-        return true;
+        return ! $user->isBlockedFrom('user.view.'.$model->id);
     }
 
     /**
