@@ -54,7 +54,12 @@ class Post extends Resource
         return [
             ID::make('ID', 'id')->asBigInt()->sortable(),
 
-            BelongsTo::make('User', 'user')->display('name')->sortable(),
+            BelongsTo::make('User', 'user')
+                ->display('name')
+                ->sortable()
+                ->default(function ($request) {
+                    return $request->user()->id > 1 ? $request->user()->id : null;
+                }),
 
             Text::make('Title', 'title')->sortable(),
             Textarea::make('Body', 'body')->stacked(),
