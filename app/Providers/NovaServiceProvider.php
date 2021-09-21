@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Nova\Dashboards\Main;
 use App\Nova\Dashboards\Posts;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Otwell\SidebarTool\SidebarTool;
@@ -19,6 +20,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Nova::userMenu(function ($request) {
+            return [
+                MenuItem::make('My Account')->path('/resources/users/'.$request->user()->id),
+            ];
+        });
     }
 
     /**
