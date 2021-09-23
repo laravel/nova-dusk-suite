@@ -49,7 +49,7 @@ class Book extends Resource
             ID::make('ID', 'id')->sortable(),
             Text::make(__('SKU'), 'sku')->sortable(),
             Text::make('Title')->readonly(),
-            Boolean::make('Active'),
+            Boolean::make('Active')->filterable(),
 
             BelongsToMany::make('Purchasers', 'purchasers', User::class)
                 ->fields(new Fields\BookPurchase(null, true)),

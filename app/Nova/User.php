@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\BooleanGroup;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
@@ -73,7 +74,16 @@ class User extends Resource
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
 
-            Boolean::make('Active', 'active')->default(true)->hideFromIndex(),
+            Boolean::make('Active', 'active')->default(true)->filterable()->hideFromIndex(),
+
+            BooleanGroup::make('Permissions')->options([
+                'create' => 'Create',
+                'read' => 'Read',
+                'update' => 'Update',
+                'delete' => 'Delete',
+            ])->noValueText('No permissions selected.')
+            ->filterable(),
+
 
             ResourceTool::make()->canSee(function ($request) {
                 return ! $request->user()->isBlockedFrom('resourceTool');

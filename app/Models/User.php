@@ -47,6 +47,8 @@ class User extends Authenticatable
         'settings' => Casts\AsArrayObject::class,
         'blocked_from' => 'json',
         'active' => 'boolean',
+        'settings' => 'array',
+        'permissions' => 'array',
     ];
 
     /**
