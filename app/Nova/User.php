@@ -84,7 +84,6 @@ class User extends Resource
             ])->noValueText('No permissions selected.')
             ->filterable(),
 
-
             ResourceTool::make()->canSee(function ($request) {
                 return ! $request->user()->isBlockedFrom('resourceTool');
             }),
