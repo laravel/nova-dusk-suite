@@ -41,7 +41,7 @@ class BookPurchase
      */
     public function __construct($type = null, $showTimestamps = false)
     {
-        $this->type = $type ?? 'personal';
+        $this->type = $type;
         $this->showTimestamps = $showTimestamps;
     }
 
