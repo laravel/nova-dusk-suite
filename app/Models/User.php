@@ -44,10 +44,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'settings' => Casts\AsArrayObject::class,
         'blocked_from' => 'json',
         'active' => 'boolean',
-        'settings' => 'array',
+        'settings' => Casts\AsArrayObject::class,
         'permissions' => 'array',
     ];
 
