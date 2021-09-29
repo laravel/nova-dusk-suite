@@ -45,7 +45,7 @@ class Sail extends Resource
                 ->display('name')
                 ->showCreateRelationButton(file_exists(base_path('.inline-create')))
                 ->searchable(file_exists(base_path('.searchable'))),
-            Number::make('Inches', 'inches')->sortable(),
+            Number::make('Inches', 'inches')->sortable()->filterable(),
             Slug::make('Slug', 'slug')->from('Name')->showOnUpdating(false),
         ];
     }
