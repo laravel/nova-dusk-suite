@@ -17,3 +17,13 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('searchable:on', function () {
+    File::put(base_path('.searchable'), '');
+    $this->comment('Enable searchable');
+});
+
+Artisan::command('searchable:off', function () {
+    File::delete(base_path('.searchable'));
+    $this->comment('Disable searchable');
+});
