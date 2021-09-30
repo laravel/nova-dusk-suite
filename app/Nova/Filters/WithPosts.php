@@ -40,10 +40,10 @@ class WithPosts extends Filter
     /**
      * Get the filter's available options.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function options(Request $request)
+    public function options(NovaRequest $request)
     {
         return [
             'With Commented Posts' => 'with-post-and-comment',
