@@ -2,8 +2,8 @@
 
 namespace App\Nova\Filters;
 
-use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class WithPosts extends Filter
 {
@@ -17,12 +17,12 @@ class WithPosts extends Filter
     /**
      * Apply the filter to the given query.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function apply(Request $request, $query, $value)
+    public function apply(NovaRequest $request, $query, $value)
     {
         if ($value === 'with-post-and-comment') {
             return $query->whereHas('posts', function ($query) {
