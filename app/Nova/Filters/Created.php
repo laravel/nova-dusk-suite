@@ -4,6 +4,7 @@ namespace App\Nova\Filters;
 
 use Carbon\CarbonImmutable;
 use Laravel\Nova\Filters\DateFilter;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Created extends DateFilter
 {
@@ -15,7 +16,7 @@ class Created extends DateFilter
      * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function apply(Request $request, $query, $value)
+    public function apply(NovaRequest $request, $query, $value)
     {
         $value = CarbonImmutable::parse($value);
 

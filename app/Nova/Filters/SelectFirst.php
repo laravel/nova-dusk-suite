@@ -32,7 +32,7 @@ class SelectFirst extends Filter
      * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function apply(Request $request, $query, $value)
+    public function apply(NovaRequest $request, $query, $value)
     {
         return $query->where($this->keyName, $value);
     }
