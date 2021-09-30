@@ -65,7 +65,7 @@ class BookPurchase
     public function __invoke()
     {
         return [
-            Currency::make('Price')->rules(['required', 'numeric']),
+            Currency::make('Price')->rules(['required', 'numeric'])->filterable(),
 
             Select::make('Type')->options([
                 'personal' => 'Personal',
