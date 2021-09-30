@@ -81,7 +81,7 @@ class BookPurchase
                     if ($request->isCreateOrAttachRequest()) {
                         return now()->second(0);
                     }
-                })->incrementPickerMinuteBy(1),
+                }),
 
             $this->merge($this->appends),
 
