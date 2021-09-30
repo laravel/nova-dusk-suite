@@ -16,6 +16,7 @@ use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\ActionRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravie\QueryFilter\Searchable;
 use Otwell\ResourceTool\ResourceTool;
 
 /**
@@ -61,6 +62,8 @@ class User extends Resource
             Text::make('Name', 'name')->sortable()->rules('required')
                 ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
                     $model->{$attribute} = Str::title($request->input($attribute));
+                })->filterable(function ($request, $query, $value, $attribute) {
+                    return (new Searchable($value, [$attribute, 'email']))->apply($query);
                 }),
 
             Text::make('Email', 'email')->sortable()->rules('required', 'email', 'max:255')
