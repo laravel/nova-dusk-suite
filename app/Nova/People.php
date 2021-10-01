@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -47,6 +48,8 @@ class People extends Resource
             ID::make(__('ID'), 'id')->sortable(),
 
             Text::make(__('Name')),
+
+            Date::make('Created At')->hideWhenCreating(),
 
             /** RELATION */
             HasOne::make(__('Employee'), 'employee', Employee::class),
