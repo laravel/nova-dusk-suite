@@ -84,8 +84,7 @@ class ActionFieldTest extends DuskTestCase
                             })->keys('', ['e']);
                         });
                     })
-                    ->assertPresent('.modal[data-modal-open=true]')
-                    ->on(new Detail('users', 1));
+                    ->assertPresent('.modal[data-modal-open=true]');
 
             $browser->blank();
         });
