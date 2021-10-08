@@ -49,22 +49,6 @@ class AuthenticatesUserTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function it_clear_user_association_after_logout()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Dashboard())
-                    ->logout()
-                    ->visit(new Login)
-                    ->assertGuest();
-
-            $browser->blank();
-        });
-    }
-
     public function intendedUrlDataProvider()
     {
         yield ['/resources/users/3', '/resources/users/3'];

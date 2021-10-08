@@ -76,6 +76,7 @@ class BookPurchase
 
                         return;
                     }
+<<<<<<< HEAD
 
                     $field->rules(['required', 'numeric', 'min:0', 'max:99'])
                         ->help('Price starts from $0-$99');
@@ -95,6 +96,9 @@ class BookPurchase
                 ->rules('required')
                 ->default(now()->second(0))
                 ->incrementPickerMinuteBy(1),
+=======
+                }),
+>>>>>>> master
 
             $this->merge($this->appends),
 
