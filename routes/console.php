@@ -23,7 +23,17 @@ Artisan::command('searchable:on', function () {
     $this->comment('Enable searchable');
 });
 
-Artisan::command('searchable:off', function () {
-    File::delete(base_path('.searchable'));
-    $this->comment('Disable searchable');
+Artisan::command('inline-create:off', function () {
+    File::delete(base_path('.inline-create'));
+    $this->comment('Disable inline-create');
+});
+
+Artisan::command('inline-create:on', function () {
+    File::put(base_path('.inline-create'), '');
+    $this->comment('Enable inline-create');
+});
+
+Artisan::command('inline-create:off', function () {
+    File::delete(base_path('.inline-create'));
+    $this->comment('Disable inline-create');
 });
