@@ -61,8 +61,7 @@ class Book extends Resource
                 ->fields(new Fields\BookPurchase(null, true)),
 
             BelongsToMany::make('Personal Purchasers', 'personalPurchasers', User::class)
-                ->fields(new Fields\BookPurchase('personal'))
-                ->showCreateRelationButton(file_exists(base_path('.inline-create'))),
+                ->fields(new Fields\BookPurchase('personal')),
 
             BelongsToMany::make('Gift Purchasers', 'giftPurchasers', User::class)
                 ->fields(new Fields\BookPurchase('gift')),
