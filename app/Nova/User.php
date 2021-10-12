@@ -101,7 +101,7 @@ class User extends Resource
                         ->showCreateRelationButton(file_exists(base_path('.inline-create'))),
 
             BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
-                ->fields(new Fields\BookPurchase())
+                ->fields(new Fields\BookPurchase()),
 
             BelongsToMany::make('Gift Books', 'giftBooks', Book::class)
                 ->fields(
