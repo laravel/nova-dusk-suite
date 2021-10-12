@@ -51,7 +51,11 @@ class Book extends Resource
             Text::make('Title')->readonly(function ($request) {
                 return $request->isUpdateOrUpdateAttachedRequest();
             }),
-            Boolean::make('Active'),
+            Boolean::make('Active')->default(function ($request) {
+                if ($request->isCreateOrAttachRequest()) {
+                    return true;
+                }
+            }),
 
             BelongsToMany::make('Purchasers', 'purchasers', User::class)
                 ->fields(new Fields\BookPurchase(null, true)),
