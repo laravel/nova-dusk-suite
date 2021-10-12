@@ -98,7 +98,7 @@ class User extends Resource
                         })
                         ->referToPivotAs('Role Assignment')
                         ->prunable()
-                        ->showCreateRelationButton(file_exists(base_path('.inline-create'))),,
+                        ->showCreateRelationButton(file_exists(base_path('.inline-create'))),
 
             BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
                 ->fields(new Fields\BookPurchase())
