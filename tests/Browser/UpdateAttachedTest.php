@@ -70,7 +70,7 @@ class UpdateAttachedTest extends DuskTestCase
                     })
                     ->whenAvailable('select[dusk="attachable-select"]', function ($browser) {
                         $browser->assertDisabled('')
-                                ->assertValue('', '1');
+                                ->assertSelected('', '1');
                     })
                     ->type('@notes', 'Test Notes Updated')
                     ->updateAndContinueEditing()
@@ -78,7 +78,7 @@ class UpdateAttachedTest extends DuskTestCase
                     ->on(new UpdateAttached('users', 1, 'roles', 1))
                     ->whenAvailable('select[dusk="attachable-select"]', function ($browser) {
                         $browser->assertDisabled('')
-                                ->assertValue('', '1');
+                                ->assertSelected('', '1');
                     });
 
             $user->refresh();
