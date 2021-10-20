@@ -18,6 +18,13 @@ class User extends Authenticatable
     use Actionable, HasFactory, Notifiable;
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['profile'];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

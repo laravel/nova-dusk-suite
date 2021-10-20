@@ -81,6 +81,8 @@ class BookPurchase
                     if ($request->isCreateOrAttachRequest()) {
                         return now()->second(0);
                     }
+                })->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                    $model->{$attribute} = $request[$requestAttribute] ?? now();
                 }),
 
             $this->merge($this->appends),

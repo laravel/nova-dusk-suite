@@ -181,7 +181,7 @@ class AttachTest extends DuskTestCase
                     ->assertSeeIn('h1', 'Attach Book')
                     ->selectAttachable(4)
                     ->type('@price', '39')
-                    ->type('[dusk="purchased_at"] + input', $now->toDatetimeString())
+                    ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now)
                     ->create()
                     ->waitForText('The resource was attached!')
                     ->on(new Detail('users', 1))
@@ -222,7 +222,7 @@ class AttachTest extends DuskTestCase
                     ->assertSeeIn('h1', 'Attach Book')
                     ->selectAttachable(4)
                     ->type('@price', '34')
-                    ->type('[dusk="purchased_at"] + input', $now->toDatetimeString())
+                    ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now)
                     ->create()
                     ->waitForText('The resource was attached!')
                     ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
@@ -244,7 +244,7 @@ class AttachTest extends DuskTestCase
      */
     public function it_cannot_attach_duplicate_relations_with_same_pivot()
     {
-        Carbon::setTestNow($now = Carbon::parse('2021-02-16 12:55:29'));
+        Carbon::setTestNow($now = Carbon::parse('2021-02-16 12:55:00'));
 
         DB::table('book_purchases')->insert([
             ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 34, 'purchased_at' => $now->toDatetimeString()],
@@ -257,7 +257,7 @@ class AttachTest extends DuskTestCase
                     ->assertSeeIn('h1', 'Attach Book')
                     ->selectAttachable(4)
                     ->type('@price', '34')
-                    ->type('[dusk="purchased_at"] + input', $now->toDatetimeString())
+                    ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now)
                     ->create()
                     ->waitForText('There was a problem submitting the form.')
                     ->assertSee('This books is already attached.');
