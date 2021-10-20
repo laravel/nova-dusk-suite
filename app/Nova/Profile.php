@@ -56,7 +56,7 @@ class Profile extends Resource
             URL::make('GitHub URL')->rules('required'),
             URL::make('Twitter URL'),
 
-            Timezone::make('Timezone')->nullable()->rules('required'),
+            Timezone::make('Timezone')->nullable()->rules(['nullable', Rule::in(timezone_identifiers_list())]),
 
             MultiSelect::make('Interests')->options([
                 'laravel' => ['label' => 'Laravel', 'group' => 'PHP'],
