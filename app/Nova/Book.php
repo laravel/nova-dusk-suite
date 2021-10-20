@@ -48,8 +48,14 @@ class Book extends Resource
         return [
             ID::make('ID', 'id')->sortable(),
             Text::make(__('SKU'), 'sku')->sortable(),
-            Text::make('Title')->readonly(),
-            Boolean::make('Active'),
+            Text::make('Title')->readonly(function ($request) {
+                return $request->isUpdateOrUpdateAttachedRequest();
+            }),
+            Boolean::make('Active')->default(function ($request) {
+                if ($request->isCreateOrAttachRequest()) {
+                    return true;
+                }
+            }),
 
             BelongsToMany::make('Purchasers', 'purchasers', User::class)
                 ->fields(new Fields\BookPurchase(null, true)),

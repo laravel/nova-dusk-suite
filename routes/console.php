@@ -17,3 +17,23 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('searchable:on', function () {
+    File::put(base_path('.searchable'), '');
+    $this->comment('Enable searchable');
+});
+
+Artisan::command('inline-create:off', function () {
+    File::delete(base_path('.inline-create'));
+    $this->comment('Disable inline-create');
+});
+
+Artisan::command('inline-create:on', function () {
+    File::put(base_path('.inline-create'), '');
+    $this->comment('Enable inline-create');
+});
+
+Artisan::command('inline-create:off', function () {
+    File::delete(base_path('.inline-create'));
+    $this->comment('Disable inline-create');
+});

@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Nova\Dashboards\Main;
 use App\Nova\Dashboards\Posts;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Otwell\SidebarTool\SidebarTool;
@@ -19,6 +21,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Nova::userMenu(function (Request $request) {
+            return [
+                MenuItem::make('My Account')->path('/resources/users/'.$request->user()->id),
+            ];
+        });
     }
 
     /**
@@ -69,7 +77,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function tools()
     {
         return [
-            (new SidebarTool)->canSee(function ($request) {
+            (new SidebarTool)->canSee(function (Request $request) {
                 return ! $request->user()->isBlockedFrom('sidebarTool');
             }),
         ];
@@ -82,6 +90,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
-        //
+        Nova::userTimezone(function (Request $request) {
+            $default = config('app.timezone');
+
+            return transform($request->user(), function ($user) use ($default) {
+                return $user->profile->timezone ?? $default;
+            }, $default);
+        });
     }
 }

@@ -1,3 +1,3 @@
 Nova.booting((Vue, store) => {
-    Nova.inertia('SidebarTool', require('./components/Tool').default)
+  Nova.inertia('SidebarTool', require('./components/Tool').default)
 })

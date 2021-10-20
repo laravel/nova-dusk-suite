@@ -18,7 +18,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        return ! $user->isBlockedFrom('user.viewAny');
     }
 
     /**
@@ -30,7 +30,11 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        return true;
+        if ($user->isBlockedFrom('user.viewAny') === true) {
+            return $user->is($model);
+        }
+
+        return ! $user->isBlockedFrom('user.view.'.$model->id);
     }
 
     /**
