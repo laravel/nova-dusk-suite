@@ -79,6 +79,8 @@ class BookPurchase
 
                     $field->rules(['required', 'numeric', 'min:0', 'max:99'])
                         ->help('Price starts from $0-$99');
+                })->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                    $model->{$attribute} = $request[$requestAttribute] ?? now();
                 }),
 
             Select::make('Type')
