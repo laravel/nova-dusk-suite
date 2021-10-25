@@ -22,7 +22,7 @@ class UpdateWithBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $post) {
             $browser->loginAs($user)
                     ->visit(new Update('posts', $post->id))
-                    ->waitForTextIn('h1', 'Update User Post: '.$post->id, 25)
+                    ->waitForTextIn('h1', 'Update User Post: '.$post->id)
                     ->selectRelation('user', 2)
                     ->update()
                     ->waitForText('The user post was updated');
@@ -51,7 +51,7 @@ class UpdateWithBelongsToTest extends DuskTestCase
                     'viaResourceId' => 2,
                     'viaRelationship' => 'posts',
                 ]))
-                ->waitForTextIn('h1', 'Update User Post: '.$post->id, 25)
+                ->waitForTextIn('h1', 'Update User Post: '.$post->id)
                 ->whenAvailable('select[dusk="user"]', function ($browser) {
                     $browser->assertDisabled('')
                             ->assertSelected('', 1); // not 2

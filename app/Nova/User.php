@@ -72,7 +72,7 @@ class User extends Resource
                 return ! $request->user()->isBlockedFrom('resourceTool');
             }),
 
-            HasOne::make('Profile'),
+            HasOne::make('Profile')->nullable(),
 
             HasMany::make('Posts', 'posts', Post::class),
 
@@ -204,6 +204,10 @@ class User extends Resource
      */
     public static function redirectAfterCreate(NovaRequest $request, $resource)
     {
-        return '/resources/profiles/new?viaResource='.static::uriKey().'&viaResourceId='.$resource->getKey().'&viaRelationship=profile';
+        if (! $resource->model()->relationLoaded('profile') || is_null($resource->model()->profile)) {
+            return '/resources/profiles/new?viaResource='.static::uriKey().'&viaResourceId='.$resource->getKey().'&viaRelationship=profile';
+        }
+
+        return '/resources/'.static::uriKey().'/'.$resource->getKey();
     }
 }

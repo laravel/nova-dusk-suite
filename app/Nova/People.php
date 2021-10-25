@@ -52,7 +52,7 @@ class People extends Resource
             Date::make('Created At')->hideWhenCreating(),
 
             /** RELATION */
-            HasOne::make(__('Employee'), 'employee', Employee::class),
+            HasOne::make(__('Employee'), 'employee', Employee::class)->exceptOnForms(),
         ];
     }
 
