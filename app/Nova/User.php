@@ -72,25 +72,25 @@ class User extends Resource
                 return ! $request->user()->isBlockedFrom('resourceTool');
             }),
 
-            HasOne::make('Profile'),
+            HasOne::make('Profile')->nullable(),
 
             HasMany::make('Posts', 'posts', Post::class),
 
             BelongsToMany::make('Roles')
-                        ->display('name')
-                        ->fields(function ($request) {
-                            return [
-                                Text::make('Notes', 'notes')->rules('max:20'),
-                            ];
-                        })
-                        ->actions(function ($request) {
-                            return [
-                                new Actions\UpdatePivotNotes,
-                                Actions\StandaloneTask::make()->standalone(),
-                            ];
-                        })
-                        ->referToPivotAs('Role Assignment')
-                        ->prunable(),
+                ->display('name')
+                ->fields(function ($request) {
+                    return [
+                        Text::make('Notes', 'notes')->rules('max:20'),
+                    ];
+                })
+                ->actions(function ($request) {
+                    return [
+                        new Actions\UpdatePivotNotes,
+                        Actions\StandaloneTask::make()->standalone(),
+                    ];
+                })
+                ->referToPivotAs('Role Assignment')
+                ->prunable(),
 
             BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
                 ->fields(new Fields\BookPurchase('personal')),
@@ -203,6 +203,10 @@ class User extends Resource
      */
     public static function redirectAfterCreate(NovaRequest $request, $resource)
     {
-        return '/resources/profiles/new?viaResource='.static::uriKey().'&viaResourceId='.$resource->getKey().'&viaRelationship=profile';
+        if (! $resource->model()->relationLoaded('profile') || is_null($resource->model()->profile)) {
+            return '/resources/profiles/new?viaResource='.static::uriKey().'&viaResourceId='.$resource->getKey().'&viaRelationship=profile';
+        }
+
+        return '/resources/'.static::uriKey().'/'.$resource->getKey();
     }
 }

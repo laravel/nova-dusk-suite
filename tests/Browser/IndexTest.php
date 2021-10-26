@@ -6,6 +6,7 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Contracts\QueryBuilder;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
@@ -17,6 +18,13 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexTest extends DuskTestCase
 {
+    protected function tearDown(): void
+    {
+        $this->removeApplicationTweaks();
+
+        parent::tearDown();
+    }
+
     /**
      * @test
      */
@@ -49,6 +57,30 @@ class IndexTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Page('/resources/foobar'))
                     ->assertNotFound();
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function resource_index_can_show_reload_button_when_received_errors()
+    {
+        $this->tweakApplication(function ($app) {
+            $app->bind(QueryBuilder::class, function () {
+                abort(502);
+            });
+        });
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new UserIndex)
+                    ->within(new IndexComponent('users'), function ($browser) {
+                        $browser->waitForText('Failed to load Users!')
+                            ->assertSee('Reload');
+                    })
+                    ->assertTitle('Users | Nova Site');
 
             $browser->blank();
         });
