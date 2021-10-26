@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
@@ -58,7 +59,11 @@ class Profile extends Resource
             }),
             URL::make('Twitter URL'),
 
-            Timezone::make('Timezone')->filterable()->searchable(file_exists(base_path('.searchable'))),
+            Timezone::make('Timezone'))
+                ->nullable()
+                ->rules(['nullable', Rule::in(timezone_identifiers_list())])
+                ->filterable()
+                ->searchable(file_exists(base_path('.searchable')))
 
             MultiSelect::make('Interests')->options([
                 'laravel' => ['label' => 'Laravel', 'group' => 'PHP'],
@@ -70,7 +75,7 @@ class Profile extends Resource
                 'hack' => ['label' => 'Hack'],
             ])->filterable(),
 
-            HasOne::make('Latest Post', 'latestPost', Post::class),
+            HasOne::ofMany('Latest Post', 'latestPost', Post::class),
         ];
     }
 
