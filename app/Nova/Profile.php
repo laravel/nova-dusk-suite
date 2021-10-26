@@ -63,7 +63,7 @@ class Profile extends Resource
                 ->nullable()
                 ->rules(['nullable', Rule::in(timezone_identifiers_list())])
                 ->filterable()
-                ->searchable(file_exists(base_path('.searchable')))
+                ->searchable(file_exists(base_path('.searchable'))),
 
             MultiSelect::make('Interests')->options([
                 'laravel' => ['label' => 'Laravel', 'group' => 'PHP'],
