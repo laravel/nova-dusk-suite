@@ -59,7 +59,7 @@ class Profile extends Resource
             }),
             URL::make('Twitter URL'),
 
-            Timezone::make('Timezone'))
+            Timezone::make('Timezone')
                 ->nullable()
                 ->rules(['nullable', Rule::in(timezone_identifiers_list())])
                 ->filterable()
