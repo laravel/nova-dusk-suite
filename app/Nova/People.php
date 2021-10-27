@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -48,8 +49,10 @@ class People extends Resource
 
             Text::make(__('Name')),
 
+            Date::make('Created At')->hideWhenCreating(),
+
             /** RELATION */
-            HasOne::make(__('Employee'), 'employee', Employee::class),
+            HasOne::make(__('Employee'), 'employee', Employee::class)->exceptOnForms(),
         ];
     }
 
