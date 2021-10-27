@@ -169,6 +169,7 @@ class AttachTest extends DuskTestCase
 
     /**
      * @test
+     * @group local-time
      */
     public function it_can_attach_different_relation_groups()
     {
@@ -206,6 +207,7 @@ class AttachTest extends DuskTestCase
 
     /**
      * @test
+     * @group local-time
      */
     public function it_can_attach_duplicate_relations_with_different_pivot()
     {

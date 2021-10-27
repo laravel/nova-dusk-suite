@@ -167,10 +167,7 @@ class IndexFilterTest extends DuskTestCase
                         ->pause(500)
                         ->elsewhere('', function ($browser) {
                             $browser->assertVisible('@filter-per-page')
-                                ->type('[dusk="date-filter"] + input', '')
-                                ->elsewhere('', function ($browser) {
-                                    $browser->click('.flatpickr-prev-month');
-                                })
+                                ->type('input[dusk="date-filter"]', '')
                                 ->assertVisible('@filter-per-page');
                         })
                         ->closeCurrentDropdown()
@@ -273,10 +270,7 @@ class IndexFilterTest extends DuskTestCase
                             ->pause(500)
                             ->elsewhere('', function ($browser) {
                                 $browser->assertVisible('@filter-per-page')
-                                    ->type('[dusk="date-filter"] + input', '')
-                                    ->elsewhere('', function ($browser) {
-                                        $browser->click('.flatpickr-prev-month');
-                                    })
+                                    ->type('input[dusk="date-filter"]', '')
                                     ->assertVisible('@filter-per-page');
                             })
                             ->closeCurrentDropdown()
