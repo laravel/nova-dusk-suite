@@ -120,6 +120,8 @@ class User extends Resource
     {
         return [
             // (new Metrics\PostCount)->onlyOnDetail(),
+            new Metrics\ActiveUsers,
+            new Metrics\UsersWithProfile,
         ];
     }
 
