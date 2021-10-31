@@ -110,7 +110,7 @@ class Book extends Resource
     public function actions(Request $request)
     {
         return [
-            new Actions\NoopAction(),
+            new Actions\MarkAsActive(),
         ];
     }
 
