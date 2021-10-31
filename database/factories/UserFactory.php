@@ -47,7 +47,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the model's is active
+     * Indicate that the model's is active.
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */

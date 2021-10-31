@@ -30,8 +30,8 @@ class BookFactory extends Factory
         ];
     }
 
-     /**
-     * Indicate that the model's is in-active
+    /**
+     * Indicate that the model's is in-active.
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
