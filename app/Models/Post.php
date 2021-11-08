@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Nova\Actions\Actionable;
 
 class Post extends Model
 {
+    use Actionable;
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -43,6 +46,6 @@ class Post extends Model
      */
     public function tags()
     {
-        return $this->morphToMany(Tag::class, 'taggable')->withPivot('notes');
+        return $this->morphToMany(Tag::class, 'taggable')->withPivot('notes')->using(Taggable::class);
     }
 }

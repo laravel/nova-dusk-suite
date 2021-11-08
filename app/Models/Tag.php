@@ -13,6 +13,6 @@ class Tag extends Model
      */
     public function posts()
     {
-        return $this->morphedByMany(Post::class, 'taggable')->withPivot('notes');
+        return $this->morphedByMany(Post::class, 'taggable')->withPivot('notes')->using(Taggable::class);
     }
 }
