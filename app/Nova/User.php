@@ -2,8 +2,7 @@
 
 namespace App\Nova;
 
-use DateTimeInterface;
-use Illuminate\Http\Request;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -42,10 +41,10 @@ class User extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function fields(Request $request)
+    public function fields(NovaRequest $request)
     {
         return [
             ID::make('ID', 'id')->asBigInt()->sortable(),
@@ -101,7 +100,7 @@ class User extends Resource
                         Text::make('Relative Time', function ($resource) {
                             $purchased_at = $resource->purchased_at;
 
-                            return $purchased_at instanceof DateTimeInterface
+                            return $purchased_at instanceof CarbonInterface
                                         ? $purchased_at->diffForHumans()
                                         : null;
                         }),
@@ -113,10 +112,10 @@ class User extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function cards(Request $request)
+    public function cards(NovaRequest $request)
     {
         return [
             // (new Metrics\PostCount)->onlyOnDetail(),
@@ -126,10 +125,10 @@ class User extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function lenses(Request $request)
+    public function lenses(NovaRequest $request)
     {
         return [
             new Lenses\PassthroughLens,
@@ -139,10 +138,10 @@ class User extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function actions(Request $request)
+    public function actions(NovaRequest $request)
     {
         return [
             new Actions\MarkAsActive,
@@ -182,10 +181,10 @@ class User extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function filters(Request $request)
+    public function filters(NovaRequest $request)
     {
         return [
             new Filters\WithPosts,
