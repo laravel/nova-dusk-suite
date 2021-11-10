@@ -18,6 +18,7 @@ use Otwell\ResourceTool\ResourceTool;
 
 /**
  * @property \App\Models\User|null $resource
+ *
  * @method \App\Models\User model()
  * @mixin \App\Models\User
  */
