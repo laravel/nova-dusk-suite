@@ -3,20 +3,20 @@
 namespace App\Nova\Filters;
 
 use Carbon\CarbonImmutable;
-use Illuminate\Http\Request;
 use Laravel\Nova\Filters\DateFilter;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Created extends DateFilter
 {
     /**
      * Apply the filter to the given query.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function apply(Request $request, $query, $value)
+    public function apply(NovaRequest $request, $query, $value)
     {
         $value = CarbonImmutable::parse($value);
 

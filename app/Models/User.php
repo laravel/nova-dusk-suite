@@ -20,14 +20,14 @@ class User extends Authenticatable
     /**
      * The relations to eager load on every query.
      *
-     * @var array
+     * @var array<string>
      */
     protected $with = ['profile'];
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'name',

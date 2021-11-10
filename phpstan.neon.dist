@@ -1,5 +1,6 @@
 includes:
   - ./vendor/nunomaduro/larastan/extension.neon
+  - ./phpstan-baseline.neon
 
 parameters:
 
@@ -12,7 +13,6 @@ parameters:
   ignoreErrors:
     - '#Access to an undefined property Laravel\\Nova\\Fields\\ActionFields#'
     - '#Call to an undefined method Illuminate\\Database\\Eloquent\\[a-zA-Z\\\<\>]+::(withTrashed|onlyTrashed|trashed)\(\)#'
-    - '#Parameter \#[\d]+ \$request of method [a-zA-Z\\]+::[a-zA-Z]+\(\) expects Laravel\\Nova\\Http\\Requests\\NovaRequest, Illuminate\\Http\\Request given#'
 
   checkMissingIterableValueType: false
   noUnnecessaryCollectionCall: false
