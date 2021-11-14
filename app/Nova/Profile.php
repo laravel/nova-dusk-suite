@@ -53,7 +53,7 @@ class Profile extends Resource
             Text::make('GitHub URL'),
             Text::make('Twitter URL'),
 
-            Timezone::make('Timezone'),
+            Timezone::make('Timezone')->searchable(file_exists(base_path('.searchable'))),
 
             HasOne::make('Latest Post', 'latestPost', Post::class),
         ];
