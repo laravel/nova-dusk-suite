@@ -79,7 +79,7 @@ class UpdateWithMorphToTest extends DuskTestCase
                             'viaResourceId' => 1,
                             'viaRelationship' => 'comments',
                         ]))
-                        ->assertValue('@commentable-type', 'posts')
+                        ->assertSelected('@commentable-type', 'posts')
                         ->assertEnabled('@commentable-search-input')
                         ->within('@commentable-search-input', function ($browser) use ($post) {
                             $browser->assertSee($post->title);

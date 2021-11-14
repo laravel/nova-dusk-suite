@@ -138,7 +138,9 @@ class CreateWithBelongsToTest extends DuskTestCase
                         'viaRelationship' => 'posts',
                     ]))
                     ->waitFor('.content form')
-                    ->assertValue('@user', 1);
+                    ->waitFor('@user')
+                    ->assertDisabled('@user')
+                    ->assertSelected('@user', 1);
 
             $browser->blank();
         });

@@ -22,7 +22,7 @@ class IndexFilterTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->setPerPage('50')
                                 ->pause(1500)
                                 ->assertSeeResource(50)
@@ -46,7 +46,7 @@ class IndexFilterTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->setPerPage('50')
                                 ->pause(1500)
                                 ->assertSeeResource(50)
@@ -56,7 +56,7 @@ class IndexFilterTest extends DuskTestCase
                     })
                     ->refresh()
                     ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->assertSeeResource(50)
                                 ->assertSeeResource(25)
                                 ->assertDontSeeResource(1)
@@ -76,7 +76,7 @@ class IndexFilterTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                 ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
-                    $browser->waitForTable(25)
+                    $browser->waitForTable()
                         ->applyFilter('Select First', '1')
                         ->pause(1500)
                         ->assertSeeResource(1)
@@ -104,7 +104,7 @@ class IndexFilterTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                 ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
-                    $browser->waitForTable(25)
+                    $browser->waitForTable()
                         ->applyFilter('Select First', '1')
                         ->pause(1500)
                         ->assertSeeResource(1)
@@ -126,13 +126,42 @@ class IndexFilterTest extends DuskTestCase
     /**
      * @test
      */
+    public function filters_can_be_applied_will_reset_pagination_to_resources()
+    {
+        UserFactory::new()->times(25)->create();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                ->visit(new UserIndex)
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertSee('1-25 of 29')
+                        ->nextPage()
+                        ->assertQueryStringHas('users_page', 2)
+                        ->assertSee('26-29 of 29')
+                        ->applyFilter('Select First', '1')
+                        ->pause(1500)
+                        ->assertSeeResource(1)
+                        ->assertDontSeeResource(2)
+                        ->assertDontSeeResource(3)
+                        ->assertSee('1-1 of 1')
+                        ->assertQueryStringHas('users_page', 1);
+                });
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
     public function date_filter_interactions_does_not_close_filter_dropdown()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                 ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
-                    $browser->waitForTable(25)
+                    $browser->waitForTable()
                         ->assertMissing('@filter-per-page')
                         ->click('@filter-selector')
                         ->pause(500)

@@ -140,8 +140,8 @@ class CreateWithMorphToTest extends DuskTestCase
                     'viaRelationship' => 'comments',
                 ]))
                 ->waitForTextIn('.content form', 'Commentable')
-                ->assertValue('@commentable-type', 'posts')
-                ->assertValue('@commentable-select', $post->id);
+                ->assertSelected('@commentable-type', 'posts')
+                ->assertSelected('@commentable-select', $post->id);
 
             $browser->blank();
         });
