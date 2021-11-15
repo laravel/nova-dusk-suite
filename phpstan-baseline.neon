@@ -1,0 +1,7 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Invalid array key type array\\<string\\>\\.$#"
+			count: 1
+			path: app/Models/User.php
+

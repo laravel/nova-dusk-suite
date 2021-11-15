@@ -2,7 +2,7 @@
 
 namespace App\Nova;
 
-use DateTimeInterface;
+use Carbon\CarbonInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -100,7 +100,7 @@ class User extends Resource
                         Text::make('Relative Time', function ($resource) {
                             $purchased_at = $resource->purchased_at;
 
-                            return $purchased_at instanceof DateTimeInterface
+                            return $purchased_at instanceof CarbonInterface
                                         ? $purchased_at->diffForHumans()
                                         : null;
                         }),
