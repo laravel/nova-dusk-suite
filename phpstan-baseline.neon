@@ -1,7 +1,37 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Cannot access property \\$email on mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Auth/ConfirmablePasswordController.php
+
+		-
+			message: "#^Cannot call method hasVerifiedEmail\\(\\) on mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Auth/EmailVerificationNotificationController.php
+
+		-
+			message: "#^Cannot call method sendEmailVerificationNotification\\(\\) on mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Auth/EmailVerificationNotificationController.php
+
+		-
+			message: "#^Cannot call method hasVerifiedEmail\\(\\) on mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Auth/EmailVerificationPromptController.php
+
+		-
 			message: "#^Call to static method Illuminate\\\\Http\\\\Request\\:\\:validate\\(\\) on a separate line has no effect\\.$#"
+			count: 1
+			path: app/Http/Controllers/Auth/NewPasswordController.php
+
+		-
+			message: "#^Parameter \\#1 \\$key of function __ expects string\\|null, mixed given\\.$#"
+			count: 2
+			path: app/Http/Controllers/Auth/NewPasswordController.php
+
+		-
+			message: "#^Parameter \\#1 \\$value of static method Illuminate\\\\Hashing\\\\HashManager\\:\\:make\\(\\) expects string, mixed given\\.$#"
 			count: 1
 			path: app/Http/Controllers/Auth/NewPasswordController.php
 
@@ -16,7 +46,52 @@ parameters:
 			path: app/Http/Controllers/Auth/RegisteredUserController.php
 
 		-
+			message: "#^Parameter \\#1 \\$value of static method Illuminate\\\\Hashing\\\\HashManager\\:\\:make\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Auth/RegisteredUserController.php
+
+		-
+			message: "#^Cannot call method hasVerifiedEmail\\(\\) on mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Auth/VerifyEmailController.php
+
+		-
+			message: "#^Cannot call method markEmailAsVerified\\(\\) on mixed\\.$#"
+			count: 1
+			path: app/Http/Controllers/Auth/VerifyEmailController.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of class Illuminate\\\\Auth\\\\Events\\\\Verified constructor expects Illuminate\\\\Contracts\\\\Auth\\\\MustVerifyEmail, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Auth/VerifyEmailController.php
+
+		-
+			message: "#^Parameter \\#1 \\$value of static method Illuminate\\\\Support\\\\Str\\:\\:lower\\(\\) expects string, mixed given\\.$#"
+			count: 1
+			path: app/Http/Requests/Auth/LoginRequest.php
+
+		-
 			message: "#^Invalid array key type array\\<string\\>\\.$#"
 			count: 1
 			path: app/Models/User.php
+
+		-
+			message: "#^Parameter \\#2 \\$model of method Laravel\\\\Nova\\\\Metrics\\\\Value\\:\\:count\\(\\) expects Illuminate\\\\Database\\\\Eloquent\\\\Builder\\|string, mixed given\\.$#"
+			count: 1
+			path: app/Nova/Metrics/PostCount.php
+
+		-
+			message: "#^Cannot access property \\$id on mixed\\.$#"
+			count: 1
+			path: app/Providers/NovaServiceProvider.php
+
+		-
+			message: "#^Cannot call method isBlockedFrom\\(\\) on mixed\\.$#"
+			count: 1
+			path: app/Providers/NovaServiceProvider.php
+
+		-
+			message: "#^Cannot access property \\$id on mixed\\.$#"
+			count: 1
+			path: app/Providers/RouteServiceProvider.php
 

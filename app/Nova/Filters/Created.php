@@ -13,7 +13,7 @@ class Created extends DateFilter
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  mixed  $value
+     * @param  \DateTimeInterface|string|null  $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply(NovaRequest $request, $query, $value)

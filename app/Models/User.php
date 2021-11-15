@@ -38,7 +38,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array
+     * @var array<string>
      */
     protected $hidden = [
         'password',
@@ -48,7 +48,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, class-string|string>
      */
     protected $casts = [
         'settings' => Casts\AsArrayObject::class,
