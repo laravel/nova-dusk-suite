@@ -6,11 +6,11 @@ use App\Nova\Actions\MarkAsActive;
 use App\Nova\Actions\MarkAsInactive;
 use App\Nova\Filters\SelectFirst;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\ActionRequest;
 use Laravel\Nova\Http\Requests\LensRequest;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Lenses\Lens;
 
 /**
@@ -35,10 +35,10 @@ class PassthroughLens extends Lens
     /**
      * Get the fields available to the lens.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function fields(Request $request)
+    public function fields(NovaRequest $request)
     {
         return [
             ID::make('ID', 'id')->sortable(),
@@ -49,10 +49,10 @@ class PassthroughLens extends Lens
     /**
      * Get the filters available for the lens.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function filters(Request $request)
+    public function filters(NovaRequest $request)
     {
         return [
             new SelectFirst,
@@ -72,10 +72,10 @@ class PassthroughLens extends Lens
     /**
      * Get the actions available on the lens.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function actions(Request $request)
+    public function actions(NovaRequest $request)
     {
         return [
             new MarkAsActive(),
