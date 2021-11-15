@@ -5,3 +5,8 @@ parameters:
 			count: 1
 			path: app/Models/User.php
 
+		-
+			message: "#^Cannot access property \\$id on mixed\\.$#"
+			count: 1
+			path: app/Providers/RouteServiceProvider.php
+
