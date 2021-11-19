@@ -6,6 +6,7 @@ use App\Nova\Dashboards\Main;
 use App\Nova\Dashboards\Posts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
@@ -90,6 +91,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
+        Nova::serving(function (ServingNova $event) {
+            if (! is_null($pagination = data_get($event->request->user(), 'settings.pagination'))) {
+                config(['nova.pagination' => $pagination]);
+            }
+        });
+
         Nova::userTimezone(function (Request $request) {
             $default = config('app.timezone');
 

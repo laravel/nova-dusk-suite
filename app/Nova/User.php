@@ -11,9 +11,11 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\ActionRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 use Otwell\ResourceTool\ResourceTool;
 
 /**
@@ -76,6 +78,18 @@ class User extends Resource
             HasOne::make('Profile')->nullable(),
 
             HasMany::make('Posts', 'posts', Post::class),
+
+            new Panel('Settings', [
+                Select::make('Pagination', 'settings.pagination')
+                    ->options([
+                        'simple' => 'Simple',
+                        'load-more' => 'Load More',
+                        'link' => 'Link',
+                    ])
+                    ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                        data_set($model, $attribute, $request->input((string) Str::of($requestAttribute ?? $attribute)->replace('.', '_')));
+                    }),
+            ]),
 
             BelongsToMany::make('Roles')
                 ->display('name')
