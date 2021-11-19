@@ -89,6 +89,7 @@ class User extends Resource
                     ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
                         data_set($model, $attribute, $request->input((string) Str::of($requestAttribute ?? $attribute)->replace('.', '_')));
                     })
+                    ->displayUsingLabels()
                     ->hideFromIndex(),
             ]),
 
