@@ -82,7 +82,9 @@ class Post extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            (new Metrics\CommentCount)->onlyOnDetail(),
+        ];
     }
 
     /**
@@ -108,6 +110,7 @@ class Post extends Resource
     {
         return [
             new Actions\MarkAsActive,
+            new Actions\AddComment,
             Actions\StandaloneTask::make()->standalone(),
         ];
     }
