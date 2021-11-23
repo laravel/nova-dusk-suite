@@ -14,7 +14,7 @@ class BookPurchase
     /**
      * Purchase type.
      *
-     * @var string
+     * @var string|null
      */
     protected $type;
 
@@ -40,7 +40,7 @@ class BookPurchase
      */
     public function __construct($type = null, $showTimestamps = false)
     {
-        $this->type = $type ?? 'personal';
+        $this->type = $type;
         $this->showTimestamps = $showTimestamps;
     }
 

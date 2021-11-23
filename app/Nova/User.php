@@ -110,7 +110,7 @@ class User extends Resource
                 ->prunable(),
 
             BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
-                ->fields(new Fields\BookPurchase()),
+                ->fields(new Fields\BookPurchase('personal')),
 
             BelongsToMany::make('Gift Books', 'giftBooks', Book::class)
                 ->fields(

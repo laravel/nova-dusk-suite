@@ -45,7 +45,7 @@ class Book extends Model
         return $this->belongsToMany(User::class, 'book_purchases')
                     ->using(BookPurchase::class)
                     ->withPivot('id', 'price', 'type', 'purchased_at')
-                    ->wherePivotIn('type', ['personal'])
+                    ->withPivotValue('type', 'personal')
                     ->withTimestamps();
     }
 
@@ -59,7 +59,7 @@ class Book extends Model
         return $this->belongsToMany(User::class, 'book_purchases')
                     ->using(BookPurchase::class)
                     ->withPivot('id', 'price', 'type')
-                    ->wherePivotIn('type', ['gift'])
+                    ->withPivotValue('type', 'gift')
                     ->withTimestamps();
     }
 }
