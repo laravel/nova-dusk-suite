@@ -23,8 +23,6 @@ class CommentCount extends Trend
      */
     public function calculate(NovaRequest $request)
     {
-        ray($request->model()->getMorphClass());
-
         return $this->countByDays($request, Comment::query()->hasMorph('commentable', [
             $request->model()->getMorphClass(),
         ]));
