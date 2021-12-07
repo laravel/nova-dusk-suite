@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class BookPurchase
 {
@@ -14,7 +15,7 @@ class BookPurchase
     /**
      * Purchase type.
      *
-     * @var string
+     * @var string|null
      */
     protected $type;
 
@@ -40,7 +41,7 @@ class BookPurchase
      */
     public function __construct($type = null, $showTimestamps = false)
     {
-        $this->type = $type ?? 'personal';
+        $this->type = $type;
         $this->showTimestamps = $showTimestamps;
     }
 
@@ -65,7 +66,22 @@ class BookPurchase
     public function __invoke()
     {
         return [
-            Currency::make('Price')->rules(['required', 'numeric'])->filterable(),
+            Currency::make('Price')
+                ->dependsOn(['books'], function ($field, NovaRequest $request, $formData) {
+                    $bookId = (int) $formData->resource('books', $formData->books);
+
+                    if ($bookId == 1) {
+                        $field->rules(['required', 'numeric', 'min:10', 'max:199'])
+                            ->help('Price starts from $10-$199');
+
+                        return;
+                    }
+
+                    $field->rules(['required', 'numeric', 'min:0', 'max:99'])
+                        ->help('Price starts from $0-$99');
+                })->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                    $model->{$attribute} = $request[$requestAttribute] ?? now();
+                })->filterable(),
 
             Select::make('Type')->options([
                 'personal' => 'Personal',
@@ -76,14 +92,19 @@ class BookPurchase
                 }
             }),
 
-            DateTime::make('Purchased At')
-                ->default(function ($request) {
-                    if ($request->isCreateOrAttachRequest()) {
-                        return now()->second(0);
-                    }
-                })->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
-                    $model->{$attribute} = $request[$requestAttribute] ?? now();
+            Select::make('Type')
+                ->options([
+                    'personal' => 'Personal',
+                    'gift' => 'Gift',
+                ])
+                ->default($this->type ?? 'personal')
+                ->readonly(function () {
+                    return ! is_null($this->type);
                 }),
+
+            DateTime::make('Purchased At')
+                ->rules('required')
+                ->default(now()->second(0)),
 
             $this->merge($this->appends),
 

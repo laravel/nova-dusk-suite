@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Nova\Post as PostResource;
 use Database\Factories\PostFactory;
 use Database\Factories\UserFactory;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -13,6 +14,8 @@ use Laravel\Nova\Tests\TestCase;
 
 class NovaRequestTest extends TestCase
 {
+    use DatabaseMigrations;
+
     public function test_it_bound_nova_request_to_resolve_current_user()
     {
         $user = UserFactory::new()->create();
