@@ -83,21 +83,12 @@ class BookPurchase
                     $model->{$attribute} = $request[$requestAttribute] ?? now();
                 })->filterable(),
 
-            Select::make('Type')->options([
-                'personal' => 'Personal',
-                'gift' => 'Gift',
-            ])->default(function ($request) {
-                if ($request->isCreateOrAttachRequest()) {
-                    return $this->type;
-                }
-            }),
-
             Select::make('Type')
                 ->options([
                     'personal' => 'Personal',
                     'gift' => 'Gift',
                 ])
-                ->default($this->type ?? 'personal')
+                ->default($this->type)
                 ->readonly(function () {
                     return ! is_null($this->type);
                 }),
