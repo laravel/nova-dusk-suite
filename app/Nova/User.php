@@ -164,7 +164,7 @@ class User extends Resource
         return [
             new Actions\MarkAsActive,
             Actions\MarkAsInactive::make()
-                ->showOnTableRow()
+                ->showInline()
                 ->showOnDetail()
                 ->canSee(function ($request) {
                     if ($request instanceof ActionRequest) {
@@ -182,7 +182,7 @@ class User extends Resource
             Actions\RedirectToGoogle::make()->withoutConfirmation(),
             Actions\ChangeCreatedAt::make()->showOnDetail(),
             Actions\CreateUserProfile::make()
-                ->showOnTableRow()
+                ->showInline()
                 ->showOnDetail()
                 ->canSee(function ($request) {
                     if ($request instanceof ActionRequest) {
