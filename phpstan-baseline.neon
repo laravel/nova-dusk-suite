@@ -21,11 +21,6 @@ parameters:
 			path: app/Http/Controllers/Auth/EmailVerificationPromptController.php
 
 		-
-			message: "#^Call to static method Illuminate\\\\Http\\\\Request\\:\\:validate\\(\\) on a separate line has no effect\\.$#"
-			count: 1
-			path: app/Http/Controllers/Auth/NewPasswordController.php
-
-		-
 			message: "#^Parameter \\#1 \\$key of function __ expects string\\|null, mixed given\\.$#"
 			count: 2
 			path: app/Http/Controllers/Auth/NewPasswordController.php
@@ -34,16 +29,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$value of static method Illuminate\\\\Hashing\\\\HashManager\\:\\:make\\(\\) expects string, mixed given\\.$#"
 			count: 1
 			path: app/Http/Controllers/Auth/NewPasswordController.php
-
-		-
-			message: "#^Call to static method Illuminate\\\\Http\\\\Request\\:\\:validate\\(\\) on a separate line has no effect\\.$#"
-			count: 1
-			path: app/Http/Controllers/Auth/PasswordResetLinkController.php
-
-		-
-			message: "#^Call to static method Illuminate\\\\Http\\\\Request\\:\\:validate\\(\\) on a separate line has no effect\\.$#"
-			count: 1
-			path: app/Http/Controllers/Auth/RegisteredUserController.php
 
 		-
 			message: "#^Parameter \\#1 \\$value of static method Illuminate\\\\Hashing\\\\HashManager\\:\\:make\\(\\) expects string, mixed given\\.$#"
@@ -87,6 +72,11 @@ parameters:
 
 		-
 			message: "#^Cannot call method isBlockedFrom\\(\\) on mixed\\.$#"
+			count: 1
+			path: app/Providers/NovaServiceProvider.php
+
+		-
+			message: "#^Static method Laravel\\\\Nova\\\\Menu\\\\MenuItem\\:\\:make\\(\\) invoked with 1 parameter, 2 required\\.$#"
 			count: 1
 			path: app/Providers/NovaServiceProvider.php
 
