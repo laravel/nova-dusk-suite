@@ -9,10 +9,9 @@
     "type": "project",
     "require": {
         "php": "^7.3|^8.0",
-        "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.42.1",
+        "laravel/framework": "^8.65",
         "laravel/scout": "^8.3|^9.2",
         "laravel/tinker": "^2.5"
     },
@@ -20,11 +19,11 @@
         "algolia/algoliasearch-client-php": "^2.2",
         "fakerphp/faker": "^1.9.1",
         "laravel/nova": "*",
-        "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^5.0",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^5.10",
         "nunomaduro/larastan": "^1.0.1",
         "orchestra/testbench-dusk": "^6.17",
-        "phpunit/phpunit": "^9.3.3|^10.0",
+        "phpunit/phpunit": "^9.5.10|^10.0",
         "spatie/laravel-ray": "^1.17"
     },
     "autoload": {
@@ -59,6 +58,7 @@
             "@php artisan package:discover"
         ],
         "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
             "@php artisan nova:publish"
         ],
         "dusk:prepare": [
