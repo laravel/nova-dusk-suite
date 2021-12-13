@@ -13,6 +13,7 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+/composer.lock
 
 .searchable
 .inline-create
