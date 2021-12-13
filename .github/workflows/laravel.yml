@@ -2,6 +2,9 @@ name: Laravel
 
 on:
   push:
+    branches:
+      - '8.x'
+      - 'master'
   pull_request:
 
 jobs:
