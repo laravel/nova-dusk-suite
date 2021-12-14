@@ -7,6 +7,7 @@ use Database\Factories\DockFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\NotFound;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateWithBelongsToTest extends DuskTestCase
@@ -129,6 +130,26 @@ class CreateWithBelongsToTest extends DuskTestCase
                         $browser->assertDisabled('')
                                 ->assertSelected('', 1);
                     });
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function belongs_to_field_cannot_create_from_invalid_parents_detail_page()
+    {
+        $this->browse(function (Browser $browser) {
+            $page = new Create('posts', [
+                'viaResource' => 'users',
+                'viaResourceId' => 99999,
+                'viaRelationship' => 'posts',
+            ]);
+
+            $browser->loginAs(User::find(1))
+                    ->visit($page->url())
+                    ->on(new NotFound);
 
             $browser->blank();
         });
