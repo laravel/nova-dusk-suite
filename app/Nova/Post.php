@@ -91,6 +91,8 @@ class Post extends Resource
             Metrics\PostCountOverTime::make(), //->refreshWhenFilterChanged(),
             Metrics\PostCountByUser::make(), //->refreshWhenFilterChanged(),
             Metrics\PostCount::make(), //->refreshWhenFilterChanged(),
+
+            Metrics\CommentCount::make()->onlyOnDetail(),
         ];
     }
 
@@ -117,6 +119,7 @@ class Post extends Resource
     {
         return [
             new Actions\MarkAsActive,
+            new Actions\AddComment,
             Actions\StandaloneTask::make()->standalone(),
         ];
     }
