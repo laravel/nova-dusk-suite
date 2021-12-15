@@ -69,7 +69,7 @@ class IndexTest extends DuskTestCase
     {
         $this->tweakApplication(function ($app) {
             $app->bind(QueryBuilder::class, function () {
-                abort(502);
+                throw new \Exception('502');
             });
         });
 
