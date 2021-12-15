@@ -53,12 +53,15 @@ class Profile extends Resource
 
             BelongsTo::make('User'),
 
-            URL::make('GitHub URL')->rules('required'),
+            URL::make('GitHub URL')->filterable(function ($request, $query, $value, $attribute) {
+                $query->where($attribute, '=', 'https://github.com/'.$value);
+            }),
             URL::make('Twitter URL'),
 
             Timezone::make('Timezone')
                     ->nullable()
                     ->rules(['nullable', Rule::in(timezone_identifiers_list())])
+                    ->filterable()
                     ->searchable(file_exists(base_path('.searchable'))),
 
             MultiSelect::make('Interests')->options([
@@ -69,7 +72,7 @@ class Profile extends Resource
                 'react' => ['label' => 'React', 'group' => 'JavaScript'],
                 'vue' => ['label' => 'Vue', 'group' => 'JavaScript'],
                 'hack' => ['label' => 'Hack'],
-            ]),
+            ])->filterable(),
 
             HasOne::ofMany('Latest Post', 'latestPost', Post::class),
         ];

@@ -59,7 +59,9 @@ class Post extends Resource
                 ->sortable()
                 ->default(function ($request) {
                     return $request->user()->id > 1 ? $request->user()->id : null;
-                }),
+                })
+                ->searchable(file_exists(base_path('.searchable')))
+                ->filterable(),
 
             Text::make('Title', 'title')->sortable(),
             Textarea::make('Body', 'body')->stacked(),

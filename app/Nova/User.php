@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\BooleanGroup;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
@@ -16,6 +17,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\ActionRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravie\QueryFilter\Searchable;
 use Otwell\ResourceTool\ResourceTool;
 
 /**
@@ -56,6 +58,8 @@ class User extends Resource
             Text::make('Name', 'name')->sortable()->rules('required')
                 ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
                     $model->{$attribute} = Str::title($request->input($attribute));
+                })->filterable(function ($request, $query, $value, $attribute) {
+                    return (new Searchable($value, [$attribute, 'email']))->apply($query);
                 }),
 
             Text::make('Email', 'email')->sortable()->rules('required', 'email', 'max:255')
@@ -69,7 +73,15 @@ class User extends Resource
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
 
-            Boolean::make('Active', 'active')->default(true)->hideFromIndex(),
+            Boolean::make('Active', 'active')->default(true)->filterable()->hideFromIndex(),
+
+            BooleanGroup::make('Permissions')->options([
+                'create' => 'Create',
+                'read' => 'Read',
+                'update' => 'Update',
+                'delete' => 'Delete',
+            ])->noValueText('No permissions selected.')
+            ->filterable(),
 
             ResourceTool::make()->canSee(function ($request) {
                 return ! $request->user()->isBlockedFrom('resourceTool');
@@ -94,20 +106,21 @@ class User extends Resource
             ]),
 
             BelongsToMany::make('Roles')
-                ->display('name')
-                ->fields(function ($request) {
-                    return [
-                        Text::make('Notes', 'notes')->rules('max:20'),
-                    ];
-                })
-                ->actions(function ($request) {
-                    return [
-                        new Actions\UpdatePivotNotes,
-                        Actions\StandaloneTask::make()->standalone(),
-                    ];
-                })
-                ->referToPivotAs('Role Assignment')
-                ->prunable(),
+                        ->display('name')
+                        ->fields(function ($request) {
+                            return [
+                                Text::make('Notes', 'notes')->rules('max:20'),
+                            ];
+                        })
+                        ->actions(function ($request) {
+                            return [
+                                new Actions\UpdatePivotNotes,
+                                Actions\StandaloneTask::make()->standalone(),
+                            ];
+                        })
+                        ->referToPivotAs('Role Assignment')
+                        ->prunable()
+                        ->filterable(),
 
             BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
                 ->fields(new Fields\BookPurchase('personal')),

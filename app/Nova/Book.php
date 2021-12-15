@@ -33,7 +33,7 @@ class Book extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id', 'sku',
     ];
 
     /**
@@ -54,7 +54,7 @@ class Book extends Resource
                 if ($request->isCreateOrAttachRequest()) {
                     return true;
                 }
-            }),
+            })->filterable(),
 
             BelongsToMany::make('Purchasers', 'purchasers', User::class)
                 ->fields(new Fields\BookPurchase(null, true)),

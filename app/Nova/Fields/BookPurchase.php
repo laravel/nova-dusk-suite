@@ -81,14 +81,14 @@ class BookPurchase
                         ->help('Price starts from $0-$99');
                 })->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
                     $model->{$attribute} = $request[$requestAttribute] ?? now();
-                }),
+                })->filterable(),
 
             Select::make('Type')
                 ->options([
                     'personal' => 'Personal',
                     'gift' => 'Gift',
                 ])
-                ->default($this->type ?? 'personal')
+                ->default($this->type)
                 ->readonly(function () {
                     return ! is_null($this->type);
                 }),
