@@ -10,3 +10,9 @@ mix
     '@': path.join(__dirname, 'vendor/laravel/nova/resources/js/'),
     'laravel-nova': path.join(__dirname, 'vendor/laravel/nova/resources/js/mixins/index.js'),
   })
+  .webpackConfig({
+    externals: {
+      vue: 'Vue',
+      lodash: '_'
+    }
+  })

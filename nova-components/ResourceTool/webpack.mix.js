@@ -5,6 +5,10 @@ mix
   .js('resources/js/tool.js', 'js')
   .vue({ version: 2})
   .webpackConfig({
+    externals: {
+      vue: 'Vue',
+      lodash: '_'
+    },
     module: {
       rules: [
         {
@@ -18,3 +22,4 @@ mix
       ],
     },
   })
+
