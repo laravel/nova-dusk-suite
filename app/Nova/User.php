@@ -60,28 +60,35 @@ class User extends Resource
                     $model->{$attribute} = Str::title($request->input($attribute));
                 })->filterable(function ($request, $query, $value, $attribute) {
                     return (new Searchable($value, [$attribute, 'email']))->apply($query);
-                }),
+                })->preview(),
 
             Text::make('Email', 'email')->sortable()->rules('required', 'email', 'max:255')
+                ->help('E-mail address should be unique')
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}')
                 ->sortable()
-                ->help('E-mail address should be unique'),
+                ->preview(),
 
             Password::make('Password', 'password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
 
-            Boolean::make('Active', 'active')->default(true)->filterable()->hideFromIndex(),
+            Boolean::make('Active', 'active')
+                ->default(true)
+                ->filterable()
+                ->preview()
+                ->hideFromIndex(),
 
             BooleanGroup::make('Permissions')->options([
                 'create' => 'Create',
                 'read' => 'Read',
                 'update' => 'Update',
                 'delete' => 'Delete',
-            ])->noValueText('No permissions selected.')
-            ->filterable(),
+            ])
+            ->noValueText('No permissions selected.')
+            ->filterable()
+            ->preview(),
 
             ResourceTool::make()->canSee(function ($request) {
                 return ! $request->user()->isBlockedFrom('resourceTool');
