@@ -43,7 +43,6 @@
         }
     },
     "extra": {
-      "extra": {
         "branch-alias": {
             "dev-master": "8.4.x-dev"
         },
