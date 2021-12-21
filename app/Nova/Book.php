@@ -33,7 +33,7 @@ class Book extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id', 'sku',
     ];
 
     /**
@@ -46,24 +46,25 @@ class Book extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
-            Text::make(__('SKU'), 'sku')->sortable(),
+            Text::make(__('SKU'), 'sku')->sortable()->showOnPreview(),
             Text::make('Title')->readonly(function ($request) {
                 return $request->isUpdateOrUpdateAttachedRequest();
-            }),
+            })->showOnPreview(),
             Boolean::make('Active')->default(function ($request) {
                 if ($request->isCreateOrAttachRequest()) {
                     return true;
                 }
-            }),
+            })->filterable()
+            ->showOnPreview(),
 
             BelongsToMany::make('Purchasers', 'purchasers', User::class)
                 ->fields(new Fields\BookPurchase(null, true)),
 
             BelongsToMany::make('Personal Purchasers', 'personalPurchasers', User::class)
-                ->fields(new Fields\BookPurchase('personal')),
+                ->fields(new Fields\BookPurchase(null)),
 
             BelongsToMany::make('Gift Purchasers', 'giftPurchasers', User::class)
-                ->fields(new Fields\BookPurchase('gift')),
+                ->fields(new Fields\BookPurchase(null)),
         ];
     }
 

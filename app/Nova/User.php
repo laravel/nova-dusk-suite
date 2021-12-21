@@ -7,13 +7,17 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\BooleanGroup;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\ActionRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
+use Laravie\QueryFilter\Searchable;
 use Otwell\ResourceTool\ResourceTool;
 
 /**
@@ -54,20 +58,37 @@ class User extends Resource
             Text::make('Name', 'name')->sortable()->rules('required')
                 ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
                     $model->{$attribute} = Str::title($request->input($attribute));
-                }),
+                })->filterable(function ($request, $query, $value, $attribute) {
+                    return (new Searchable($value, [$attribute, 'email']))->apply($query);
+                })->showOnPreview(),
 
             Text::make('Email', 'email')->sortable()->rules('required', 'email', 'max:255')
+                ->help('E-mail address should be unique')
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}')
                 ->sortable()
-                ->help('E-mail address should be unique'),
+                ->showOnPreview(),
 
             Password::make('Password', 'password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
 
-            Boolean::make('Active', 'active')->default(true)->hideFromIndex(),
+            Boolean::make('Active', 'active')
+                ->default(true)
+                ->filterable()
+                ->showOnPreview()
+                ->hideFromIndex(),
+
+            BooleanGroup::make('Permissions')->options([
+                'create' => 'Create',
+                'read' => 'Read',
+                'update' => 'Update',
+                'delete' => 'Delete',
+            ])
+            ->noValueText('No permissions selected.')
+            ->filterable()
+            ->showOnPreview(),
 
             ResourceTool::make()->canSee(function ($request) {
                 return ! $request->user()->isBlockedFrom('resourceTool');
@@ -76,6 +97,20 @@ class User extends Resource
             HasOne::make('Profile')->nullable(),
 
             HasMany::make('Posts', 'posts', Post::class),
+
+            new Panel('Settings', [
+                Select::make('Pagination', 'settings.pagination')
+                    ->options([
+                        'simple' => 'Simple',
+                        'load-more' => 'Load More',
+                        'link' => 'Link',
+                    ])
+                    ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                        data_set($model, $attribute, $request->input((string) Str::of($requestAttribute ?? $attribute)->replace('.', '_')));
+                    })
+                    ->displayUsingLabels()
+                    ->hideFromIndex(),
+            ]),
 
             BelongsToMany::make('Roles')
                         ->display('name')
@@ -92,10 +127,11 @@ class User extends Resource
                         })
                         ->referToPivotAs('Role Assignment')
                         ->prunable()
-                        ->showCreateRelationButton(file_exists(base_path('.inline-create'))),
+                        ->showCreateRelationButton(file_exists(base_path('.inline-create')))
+                        ->filterable(),
 
             BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
-                ->fields(new Fields\BookPurchase()),
+                ->fields(new Fields\BookPurchase('personal')),
 
             BelongsToMany::make('Gift Books', 'giftBooks', Book::class)
                 ->fields(
@@ -122,6 +158,8 @@ class User extends Resource
     {
         return [
             // (new Metrics\PostCount)->onlyOnDetail(),
+            new Metrics\ActiveUsers,
+            new Metrics\UsersWithProfile,
         ];
     }
 
@@ -149,7 +187,7 @@ class User extends Resource
         return [
             new Actions\MarkAsActive,
             Actions\MarkAsInactive::make()
-                ->showOnTableRow()
+                ->showInline()
                 ->showOnDetail()
                 ->canSee(function ($request) {
                     if ($request instanceof ActionRequest) {
@@ -167,7 +205,7 @@ class User extends Resource
             Actions\RedirectToGoogle::make()->withoutConfirmation(),
             Actions\ChangeCreatedAt::make()->showOnDetail(),
             Actions\CreateUserProfile::make()
-                ->showOnTableRow()
+                ->showInline()
                 ->showOnDetail()
                 ->canSee(function ($request) {
                     if ($request instanceof ActionRequest) {

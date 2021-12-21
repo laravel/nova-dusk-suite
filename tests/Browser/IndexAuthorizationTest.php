@@ -6,6 +6,8 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Dashboard;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\Page;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -22,10 +24,25 @@ class IndexAuthorizationTest extends DuskTestCase
         $user = User::find(1);
         $user->shouldBlockFrom('post.viewAny');
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
+                    ->visit(new Dashboard())
+                    ->assertDontSeeIn('div.sidebar-menu[role="navigation"]', 'User Posts')
                     ->visit(new Page('/resources/posts'))
                     ->assertForbidden();
+
+            $browser->blank();
+        });
+
+        $user->shouldBlockFrom('user.viewAny');
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
+                    ->visit(new Dashboard())
+                    ->assertDontSeeIn('div.sidebar-menu[role="navigation"]', 'Users')
+                    ->visit(new Page('/resources/users'))
+                    ->assertForbidden()
+                    ->visit(new Detail('users', $user->id));
 
             $browser->blank();
         });
@@ -37,18 +54,23 @@ class IndexAuthorizationTest extends DuskTestCase
     public function shouldnt_see_id_link_if_blocked_from_viewing()
     {
         $user = User::find(1);
-        $post = PostFactory::new()->create();
-        PostFactory::new()->times(2)->create();
-        $user->shouldBlockFrom('post.view.'.$post->id);
+        $posts = PostFactory::new()->times(3)->create();
+        $user->shouldBlockFrom(...[
+            'post.view.'.$posts[0]->id,
+            'user.view.'.$posts[1]->user_id,
+        ]);
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+        $this->browse(function (Browser $browser) use ($user, $posts) {
+            $browser->loginAs($user)
                     ->visit(new Index('posts'))
-                    ->within(new IndexComponent('posts'), function ($browser) {
+                    ->within(new IndexComponent('posts'), function ($browser) use ($posts) {
                         $browser->waitForTable()
-                                ->assertDontSeeLink('1')
-                                ->assertSeeLink('2')
-                                ->assertSeeLink('3');
+                                ->assertDontSeeLink($posts[0]->id)
+                                ->assertSeeLink($posts[0]->user->name)
+                                ->assertSeeLink($posts[1]->id)
+                                ->assertDontSeeLink($posts[1]->user->name)
+                                ->assertSeeLink($posts[2]->id)
+                                ->assertSeeLink($posts[2]->user->name);
                     });
 
             $browser->blank();

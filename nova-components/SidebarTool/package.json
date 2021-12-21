@@ -12,6 +12,7 @@
   "devDependencies": {
     "laravel-mix": "^6.0.6",
     "postcss": "^8.2",
+    "postcss-import": "^14.0.2",
     "vue-template-compiler": "^2.6.12"
   },
   "dependencies": {

@@ -6,11 +6,52 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Illuminate\Testing\AssertableJsonString;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class KeyValueFieldTest extends DuskTestCase
 {
+    /** @test */
+    public function it_can_display_numeric_array_keyvalue()
+    {
+        $post = PostFactory::new()->create([
+            'meta' => ['laravel', 'nova', 'admin'],
+        ]);
+
+        $this->browse(function (Browser $browser) use ($post) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Detail('posts', $post->id))
+                    ->assertInputValue('@key-value-key-0', 0)
+                    ->assertInputValue('@key-value-value-0', 'laravel')
+                    ->assertInputValue('@key-value-key-1', 1)
+                    ->assertInputValue('@key-value-value-1', 'nova')
+                    ->assertInputValue('@key-value-key-2', 2)
+                    ->assertInputValue('@key-value-value-2', 'admin');
+
+            $browser->blank();
+        });
+    }
+
+    /** @test */
+    public function it_can_display_associated_array_keyvalue()
+    {
+        $post = PostFactory::new()->create([
+            'meta' => ['project' => 'laravel', 'tool' => 'nova'],
+        ]);
+
+        $this->browse(function (Browser $browser) use ($post) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Detail('posts', $post->id))
+                    ->assertInputValue('@key-value-key-0', 'tool')
+                    ->assertInputValue('@key-value-value-0', 'nova')
+                    ->assertInputValue('@key-value-key-1', 'project')
+                    ->assertInputValue('@key-value-value-1', 'laravel');
+
+            $browser->blank();
+        });
+    }
+
     /** @test */
     public function it_does_preserve_order_numeric_array_keyvalue()
     {

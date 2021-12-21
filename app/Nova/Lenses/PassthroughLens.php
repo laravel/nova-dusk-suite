@@ -12,6 +12,7 @@ use Laravel\Nova\Http\Requests\ActionRequest;
 use Laravel\Nova\Http\Requests\LensRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Lenses\Lens;
+use Laravie\QueryFilter\Searchable;
 
 /**
  * @property \App\Models\User|\stdClass $resource
@@ -42,7 +43,10 @@ class PassthroughLens extends Lens
     {
         return [
             ID::make('ID', 'id')->sortable(),
-            Text::make('Name', 'name')->sortable(),
+            Text::make('Name', 'name')->sortable()
+                ->filterable(function ($request, $query, $value, $attribute) {
+                    return (new Searchable($value, [$attribute]))->apply($query);
+                }),
         ];
     }
 
