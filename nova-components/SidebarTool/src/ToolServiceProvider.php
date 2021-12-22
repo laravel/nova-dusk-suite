@@ -35,11 +35,9 @@ class ToolServiceProvider extends ServiceProvider
             return;
         }
 
-        Nova::router(['nova', Authorize::class])
-            ->group(function ($router) {
-                $router->prefix('sidebar-tool')
-                    ->group(__DIR__.'/../routes/inertia.php');
-            });
+        Route::middleware(['nova', Authorize::class])
+            ->prefix('nova/sidebar-tool')
+            ->group(__DIR__.'/../routes/inertia.php');
 
         Route::middleware(['nova', Authorize::class])
             ->prefix('nova-vendor/custom-sidebar-tool')
