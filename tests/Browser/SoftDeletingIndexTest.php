@@ -28,7 +28,8 @@ class SoftDeletingIndexTest extends DuskTestCase
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->waitForTable()
                                 ->deleteResourceById(1)
-                                ->waitForText('No Dock matched the given criteria.')
+                                ->waitForEmptyDialog()
+                                ->assertSee('No Dock matched the given criteria.')
                                 ->assertDontSeeResource(1);
                     });
 

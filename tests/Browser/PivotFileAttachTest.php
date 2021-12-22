@@ -52,7 +52,8 @@ class PivotFileAttachTest extends DuskTestCase
                         ->within(new IndexComponent('ships'), function ($browser) use ($ship) {
                             $browser->waitForTable()
                                     ->deleteResourceById($ship->id)
-                                    ->waitForText('No Ship matched the given criteria.');
+                                    ->waitForEmptyDialog()
+                                    ->assertSee('No Ship matched the given criteria.');
                         });
 
                 // Clean up the file...

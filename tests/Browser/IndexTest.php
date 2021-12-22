@@ -4,11 +4,13 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
 use Database\Factories\PostFactory;
+use Database\Factories\RoleFactory;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Contracts\QueryBuilder;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
+use Laravel\Nova\Testing\Browser\Pages\Dashboard;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\Page;
@@ -493,6 +495,28 @@ class IndexTest extends DuskTestCase
                             ->assertSeeResource(2)
                             ->assertDontSeeResource(3)
                             ->assertSee('1-3 of 3');
+                    });
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function resource_index_can_show_contents_even_when_set_as_collapsed()
+    {
+        $role = RoleFactory::new()->create();
+
+        $this->browse(function (Browser $browser) use ($role) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Dashboard());
+
+            $browser->script('localStorage.setItem("nova.resources.roles.collapsed", true)');
+
+            $browser->visit(new Index('roles'))
+                    ->within(new IndexComponent('roles'), function ($browser) use ($role) {
+                        $browser->assertSee($role->name);
                     });
 
             $browser->blank();

@@ -24,7 +24,8 @@ class CreateWithHasManyThroughTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                 ->visit(new Detail('docks', $dock->id))
                 ->within(new IndexComponent('sails'), function ($browser) {
-                    $browser->waitForText('No Sail matched the given criteria.')
+                    $browser->waitForEmptyDialog()
+                            ->assertSee('No Sail matched the given criteria.')
                             ->assertDontSee('@create-button');
                 })
                 ->within(new IndexComponent('ships'), function ($browser) use ($ship) {

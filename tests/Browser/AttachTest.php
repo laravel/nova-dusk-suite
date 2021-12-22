@@ -191,7 +191,8 @@ class AttachTest extends DuskTestCase
                             ->assertSeeResource(4);
                     })
                     ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
-                        $browser->assertSee('No Book matched the given criteria.');
+                        $browser->waitForEmptyDialog()
+                                ->assertSee('No Book matched the given criteria.');
                     });
 
             $browser->blank();

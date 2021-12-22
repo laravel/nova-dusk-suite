@@ -134,13 +134,11 @@ class ActionFieldTest extends DuskTestCase
                             ->select('@action-select', 'update-pivot-notes')
                             ->pause(100)
                             ->click('@run-action-button')
-                            ->elsewhere('', function ($browser) {
-                                $browser->whenAvailable('.modal[data-modal-open=true]', function ($browser) {
-                                    $browser->assertSee('Provide a description for notes.')
-                                        ->type('@notes', 'Custom Notes')
-                                        ->click('[dusk="cancel-action-button"]')
-                                        ->pause(250);
-                                });
+                            ->elsewhereWhenAvailable('.modal[data-modal-open=true]', function ($browser) {
+                                $browser->assertSee('Provide a description for notes.')
+                                    ->type('@notes', 'Custom Notes')
+                                    ->click('[dusk="cancel-action-button"]')
+                                    ->pause(250);
                             })
                             ->runAction('update-required-pivot-notes', function ($browser) {
                                 $browser->type('@notes', 'Custom Notes Updated');
