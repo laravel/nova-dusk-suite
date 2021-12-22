@@ -28,6 +28,6 @@ class SidebarTool extends Tool
      */
     public function menu(Request $request)
     {
-        return new MenuItem('Sidebar Tool', '/sidebar-tool');
+        return new MenuItem('Sidebar Tool', 'sidebar-tool');
     }
 }
