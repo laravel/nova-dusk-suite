@@ -2,7 +2,10 @@ name: Next PHP Version
 
 on:
   push:
-  pull_request:
+    branches:
+      - "8.x"
+      - "8.3"
+      - "master"
 
 jobs:
   laravel-tests:
