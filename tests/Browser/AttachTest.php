@@ -239,7 +239,7 @@ class AttachTest extends DuskTestCase
                     ->type('@price', '34')
                     ->type('[dusk="purchased_at"] + input', $now->copy()->timezone(env('DUSK_TIMEZONE'))->toDatetimeString())
                     ->clickAttach()
-                    ->waitForText('There was a problem submitting the form.', 15)
+                    ->waitForText('There was a problem submitting the form.')
                     ->assertSee('This books is already attached.');
         });
     }
