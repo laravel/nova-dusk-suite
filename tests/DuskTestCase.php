@@ -34,17 +34,17 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
         parent::setUpDuskServer();
 
         tap($this->app->make('config'), function ($config) {
-            $config->set('app.url', static::baseServeUrl());
-            $config->set('filesystems.disks.public.url', static::baseServeUrl().'/storage');
+            $config->set('app.url', static::applicationBaseUrl());
+            $config->set('filesystems.disks.public.url', static::applicationBaseUrl().'/storage');
         });
     }
 
     /**
-     * Get base path.
+     * Get Application's base path.
      *
      * @return string
      */
-    protected function getBasePath()
+    public static function applicationBasePath()
     {
         return realpath(__DIR__.'/../');
     }
@@ -58,7 +58,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     protected function getPackageProviders($app)
     {
         return [
-            'Fideloper\Proxy\TrustedProxyServiceProvider',
             'Laravel\Nova\NovaCoreServiceProvider',
             'Carbon\Laravel\ServiceProvider',
         ];
