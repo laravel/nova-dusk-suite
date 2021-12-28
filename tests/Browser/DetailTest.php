@@ -304,4 +304,29 @@ class DetailTest extends DuskTestCase
             $browser->blank();
         });
     }
+
+    /**
+     * @test
+     */
+    public function relations_filter_should_not_change_query_string_when_filter_has_not_been_applied()
+    {
+        PostFactory::new()->times(10)->create([
+            'user_id' => 1,
+        ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
+                    ->visit(new Detail('users', 1))
+                    ->waitForTextIn('h1', 'User Details: 1')
+                    ->within(new IndexComponent('posts'), function ($browser) {
+                        $browser->waitForTable()
+                                ->assertQueryStringMissing('posts_filter')
+                                ->applyFilter('Select First', '3')
+                                ->waitForEmptyDialog()
+                                ->assertQueryStringHas('posts_filter', 'W3siQXBwXFxOb3ZhXFxGaWx0ZXJzXFxTZWxlY3RGaXJzdCI6IjMifV0=');
+                    });
+
+            $browser->blank();
+        });
+    }
 }

@@ -9,6 +9,7 @@ use Database\Factories\DockFactory;
 use Database\Factories\PostFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -111,6 +112,32 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                 $comment = Comment::with('commentable')->latest()->first();
                 $this->assertNotNull($comment->attachment);
                 $this->assertNull($comment->commentable->attachment);
+            });
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function belongs_to_many_resource_should_fetch_the_related_resource_id_info()
+    {
+        $this->whileIndexQueryAscOrder(function () {
+            $this->whileInlineCreate(function () {
+                $this->browse(function (Browser $browser) {
+                    $browser->loginAs($user = User::find(1))
+                        ->visit(new Attach('users', $user->getKey(), 'roles'))
+                        ->runInlineCreate('roles', function ($browser) {
+                            $browser->waitForText('Create Role')
+                                ->type('@name', 'Manager');
+                        })
+                        ->waitForText('The role was created!')
+                        ->pause(500)
+                        ->assertSee('Manager')
+                        ->create()
+                        ->waitForText('The resource was attached!');
+
+                    $browser->blank();
+                });
             });
         });
     }
