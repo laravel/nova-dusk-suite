@@ -58,11 +58,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     protected function getPackageProviders($app)
     {
         return [
-<<<<<<< HEAD
             'Inertia\ServiceProvider',
-            'Fideloper\Proxy\TrustedProxyServiceProvider',
-=======
->>>>>>> origin/8.3
             'Laravel\Nova\NovaCoreServiceProvider',
             'Carbon\Laravel\ServiceProvider',
         ];
