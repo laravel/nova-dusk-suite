@@ -154,23 +154,4 @@ class CreateWithBelongsToTest extends DuskTestCase
             $browser->blank();
         });
     }
-
-    /**
-     * @test
-     */
-    public function belongs_to_field_cannot_create_from_invalid_parents_detail_page()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Create('posts', [
-                        'viaResource' => 'users',
-                        'viaResourceId' => 99999,
-                        'viaRelationship' => 'posts',
-                    ]))
-                    ->waitForText('404', 15)
-                    ->assertPathIs('/nova/404');
-
-            $browser->blank();
-        });
-    }
 }
