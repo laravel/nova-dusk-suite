@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFieldsToActionEventsTable extends Migration
+new class() extends Migration
 {
     /**
      * Run the migrations.
@@ -30,4 +30,4 @@ class AddFieldsToActionEventsTable extends Migration
             $table->dropColumn('original', 'changes');
         });
     }
-}
+};
