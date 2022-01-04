@@ -60,7 +60,7 @@ class Project extends Resource
 
             Select::make('Type')->options($productTypes)->displayUsing(function ($value) use ($productTypes) {
                 return $productTypes[$value] ?? null;
-            })->dependsOn('name', function ($field, $request, $formData) use ($productTypes) {
+            })->dependsOn('name', function (Select $field, $request, $formData) use ($productTypes) {
                 if (in_array($formData->name, ['Nova', 'Spark'])) {
                     $field->options(collect($productTypes)->filter(function ($title, $type) {
                         return $type === 'product';

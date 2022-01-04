@@ -57,7 +57,7 @@ class User extends Resource
                 ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
                     $model->{$attribute} = Str::title($request->input($attribute));
                 })->filterable(function ($request, $query, $value, $attribute) {
-                    return (new Searchable($value, [$attribute, 'email']))->apply($query);
+                    (new Searchable($value, [$attribute, 'email']))->apply($query);
                 })->showOnPreview(),
 
             Text::make('Email', 'email')->sortable()->rules('required', 'email', 'max:255')

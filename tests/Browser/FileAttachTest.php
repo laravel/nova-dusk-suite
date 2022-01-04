@@ -30,9 +30,9 @@ class FileAttachTest extends DuskTestCase
 
             // Verify the photo in the information in the database...
             $captain = Captain::orderBy('id', 'desc')->first();
-            $photo = $captain->photo;
-            $this->assertNotNull($captain->photo);
-            $this->assertTrue(Storage::disk('public')->exists($captain->photo));
+            $this->assertNotNull($photo = $captain->photo);
+            $this->assertTrue(File::exists(storage_path("app/public/{$photo}")));
+            Storage::disk('public')->assertExists($photo);
 
             // Download the file...
             $browser->on(new Detail('captains', $captain->id))
@@ -46,7 +46,8 @@ class FileAttachTest extends DuskTestCase
 
             $captain = $captain->fresh();
             $this->assertNotNull($captain->photo);
-            $this->assertTrue(Storage::disk('public')->exists($captain->photo));
+            $this->assertTrue(File::exists(storage_path("app/public/{$photo}")));
+            Storage::disk('public')->assertExists($photo);
 
             // Delete the file...
             $browser->visit(new Update('captains', $captain->id))
@@ -55,15 +56,19 @@ class FileAttachTest extends DuskTestCase
                     })
                     ->whenAvailable('.modal[data-modal-open="true"]', function ($browser) {
                         $browser->click('@confirm-upload-delete-button')->pause(250);
-                    });
-
-            // Clean up the file...
-            $this->assertFalse(Storage::disk('public')->exists($captain->photo));
+                    })
+                    ->waitForText('The file was deleted!');
 
             $browser->blank();
 
             // Cleanup temporary files.
             File::delete(__DIR__.'/../../'.$photo);
+
+            // Validate file no longer exists.
+            $captain = $captain->fresh();
+            $this->assertNull($captain->photo);
+            $this->assertFalse(File::exists(storage_path("app/public/{$photo}")));
+            Storage::disk('public')->assertMissing($photo);
         });
     }
 }

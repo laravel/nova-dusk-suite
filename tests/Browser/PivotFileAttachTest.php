@@ -35,8 +35,8 @@ class PivotFileAttachTest extends DuskTestCase
                 // Verify the photo in the information in the database...
                 $captain = Captain::orderBy('id', 'desc')->first();
                 $ship = $captain->ships()->get()->first();
-                $this->assertNotNull($ship->pivot->contract);
-                $this->assertTrue(Storage::disk('public')->exists($ship->pivot->contract));
+                $this->assertNotNull($path = $ship->pivot->contract);
+                Storage::disk('public')->assertExists($path);
 
                 // Ensure file is not removed on blank update...
                 $browser->visit(new UpdateAttached('captains', $captain->id, 'ships', $ship->id))
@@ -45,7 +45,7 @@ class PivotFileAttachTest extends DuskTestCase
                 $captain = Captain::orderBy('id', 'desc')->first();
                 $ship = $captain->ships()->get()->first();
                 $this->assertNotNull($path = $ship->pivot->contract);
-                $this->assertTrue(Storage::disk('public')->exists($ship->pivot->contract));
+                Storage::disk('public')->assertExists($path);
 
                 // Detach the record...
                 $browser->visit(new Detail('captains', $captain->id))
@@ -57,7 +57,7 @@ class PivotFileAttachTest extends DuskTestCase
                         });
 
                 // Clean up the file...
-                $this->assertFalse(Storage::disk('public')->exists($path));
+                Storage::disk('public')->assertMissing($path);
 
                 $browser->blank();
             });
@@ -84,7 +84,7 @@ class PivotFileAttachTest extends DuskTestCase
                 $captain = Captain::orderBy('id', 'desc')->first();
                 $ship = $captain->ships()->get()->first();
                 $this->assertNotNull($path = $ship->pivot->contract);
-                $this->assertTrue(Storage::disk('public')->exists($ship->pivot->contract));
+                Storage::disk('public')->assertExists($path);
 
                 // Delete the file...
                 $browser->visit(new UpdateAttached('captains', $captain->id, 'ships', $ship->id))
@@ -97,7 +97,7 @@ class PivotFileAttachTest extends DuskTestCase
                         ->waitForText('The file was deleted!');
 
                 // Clean up the file...
-                $this->assertFalse(Storage::disk('public')->exists($path));
+                Storage::disk('public')->assertMissing($path);
 
                 $browser->blank();
             });

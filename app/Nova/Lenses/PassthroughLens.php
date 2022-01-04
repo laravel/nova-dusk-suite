@@ -45,7 +45,7 @@ class PassthroughLens extends Lens
             ID::make('ID', 'id')->sortable(),
             Text::make('Name', 'name')->sortable()
                 ->filterable(function ($request, $query, $value, $attribute) {
-                    return (new Searchable($value, [$attribute]))->apply($query);
+                    (new Searchable($value, [$attribute]))->apply($query);
                 }),
         ];
     }

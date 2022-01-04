@@ -1,27 +1,3 @@
 parameters:
-	ignoreErrors:
-		-
-			message: "#^Access to an undefined property Laravel\\\\Nova\\\\Fields\\\\FormData\\:\\:\\$books\\.$#"
-			count: 1
-			path: app/Nova/Fields/BookPurchase.php
-
-		-
-			message: "#^Method App\\\\Nova\\\\Metrics\\\\ActiveUsers\\:\\:cacheFor\\(\\) should return DateInterval\\|DateTimeInterface\\|float\\|int but return statement is missing\\.$#"
-			count: 1
-			path: app/Nova/Metrics/ActiveUsers.php
-
-		-
-			message: "#^Method App\\\\Nova\\\\Metrics\\\\UsersWithProfile\\:\\:cacheFor\\(\\) should return DateInterval\\|DateTimeInterface\\|float\\|int but return statement is missing\\.$#"
-			count: 1
-			path: app/Nova/Metrics/UsersWithProfile.php
-
-		-
-			message: "#^Access to an undefined property Laravel\\\\Nova\\\\Fields\\\\FormData\\:\\:\\$name\\.$#"
-			count: 2
-			path: app/Nova/Project.php
-
-		-
-			message: "#^Call to an undefined method Laravel\\\\Nova\\\\Fields\\\\Field\\:\\:options\\(\\)\\.$#"
-			count: 2
-			path: app/Nova/Project.php
+	ignoreErrors: []
 
