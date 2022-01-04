@@ -9,12 +9,16 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+/**
+ * @template TModel of \App\Models\Project
+ * @extends \App\Nova\Resource<TModel>
+ */
 class Project extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
     public static $model = \App\Models\Project::class;
 

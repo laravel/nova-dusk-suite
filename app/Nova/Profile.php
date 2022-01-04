@@ -12,15 +12,15 @@ use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
- * @property \App\Models\Profile|null $resource
- * @mixin \App\Models\Profile
+ * @template TModel of \App\Models\Profile
+ * @extends \App\Nova\Resource<TModel>
  */
 class Profile extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
     public static $model = \App\Models\Profile::class;
 

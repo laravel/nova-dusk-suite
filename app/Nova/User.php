@@ -21,10 +21,8 @@ use Laravie\QueryFilter\Searchable;
 use Otwell\ResourceTool\ResourceTool;
 
 /**
- * @property \App\Models\User|null $resource
- *
- * @method \App\Models\User model()
- * @mixin \App\Models\User
+ * @template TModel of \App\Models\User
+ * @extends \App\Nova\Resource<TModel>
  */
 class User extends Resource
 {
@@ -106,7 +104,7 @@ class User extends Resource
                         'link' => 'Link',
                     ])
                     ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
-                        data_set($model, $attribute, $request->input((string) Str::of($requestAttribute ?? $attribute)->replace('.', '_')));
+                        data_set($model, $attribute, $request->input((string) Str::of($requestAttribute)->replace('.', '_')));
                     })
                     ->displayUsingLabels()
                     ->hideFromIndex(),
@@ -238,12 +236,12 @@ class User extends Resource
      * Return the location to redirect the user after creation.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  static  $resource
+     * @param  static<TModel>  $resource
      * @return string
      */
     public static function redirectAfterCreate(NovaRequest $request, $resource)
     {
-        if (! $resource->model()->relationLoaded('profile') || is_null($resource->model()->profile)) {
+        if ($resource->model() && (! $resource->model()->relationLoaded('profile') || is_null($resource->model()->profile))) {
             return '/resources/profiles/new?viaResource='.static::uriKey().'&viaResourceId='.$resource->getKey().'&viaRelationship=profile';
         }
 

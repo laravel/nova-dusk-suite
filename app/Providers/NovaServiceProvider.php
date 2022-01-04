@@ -98,11 +98,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         });
 
         Nova::userTimezone(function (Request $request) {
+            /** @param string|null $default */
             $default = config('app.timezone');
 
-            return transform($request->user(), function ($user) use ($default) {
-                return $user->profile->timezone ?? $default;
-            }, $default);
+            return $request->user()->profile->timezone ?? $default;
         });
     }
 }

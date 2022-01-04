@@ -10,16 +10,17 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
- * @mixin \App\Models\Sail
+ * @template TModel of \App\Models\Sail
+ * @extends \App\Nova\Resource<TModel>
  */
 class Sail extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
-    public static $model = 'App\Models\Sail';
+    public static $model = \App\Models\Sail::class;
 
     /**
      * The columns that should be searched.

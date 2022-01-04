@@ -117,7 +117,7 @@ class User extends Authenticatable
     /**
      * Store the actions the user should be blocked from.
      *
-     * @param  string[]  $block
+     * @param  string  ...$block
      * @return void
      */
     public function shouldBlockFrom(...$block)

@@ -9,14 +9,15 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
- * @mixin \App\Models\Book
+ * @template TModel of \App\Models\Book
+ * @extends \App\Nova\Resource<TModel>
  */
 class Book extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
     public static $model = \App\Models\Book::class;
 

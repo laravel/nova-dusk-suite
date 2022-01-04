@@ -5,6 +5,10 @@ namespace App\Nova;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Resource as NovaResource;
 
+/**
+ * @template TModel of \Illuminate\Database\Eloquent\Model
+ * @extends \Laravel\Nova\Resource<TModel>
+ */
 abstract class Resource extends NovaResource
 {
     /**

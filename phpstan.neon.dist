@@ -8,7 +8,7 @@ parameters:
     - app
 
   # The level 9 is the highest level
-  level: 9
+  level: 8
 
   ignoreErrors:
     - '#Access to an undefined property Laravel\\Nova\\Fields\\ActionFields#'

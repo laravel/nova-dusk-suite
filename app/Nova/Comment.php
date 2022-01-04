@@ -9,17 +9,17 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
- * @property \App\Models\Comment|null $resource
- * @mixin \App\Models\Comment
+ * @template TModel of \App\Models\Comment
+ * @extends \App\Nova\Resource<TModel>
  */
 class Comment extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
-    public static $model = 'App\Models\Comment';
+    public static $model = \App\Models\Comment::class;
 
     /**
      * The columns that should be searched.
