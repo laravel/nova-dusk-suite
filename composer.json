@@ -21,7 +21,7 @@
         "laravel/nova": "*",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
-        "nunomaduro/larastan": "^1.0.1",
+        "nunomaduro/larastan": "^2.0",
         "orchestra/testbench-dusk": "^7.0",
         "phpunit/phpunit": "^9.5.10|^10.0"
     },
