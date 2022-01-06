@@ -9,6 +9,7 @@
     "type": "project",
     "require": {
         "php": "^8.0",
+        "fruitcake/laravel-cors": "^2.0.5",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^9.0",
         "laravel/scout": "^9.4.1",
@@ -17,7 +18,6 @@
     "require-dev": {
         "algolia/algoliasearch-client-php": "^2.2",
         "fakerphp/faker": "^1.9.1",
-        "fruitcake/laravel-cors": "dev-develop",
         "laravel/nova": "*",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
