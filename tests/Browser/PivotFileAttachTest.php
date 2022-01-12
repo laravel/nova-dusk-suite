@@ -56,10 +56,10 @@ class PivotFileAttachTest extends DuskTestCase
                                     ->assertSee('No Ship matched the given criteria.');
                         });
 
-                // Clean up the file...
-                Storage::disk('public')->assertMissing($path);
-
                 $browser->blank();
+
+                // Validate file no longer exists.
+                Storage::disk('public')->assertMissing($path);
             });
         });
     }
@@ -96,10 +96,10 @@ class PivotFileAttachTest extends DuskTestCase
                         })
                         ->waitForText('The file was deleted!');
 
-                // Clean up the file...
-                Storage::disk('public')->assertMissing($path);
-
                 $browser->blank();
+
+                // Validate file no longer exists.
+                Storage::disk('public')->assertMissing($path);
             });
         });
     }
