@@ -11,8 +11,8 @@
         "php": "^8.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^9.0",
-        "laravel/scout": "dev-develop",
-        "laravel/tinker": "dev-develop"
+        "laravel/scout": "^9.4.1",
+        "laravel/tinker": "^2.7"
     },
     "require-dev": {
         "algolia/algoliasearch-client-php": "^2.2",
