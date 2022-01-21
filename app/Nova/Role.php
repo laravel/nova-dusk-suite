@@ -8,16 +8,17 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
- * @mixin \App\Models\Role
+ * @template TModel of \App\Models\Role
+ * @extends \App\Nova\Resource<TModel>
  */
 class Role extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
-    public static $model = 'App\Models\Role';
+    public static $model = \App\Models\Role::class;
 
     /**
      * The columns that should be searched.

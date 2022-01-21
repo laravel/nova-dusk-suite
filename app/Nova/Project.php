@@ -9,12 +9,16 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+/**
+ * @template TModel of \App\Models\Project
+ * @extends \App\Nova\Resource<TModel>
+ */
 class Project extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
     public static $model = \App\Models\Project::class;
 
@@ -56,7 +60,7 @@ class Project extends Resource
 
             Select::make('Type')->options($productTypes)->displayUsing(function ($value) use ($productTypes) {
                 return $productTypes[$value] ?? null;
-            })->dependsOn('name', function ($field, $request, $formData) use ($productTypes) {
+            })->dependsOn('name', function (Select $field, $request, $formData) use ($productTypes) {
                 if (in_array($formData->name, ['Nova', 'Spark'])) {
                     $field->options(collect($productTypes)->filter(function ($title, $type) {
                         return $type === 'product';

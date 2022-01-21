@@ -62,17 +62,17 @@
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
-            "@php artisan nova:publish"
+            "@php artisan nova:publish --force"
         ],
         "dusk:prepare": [
             "@php vendor/bin/dusk-updater detect --auto-update",
             "@php vendor/bin/testbench-dusk package:discover",
-            "@php artisan nova:publish"
+            "@php artisan nova:publish --force"
         ],
         "dusk:assets": [
             "npm --prefix=./nova/ install",
             "TAILWIND_MODE=build npm --prefix=./nova/ run prod",
-            "@php artisan nova:publish"
+            "@php artisan nova:publish --force"
         ],
         "dusk:test": [
             "@composer run dusk:prepare",

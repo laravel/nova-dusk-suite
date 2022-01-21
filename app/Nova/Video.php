@@ -8,14 +8,15 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
- * @mixin \App\Models\Video
+ * @template TModel of \App\Models\Video
+ * @extends \App\Nova\Resource<TModel>
  */
 class Video extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
     public static $model = 'App\Models\Video';
 

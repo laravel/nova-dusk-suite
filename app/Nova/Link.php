@@ -9,16 +9,17 @@ use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
- * @mixin \App\Models\Link
+ * @template TModel of \App\Models\Link
+ * @extends \App\Nova\Resource<TModel>
  */
 class Link extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
-    public static $model = 'App\Models\Link';
+    public static $model = \App\Models\Link::class;
 
     /**
      * The columns that should be searched.

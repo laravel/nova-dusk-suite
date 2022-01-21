@@ -12,14 +12,15 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
- * @mixin \App\Models\Ship
+ * @template TModel of \App\Models\Ship
+ * @extends \App\Nova\Resource<TModel>
  */
 class Ship extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
     public static $model = 'App\Models\Ship';
 

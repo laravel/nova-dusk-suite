@@ -10,16 +10,17 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
- * @mixin \App\Models\Dock
+ * @template TModel of \App\Models\Dock
+ * @extends \App\Nova\Resource<TModel>
  */
 class Dock extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
-    public static $model = 'App\Models\Dock';
+    public static $model = \App\Models\Dock::class;
 
     /**
      * The columns that should be searched.

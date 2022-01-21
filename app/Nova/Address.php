@@ -9,16 +9,17 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
 /**
- * @mixin \App\Models\Address
+ * @template TModel of \App\Models\Address
+ * @extends \App\Nova\Resource<TModel>
  */
 class Address extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
-    public static $model = 'App\Models\Address';
+    public static $model = \App\Models\Address::class;
 
     /**
      * The columns that should be searched.

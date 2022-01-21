@@ -7,14 +7,15 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
- * @mixin \App\Models\Company
+ * @template TModel of \App\Models\Company
+ * @extends \App\Nova\Resource<TModel>
  */
 class Company extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
     public static $model = \App\Models\Company::class;
 

@@ -8,14 +8,15 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
- * @mixin \App\Models\Employee
+ * @template TModel of \App\Models\Employee
+ * @extends \App\Nova\Resource<TModel>
  */
 class Employee extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
     public static $model = \App\Models\Employee::class;
 

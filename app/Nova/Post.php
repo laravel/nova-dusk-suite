@@ -13,16 +13,17 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
- * @mixin \App\Models\Post
+ * @template TModel of \App\Models\Post
+ * @extends \App\Nova\Resource<TModel>
  */
 class Post extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
-    public static $model = 'App\Models\Post';
+    public static $model = \App\Models\Post::class;
 
     /**
      * The columns that should be searched.

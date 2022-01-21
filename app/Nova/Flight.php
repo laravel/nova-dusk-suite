@@ -7,16 +7,17 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Otwell\CustomField\CustomField;
 
 /**
- * @mixin \App\Models\Flight
+ * @template TModel of \App\Models\Flight
+ * @extends \App\Nova\Resource<TModel>
  */
 class Flight extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
-    public static $model = 'App\Models\Flight';
+    public static $model = \App\Models\Flight::class;
 
     /**
      * The columns that should be searched.
