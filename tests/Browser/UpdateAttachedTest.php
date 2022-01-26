@@ -144,6 +144,9 @@ class UpdateAttachedTest extends DuskTestCase
                             });
                     })
                     ->on(new UpdateAttached('users', 1, 'books', 4))
+                    ->whenAvailable('@via-resource-field', function ($browser) {
+                        $browser->assertSee('User')->assertSee('1');
+                    })
                     ->whenAvailable('@price', function ($browser) {
                         $browser->type('', '43');
                     })

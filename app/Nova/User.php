@@ -17,7 +17,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\ActionRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Laravie\QueryFilter\Searchable;
+use Laravel\Nova\Query\Search;
 use Otwell\ResourceTool\ResourceTool;
 
 /**
@@ -57,7 +57,7 @@ class User extends Resource
                 ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
                     $model->{$attribute} = Str::title($request->input($attribute));
                 })->filterable(function ($request, $query, $value, $attribute) {
-                    (new Searchable($value, [$attribute, 'email']))->apply($query);
+                    (new Search($query, $value))->handle(__CLASS__, [$attribute, 'email']);
                 })->showOnPreview(),
 
             Text::make('Email', 'email')->sortable()->rules('required', 'email', 'max:255')
