@@ -37,7 +37,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
     /**
      * @test
      */
-    public function non_searchable_belongs_to_respects_with_trashed_checkbox_state()
+    public function select_belongs_to_respects_with_trashed_checkbox_state()
     {
         $ship = ShipFactory::new()->create(['deleted_at' => now()]);
         $ship2 = ShipFactory::new()->create();

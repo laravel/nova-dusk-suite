@@ -17,3 +17,4 @@ parameters:
   checkMissingIterableValueType: false
   noUnnecessaryCollectionCall: false
   checkModelProperties: false
+  checkGenericClassInNonGenericObjectType: false
