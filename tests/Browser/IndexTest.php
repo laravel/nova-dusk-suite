@@ -44,7 +44,7 @@ class IndexTest extends DuskTestCase
                                 ->assertSeeResource(3)
                                 ->assertSee('1-4 of 4');
                     })
-                    ->assertTitle('Users | Nova Site');
+                    ->assertTitle('Nova Site - Users');
 
             $browser->blank();
         });
@@ -82,7 +82,7 @@ class IndexTest extends DuskTestCase
                         $browser->waitForText('Failed to load Users!')
                             ->assertSee('Reload');
                     })
-                    ->assertTitle('Users | Nova Site');
+                    ->assertTitle('Nova Site - Users');
 
             $browser->blank();
         });
