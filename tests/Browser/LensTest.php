@@ -29,7 +29,7 @@ class LensTest extends DuskTestCase
                                 ->assertSeeResource(2)
                                 ->assertSeeResource(3);
                     })
-                    ->assertTitle('Nova Site - Passthrough Lens');
+                    ->assertTitle('Passthrough Lens | Nova Site');
 
             $browser->blank();
         });

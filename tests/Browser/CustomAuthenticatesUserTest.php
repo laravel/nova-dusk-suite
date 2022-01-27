@@ -6,10 +6,9 @@ use App\Models\User;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Pages\Dashboard;
-use Laravel\Nova\Testing\Browser\Pages\Login;
 use Laravel\Nova\Tests\DuskTestCase;
 
-class AuthenticatesUserTest extends DuskTestCase
+class CustomAuthenticatesUserTest extends DuskTestCase
 {
     /**
      * @test
@@ -17,11 +16,18 @@ class AuthenticatesUserTest extends DuskTestCase
      */
     public function it_redirect_to_intended_url_after_login($targetUrl, $expectedUrl)
     {
+        $this->beforeServingApplication(function ($app, $config) {
+            $config->set('nova.routes.login', '/login');
+            $config->set('nova.routes.logout', '/logout');
+
+            Nova::$withAuthentication = false;
+        });
+
         $this->browse(function (Browser $browser) use ($targetUrl, $expectedUrl) {
             $browser->logout()
                     ->assertGuest()
                     ->visit(Nova::url($targetUrl))
-                    ->on(new Login)
+                    ->waitForLocation('/login')
                     ->type('email', 'nova@laravel.com')
                     ->type('password', 'password')
                     ->click('button[type="submit"]')
@@ -37,12 +43,19 @@ class AuthenticatesUserTest extends DuskTestCase
      */
     public function it_redirect_to_login_after_logout()
     {
+        $this->beforeServingApplication(function ($app, $config) {
+            $config->set('nova.routes.login', '/login');
+            $config->set('nova.routes.logout', '/logout');
+
+            Nova::$withAuthentication = false;
+        });
+
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Dashboard())
                     ->press('Taylor Otwell')
                     ->press('Logout')
-                    ->on(new Login)
+                    ->waitForLocation('/login')
                     ->assertGuest();
 
             $browser->blank();
@@ -54,11 +67,19 @@ class AuthenticatesUserTest extends DuskTestCase
      */
     public function it_clear_user_association_after_logout()
     {
+        $this->beforeServingApplication(function ($app, $config) {
+            $config->set('nova.routes.login', '/login');
+            $config->set('nova.routes.logout', '/logout');
+
+            Nova::$withAuthentication = false;
+        });
+
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Dashboard())
                     ->logout()
-                    ->visit(new Login)
+                    ->visit('/login')
+                    ->waitForLocation('/login')
                     ->assertGuest();
 
             $browser->blank();
