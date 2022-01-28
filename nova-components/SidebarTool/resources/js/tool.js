@@ -1,4 +1,4 @@
-Nova.booting((Vue, store) => {
+Nova.booting((app, store) => {
   Nova.inertia('SidebarTool', require('./pages/Tool').default)
-  Vue.component('SidebarToolLogo', require('./components/Logo').default)
+  app.component('SidebarToolLogo', require('./components/Logo').default)
 })

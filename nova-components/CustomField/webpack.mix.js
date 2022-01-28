@@ -1,18 +1,14 @@
 let mix = require('laravel-mix')
 let path = require('path')
 
+require('./mix')
+
 mix
   .setPublicPath('dist')
   .js('resources/js/field.js', 'js')
-  .vue({ version: 2 })
+  .vue({ version: 3 })
   .css('resources/css/field.css', 'css')
   .alias({
-    '@': path.join(__dirname, 'vendor/laravel/nova/resources/js/'),
-    'laravel-nova': path.join(__dirname, 'vendor/laravel/nova/resources/js/mixins/index.js'),
+    'laravel-nova': path.join(__dirname, 'resources/js/mixins'),
   })
-  .webpackConfig({
-    externals: {
-      vue: 'Vue',
-      lodash: '_'
-    }
-  })
+  .nova('otwell/custom-field')

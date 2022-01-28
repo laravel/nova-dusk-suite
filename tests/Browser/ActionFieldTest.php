@@ -156,18 +156,16 @@ class ActionFieldTest extends DuskTestCase
      */
     public function actions_cant_be_executed_when_not_authorized_to_run()
     {
-        User::whereIn('id', [1])->update(['active' => true]);
+        User::whereIn('id', [1, 2])->update(['active' => true]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs($user = User::find(1))
+            $browser->loginAs($user = User::find(2))
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
-                            ->assertSeeIn('@1-row', 'Mark As Inactive')
-                            ->assertDontSeeIn('@2-row', 'Mark As Inactive')
-                            ->assertDontSeeIn('@3-row', 'Mark As Inactive')
-                            ->runInlineAction(1, 'mark-as-inactive');
-                    })->waitForText('Sorry! You are not authorized to perform this action.');
+                            ->assertDontSeeIn('@1-row', 'Mark As Inactive')
+                            ->assertSeeIn('@2-row', 'Mark As Inactive');
+                    });
 
             $this->assertEquals(1, $user->fresh()->active);
 

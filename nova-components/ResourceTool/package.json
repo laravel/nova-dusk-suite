@@ -10,13 +10,14 @@
     "production": "mix --production"
   },
   "devDependencies": {
-    "laravel-mix": "^6.0",
-    "postcss": "^8.1",
-    "vue-loader": "^15.9.5",
-    "vue-template-compiler": "^2.6.12"
+    "@vue/compiler-sfc": "^3.2.22",
+    "laravel-mix": "^6.0.41",
+    "lodash": "^4.17.21",
+    "postcss": "^8.3.11",
+    "vue": "^3.2.19",
+    "vue-loader": "^16.8.3"
   },
   "dependencies": {
-    "tailwindcss": "^2.0.4",
-    "vue": "^2.5.0"
+    "tailwindcss": "^2.0.4"
   }
 }

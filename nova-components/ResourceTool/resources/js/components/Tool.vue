@@ -1,14 +1,14 @@
 <template>
-  <div>
-    Resource Tool for <span class="field-name">{{ fieldName }}</span>
+  <div class="flex flex-col md:flex-row -mx-6 px-6">
+    <p>
+      Resource Tool for <span class="field-name">{{ fieldName }}</span>
+    </p>
   </div>
 </template>
 
 <script>
-import _ from 'lodash'
-
 export default {
-  props: ['resourceName', 'resourceId', 'resource', 'panel'],
+  props: ['index', 'resourceName', 'resourceId', 'resource', 'panel'],
 
   data() {
     return {
