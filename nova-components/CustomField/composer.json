@@ -7,7 +7,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": ">=7.1.0"
+        "php": "^7.3|^8.0"
     },
     "require-dev": {
         "laravel/nova": "*"
@@ -17,6 +17,12 @@
             "Otwell\\CustomField\\": "src/"
         }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./../../nova"
+        }
+    ],
     "extra": {
         "laravel": {
             "providers": [
@@ -24,12 +30,6 @@
             ]
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../nova/"
-        }
-    ],
     "config": {
         "sort-packages": true
     },

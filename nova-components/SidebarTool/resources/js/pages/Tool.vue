@@ -1,5 +1,7 @@
 <template>
   <div id="sidebar-tool">
+    <Head title="Sidebar Tool" />
+
     <Heading class="mb-6">Sidebar Tool</Heading>
 
     <Card class="flex flex-col items-center justify-center" style="min-height: 300px">
@@ -12,19 +14,13 @@
 </template>
 
 <script>
-import { layout } from '@/mixins'
-
 export default {
-  ...layout('AppLayout'),
-
-  metaInfo() {
-    return {
-      title: 'Sidebar Tool',
-    }
-  },
+  name: 'SidebarTool',
 
   data() {
-    return {sidebarResponse: null}
+    return {
+      sidebarResponse: null
+    }
   },
 
   mounted() {
