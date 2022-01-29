@@ -83,11 +83,8 @@ class PassthroughLens extends Lens
     {
         return [
             new MarkAsActive(),
-            (new MarkAsInactive)->showOnTableRow()->canSee(function ($request) {
-                return $request instanceof ActionRequest
-                    || ($this->resource instanceof Model && $this->resource->exists && $this->resource->active === true);
-            })->canRun(function ($request, $model) {
-                return (int) $model->getKey() !== 1;
+            MarkAsInactive::make()->showInline()->canRun(function ($request, $model) {
+                return $model->active === true && (int) $model->getKey() !== 1;
             }),
         ];
     }

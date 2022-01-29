@@ -187,16 +187,8 @@ class User extends Resource
             Actions\MarkAsInactive::make()
                 ->showInline()
                 ->showOnDetail()
-                ->canSee(function ($request) {
-                    if ($request instanceof ActionRequest) {
-                        return true;
-                    }
-
-                    return ! is_null($this->resource)
-                            && $this->resource->exists === true
-                            && $this->resource->active === true;
-                })->canRun(function ($request, $model) {
-                    return (int) $model->getKey() !== 1;
+                ->canRun(function ($request, $model) {
+                    return $model->active === true && (int) $model->getKey() !== 1;
                 }),
             new Actions\Sleep,
             Actions\StandaloneTask::make()->standalone(),
@@ -205,14 +197,8 @@ class User extends Resource
             Actions\CreateUserProfile::make()
                 ->showInline()
                 ->showOnDetail()
-                ->canSee(function ($request) {
-                    if ($request instanceof ActionRequest) {
-                        return true;
-                    }
-
-                    return ! is_null($this->resource)
-                            && $this->resource->exists === true
-                            && is_null($this->resource->profile);
+                ->canRun(function ($request, $model) {
+                    return is_null($model->profile);
                 }),
         ];
     }
