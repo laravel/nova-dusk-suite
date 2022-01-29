@@ -5,10 +5,8 @@ namespace App\Nova\Lenses;
 use App\Nova\Actions\MarkAsActive;
 use App\Nova\Actions\MarkAsInactive;
 use App\Nova\Filters\SelectFirst;
-use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Http\Requests\ActionRequest;
 use Laravel\Nova\Http\Requests\LensRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Lenses\Lens;
@@ -83,11 +81,8 @@ class PassthroughLens extends Lens
     {
         return [
             new MarkAsActive(),
-            (new MarkAsInactive)->showOnTableRow()->canSee(function ($request) {
-                return $request instanceof ActionRequest
-                    || ($this->resource instanceof Model && $this->resource->exists && $this->resource->active === true);
-            })->canRun(function ($request, $model) {
-                return (int) $model->getKey() !== 1;
+            MarkAsInactive::make()->showInline()->canRun(function ($request, $model) {
+                return $model->active === true && (int) $model->getKey() !== 1;
             }),
         ];
     }
