@@ -26,15 +26,17 @@ class FileDeleteTest extends DuskTestCase
 
             $captain = Captain::orderBy('id', 'desc')->first();
 
-            $this->assertTrue(Storage::disk('public')->exists($captain->photo));
+            $this->assertNotNull($photo = $captain->photo);
+            Storage::disk('public')->assertExists($photo);
 
             $browser->visit(new Detail('captains', $captain->id))
                 ->delete();
 
-            $this->assertFalse(Storage::disk('public')->exists($captain->photo));
-            $this->assertEmpty(Captain::query()->get());
-
             $browser->blank();
+
+            // Validate file no longer exists.
+            Storage::disk('public')->assertMissing($photo);
+            $this->assertEmpty(Captain::query()->get());
         });
     }
 }
