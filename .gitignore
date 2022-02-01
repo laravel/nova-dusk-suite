@@ -22,7 +22,8 @@ yarn-error.log
 /public/vendor/nova/*
 /resources/lang/vendor/nova/*
 /resources/views/vendor/nova/*
-/nova*
+!/nova-components*
+/nova
 /nova-*.zip
 
 /rr
