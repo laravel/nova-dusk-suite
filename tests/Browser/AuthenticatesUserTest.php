@@ -58,8 +58,49 @@ class AuthenticatesUserTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Dashboard())
                     ->logout()
-                    ->visit(new Login)
+                    ->visit((new Dashboard())->url())
+                    ->waitForLocation('/nova/login')
                     ->assertGuest();
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function it_clear_user_association_after_session_timeout()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($user = User::find(1))->visit(new Dashboard());
+
+            $browser->deleteCookie('nova_dusk_suite_session');
+
+            $browser->within('.sidebar-menu', function ($browser) {
+                $browser->clickLink('Users');
+            })->waitForLocation('/nova/login')
+            ->assertGuest();
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_relogin_after_session_timeout()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($user = User::find(1))->visit(new Dashboard());
+
+            $browser->deleteCookie('nova_dusk_suite_session')
+                    ->script('Nova.$emit("token-expired")');
+
+            $browser->waitForLocation('/nova/login')
+                ->type('email', 'nova@laravel.com')
+                ->type('password', 'password')
+                ->click('button[type="submit"]')
+                ->on(new Dashboard);
 
             $browser->blank();
         });
