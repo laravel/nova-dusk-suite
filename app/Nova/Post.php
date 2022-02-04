@@ -62,6 +62,7 @@ class Post extends Resource
                     return $request->user()->id > 1 ? $request->user()->id : null;
                 })
                 ->searchable(file_exists(base_path('.searchable')))
+                ->showCreateRelationButton(file_exists(base_path('.inline-create')))
                 ->filterable(),
 
             Text::make('Title', 'title')->sortable(),
