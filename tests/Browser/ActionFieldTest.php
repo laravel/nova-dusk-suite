@@ -72,17 +72,14 @@ class ActionFieldTest extends DuskTestCase
                         $browser->waitForTable()
                             ->assertScript('Nova.useShortcuts', true)
                             ->clickCheckboxForId(1)
-                            ->waitFor('@action-select')
-                            ->select('@action-select', 'update-pivot-notes')
-                            ->pause(100)
-                            ->click('@run-action-button');
-
-                        $browser->elsewhere('', function ($browser) {
-                            $browser->whenAvailable('.modal[data-modal-open=true]', function ($browser) {
-                                $browser->assertScript('Nova.useShortcuts', false)
-                                        ->assertSee('Provide a description for notes.');
-                            })->keys('', ['e']);
-                        });
+                            ->selectAction('update-pivot-notes', function ($browser) {
+                                $browser->elsewhere('', function ($browser) {
+                                    $browser->whenAvailable('.modal[data-modal-open=true]', function ($browser) {
+                                        $browser->assertScript('Nova.useShortcuts', false)
+                                                ->assertSee('Provide a description for notes.');
+                                    })->keys('', ['e']);
+                                });
+                            });
                     })
                     ->assertPresent('.modal[data-modal-open=true]');
 
@@ -130,11 +127,7 @@ class ActionFieldTest extends DuskTestCase
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
                             ->clickCheckboxForId(1)
-                            ->waitFor('@action-select')
-                            ->select('@action-select', 'update-pivot-notes')
-                            ->pause(100)
-                            ->click('@run-action-button')
-                            ->elsewhereWhenAvailable('.modal[data-modal-open=true]', function ($browser) {
+                            ->selectAction('update-pivot-notes', function ($browser) {
                                 $browser->assertSee('Provide a description for notes.')
                                     ->type('@notes', 'Custom Notes')
                                     ->click('[dusk="cancel-action-button"]')
@@ -191,8 +184,7 @@ class ActionFieldTest extends DuskTestCase
                             ->whenAvailable('@action-select', function ($browser) {
                                 $browser->select('', 'update-required-pivot-notes')
                                         ->pause(100);
-                            })
-                            ->click('@run-action-button');
+                            });
 
                         $browser->elsewhere('', function ($browser) {
                             $browser->whenAvailable('.modal[data-modal-open=true]', function ($browser) {

@@ -19,7 +19,7 @@ class FileAttachTest extends DuskTestCase
      */
     public function file_can_be_attached_to_resource()
     {
-        $this->artisan('storage:link')->run();
+        $this->artisan('storage:link');
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
