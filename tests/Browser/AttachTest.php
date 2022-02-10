@@ -90,7 +90,8 @@ class AttachTest extends DuskTestCase
                     })
                     ->create()
                     ->waitForText('There was a problem submitting the form.', 15)
-                    ->assertSee('The role field is required.');
+                    ->assertSee('The role field is required.')
+                    ->click('@cancel-attach-button');
 
             $this->assertDatabaseMissing('role_user', [
                 'user_id' => '1',
@@ -263,7 +264,8 @@ class AttachTest extends DuskTestCase
                     ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now)
                     ->create()
                     ->waitForText('There was a problem submitting the form.')
-                    ->assertSee('This books is already attached.');
+                    ->assertSee('This books is already attached.')
+                    ->click('@cancel-attach-button');
 
             $browser->blank();
         });

@@ -157,6 +157,9 @@ return [
     | Nova Authentication Routes
     |--------------------------------------------------------------------------
     |
+    | This option allows you to define custom authentication paths instead
+    | of the default ones that ship with Nova. Feel free to change these
+    | to custom values that work best for your application's routes.
     */
 
     'routes' => [

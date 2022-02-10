@@ -131,7 +131,7 @@ class LensTest extends DuskTestCase
                         $browser->waitForTable()
                                 ->assertSelectAllMatchingCount(4)
                                 ->closeCurrentDropdown()
-                                ->applyFilter('Select First', '1')
+                                ->selectFilter('Select First', '1')
                                 ->assertSelectAllMatchingCount(1);
                     });
 
@@ -255,10 +255,10 @@ class LensTest extends DuskTestCase
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable()
-                            ->applyFilter('Select First', '3')
+                            ->selectFilter('Select First', '3')
                             ->selectAllMatching()
                             ->deleteSelected()
-                            ->applyFilter('Select First', '')
+                            ->selectFilter('Select First', '')
                             ->waitForTable()
                             ->assertSeeResource(1)
                             ->assertSeeResource(2)

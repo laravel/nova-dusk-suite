@@ -118,7 +118,8 @@ class AttachPolymorphicTest extends DuskTestCase
                     })
                     ->create()
                     ->waitForText('There was a problem submitting the form.')
-                    ->assertSee('The tag field is required.');
+                    ->assertSee('The tag field is required.')
+                    ->click('@cancel-attach-button');
 
             $post = Post::with('tags')->find(1);
 
@@ -145,7 +146,8 @@ class AttachPolymorphicTest extends DuskTestCase
                         ->type('@notes', str_repeat('A', 30))
                         ->create()
                         ->waitForText('There was a problem submitting the form.')
-                        ->assertSee('The notes must not be greater than 20 characters.');
+                        ->assertSee('The notes must not be greater than 20 characters.')
+                        ->click('@cancel-attach-button');
 
                 $post = Post::with('tags')->find(1);
 

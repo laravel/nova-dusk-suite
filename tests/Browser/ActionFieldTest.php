@@ -169,46 +169,6 @@ class ActionFieldTest extends DuskTestCase
     /**
      * @test
      */
-    public function actions_cant_be_closed_via_backdrop_when_form_has_been_updated()
-    {
-        $user = User::find(1);
-        $role = RoleFactory::new()->create();
-        $user->roles()->attach($role);
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
-                    ->visit(new Detail('users', $user->id))
-                    ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitForTable()
-                            ->clickCheckboxForId(1)
-                            ->whenAvailable('@action-select', function ($browser) {
-                                $browser->select('', 'update-required-pivot-notes')
-                                        ->pause(100);
-                            });
-
-                        $browser->elsewhere('', function ($browser) {
-                            $browser->whenAvailable('.modal[data-modal-open=true]', function ($browser) {
-                                $browser->type('@notes', 'Custom Notes')
-                                        ->click('@modal-backdrop')
-                                        ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
-                                        ->dismissDialog();
-                            })
-                            ->assertPresent('.modal[data-modal-open=true]')
-                            ->keys('', '{escape}')
-                            ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
-                            ->acceptDialog()
-                            ->pause(100)
-                            ->assertMissing('.modal[data-modal-open=true]');
-                        });
-                    });
-
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
     public function cannot_run_standalone_actions_on_deleted_resource()
     {
         PostFactory::new()->times(5)->create();

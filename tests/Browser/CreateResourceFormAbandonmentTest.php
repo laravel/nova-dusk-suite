@@ -8,10 +8,10 @@ use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
 
-class ResourceFormAbandonmentTest extends DuskTestCase
+class CreateResourceFormAbandonmentTest extends DuskTestCase
 {
     /** @test */
-    public function it_can_show_dialog_if_resource_form_has_changes_on_navigating_to_different_page()
+    public function it_shows_exit_warning_if_resource_form_has_changes_when_navigating_to_different_page()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
@@ -35,14 +35,15 @@ class ResourceFormAbandonmentTest extends DuskTestCase
     }
 
     /** @test */
-    public function it_can_show_dialog_if_resource_form_has_changes_on_clicking_cancel()
+    public function it_shows_exit_warning_if_resource_form_has_changes_when_clicking_browser_back_button()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Index('videos'))
                     ->runCreate()
                     ->keys('@title', 'Hello World', '{tab}')
-                    ->click('@cancel-create-button')
+                    ->back()
+                    ->pause(500)
                     ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                     ->acceptDialog()
                     ->on(new Index('videos'));
@@ -56,17 +57,14 @@ class ResourceFormAbandonmentTest extends DuskTestCase
     }
 
     /** @test */
-    public function it_can_show_dialog_if_resource_form_has_changes_on_browser_back()
+    public function it_doesnt_show_exit_warning_if_resource_form_has_changes_when_clicking_cancel()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit(new Index('videos'))
                     ->runCreate()
                     ->keys('@title', 'Hello World', '{tab}')
-                    ->pause(500)
-                    ->back()
-                    ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
-                    ->acceptDialog()
+                    ->click('@cancel-create-button')
                     ->on(new Index('videos'));
 
             $this->assertDatabaseMissing('videos', [

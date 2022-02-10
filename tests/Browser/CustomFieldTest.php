@@ -44,8 +44,9 @@ class CustomFieldTest extends DuskTestCase
             $browser->loginAs(User::find(1))
                     ->visit(new Create('flights'))
                     ->create()
-                    ->waitForText('There was a problem submitting the form.', 15)
-                    ->assertSee('The Name field is required.');
+                    ->waitForText('There was a problem submitting the form.')
+                    ->assertSee('The Name field is required.')
+                    ->click('@cancel-create-button');
 
             $browser->blank();
         });

@@ -66,7 +66,9 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
                         ->assertMissing('@commentable-search-input-result-0')
                         ->searchRelation('commentable', $video2->id)
                         ->pause(1500)
-                        ->assertSeeIn('@commentable-search-input-result-0', $video2->title);
+                        ->assertSeeIn('@commentable-search-input-result-0', $video2->title)
+                        ->closeSearchableResult('commentable')
+                        ->click('@cancel-create-button');
 
                 $browser->visit(new Create('comments'))
                         ->selectRelation('commentable-type', 'videos')
@@ -107,7 +109,8 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
                         ->type('@body', 'Test Comment')
                         ->create()
                         ->pause(175)
-                        ->assertSee('This Commentable may not be associated with this resource.');
+                        ->assertSee('This Commentable may not be associated with this resource.')
+                        ->click('@cancel-create-button');
 
                 $this->assertCount(0, $video->fresh()->comments);
 
@@ -130,7 +133,9 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
                         ->selectRelation('commentable-type', 'videos')
                         ->searchRelation('commentable', '1')
                         ->pause(1500)
-                        ->assertNoRelationSearchResults('commentable');
+                        ->assertNoRelationSearchResults('commentable')
+                        ->closeSearchableResult('commentable')
+                        ->click('@cancel-create-button');
 
                 $browser->visit(new Create('comments'))
                         ->selectRelation('commentable-type', 'videos')

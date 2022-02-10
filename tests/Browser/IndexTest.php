@@ -130,59 +130,6 @@ class IndexTest extends DuskTestCase
     /**
      * @test
      */
-    public function can_navigate_to_replicate_resource_screen()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()->replicateResourceById(2);
-                    })
-                    ->waitForText('Create User')
-                    ->assertSeeIn('h1', 'Create User')
-                    ->assertInputValue('@name', 'Mohamed Said')
-                    ->assertInputValue('@email', 'mohamed@laravel.com')
-                    ->assertSee('Create & Add Another')
-                    ->assertSee('Create User');
-
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function cannot_navigate_to_replicate_resource_screen_when_blocked_via_policy()
-    {
-        $user = User::find(1);
-        $user->shouldBlockFrom('user.replicate.4');
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
-                            ->openControlSelectorById(4)->elsewhere('', function ($browser) {
-                                $browser->assertNotPresent('@4-replicate-button');
-                            })
-                            ->openControlSelectorById(3)->elsewhere('', function ($browser) {
-                                $browser->assertPresent('@3-replicate-button');
-                            })
-                            ->openControlSelectorById(2)->elsewhere('', function ($browser) {
-                                $browser->assertPresent('@2-replicate-button');
-                            })
-                            ->openControlSelectorById(1)->elsewhere('', function ($browser) {
-                                $browser->assertPresent('@1-replicate-button');
-                            });
-                    });
-
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
     public function can_navigate_to_different_index_screen()
     {
         $post = PostFactory::new()->create();
