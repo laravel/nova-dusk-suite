@@ -50,7 +50,7 @@ class People extends Resource
 
             Text::make(__('Name')),
 
-            Date::make('Created At')->hideWhenCreating(),
+            Date::make('Created At')->hideWhenCreating()->filterable(),
 
             /** RELATION */
             HasOne::make(__('Employee'), 'employee', Employee::class)->exceptOnForms(),
