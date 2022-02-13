@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Captain;
-use App\Models\User;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Dusk\Browser;
@@ -22,7 +21,7 @@ class FileAttachTest extends DuskTestCase
         $this->artisan('storage:link');
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('captains'))
                     ->type('@name', 'Taylor Otwell')
                     ->attach('@photo', __DIR__.'/Fixtures/StardewTaylor.png')

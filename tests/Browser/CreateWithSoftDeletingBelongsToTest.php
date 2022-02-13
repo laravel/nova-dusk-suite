@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
@@ -21,7 +20,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         $dock = DockFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) use ($dock) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', $dock->id))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->waitFor('@create-button')->click('@create-button');
@@ -46,7 +45,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         $ship2 = ShipFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('sails'))
                     ->assertSelectMissingOption('@ship', $ship->id)
                     ->assertSelectHasOption('@ship', $ship2->id)
@@ -71,7 +70,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         $ship = ShipFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) use ($ship) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('sails'))
                     ->withTrashedRelation('ships')
                     ->select('@ship', $ship->id)
@@ -96,7 +95,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
             $dock = DockFactory::new()->create(['deleted_at' => now()]);
 
             $this->browse(function (Browser $browser) use ($dock) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Create('ships'))
                         ->searchRelation('docks', '1')
                         ->pause(1500)

@@ -18,7 +18,7 @@ class CreateWithBelongsToTest extends DuskTestCase
     public function resource_can_be_created()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('posts'))
                     ->waitFor('.content form')
                     ->select('@user', 1)
@@ -26,7 +26,7 @@ class CreateWithBelongsToTest extends DuskTestCase
                     ->type('@body', 'Test Post Body')
                     ->create();
 
-            $user = User::find(1);
+            $user = User::with('posts')->find(1);
             $post = $user->posts->first();
             $this->assertEquals('Test Post', $post->title);
             $this->assertEquals('Test Post Body', $post->body);
@@ -40,10 +40,8 @@ class CreateWithBelongsToTest extends DuskTestCase
      */
     public function parent_resource_should_be_locked_when_creating_via_parents_detail_page()
     {
-        $user = User::find(1);
-
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitFor('@create-button')->click('@create-button');
@@ -55,7 +53,7 @@ class CreateWithBelongsToTest extends DuskTestCase
                     ->type('@body', 'Test Post Body')
                     ->create();
 
-            $user = User::find(1);
+            $user = User::with('posts')->find(1);
             $post = $user->posts->first();
             $this->assertEquals('Test Post', $post->title);
             $this->assertEquals('Test Post Body', $post->body);
@@ -72,7 +70,7 @@ class CreateWithBelongsToTest extends DuskTestCase
         $dock = DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($dock) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('ships'))
                     ->searchAndSelectFirstRelation('docks', '1')
                     ->type('@name', 'Test Ship')
@@ -92,7 +90,7 @@ class CreateWithBelongsToTest extends DuskTestCase
         $dock = DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($dock) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->waitFor('@create-button')->click('@create-button');
@@ -115,7 +113,7 @@ class CreateWithBelongsToTest extends DuskTestCase
     public function belongs_to_field_should_honor_custom_labels_on_create()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('invoice-items'))
                     ->waitFor('.content form')
                     ->waitFor('.content form')
@@ -131,7 +129,7 @@ class CreateWithBelongsToTest extends DuskTestCase
     public function belongs_to_field_should_honor_query_parameters_on_create()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('posts', [
                         'viaResource' => 'users',
                         'viaResourceId' => 1,
@@ -152,7 +150,7 @@ class CreateWithBelongsToTest extends DuskTestCase
     public function belongs_to_field_cannot_create_from_invalid_parents_detail_page()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('posts', [
                         'viaResource' => 'users',
                         'viaResourceId' => 99999,

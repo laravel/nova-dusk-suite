@@ -19,11 +19,10 @@ class UpdateTest extends DuskTestCase
         $post = PostFactory::new()->create();
         $post2 = PostFactory::new()->create();
 
-        $user = User::find(1);
-        $user->shouldBlockFrom('post.update.'.$post->id);
+        User::find(1)->shouldBlockFrom('post.update.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($user, $post, $post2) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) use ($post, $post2) {
+            $browser->loginAs(1)
                     ->visit(new Update('posts', $post->id))
                     ->assertPathIs('/nova/403');
 
@@ -39,12 +38,10 @@ class UpdateTest extends DuskTestCase
      */
     public function resource_can_be_updated()
     {
-        $user = User::find(1);
-        $user->name = 'Taylor';
-        $user->save();
+        User::whereKey(1)->update(['name' => 'Taylor']);
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Update('users', 1))
                     ->waitForTextIn('h1', 'Update User: 1', 25)
                     ->assertSee('E-mail address should be unique')
@@ -67,7 +64,7 @@ class UpdateTest extends DuskTestCase
     public function validation_errors_are_displayed()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Update('users', 1))
                     ->waitForTextIn('h1', 'Update User: 1', 25)
                     ->type('@name', ' ')
@@ -86,7 +83,7 @@ class UpdateTest extends DuskTestCase
     public function resource_can_be_updated_and_user_can_continue_editing()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Update('users', 1))
                     ->waitForTextIn('h1', 'Update User: 1', 25)
                     ->type('@name', 'Taylor Otwell Updated')

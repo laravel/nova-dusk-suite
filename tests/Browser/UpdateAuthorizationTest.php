@@ -15,12 +15,11 @@ class UpdateAuthorizationTest extends DuskTestCase
      */
     public function update_page_should_not_be_accessible_if_not_authorized_to_view()
     {
-        $user = User::find(1);
         $post = PostFactory::new()->create();
-        $user->shouldBlockFrom('post.update.'.$post->id);
+        User::find(1)->shouldBlockFrom('post.update.'.$post->id);
 
         $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Update('posts', $post->id))
                     ->assertPathIs('/nova/403');
 

@@ -26,10 +26,8 @@ class IndexTest extends DuskTestCase
      */
     public function resource_index_can_be_viewed()
     {
-        $users = User::find([1, 2, 3]);
-
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable(25)
@@ -50,7 +48,7 @@ class IndexTest extends DuskTestCase
     public function resource_index_cant_be_viewed_on_invalid_resource()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('foobar'))
                     ->waitForText('404', 15)
                     ->assertPathIs('/nova/404');
@@ -71,7 +69,7 @@ class IndexTest extends DuskTestCase
         });
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForText('Failed to load Users!')
@@ -86,11 +84,15 @@ class IndexTest extends DuskTestCase
     /**
      * @test
      */
-    public function can_navigate_to_create_resource_screen()
+    public function can_navigate_to_different_screens()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new UserIndex)
+            $post = PostFactory::new()->create();
+
+            $browser->loginAs(1);
+
+            // to Create Resource screen
+            $browser->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitFor('@create-button')->click('@create-button');
                     })
@@ -99,18 +101,8 @@ class IndexTest extends DuskTestCase
                     ->assertSee('Create & Add Another')
                     ->assertSee('Create User');
 
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function can_navigate_to_create_resource_screen_using_shortcut()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new UserIndex)
+            // To Create Resource screen using shortcut
+            $browser->visit(new UserIndex)
                     ->waitFor('@users-index-component')
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitFor('@create-button');
@@ -121,20 +113,8 @@ class IndexTest extends DuskTestCase
                     ->assertSee('Create & Add Another')
                     ->assertSee('Create User');
 
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function can_navigate_to_different_index_screen()
-    {
-        $post = PostFactory::new()->create();
-
-        $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new UserIndex)
+            // to different Resource Index screen
+            $browser->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTextIn('h1', 'Users', 25)
                             ->assertSee('Mohamed Said')
@@ -152,18 +132,8 @@ class IndexTest extends DuskTestCase
                             ->assertDontSee('David Hemphill');
                     })->assertPathIs('/nova/resources/posts');
 
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function can_navigate_to_detail_screen()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new UserIndex)
+            // to Resource Detail screen
+            $browser->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable(25)
                                 ->click('@1-view-button');
@@ -172,18 +142,8 @@ class IndexTest extends DuskTestCase
                     ->assertSee('User Details')
                     ->assertPathIs('/nova/resources/users/1');
 
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function can_navigate_to_edit_screen()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new UserIndex)
+            // to Resource Edit screen
+            $browser->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable(25)
                                 ->click('@1-edit-button');
@@ -203,7 +163,7 @@ class IndexTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             // Search For Single User By ID...
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable(25)
@@ -215,7 +175,7 @@ class IndexTest extends DuskTestCase
                     });
 
             // Search For Single User By Name...
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable(25)
@@ -236,7 +196,7 @@ class IndexTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             // Search For Single User By ID...
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable(25)
@@ -268,7 +228,7 @@ class IndexTest extends DuskTestCase
     public function test_correct_select_all_matching_count_is_displayed()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable(25)
@@ -292,7 +252,7 @@ class IndexTest extends DuskTestCase
         UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable(25)
@@ -319,7 +279,7 @@ class IndexTest extends DuskTestCase
     public function resources_can_be_resorted_by_different_field_default_to_ascending_first()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable(25)
@@ -346,7 +306,7 @@ class IndexTest extends DuskTestCase
         UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable(25)
@@ -369,77 +329,6 @@ class IndexTest extends DuskTestCase
                                 ->assertDontSeeResource(1)
                                 ->assertSee('1-25 of 54');
                     });
-
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function can_delete_a_resource_via_resource_table_row_delete_icon()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable(25)
-                                ->deleteResourceById(3)
-                                ->pause(1500)
-                                ->assertSeeResource(1)
-                                ->assertSeeResource(2)
-                                ->assertDontSeeResource(3)
-                                ->assertSee('1-3 of 3');
-                    });
-
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function can_delete_resources_using_checkboxes()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable(25)
-                            ->clickCheckboxForId(3)
-                            ->clickCheckboxForId(2)
-                            ->deleteSelected()
-                            ->assertSeeResource(1)
-                            ->assertDontSeeResource(2)
-                            ->assertDontSeeResource(3)
-                            ->assertSee('1-2 of 2');
-                    })
-                    ->assertPathIs('/nova/resources/users');
-
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function can_delete_all_matching_resources()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable(25)
-                            ->searchFor('David')
-                            ->selectAllMatching()
-                            ->deleteSelected()
-                            ->clearSearch()
-                            ->assertSeeResource(1)
-                            ->assertSeeResource(2)
-                            ->assertDontSeeResource(3)
-                            ->assertSee('1-3 of 3');
-                    })
-                    ->assertPathIs('/nova/resources/users');
 
             $browser->blank();
         });

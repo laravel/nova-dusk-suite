@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\VideoFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
@@ -35,7 +34,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
         $video = VideoFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) use ($video) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('videos', $video->id))
                     ->within(new IndexComponent('comments'), function ($browser) {
                         $browser->waitFor('@create-button')->click('@create-button');
@@ -62,7 +61,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
             $video2 = VideoFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($video, $video2) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Create('comments'))
                         ->select('@commentable-type', 'videos')
                         ->searchRelation('commentable', $video->id)
@@ -97,10 +96,10 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
     {
         $this->whileSearchable(function () {
             $video = VideoFactory::new()->create(['deleted_at' => now()]);
-            $video2 = VideoFactory::new()->create();
+            VideoFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($video) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Create('comments'))
                         ->select('@commentable-type', 'videos')
                         ->pause(175)
@@ -129,7 +128,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
             $video = VideoFactory::new()->create(['deleted_at' => now()]);
 
             $this->browse(function (Browser $browser) use ($video) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Create('comments'))
                         ->select('@commentable-type', 'videos')
                         ->searchRelation('commentable', '1')

@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Post;
-use App\Models\User;
 use Database\Factories\PostFactory;
 use Database\Factories\TagFactory;
 use Laravel\Dusk\Browser;
@@ -20,11 +19,11 @@ class AttachPolymorphicTest extends DuskTestCase
     public function non_searchable_resource_can_be_attached()
     {
         $this->whileSearchable(function () {
-            $post = PostFactory::new()->create();
+            PostFactory::new()->create();
             $tag = TagFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($tag) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Detail('posts', 1))
                         ->within(new IndexComponent('tags'), function ($browser) {
                             $browser->waitFor('@attach-button')
@@ -47,11 +46,11 @@ class AttachPolymorphicTest extends DuskTestCase
     public function searchable_resource_can_be_attached()
     {
         $this->whileSearchable(function () {
-            $post = PostFactory::new()->create();
+            PostFactory::new()->create();
             $tag = TagFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($tag) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Detail('posts', 1))
                         ->within(new IndexComponent('tags'), function ($browser) {
                             $browser->waitFor('@attach-button')
@@ -74,11 +73,11 @@ class AttachPolymorphicTest extends DuskTestCase
     public function fields_on_intermediate_table_should_be_stored()
     {
         $this->whileSearchable(function () {
-            $post = PostFactory::new()->create();
+            PostFactory::new()->create();
             $tag = TagFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($tag) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Detail('posts', 1))
                         ->within(new IndexComponent('tags'), function ($browser) {
                             $browser->waitFor('@attach-button')
@@ -102,11 +101,11 @@ class AttachPolymorphicTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $post = PostFactory::new()->create();
-        $tag = TagFactory::new()->create();
+        PostFactory::new()->create();
+        TagFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('posts', 1))
                     ->within(new IndexComponent('tags'), function ($browser) {
                         $browser->waitFor('@attach-button')
@@ -130,11 +129,11 @@ class AttachPolymorphicTest extends DuskTestCase
     public function validation_errors_are_displayed_for_pivot_fields()
     {
         $this->whileSearchable(function () {
-            $post = PostFactory::new()->create();
+            PostFactory::new()->create();
             $tag = TagFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($tag) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Detail('posts', 1))
                         ->within(new IndexComponent('tags'), function ($browser) {
                             $browser->waitFor('@attach-button')

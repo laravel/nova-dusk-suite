@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\PostFactory;
 use Illuminate\Testing\AssertableJsonString;
 use Laravel\Dusk\Browser;
@@ -20,7 +19,7 @@ class KeyValueFieldTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('posts', $post->id))
                     ->assertInputValue('@key-value-key-0', 0)
                     ->assertInputValue('@key-value-value-0', 'laravel')
@@ -41,7 +40,7 @@ class KeyValueFieldTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('posts', $post->id))
                     ->assertInputValue('@key-value-key-0', 'tool')
                     ->assertInputValue('@key-value-value-0', 'nova')
@@ -60,7 +59,7 @@ class KeyValueFieldTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Update('posts', $post->id))
                     ->click('@meta-add-key-value')
                     ->type('@key-value-key-3', 3)
@@ -83,7 +82,7 @@ class KeyValueFieldTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Update('posts', $post->id))
                     ->click('@meta-add-key-value')
                     ->type('@key-value-key-2', 'framework')
@@ -111,7 +110,7 @@ class KeyValueFieldTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Update('posts', $post->id))
                     ->click('@meta-add-key-value')
                     ->type('@key-value-key-2', '2021')

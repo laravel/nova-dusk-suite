@@ -20,7 +20,7 @@ class DetailAuthorizationTest extends DuskTestCase
         $user->shouldBlockFrom('post.view.'.$post->id);
 
         $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('posts', $post->id))
                     ->assertPathIs('/nova/403');
 
@@ -38,7 +38,7 @@ class DetailAuthorizationTest extends DuskTestCase
         $user->shouldBlockFrom('post.update.'.$post->id);
 
         $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('posts', $post->id))
                     ->assertMissing('@edit-resource-button');
 
@@ -51,12 +51,11 @@ class DetailAuthorizationTest extends DuskTestCase
      */
     public function resource_cant_be_deleted_if_not_authorized()
     {
-        $user = User::find(1);
         $post = PostFactory::new()->create();
-        $user->shouldBlockFrom('post.delete.'.$post->id);
+        User::find(1)->shouldBlockFrom('post.delete.'.$post->id);
 
         $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('posts', $post->id))
                     ->assertMissing('@open-delete-modal-button');
 

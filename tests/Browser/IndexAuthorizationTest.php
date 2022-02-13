@@ -16,13 +16,11 @@ class IndexAuthorizationTest extends DuskTestCase
      */
     public function resource_index_can_be_totally_blocked_via_view_any()
     {
-        $post = PostFactory::new()->create();
-
-        $user = User::find(1);
-        $user->shouldBlockFrom('post.viewAny');
+        PostFactory::new()->create();
+        User::find(1)->shouldBlockFrom('post.viewAny');
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('posts'))
                     ->pause(250)
                     ->assertPathIs('/nova/403');
@@ -36,13 +34,12 @@ class IndexAuthorizationTest extends DuskTestCase
      */
     public function shouldnt_see_id_link_if_blocked_from_viewing()
     {
-        $user = User::find(1);
         $post = PostFactory::new()->create();
         PostFactory::new()->times(2)->create();
-        $user->shouldBlockFrom('post.view.'.$post->id);
+        User::find(1)->shouldBlockFrom('post.view.'.$post->id);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable()
@@ -62,12 +59,10 @@ class IndexAuthorizationTest extends DuskTestCase
     {
         $post = PostFactory::new()->create();
         $post2 = PostFactory::new()->create();
-
-        $user = User::find(1);
-        $user->shouldBlockFrom('post.update.'.$post->id);
+        User::find(1)->shouldBlockFrom('post.update.'.$post->id);
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                         $browser->waitForTable()
@@ -86,12 +81,10 @@ class IndexAuthorizationTest extends DuskTestCase
     {
         $post = PostFactory::new()->create();
         $post2 = PostFactory::new()->create();
-
-        $user = User::find(1);
-        $user->shouldBlockFrom('post.delete.'.$post->id);
+        User::find(1)->shouldBlockFrom('post.delete.'.$post->id);
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                         $browser->waitForTable()
@@ -109,12 +102,10 @@ class IndexAuthorizationTest extends DuskTestCase
     public function can_delete_resources_using_checkboxes_only_if_authorized_to_delete_them()
     {
         PostFactory::new()->times(3)->create();
-
-        $user = User::find(1);
-        $user->shouldBlockFrom('post.delete.1');
+        User::find(1)->shouldBlockFrom('post.delete.1');
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable()
@@ -138,12 +129,10 @@ class IndexAuthorizationTest extends DuskTestCase
     public function can_delete_all_matching_resources_only_if_authorized_to_delete_them()
     {
         PostFactory::new()->times(3)->create();
-
-        $user = User::find(1);
-        $user->shouldBlockFrom('post.delete.1');
+        User::find(1)->shouldBlockFrom('post.delete.1');
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable()

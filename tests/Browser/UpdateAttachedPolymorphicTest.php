@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Post;
-use App\Models\User;
 use Database\Factories\CommentFactory;
 use Database\Factories\PostFactory;
 use Database\Factories\TagFactory;
@@ -25,7 +24,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
         $post->tags()->attach($tag, ['notes' => 'Test Notes']);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UpdateAttached('posts', 1, 'tags', 1))
                     ->assertDisabled('@attachable-select')
                     ->assertInputValue('@notes', 'Test Notes')
@@ -49,7 +48,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
             $post->tags()->attach($tag, ['notes' => 'Test Notes']);
 
             $this->browse(function (Browser $browser) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new UpdateAttached('posts', 1, 'tags', 1))
                         ->assertDisabled('@attachable-select')
                         ->assertInputValue('@notes', 'Test Notes')
@@ -73,7 +72,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
         $post->tags()->attach($tag, ['notes' => 'Test Notes']);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UpdateAttached('posts', 1, 'tags', 1))
                     ->type('@notes', 'Test Notes Updated')
                     ->updateAndContinueEditing();
@@ -96,7 +95,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
         $post->tags()->attach($tag, ['notes' => 'Test Notes']);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UpdateAttached('posts', 1, 'tags', 1))
                     ->type('@notes', str_repeat('A', 30))
                     ->update()
@@ -114,13 +113,13 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
      */
     public function it_cant_edit_unsupported_polymorphic_relationship_type()
     {
-        $comment = CommentFactory::new()->create([
+        CommentFactory::new()->create([
             'commentable_type' => \Illuminate\Foundation\Auth\User::class,
             'commentable_id' => 4,
         ]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('comments'))
                     ->within(new IndexComponent('comments'), function ($browser) {
                         $browser->waitForTable()

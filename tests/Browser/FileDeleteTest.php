@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Captain;
-use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Create;
@@ -18,7 +17,7 @@ class FileDeleteTest extends DuskTestCase
     public function file_can_be_deleted()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                 ->visit(new Create('captains'))
                 ->type('@name', 'Taylor Otwell')
                 ->attach('@photo', __DIR__.'/Fixtures/StardewTaylor.png')

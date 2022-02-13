@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Flight;
-use App\Models\User;
 use Database\Factories\FlightFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
@@ -20,7 +19,7 @@ class CustomFieldTest extends DuskTestCase
     public function resource_can_be_created()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('flights'))
                     ->type('@name', 'Test Flight')
                     ->create();
@@ -40,7 +39,7 @@ class CustomFieldTest extends DuskTestCase
     public function validation_errors_are_displayed()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('flights'))
                     ->create()
                     ->waitForText('There was a problem submitting the form.', 15)
@@ -58,7 +57,7 @@ class CustomFieldTest extends DuskTestCase
         $flight = FlightFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($flight) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('flights'))
                     ->within(new IndexComponent('flights'), function ($browser) use ($flight) {
                         $browser->assertSee($flight->name);
@@ -76,7 +75,7 @@ class CustomFieldTest extends DuskTestCase
         $flight = FlightFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($flight) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('flights', $flight->id))
                     ->waitForTextIn('h1', 'Flight Details', 25)
                     ->assertSee($flight->name);

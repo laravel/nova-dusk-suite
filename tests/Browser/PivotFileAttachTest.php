@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Captain;
-use App\Models\User;
 use Database\Factories\CaptainFactory;
 use Database\Factories\ShipFactory;
 use Illuminate\Support\Facades\Storage;
@@ -26,7 +25,7 @@ class PivotFileAttachTest extends DuskTestCase
             $ship = ShipFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($captain, $ship) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Attach('captains', $captain->id, 'ships'))
                         ->searchAndSelectFirstRelation('ships', $ship->id)
                         ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
@@ -73,7 +72,7 @@ class PivotFileAttachTest extends DuskTestCase
             $ship = ShipFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($captain, $ship) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Attach('captains', $captain->id, 'ships'))
                         ->searchAndSelectFirstRelation('ships', $ship->id)
                         ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')

@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\RoleFactory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +21,7 @@ class AttachTest extends DuskTestCase
         $role = RoleFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($role) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitFor('@attach-button')
@@ -54,7 +53,7 @@ class AttachTest extends DuskTestCase
             $role = RoleFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($role) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Detail('users', 1))
                         ->within(new IndexComponent('roles'), function ($browser) {
                             $browser->waitFor('@attach-button')
@@ -85,10 +84,10 @@ class AttachTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $role = RoleFactory::new()->create();
+        RoleFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitFor('@attach-button')
@@ -124,7 +123,7 @@ class AttachTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
                         $browser->waitForTable(25)
@@ -147,7 +146,7 @@ class AttachTest extends DuskTestCase
         Carbon::setTestNow($now = Carbon::now());
 
         $this->browse(function (Browser $browser) use ($now) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
                         $browser->waitFor('@attach-button')
@@ -189,7 +188,7 @@ class AttachTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($now) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
                         $browser->waitFor('@attach-button')
@@ -226,7 +225,7 @@ class AttachTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($now) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
                         $browser->waitFor('@attach-button')
