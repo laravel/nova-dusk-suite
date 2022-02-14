@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
@@ -19,7 +18,7 @@ class IndexFilterTest extends DuskTestCase
         UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
@@ -43,7 +42,7 @@ class IndexFilterTest extends DuskTestCase
         UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
@@ -73,7 +72,7 @@ class IndexFilterTest extends DuskTestCase
     public function filters_can_be_applied_to_resources()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                 ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
@@ -101,7 +100,7 @@ class IndexFilterTest extends DuskTestCase
     public function filters_can_be_deselected()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                 ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
@@ -131,7 +130,7 @@ class IndexFilterTest extends DuskTestCase
         UserFactory::new()->times(25)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                 ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
@@ -158,7 +157,7 @@ class IndexFilterTest extends DuskTestCase
     public function date_filter_interactions_does_not_close_filter_dropdown()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                 ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()

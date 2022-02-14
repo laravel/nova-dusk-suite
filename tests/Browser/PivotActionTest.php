@@ -16,12 +16,10 @@ class PivotActionTest extends DuskTestCase
      */
     public function pivot_tables_can_be_referred_to_using_a_custom_name()
     {
-        $user = User::find(1);
-        $role = RoleFactory::new()->create();
-        $user->roles()->attach($role);
+        User::find(1)->roles()->attach(RoleFactory::new()->create());
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->pause(1500)
                     ->within(new IndexComponent('roles'), function ($browser) {
@@ -42,11 +40,10 @@ class PivotActionTest extends DuskTestCase
     public function actions_can_be_executed_against_pivot_rows()
     {
         $user = User::find(1);
-        $role = RoleFactory::new()->create();
-        $user->roles()->attach($role);
+        $user->roles()->attach(RoleFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user)
                     ->visit(new Detail('users', 1))
                     ->pause(1500)
                     ->within(new IndexComponent('roles'), function ($browser) {

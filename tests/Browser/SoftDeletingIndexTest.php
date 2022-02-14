@@ -4,7 +4,6 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Dock;
 use App\Models\Ship;
-use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
@@ -20,10 +19,10 @@ class SoftDeletingIndexTest extends DuskTestCase
      */
     public function can_soft_delete_a_resource_via_resource_table_row_delete_icon()
     {
-        $dock = DockFactory::new()->create();
+        DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->waitForTable(25)
@@ -46,7 +45,7 @@ class SoftDeletingIndexTest extends DuskTestCase
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->waitForTable(25)
@@ -70,7 +69,7 @@ class SoftDeletingIndexTest extends DuskTestCase
         DockFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->withTrashed();
@@ -98,7 +97,7 @@ class SoftDeletingIndexTest extends DuskTestCase
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->withTrashed();
@@ -125,7 +124,7 @@ class SoftDeletingIndexTest extends DuskTestCase
         $separateShip = ShipFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($separateShip) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->waitForTable(25)
@@ -152,10 +151,10 @@ class SoftDeletingIndexTest extends DuskTestCase
         $dock = DockFactory::new()->create();
         $dock->ships()->saveMany(ShipFactory::new()->times(3)->create(['deleted_at' => now()]));
 
-        $separateShip = ShipFactory::new()->create();
+        ShipFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed();
@@ -184,7 +183,7 @@ class SoftDeletingIndexTest extends DuskTestCase
         $separateShip = ShipFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($separateShip) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed();
@@ -211,7 +210,7 @@ class SoftDeletingIndexTest extends DuskTestCase
         $dock = DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->withTrashed()
@@ -234,7 +233,7 @@ class SoftDeletingIndexTest extends DuskTestCase
         Dock::find(2)->delete();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->waitForTable(25)
@@ -256,7 +255,7 @@ class SoftDeletingIndexTest extends DuskTestCase
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('docks'))
                     ->within(new IndexComponent('docks'), function ($browser) {
                         $browser->withTrashed()

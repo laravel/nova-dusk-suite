@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\UserFactory;
 use Illuminate\Support\Str;
@@ -18,10 +17,8 @@ class LensTest extends DuskTestCase
      */
     public function resource_lens_can_be_viewed()
     {
-        $users = User::find([1, 2, 3]);
-
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -41,7 +38,7 @@ class LensTest extends DuskTestCase
     public function can_navigate_to_detail_screen()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -61,7 +58,7 @@ class LensTest extends DuskTestCase
     public function can_navigate_to_edit_screen()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -91,7 +88,7 @@ class LensTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($dock, $trashedDock) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('docks', 'passthrough-lens'))
                     ->waitForTextIn('h1', 'Passthrough Lens', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) use ($dock, $trashedDock) {
@@ -127,7 +124,7 @@ class LensTest extends DuskTestCase
     public function correct_select_all_matching_count_is_displayed()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -147,7 +144,7 @@ class LensTest extends DuskTestCase
         UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -175,7 +172,7 @@ class LensTest extends DuskTestCase
         UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -206,7 +203,7 @@ class LensTest extends DuskTestCase
     public function can_delete_a_resource_via_resource_table_row_delete_icon()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -227,7 +224,7 @@ class LensTest extends DuskTestCase
     public function can_delete_resources_using_checkboxes()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -251,7 +248,7 @@ class LensTest extends DuskTestCase
     public function can_delete_all_matching_resources()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable(25)

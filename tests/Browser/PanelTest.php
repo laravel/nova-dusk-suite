@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\AddressFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
@@ -22,7 +21,7 @@ class PanelTest extends DuskTestCase
         $address = AddressFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($address) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('addresses', $address->id))
                     ->assertSee('More Address Details');
 
@@ -38,7 +37,7 @@ class PanelTest extends DuskTestCase
         $address = AddressFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($address) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                 ->visit(new Update('addresses', $address->id))
                 ->assertSee('More Address Details');
 

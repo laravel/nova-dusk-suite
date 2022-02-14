@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
@@ -16,7 +15,7 @@ class ResourceFormAbandonmentTest extends DuskTestCase
     public function it_can_show_dialog_if_resource_form_has_changes_on_navigating_to_different_page()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('videos'))
                     ->within(new IndexComponent('videos'), function ($browser) {
                         $browser->waitFor('@create-button')->click('@create-button');
@@ -36,7 +35,7 @@ class ResourceFormAbandonmentTest extends DuskTestCase
     public function it_can_show_dialog_if_resource_form_has_changes_on_clicking_cancel()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('videos'))
                     ->within(new IndexComponent('videos'), function ($browser) {
                         $browser->waitFor('@create-button')->click('@create-button');
@@ -56,7 +55,7 @@ class ResourceFormAbandonmentTest extends DuskTestCase
     public function it_can_show_dialog_if_resource_form_has_changes_on_browser_back()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('videos'))
                     ->within(new IndexComponent('videos'), function ($browser) {
                         $browser->waitFor('@create-button')->click('@create-button');

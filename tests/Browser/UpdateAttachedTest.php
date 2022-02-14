@@ -19,12 +19,11 @@ class UpdateAttachedTest extends DuskTestCase
      */
     public function attached_resource_can_be_updated()
     {
-        $user = User::find(1);
         $role = RoleFactory::new()->create();
-        $user->roles()->attach($role, ['notes' => 'Test Notes']);
+        User::find(1)->roles()->attach($role, ['notes' => 'Test Notes']);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
@@ -50,12 +49,11 @@ class UpdateAttachedTest extends DuskTestCase
      */
     public function attached_resource_can_be_updated_and_can_continue_editing()
     {
-        $user = User::find(1);
         $role = RoleFactory::new()->create();
-        $user->roles()->attach($role, ['notes' => 'Test Notes']);
+        User::find(1)->roles()->attach($role, ['notes' => 'Test Notes']);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
@@ -89,12 +87,11 @@ class UpdateAttachedTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $user = User::find(1);
         $role = RoleFactory::new()->create();
-        $user->roles()->attach($role, ['notes' => 'Test Notes']);
+        User::find(1)->roles()->attach($role, ['notes' => 'Test Notes']);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
@@ -128,7 +125,7 @@ class UpdateAttachedTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
                         $browser->waitForTable()

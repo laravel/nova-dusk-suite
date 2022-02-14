@@ -20,7 +20,7 @@ class IndexActionTest extends DuskTestCase
     public function can_run_actions_on_selected_resources()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
@@ -43,7 +43,7 @@ class IndexActionTest extends DuskTestCase
     public function cannot_run_actions_on_deleted_resources()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
@@ -67,7 +67,7 @@ class IndexActionTest extends DuskTestCase
         PostFactory::new()->times(5)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable();
@@ -92,7 +92,7 @@ class IndexActionTest extends DuskTestCase
         $this->assertEquals(304, User::where('active', '=', 0)->count());
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
@@ -114,7 +114,7 @@ class IndexActionTest extends DuskTestCase
         User::whereIn('id', [2, 3, 4])->update(['active' => true]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()

@@ -15,7 +15,7 @@ class ToolAuthorizationTest extends DuskTestCase
     public function test_tool_can_be_seen_if_authorized_to_view_it()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit('/nova')
                     ->pause(250)
                     ->assertSee('Sidebar Tool');
@@ -30,7 +30,7 @@ class ToolAuthorizationTest extends DuskTestCase
     public function test_tool_can_call_its_own_backend_routes()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit('/nova/sidebar-tool')
                     ->pause(250)
                     ->assertSee('Hello World');
@@ -44,11 +44,10 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_tool_cant_be_seen_if_not_authorized_to_view_it()
     {
-        $user = User::find(1);
-        $user->shouldBlockFrom('sidebarTool');
+        User::find(1)->shouldBlockFrom('sidebarTool');
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit('/nova')
                     ->pause(250)
                     ->assertDontSee('Sidebar Tool');
@@ -62,11 +61,10 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_tool_cant_be_navigated_to_if_not_authorized_to_view_it()
     {
-        $user = User::find(1);
-        $user->shouldBlockFrom('sidebarTool');
+        User::find(1)->shouldBlockFrom('sidebarTool');
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit('/nova/sidebar-tool')
                     ->pause(250)
                     ->assertSee('404')
@@ -82,7 +80,7 @@ class ToolAuthorizationTest extends DuskTestCase
     public function test_resource_tool_can_be_seen_if_authorized_to_view_it()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->waitForText('Resource Tool')
                     ->assertSee('Resource Tool for Taylor Otwell');
@@ -96,11 +94,10 @@ class ToolAuthorizationTest extends DuskTestCase
      */
     public function test_resource_tool_cant_be_seen_if_not_authorized_to_view_it()
     {
-        $user = User::find(1);
-        $user->shouldBlockFrom('resourceTool');
+        User::find(1)->shouldBlockFrom('resourceTool');
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->pause(250)
                     ->assertDontSee('Resource Tool');

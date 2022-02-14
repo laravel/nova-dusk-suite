@@ -22,7 +22,7 @@ class DetailBelongsToFieldTest extends DuskTestCase
         $user->posts()->save($post = PostFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($user, $post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs($user)
                     ->visit(new Detail('posts', $post->id))
                     ->within(new DetailComponent('posts', $post->id), function ($browser) use ($user) {
                         $browser->clickLink($user->name);
@@ -42,7 +42,7 @@ class DetailBelongsToFieldTest extends DuskTestCase
         InvoiceItemFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('invoice-items', 1))
                     ->waitForText('Invoice Item Details', 15)
                     ->assertSeeIn('.content', 'Invoice Item Details');
@@ -62,7 +62,7 @@ class DetailBelongsToFieldTest extends DuskTestCase
         $user->posts()->save($post = PostFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($user, $post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('posts', $post->id))
                     ->within(new DetailComponent('posts', $post->id), function ($browser) use ($user) {
                         $browser->clickLink($user->name);

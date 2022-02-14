@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Post;
-use App\Models\User;
 use Database\Factories\CommentFactory;
 use Database\Factories\LinkFactory;
 use Database\Factories\PostFactory;
@@ -20,10 +19,10 @@ class UpdateWithMorphToTest extends DuskTestCase
     {
         $this->whileSearchable(function () {
             $comment = CommentFactory::new()->create();
-            $post = PostFactory::new()->create();
+            PostFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($comment) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Update('comments', $comment->id))
                         ->searchAndSelectFirstRelation('commentable', 2)
                         ->update()
@@ -47,7 +46,7 @@ class UpdateWithMorphToTest extends DuskTestCase
             $link->comments()->save($comment = CommentFactory::new()->create());
 
             $this->browse(function (Browser $browser) use ($comment, $link) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Update('comments', $comment->id))
                         ->assertEnabled('@commentable-type')
                         ->within('@commentable-type', function ($browser) {
@@ -73,7 +72,7 @@ class UpdateWithMorphToTest extends DuskTestCase
             $post->comments()->save($comment = CommentFactory::new()->create());
 
             $this->browse(function (Browser $browser) use ($comment, $post) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Update('comments', $comment->id, [
                             'viaResource' => 'links',
                             'viaResourceId' => 1,
