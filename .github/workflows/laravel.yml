@@ -124,3 +124,17 @@ jobs:
         with:
           name: screenshots
           path: tests/Browser/screenshots/*
+
+      - name: Upload Console Errors
+        uses: actions/upload-artifact@v2-preview
+        if: failure()
+        with:
+          name: console
+          path: tests/Browser/console/*
+
+      - name: Upload Laravel Logs
+        uses: actions/upload-artifact@v2-preview
+        if: failure()
+        with:
+          name: log
+          path: storage/logs/*
