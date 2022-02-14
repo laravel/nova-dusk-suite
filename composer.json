@@ -10,9 +10,9 @@
     "require": {
         "php": "^8.0",
         "fruitcake/laravel-cors": "^2.0.5",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.0",
-        "laravel/scout": "^9.4.1",
+        "laravel/scout": "^9.4.3",
         "laravel/tinker": "^2.7"
     },
     "require-dev": {
@@ -24,7 +24,7 @@
         "nunomaduro/collision": "^6.1",
         "nunomaduro/larastan": "^2.0",
         "orchestra/testbench-dusk": "^7.0",
-        "phpunit/phpunit": "^9.5.10|^10.0"
+        "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
         "psr-4": {
