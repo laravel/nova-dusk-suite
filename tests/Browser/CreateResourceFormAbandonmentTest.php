@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
@@ -14,7 +13,7 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
     public function it_shows_exit_warning_if_resource_form_has_changes_when_navigating_to_different_page()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('videos'))
                     ->runCreate()
                     ->keys('@title', 'Hello World', '{tab}')
@@ -38,7 +37,7 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
     public function it_shows_exit_warning_if_resource_form_has_changes_when_clicking_browser_back_button()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('videos'))
                     ->runCreate()
                     ->keys('@title', 'Hello World', '{tab}')
@@ -60,7 +59,7 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
     public function it_doesnt_show_exit_warning_if_resource_form_has_changes_when_clicking_cancel()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('videos'))
                     ->runCreate()
                     ->keys('@title', 'Hello World', '{tab}')

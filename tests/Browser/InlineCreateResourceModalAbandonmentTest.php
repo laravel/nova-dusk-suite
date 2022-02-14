@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -16,8 +15,8 @@ class InlineCreateResourceModalAbandonmentTest extends DuskTestCase
     {
         $this->whileInlineCreate(function () {
             $this->browse(function (Browser $browser) {
-                $browser->loginAs($user = User::find(1))
-                    ->visit(new Attach('users', $user->getKey(), 'roles'))
+                $browser->loginAs(1)
+                    ->visit(new Attach('users', 1, 'roles'))
                     ->showInlineCreate('roles', function ($browser) {
                         $browser->waitForText('Create Role')
                             ->keys('@name', 'Manager', '{tab}')
@@ -27,7 +26,7 @@ class InlineCreateResourceModalAbandonmentTest extends DuskTestCase
                     ->acceptDialog()
                     ->pause(100)
                     ->assertMissing('.modal[data-modal-open=true]')
-                    ->on(new Attach('users', $user->getKey(), 'roles'));
+                    ->on(new Attach('users', 1, 'roles'));
 
                 $browser->blank();
             });
@@ -41,8 +40,8 @@ class InlineCreateResourceModalAbandonmentTest extends DuskTestCase
     {
         $this->whileInlineCreate(function () {
             $this->browse(function (Browser $browser) {
-                $browser->loginAs($user = User::find(1))
-                    ->visit(new Attach('users', $user->getKey(), 'roles'))
+                $browser->loginAs(1)
+                    ->visit(new Attach('users', 1, 'roles'))
                     ->showInlineCreate('roles', function ($browser) {
                         $browser->waitForText('Create Role')
                             ->keys('@name', 'Manager', '{tab}')
@@ -50,7 +49,7 @@ class InlineCreateResourceModalAbandonmentTest extends DuskTestCase
                     })
                     ->pause(100)
                     ->assertMissing('.modal[data-modal-open=true]')
-                    ->on(new Attach('users', $user->getKey(), 'roles'));
+                    ->on(new Attach('users', 1, 'roles'));
 
                 $browser->blank();
             });

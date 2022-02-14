@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Sail;
-use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
@@ -21,7 +20,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         $dock = DockFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) use ($dock) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', $dock->id))
                     ->runCreateRelation('ships')
                     ->assertDisabled('select[dusk="dock"]')
@@ -43,11 +42,12 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         $ship2 = ShipFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('sails'))
-                    ->waitFor('select[dusk="ship"]')
-                    ->assertSelectMissingOption('select[dusk="ship"]', $ship->id)
-                    ->assertSelectHasOption('select[dusk="ship"]', $ship2->id)
+                    ->whenAvailable('select[dusk="ship"]', function ($browser) use ($ship, $ship2) {
+                        $browser->assertSelectMissingOption('', $ship->id)
+                                ->assertSelectHasOption('', $ship2->id);
+                    })
                     ->withTrashedRelation('ships')
                     ->assertSelectHasOption('select[dusk="ship"]', $ship->id)
                     ->assertSelectHasOption('select[dusk="ship"]', $ship2->id)
@@ -69,7 +69,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         $ship = ShipFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) use ($ship) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('sails'))
                     ->withTrashedRelation('ships')
                     ->selectRelation('ship', $ship->id)
@@ -94,7 +94,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
             $dock = DockFactory::new()->create(['deleted_at' => now()]);
 
             $this->browse(function (Browser $browser) use ($dock) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Create('ships'))
                         ->searchRelation('docks', '1')
                         ->pause(1500)

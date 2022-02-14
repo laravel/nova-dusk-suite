@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\RoleFactory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +21,7 @@ class AttachTest extends DuskTestCase
         $role = RoleFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($role) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->runAttachRelation('roles')
                     ->whenAvailable('@via-resource-field', function ($browser) {
@@ -51,7 +50,7 @@ class AttachTest extends DuskTestCase
             $role = RoleFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($role) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Detail('users', 1))
                         ->runAttachRelation('roles')
                         ->whenAvailable('@via-resource-field', function ($browser) {
@@ -79,10 +78,10 @@ class AttachTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $role = RoleFactory::new()->create();
+        RoleFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->runAttachRelation('roles')
                     ->whenAvailable('@via-resource-field', function ($browser) {
@@ -115,7 +114,7 @@ class AttachTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
                         $browser->waitForTable()
@@ -140,7 +139,7 @@ class AttachTest extends DuskTestCase
         $role = RoleFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($role) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->runAttachRelation('roles')
                     ->whenAvailable('@via-resource-field', function ($browser) {
@@ -177,7 +176,7 @@ class AttachTest extends DuskTestCase
         Carbon::setTestNow($now = Carbon::now());
 
         $this->browse(function (Browser $browser) use ($now) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->runAttachRelation('books', 'giftBooks')
                     ->assertSeeIn('h1', 'Attach Book')
@@ -220,7 +219,7 @@ class AttachTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($now) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->runAttachRelation('books', 'personalBooks')
                     ->assertSeeIn('h1', 'Attach Book')
@@ -255,7 +254,7 @@ class AttachTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($now) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->runAttachRelation('books', 'giftBooks')
                     ->assertSeeIn('h1', 'Attach Book')

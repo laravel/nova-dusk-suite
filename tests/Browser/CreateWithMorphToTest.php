@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Create;
@@ -20,7 +19,7 @@ class CreateWithMorphToTest extends DuskTestCase
             $post = PostFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($post) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Create('comments'))
                         ->waitForTextIn('@nova-form', 'Commentable')
                         ->selectRelation('commentable-type', 'posts')
@@ -47,7 +46,7 @@ class CreateWithMorphToTest extends DuskTestCase
             $post = PostFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($post) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Create('comments'))
                         ->waitForTextIn('@nova-form', 'Commentable')
                         ->selectRelation('commentable-type', 'posts')
@@ -88,7 +87,7 @@ class CreateWithMorphToTest extends DuskTestCase
         $post = PostFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('posts', $post->id))
                     ->runCreateRelation('comments')
                     ->waitForTextIn('@nova-form', 'Commentable')
@@ -110,7 +109,7 @@ class CreateWithMorphToTest extends DuskTestCase
     public function morph_to_field_should_honor_custom_labels()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('comments'))
                     ->waitForTextIn('@nova-form', 'Commentable')
                     ->assertSee('User Post')
@@ -128,7 +127,7 @@ class CreateWithMorphToTest extends DuskTestCase
         $post = PostFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                 ->visit(new Create('comments', [
                     'viaResource' => 'posts',
                     'viaResourceId' => $post->id,

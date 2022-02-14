@@ -16,7 +16,7 @@ class LensActionTest extends DuskTestCase
     public function can_run_actions_on_selected_resources()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -44,7 +44,7 @@ class LensActionTest extends DuskTestCase
         User::whereIn('id', [2, 3, 4])->update(['active' => true]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -70,7 +70,7 @@ class LensActionTest extends DuskTestCase
     public function can_run_actions_on_all_matching_resources()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable()

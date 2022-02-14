@@ -24,7 +24,7 @@ class ReplicateTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Replicate('posts', $post->id))
                     ->on(new Replicate('posts', $post->id))
                     ->whenAvailable('@title', function ($browser) {
@@ -56,7 +56,7 @@ class ReplicateTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($post) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Replicate('posts', $post->id))
                     ->type('@title', 'Replicated Post 2')
                     ->create()
@@ -79,7 +79,7 @@ class ReplicateTest extends DuskTestCase
     public function can_navigate_to_replicate_resource_screen()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()->replicateResourceById(2);
@@ -100,11 +100,10 @@ class ReplicateTest extends DuskTestCase
      */
     public function cannot_replicate_a_resource_when_blocked_via_policy()
     {
-        $user = User::find(1);
-        $user->shouldBlockFrom('user.replicate.4');
+        User::find(1)->shouldBlockFrom('user.replicate.4');
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Page('/resources/users/4/replicate'))
                     ->assertForbidden();
 

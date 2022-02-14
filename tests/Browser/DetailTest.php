@@ -19,7 +19,7 @@ class DetailTest extends DuskTestCase
     public function can_view_resource_attributes()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->assertSee('User Details: 1')
@@ -40,7 +40,7 @@ class DetailTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', $user->id))
                     ->waitForTextIn('h1', 'User Details: '.$user->id)
                     ->assertSee('User Details: '.$user->id)
@@ -53,27 +53,19 @@ class DetailTest extends DuskTestCase
     /**
      * @test
      */
-    public function can_navigate_to_edit_page()
+    public function can_navigate_to_different_screens()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Detail('users', 1))
+            $browser->loginAs(1);
+
+            // To Edit Resource screen
+            $browser->visit(new Detail('users', 1))
                     ->edit()
                     ->on(new Update('users', 1))
                     ->assertSeeIn('h1', 'Update User');
 
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function can_navigate_to_edit_page_using_shortcut()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Detail('users', 1))
+            // To Edit Resource screen using shortcut
+            $browser->visit(new Detail('users', 1))
                     ->keys('', ['e'])
                     ->on(new Update('users', 1))
                     ->assertSeeIn('h1', 'Update User');
@@ -88,7 +80,7 @@ class DetailTest extends DuskTestCase
     public function can_navigate_to_replicate_resource_screen()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 2))
                     ->replicate()
                     ->on(new Replicate('users', 2))
@@ -107,28 +99,17 @@ class DetailTest extends DuskTestCase
      */
     public function cannot_navigate_to_replicate_resource_screen_when_blocked_via_policy()
     {
-        $user = User::find(1);
-        $user->shouldBlockFrom('user.replicate.4');
+        User::find(1)->shouldBlockFrom('user.replicate.4');
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 4))
                     ->waitFor('@edit-resource-button')
                     ->openControlSelector()
                     ->assertNotPresent('@replicate-resource-button');
 
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function can_navigate_to_different_detail_screen()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
-                    ->visit(new Detail('users', 2))
+            // To different Detail screen
+            $browser->visit(new Detail('users', 2))
                     ->waitForTextIn('h1', 'User Details: 2')
                     ->assertSeeIn('@users-detail-component', 'Mohamed Said');
 
@@ -150,7 +131,7 @@ class DetailTest extends DuskTestCase
     public function resource_can_be_deleted()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 3))
                     ->waitForTextIn('h1', 'User Details: 3')
                     ->delete()

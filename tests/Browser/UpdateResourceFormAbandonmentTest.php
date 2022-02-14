@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\VideoFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Index;
@@ -20,7 +19,7 @@ class UpdateResourceFormAbandonmentTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($video) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Update('videos', $video->id))
                     ->type('@title', 'Hello World')
                     ->within('.sidebar-menu', function ($browser) {
@@ -47,7 +46,7 @@ class UpdateResourceFormAbandonmentTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($video) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('videos'))
                     ->visit(new Update('videos', $video->id))
                     ->type('@title', 'Hello World')
@@ -73,7 +72,7 @@ class UpdateResourceFormAbandonmentTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($video) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('videos'))
                     ->visit(new Update('videos', $video->id))
                     ->type('@title', 'Hello World')

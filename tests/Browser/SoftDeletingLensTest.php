@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Dock;
-use App\Models\User;
 use Database\Factories\DockFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\LensComponent;
@@ -20,7 +19,7 @@ class SoftDeletingLensTest extends DuskTestCase
         $dock = DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
                     ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -44,7 +43,7 @@ class SoftDeletingLensTest extends DuskTestCase
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
                     ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -69,7 +68,7 @@ class SoftDeletingLensTest extends DuskTestCase
         DockFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
                     ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -94,7 +93,7 @@ class SoftDeletingLensTest extends DuskTestCase
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
                     ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -120,7 +119,7 @@ class SoftDeletingLensTest extends DuskTestCase
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
                     ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -144,7 +143,7 @@ class SoftDeletingLensTest extends DuskTestCase
         DockFactory::new()->times(3)->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
                     ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
                         $browser->selectFilter('Select First', '2');
@@ -168,7 +167,7 @@ class SoftDeletingLensTest extends DuskTestCase
         DockFactory::new()->times(3)->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
                     ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -193,7 +192,7 @@ class SoftDeletingLensTest extends DuskTestCase
         DockFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
                     ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
                         $browser->waitForTable(25)

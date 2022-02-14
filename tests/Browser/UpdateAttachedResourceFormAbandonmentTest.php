@@ -16,12 +16,11 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
     /** @test */
     public function it_shows_exit_warning_if_resource_form_has_changes_when_navigating_to_different_page()
     {
-        $user = User::find(1);
         $role = RoleFactory::new()->create();
-        $user->roles()->attach($role, ['notes' => 'Test Notes']);
+        User::find(1)->roles()->attach($role, ['notes' => 'Test Notes']);
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
@@ -47,12 +46,11 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
     /** @test */
     public function it_shows_exit_warning_if_resource_form_has_changes_when_clicking_browser_back_button()
     {
-        $user = User::find(1);
         $role = RoleFactory::new()->create();
-        $user->roles()->attach($role, ['notes' => 'Test Notes']);
+        User::find(1)->roles()->attach($role, ['notes' => 'Test Notes']);
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
@@ -76,12 +74,11 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
     /** @test */
     public function it_doesnt_show_exit_warning_if_resource_form_has_changes_when_clicking_cancel()
     {
-        $user = User::find(1);
         $role = RoleFactory::new()->create();
-        $user->roles()->attach($role, ['notes' => 'Test Notes']);
+        User::find(1)->roles()->attach($role, ['notes' => 'Test Notes']);
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()

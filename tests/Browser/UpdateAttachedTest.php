@@ -19,12 +19,11 @@ class UpdateAttachedTest extends DuskTestCase
      */
     public function attached_resource_can_be_updated()
     {
-        $user = User::find(1);
         $role = RoleFactory::new()->create();
-        $user->roles()->attach($role, ['notes' => 'Test Notes']);
+        User::find(1)->roles()->attach($role, ['notes' => 'Test Notes']);
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
@@ -40,9 +39,7 @@ class UpdateAttachedTest extends DuskTestCase
                     ->update()
                     ->waitForText('The resource was updated!');
 
-            $user->refresh();
-
-            $this->assertEquals('Test Notes Updated', $user->roles->first()->pivot->notes);
+            $this->assertEquals('Test Notes Updated', User::with('roles')->find(1)->roles->first()->pivot->notes);
 
             $browser->blank();
         });
@@ -53,12 +50,11 @@ class UpdateAttachedTest extends DuskTestCase
      */
     public function attached_resource_can_be_updated_and_can_continue_editing()
     {
-        $user = User::find(1);
         $role = RoleFactory::new()->create();
-        $user->roles()->attach($role, ['notes' => 'Test Notes']);
+        User::find(1)->roles()->attach($role, ['notes' => 'Test Notes']);
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
@@ -81,9 +77,7 @@ class UpdateAttachedTest extends DuskTestCase
                                 ->assertSelected('', '1');
                     });
 
-            $user->refresh();
-
-            $this->assertEquals('Test Notes Updated', $user->roles->first()->pivot->notes);
+            $this->assertEquals('Test Notes Updated', User::with('roles')->find(1)->roles->first()->pivot->notes);
 
             $browser->blank();
         });
@@ -94,12 +88,11 @@ class UpdateAttachedTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $user = User::find(1);
         $role = RoleFactory::new()->create();
-        $user->roles()->attach($role, ['notes' => 'Test Notes']);
+        User::find(1)->roles()->attach($role, ['notes' => 'Test Notes']);
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
@@ -115,9 +108,7 @@ class UpdateAttachedTest extends DuskTestCase
                     ->assertSee('The notes must not be greater than 20 characters.')
                     ->click('@cancel-update-attached-button');
 
-            $user->refresh();
-
-            $this->assertEquals('Test Notes', $user->roles->first()->pivot->notes);
+            $this->assertEquals('Test Notes', User::with('roles')->find(1)->roles->first()->pivot->notes);
 
             $browser->blank();
         });
@@ -136,7 +127,7 @@ class UpdateAttachedTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
                         $browser->waitForTable()

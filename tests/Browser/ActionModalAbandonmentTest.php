@@ -16,13 +16,11 @@ class ActionModalAbandonmentTest extends DuskTestCase
      */
     public function modal_shows_exit_warning_dialog_if_form_has_changes()
     {
-        $user = User::find(1);
-        $role = RoleFactory::new()->create();
-        $user->roles()->attach($role);
+        User::find(1)->roles()->attach(RoleFactory::new()->create());
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
-                    ->visit(new Detail('users', $user->id))
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                    ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
                             ->clickCheckboxForId(1)
@@ -50,13 +48,11 @@ class ActionModalAbandonmentTest extends DuskTestCase
      */
     public function it_doesnt_show_exit_warning_if_modal_has_changes_when_clicking_cancel()
     {
-        $user = User::find(1);
-        $role = RoleFactory::new()->create();
-        $user->roles()->attach($role);
+        User::find(1)->roles()->attach(RoleFactory::new()->create());
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
-                    ->visit(new Detail('users', $user->id))
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                    ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
                             ->clickCheckboxForId(1)

@@ -4,7 +4,6 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Comment;
 use App\Models\Sail;
-use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\PostFactory;
 use Database\Factories\ShipFactory;
@@ -24,10 +23,10 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
             $this->whileInlineCreate(function () {
                 $this->whileSearchable(function () {
                     $dock = DockFactory::new()->create();
-                    $ships = ShipFactory::new()->count(5)->create();
+                    ShipFactory::new()->count(5)->create();
 
                     $this->browse(function (Browser $browser) use ($dock) {
-                        $browser->loginAs(User::find(1))
+                        $browser->loginAs(1)
                             ->visit(new Create('sails'))
                             ->runInlineCreate('ship', function ($browser) use ($dock) {
                                 $browser->waitForText('Create Ship')
@@ -54,10 +53,10 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
     public function morph_to_resource_can_be_created_with_attaching_file_to_parent()
     {
         $this->whileInlineCreate(function () {
-            $post = PostFactory::new()->create();
+            PostFactory::new()->create();
 
             $this->browse(function (Browser $browser) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Create('comments'))
                         ->selectRelation('commentable-type', 'posts')
                         ->pause(500)
@@ -88,10 +87,10 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
     public function morph_to_resource_can_be_created_with_attaching_file_to_child()
     {
         $this->whileInlineCreate(function () {
-            $post = PostFactory::new()->create();
+            PostFactory::new()->create();
 
             $this->browse(function (Browser $browser) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Create('comments'))
                         ->selectRelation('commentable-type', 'posts')
                         ->pause(500)
@@ -124,8 +123,8 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
         $this->whileIndexQueryAscOrder(function () {
             $this->whileInlineCreate(function () {
                 $this->browse(function (Browser $browser) {
-                    $browser->loginAs($user = User::find(1))
-                        ->visit(new Attach('users', $user->getKey(), 'roles'))
+                    $browser->loginAs(1)
+                        ->visit(new Attach('users', 1, 'roles'))
                         ->runInlineCreate('roles', function ($browser) {
                             $browser->waitForText('Create Role')
                                 ->type('@name', 'Manager');
@@ -151,7 +150,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
             $this->browse(function (Browser $browser) {
                 $dock = DockFactory::new()->create();
 
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Create('sails'))
                         ->keys('@name', 'Test Sail', '{tab}')
                         ->type('@inches', 350)

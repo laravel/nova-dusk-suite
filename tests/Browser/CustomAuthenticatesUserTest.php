@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Pages\Dashboard;
@@ -51,7 +50,7 @@ class CustomAuthenticatesUserTest extends DuskTestCase
         });
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Dashboard())
                     ->press('Taylor Otwell')
                     ->press('Logout')
@@ -75,7 +74,7 @@ class CustomAuthenticatesUserTest extends DuskTestCase
         });
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Dashboard())
                     ->logout()
                     ->visit((new Dashboard())->url())
@@ -99,7 +98,7 @@ class CustomAuthenticatesUserTest extends DuskTestCase
         });
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs($user = User::find(1))->visit(new Dashboard());
+            $browser->loginAs(1)->visit(new Dashboard());
 
             $browser->deleteCookie('nova_dusk_suite_session');
 
@@ -125,7 +124,7 @@ class CustomAuthenticatesUserTest extends DuskTestCase
         });
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs($user = User::find(1))->visit(new Dashboard());
+            $browser->loginAs(1)->visit(new Dashboard());
 
             $browser->deleteCookie('nova_dusk_suite_session')
                     ->script('Nova.$emit("token-expired")');

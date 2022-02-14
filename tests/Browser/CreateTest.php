@@ -17,7 +17,7 @@ class CreateTest extends DuskTestCase
     public function resource_can_be_created()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('users'))
                     ->type('@name', 'Adam Wathan')
                     ->type('@email', 'adam@laravel.com')
@@ -60,7 +60,7 @@ class CreateTest extends DuskTestCase
     public function validation_errors_are_displayed()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('users'))
                     ->create()
                     ->waitForText('There was a problem submitting the form.')
@@ -79,7 +79,7 @@ class CreateTest extends DuskTestCase
     public function resource_can_be_created_and_another_resource_can_be_added()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('users'))
                     ->type('@name', 'Adam Wathan')
                     ->type('@email', 'adam@laravel.com')

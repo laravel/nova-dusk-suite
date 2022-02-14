@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\CommentFactory;
 use Database\Factories\LinkFactory;
 use Database\Factories\PostFactory;
@@ -24,7 +23,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         $post->comments()->save($comment = CommentFactory::new()->make());
 
         $this->browse(function (Browser $browser) use ($post, $comment) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('comments', $comment->id))
                     ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($post) {
                         $browser->waitForText('Comment Details', 15)
@@ -44,10 +43,10 @@ class DetailMorphToFieldTest extends DuskTestCase
     public function morph_to_field_should_honor_custom_labels()
     {
         $post = PostFactory::new()->create();
-        $post->comments()->save($comment = CommentFactory::new()->make());
+        $post->comments()->save(CommentFactory::new()->make());
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('comments', 1))
                     ->waitForText('Comment Details', 15)
                     ->assertSee('User Post');
@@ -65,7 +64,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         $video->comments()->save($comment = CommentFactory::new()->make());
 
         $this->browse(function (Browser $browser) use ($comment) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('comments', $comment->id))
                     ->assertSee('User Video');
 
@@ -82,7 +81,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         $link->comments()->save($comment = CommentFactory::new()->make());
 
         $this->browse(function (Browser $browser) use ($comment, $link) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('comments', $comment->id))
                     ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($link) {
                         $browser->assertSee('Link')
@@ -104,7 +103,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($comment) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('comments', $comment->id))
                     ->waitForTextIn('h1', 'Comment Details')
                     ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($comment) {
@@ -126,7 +125,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         $post->comments()->save($comment = CommentFactory::new()->make());
 
         $this->browse(function (Browser $browser) use ($post, $comment) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('comments', $comment->id))
                     ->waitForTextIn('h1', 'Comment Details')
                     ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($post) {
@@ -144,7 +143,7 @@ class DetailMorphToFieldTest extends DuskTestCase
      */
     public function morph_to_field_accepts_not_defined_using_types_parent_with_big_int_id()
     {
-        $user = UserFactory::new()->create([
+        UserFactory::new()->create([
             'id' => 9121018173229432288,
         ]);
 
@@ -154,7 +153,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($comment) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('comments', $comment->id))
                     ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($comment) {
                         $browser->waitForText('Commentable')

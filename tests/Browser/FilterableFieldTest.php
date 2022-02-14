@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Profile;
-use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
@@ -23,7 +22,7 @@ class FilterableFieldTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                 ->visit(new Index('posts'))
                 ->within(new IndexComponent('posts'), function ($browser) {
                     $browser->waitForTable()
@@ -62,7 +61,7 @@ class FilterableFieldTest extends DuskTestCase
         ])->save();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                 ->visit(new Index('profiles'))
                 ->within(new IndexComponent('profiles'), function ($browser) {
                     $browser->waitForTable()

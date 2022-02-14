@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\CaptainFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
@@ -23,7 +22,7 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
         $captain->ships()->attach($ship);
 
         $this->browse(function (Browser $browser) use ($captain) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('captains', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed()
@@ -57,7 +56,7 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
         $captain->ships()->attach($ship);
 
         $this->browse(function (Browser $browser) use ($captain) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('captains', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed()

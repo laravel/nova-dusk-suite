@@ -21,7 +21,7 @@ class ActionFieldTest extends DuskTestCase
     public function actions_can_be_instantly_dispatched()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->visit('/')->assertMissing('Nova');
 
@@ -34,12 +34,10 @@ class ActionFieldTest extends DuskTestCase
      */
     public function actions_can_receive_and_utilize_field_input()
     {
-        $user = User::find(1);
-        $role = RoleFactory::new()->create();
-        $user->roles()->attach($role);
+        User::find(1)->roles()->attach(RoleFactory::new()->create());
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
@@ -50,7 +48,7 @@ class ActionFieldTest extends DuskTestCase
                             });
                     })->waitForText('The action ran successfully!');
 
-            $this->assertEquals('Custom Notes', $user->fresh()->roles->first()->pivot->notes);
+            $this->assertEquals('Custom Notes', User::with('roles')->find(1)->roles->first()->pivot->notes);
 
             $browser->blank();
         });
@@ -61,12 +59,10 @@ class ActionFieldTest extends DuskTestCase
      */
     public function actions_modal_shouldnt_closed_when_user_using_shortcut()
     {
-        $user = User::find(1);
-        $role = RoleFactory::new()->create();
-        $user->roles()->attach($role);
+        User::find(1)->roles()->attach(RoleFactory::new()->create());
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
@@ -92,12 +88,10 @@ class ActionFieldTest extends DuskTestCase
      */
     public function actions_can_be_validated()
     {
-        $user = User::find(1);
-        $role = RoleFactory::new()->create();
-        $user->roles()->attach($role);
+        User::find(1)->roles()->attach(RoleFactory::new()->create());
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
@@ -117,12 +111,10 @@ class ActionFieldTest extends DuskTestCase
      */
     public function actions_can_be_toggle_between_similar_fields()
     {
-        $user = User::find(1);
-        $role = RoleFactory::new()->create();
-        $user->roles()->attach($role);
+        User::find(1)->roles()->attach(RoleFactory::new()->create());
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
@@ -138,7 +130,7 @@ class ActionFieldTest extends DuskTestCase
                             });
                     })->waitForText('The action ran successfully!');
 
-            $this->assertEquals('Custom Notes Updated', $user->fresh()->roles->first()->pivot->notes);
+            $this->assertEquals('Custom Notes Updated', User::with('roles')->find(1)->roles->first()->pivot->notes);
 
             $browser->blank();
         });
@@ -152,7 +144,7 @@ class ActionFieldTest extends DuskTestCase
         User::whereIn('id', [1, 2])->update(['active' => true]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs($user = User::find(2))
+            $browser->loginAs(2)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
@@ -160,7 +152,7 @@ class ActionFieldTest extends DuskTestCase
                             ->assertSeeIn('@2-row', 'Mark As Inactive');
                     });
 
-            $this->assertEquals(1, $user->fresh()->active);
+            $this->assertEquals(1, User::find(2)->active);
 
             $browser->blank();
         });
@@ -174,7 +166,7 @@ class ActionFieldTest extends DuskTestCase
         PostFactory::new()->times(5)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable();

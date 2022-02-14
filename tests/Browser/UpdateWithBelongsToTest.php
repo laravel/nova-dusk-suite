@@ -16,11 +16,10 @@ class UpdateWithBelongsToTest extends DuskTestCase
      */
     public function resource_can_be_updated_to_new_parent()
     {
-        $user = User::find(1);
-        $user->posts()->save($post = PostFactory::new()->make());
+        User::find(1)->posts()->save($post = PostFactory::new()->make());
 
-        $this->browse(function (Browser $browser) use ($user, $post) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) use ($post) {
+            $browser->loginAs(1)
                     ->visit(new Update('posts', $post->id))
                     ->waitForTextIn('h1', 'Update User Post: '.$post->id)
                     ->selectRelation('user', 2)
@@ -41,11 +40,10 @@ class UpdateWithBelongsToTest extends DuskTestCase
      */
     public function belongs_to_field_should_ignore_query_parameters_when_editing()
     {
-        $user = User::find(1);
-        $user->posts()->save($post = PostFactory::new()->make());
+        User::find(1)->posts()->save($post = PostFactory::new()->make());
 
-        $this->browse(function (Browser $browser) use ($user, $post) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) use ($post) {
+            $browser->loginAs(1)
                 ->visit(new Update('posts', $post->id, [
                     'viaResource' => 'users',
                     'viaResourceId' => 2,

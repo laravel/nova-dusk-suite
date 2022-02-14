@@ -9,7 +9,7 @@ use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
-class DetailRelationshipTest extends DuskTestCase
+class IndexRelationTest extends DuskTestCase
 {
     /**
      * @test
@@ -17,10 +17,10 @@ class DetailRelationshipTest extends DuskTestCase
     public function relationships_can_be_searched()
     {
         $user = User::find(1);
-        $user->posts()->save($post = PostFactory::new()->create());
+        $user->posts()->save(PostFactory::new()->create());
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
@@ -40,10 +40,10 @@ class DetailRelationshipTest extends DuskTestCase
     public function can_navigate_to_create_relationship_screen()
     {
         $user = User::find(1);
-        $user->posts()->save($post = PostFactory::new()->create());
+        $user->posts()->save(PostFactory::new()->create());
 
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->runCreateRelation('posts')
@@ -69,7 +69,7 @@ class DetailRelationshipTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
@@ -102,7 +102,7 @@ class DetailRelationshipTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
@@ -135,7 +135,7 @@ class DetailRelationshipTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {
@@ -161,7 +161,7 @@ class DetailRelationshipTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {

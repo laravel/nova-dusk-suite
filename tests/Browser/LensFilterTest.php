@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\LensComponent;
@@ -19,7 +18,7 @@ class LensFilterTest extends DuskTestCase
         UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -42,7 +41,7 @@ class LensFilterTest extends DuskTestCase
         UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -70,7 +69,7 @@ class LensFilterTest extends DuskTestCase
     public function filters_can_be_applied_to_resources()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->selectFilter('Select First', '1')
@@ -95,7 +94,7 @@ class LensFilterTest extends DuskTestCase
     public function filters_can_be_deselected()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable(25)
@@ -122,7 +121,7 @@ class LensFilterTest extends DuskTestCase
     public function test_filters_can_be_applied_to_lenses_received_from_url($url)
     {
         $this->browse(function (Browser $browser) use ($url) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit($url)
                     ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
