@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
@@ -13,10 +12,8 @@ class IndexPreviewTest extends DuskTestCase
     /** @test */
     public function it_can_display_preview_modal()
     {
-        $user = User::find(1);
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()

@@ -17,7 +17,7 @@ class HasOneRelationTest extends DuskTestCase
     public function has_one_relation_does_not_add_duplicate_using_create_button()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->within(new IndexComponent('profiles'), function ($browser) {
                         $browser->assertMissing('@create-button');
@@ -31,7 +31,7 @@ class HasOneRelationTest extends DuskTestCase
     public function has_one_relation_does_not_have_create_and_add_another_button()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 4))
                     ->runCreateRelation('profiles')
                     ->assertMissing('@create-and-add-another-button');
@@ -44,7 +44,7 @@ class HasOneRelationTest extends DuskTestCase
     public function can_create_resource_with_inline_has_one_relationship()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Create('users'))
                     ->type('@name', 'Adam Wathan')
                     ->type('@email', 'adam@laravel.com')
@@ -78,19 +78,17 @@ class HasOneRelationTest extends DuskTestCase
     public function can_create_inline_has_one_relationship_on_existing_resource()
     {
         $this->browse(function (Browser $browser) {
-            $user = User::find(4);
-
-            $browser->loginAs($user)
-                    ->visit(new Update('users', $user->id))
+            $browser->loginAs(4)
+                    ->visit(new Update('users', 4))
                     ->click('@create-profile-relation-button')
                     ->type('@github_url', 'https://github.com/laravel/nova')
                     ->select('select[dusk="timezone"]', 'UTC')
                     ->select('select[dusk="interests"]', ['laravel', 'phpunit', 'vue'])
                     ->update()
                     ->waitForText('The user was updated!')
-                    ->on(new Detail('users', $user->id));
+                    ->on(new Detail('users', 4));
 
-            $user->refresh()->load('profile');
+            $user = User::with('profile')->find(4);
 
             $this->assertSame('https://github.com/laravel/nova', $user->profile->github_url);
             $this->assertNull($user->profile->twitter_url);
@@ -105,19 +103,17 @@ class HasOneRelationTest extends DuskTestCase
     public function can_update_inline_has_one_relationship_on_existing_resource()
     {
         $this->browse(function (Browser $browser) {
-            $user = User::find(1);
-
-            $browser->loginAs($user)
-                    ->visit(new Update('users', $user->id))
+            $browser->loginAs(1)
+                    ->visit(new Update('users', 1))
                     ->type('@github_url', 'https://github.com/laravel')
                     ->type('@twitter_url', 'https://twitter.com/laravelphp')
                     ->select('select[dusk="timezone"]', 'UTC')
                     ->select('select[dusk="interests"]', ['laravel', 'phpunit', 'vue'])
                     ->update()
                     ->waitForText('The user was updated!')
-                    ->on(new Detail('users', $user->id));
+                    ->on(new Detail('users', 1));
 
-            $user->refresh()->load('profile');
+            $user = User::with('profile')->find(1);
 
             $this->assertSame('https://github.com/laravel', $user->profile->github_url);
             $this->assertSame('https://twitter.com/laravelphp', $user->profile->twitter_url);

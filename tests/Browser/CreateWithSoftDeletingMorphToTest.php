@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\VideoFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Create;
@@ -34,7 +33,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
         $video = VideoFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) use ($video) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('videos', $video->id))
                     ->runCreateRelation('comments')
                     ->assertDisabled('select[dusk="commentable-type"]')
@@ -58,7 +57,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
             $video2 = VideoFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($video, $video2) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Create('comments'))
                         ->selectRelation('commentable-type', 'videos')
                         ->searchRelation('commentable', $video->id)
@@ -66,7 +65,9 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
                         ->assertMissing('@commentable-search-input-result-0')
                         ->searchRelation('commentable', $video2->id)
                         ->pause(1500)
-                        ->assertSeeIn('@commentable-search-input-result-0', $video2->title);
+                        ->assertSeeIn('@commentable-search-input-result-0', $video2->title)
+                        ->closeSearchableResult('commentable')
+                        ->click('@cancel-create-button');
 
                 $browser->visit(new Create('comments'))
                         ->selectRelation('commentable-type', 'videos')
@@ -93,10 +94,10 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
     {
         $this->whileSearchable(function () {
             $video = VideoFactory::new()->create(['deleted_at' => now()]);
-            $video2 = VideoFactory::new()->create();
+            VideoFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($video) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Create('comments'))
                         ->selectRelation('commentable-type', 'videos')
                         ->pause(175)
@@ -107,7 +108,8 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
                         ->type('@body', 'Test Comment')
                         ->create()
                         ->pause(175)
-                        ->assertSee('This Commentable may not be associated with this resource.');
+                        ->assertSee('This Commentable may not be associated with this resource.')
+                        ->click('@cancel-create-button');
 
                 $this->assertCount(0, $video->fresh()->comments);
 
@@ -125,12 +127,14 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
             $video = VideoFactory::new()->create(['deleted_at' => now()]);
 
             $this->browse(function (Browser $browser) use ($video) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Create('comments'))
                         ->selectRelation('commentable-type', 'videos')
                         ->searchRelation('commentable', '1')
                         ->pause(1500)
-                        ->assertNoRelationSearchResults('commentable');
+                        ->assertNoRelationSearchResults('commentable')
+                        ->closeSearchableResult('commentable')
+                        ->click('@cancel-create-button');
 
                 $browser->visit(new Create('comments'))
                         ->selectRelation('commentable-type', 'videos')

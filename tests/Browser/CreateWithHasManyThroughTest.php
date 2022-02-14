@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
@@ -21,7 +20,7 @@ class CreateWithHasManyThroughTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($dock, $ship) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                 ->visit(new Detail('docks', $dock->id))
                 ->within(new IndexComponent('sails'), function ($browser) {
                     $browser->waitForEmptyDialog()
@@ -38,7 +37,6 @@ class CreateWithHasManyThroughTest extends DuskTestCase
                             ->click('@create-button');
                 })
                 ->on(new Create('sails'))
-                ->waitFor('@nova-form')
                 ->type('@inches', '25')
                 ->create()
                 ->waitForText('The sail was created!');

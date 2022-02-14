@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Post;
-use App\Models\User;
 use Database\Factories\PostFactory;
 use Database\Factories\TagFactory;
 use Laravel\Dusk\Browser;
@@ -20,11 +19,11 @@ class AttachPolymorphicTest extends DuskTestCase
     public function non_searchable_resource_can_be_attached()
     {
         $this->whileSearchable(function () {
-            $post = PostFactory::new()->create();
+            PostFactory::new()->create();
             $tag = TagFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($tag) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Detail('posts', 1))
                         ->within(new IndexComponent('tags'), function ($browser) {
                             $browser->waitFor('@attach-button')
@@ -48,11 +47,11 @@ class AttachPolymorphicTest extends DuskTestCase
     public function searchable_resource_can_be_attached()
     {
         $this->whileSearchable(function () {
-            $post = PostFactory::new()->create();
+            PostFactory::new()->create();
             $tag = TagFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($tag) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Detail('posts', 1))
                         ->within(new IndexComponent('tags'), function ($browser) {
                             $browser->waitFor('@attach-button')
@@ -78,11 +77,11 @@ class AttachPolymorphicTest extends DuskTestCase
     public function fields_on_intermediate_table_should_be_stored()
     {
         $this->whileSearchable(function () {
-            $post = PostFactory::new()->create();
+            PostFactory::new()->create();
             $tag = TagFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($tag) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Detail('posts', 1))
                         ->runAttachRelation('tags')
                         ->on(new Attach('posts', 1, 'tags'))
@@ -106,11 +105,11 @@ class AttachPolymorphicTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        $post = PostFactory::new()->create();
-        $tag = TagFactory::new()->create();
+        PostFactory::new()->create();
+        TagFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('posts', 1))
                     ->runAttachRelation('tags')
                     ->whenAvailable('@notes', function ($browser) {
@@ -118,7 +117,8 @@ class AttachPolymorphicTest extends DuskTestCase
                     })
                     ->create()
                     ->waitForText('There was a problem submitting the form.')
-                    ->assertSee('The tag field is required.');
+                    ->assertSee('The tag field is required.')
+                    ->click('@cancel-attach-button');
 
             $post = Post::with('tags')->find(1);
 
@@ -134,18 +134,19 @@ class AttachPolymorphicTest extends DuskTestCase
     public function validation_errors_are_displayed_for_pivot_fields()
     {
         $this->whileSearchable(function () {
-            $post = PostFactory::new()->create();
+            PostFactory::new()->create();
             $tag = TagFactory::new()->create();
 
             $this->browse(function (Browser $browser) use ($tag) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new Detail('posts', 1))
                         ->runAttachRelation('tags')
                         ->searchFirstRelation('tags', $tag->id)
                         ->type('@notes', str_repeat('A', 30))
                         ->create()
                         ->waitForText('There was a problem submitting the form.')
-                        ->assertSee('The notes must not be greater than 20 characters.');
+                        ->assertSee('The notes must not be greater than 20 characters.')
+                        ->click('@cancel-attach-button');
 
                 $post = Post::with('tags')->find(1);
 

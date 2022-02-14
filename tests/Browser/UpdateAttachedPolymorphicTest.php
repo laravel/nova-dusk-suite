@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Post;
-use App\Models\User;
 use Database\Factories\CommentFactory;
 use Database\Factories\PostFactory;
 use Database\Factories\TagFactory;
@@ -26,7 +25,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
         $post->tags()->attach($tag, ['notes' => 'Test Notes']);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UpdateAttached('posts', 1, 'tags', 1))
                     ->assertDisabled('select[dusk="attachable-select"]')
                     ->whenAvailable('@notes', function ($browser) {
@@ -53,7 +52,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
             $post->tags()->attach($tag, ['notes' => 'Test Notes']);
 
             $this->browse(function (Browser $browser) {
-                $browser->loginAs(User::find(1))
+                $browser->loginAs(1)
                         ->visit(new UpdateAttached('posts', 1, 'tags', 1))
                         ->assertDisabled('select[dusk="attachable-select"]')
                         ->whenAvailable('@notes', function ($browser) {
@@ -80,7 +79,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
         $post->tags()->attach($tag, ['notes' => 'Test Notes']);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UpdateAttached('posts', 1, 'tags', 1))
                     ->whenAvailable('@notes', function ($browser) {
                         $browser->assertInputValue('', 'Test Notes')
@@ -106,14 +105,15 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
         $post->tags()->attach($tag, ['notes' => 'Test Notes']);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UpdateAttached('posts', 1, 'tags', 1))
                     ->whenAvailable('@notes', function ($browser) {
                         $browser->type('', str_repeat('A', 30));
                     })
                     ->update()
                     ->waitForText('There was a problem submitting the form.')
-                    ->assertSee('The notes must not be greater than 20 characters.');
+                    ->assertSee('The notes must not be greater than 20 characters.')
+                    ->click('@cancel-update-attached-button');
 
             $this->assertEquals('Test Notes', Post::find(1)->tags->first()->pivot->notes);
 
@@ -126,13 +126,13 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
      */
     public function it_cant_edit_unsupported_polymorphic_relationship_type()
     {
-        $comment = CommentFactory::new()->create([
+        CommentFactory::new()->create([
             'commentable_type' => \Illuminate\Foundation\Auth\User::class,
             'commentable_id' => 4,
         ]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('comments'))
                     ->within(new IndexComponent('comments'), function ($browser) {
                         $browser->waitForTable()

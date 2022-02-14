@@ -19,30 +19,24 @@ class IndexAuthorizationTest extends DuskTestCase
      */
     public function resource_index_can_be_totally_blocked_via_view_any()
     {
-        $post = PostFactory::new()->create();
+        PostFactory::new()->create();
+        User::find(1)->shouldBlockFrom(...[
+            'user.viewAny',
+            'post.viewAny',
+        ]);
 
-        $user = User::find(1);
-        $user->shouldBlockFrom('post.viewAny');
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Dashboard())
                     ->assertDontSeeIn('div.sidebar-menu[role="navigation"]', 'User Posts')
                     ->visit(new Page('/resources/posts'))
                     ->assertForbidden();
 
-            $browser->blank();
-        });
-
-        $user->shouldBlockFrom('user.viewAny');
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
-                    ->visit(new Dashboard())
+            $browser->visit(new Dashboard())
                     ->assertDontSeeIn('div.sidebar-menu[role="navigation"]', 'Users')
                     ->visit(new Page('/resources/users'))
                     ->assertForbidden()
-                    ->visit(new Detail('users', $user->id));
+                    ->visit(new Detail('users', 1));
 
             $browser->blank();
         });
@@ -53,15 +47,16 @@ class IndexAuthorizationTest extends DuskTestCase
      */
     public function shouldnt_see_id_link_if_blocked_from_viewing()
     {
-        $user = User::find(1);
         $posts = PostFactory::new()->times(3)->create();
-        $user->shouldBlockFrom(...[
+        User::find(1)->shouldBlockFrom(...[
             'post.view.'.$posts[0]->id,
             'user.view.'.$posts[1]->user_id,
         ]);
 
-        $this->browse(function (Browser $browser) use ($user, $posts) {
-            $browser->loginAs($user)
+        $posts->loadMissing('user');
+
+        $this->browse(function (Browser $browser) use ($posts) {
+            $browser->loginAs(1)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) use ($posts) {
                         $browser->waitForTable()
@@ -84,12 +79,10 @@ class IndexAuthorizationTest extends DuskTestCase
     {
         $post = PostFactory::new()->create();
         $post2 = PostFactory::new()->create();
+        User::find(1)->shouldBlockFrom('post.update.'.$post->id);
 
-        $user = User::find(1);
-        $user->shouldBlockFrom('post.update.'.$post->id);
-
-        $this->browse(function (Browser $browser) use ($user, $post, $post2) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) use ($post, $post2) {
+            $browser->loginAs(1)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                         $browser->waitForTable()
@@ -108,12 +101,10 @@ class IndexAuthorizationTest extends DuskTestCase
     {
         $post = PostFactory::new()->create();
         $post2 = PostFactory::new()->create();
+        User::find(1)->shouldBlockFrom('post.delete.'.$post->id);
 
-        $user = User::find(1);
-        $user->shouldBlockFrom('post.delete.'.$post->id);
-
-        $this->browse(function (Browser $browser) use ($user, $post, $post2) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) use ($post, $post2) {
+            $browser->loginAs(1)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                         $browser->waitForTable()
@@ -131,12 +122,10 @@ class IndexAuthorizationTest extends DuskTestCase
     public function can_delete_resources_using_checkboxes_only_if_authorized_to_delete_them()
     {
         PostFactory::new()->times(3)->create();
+        User::find(1)->shouldBlockFrom('post.delete.1');
 
-        $user = User::find(1);
-        $user->shouldBlockFrom('post.delete.1');
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable()
@@ -160,12 +149,10 @@ class IndexAuthorizationTest extends DuskTestCase
     public function can_delete_all_matching_resources_only_if_authorized_to_delete_them()
     {
         PostFactory::new()->times(3)->create();
+        User::find(1)->shouldBlockFrom('post.delete.1');
 
-        $user = User::find(1);
-        $user->shouldBlockFrom('post.delete.1');
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable()

@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\CommentFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
@@ -20,7 +19,7 @@ class IndexMorphToFieldTest extends DuskTestCase
         $comment = CommentFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($comment) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('comments'))
                     ->within(new IndexComponent('comments'), function ($browser) use ($comment) {
                         $browser->waitForTable()
@@ -44,7 +43,7 @@ class IndexMorphToFieldTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($comment) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Index('comments'))
                     ->within(new IndexComponent('comments'), function ($browser) use ($comment) {
                         $browser->waitForTable()

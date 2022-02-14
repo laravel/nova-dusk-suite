@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
@@ -19,7 +18,7 @@ class IndexFilterTest extends DuskTestCase
         UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
@@ -43,7 +42,7 @@ class IndexFilterTest extends DuskTestCase
         UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
@@ -73,17 +72,17 @@ class IndexFilterTest extends DuskTestCase
     public function filters_can_be_applied_to_resources()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                 ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
-                        ->applyFilter('Select First', '1')
+                        ->selectFilter('Select First', '1')
                         ->pause(1500)
                         ->assertSeeResource(1)
                         ->assertDontSeeResource(2)
                         ->assertDontSeeResource(3)
                         ->assertSee('1-1 of 1')
-                        ->applyFilter('Select First', '2')
+                        ->selectFilter('Select First', '2')
                         ->pause(1500)
                         ->assertDontSeeResource(1)
                         ->assertSeeResource(2)
@@ -101,17 +100,17 @@ class IndexFilterTest extends DuskTestCase
     public function filters_can_be_deselected()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                 ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
-                        ->applyFilter('Select First', '1')
+                        ->selectFilter('Select First', '1')
                         ->pause(1500)
                         ->assertSeeResource(1)
                         ->assertDontSeeResource(2)
                         ->assertDontSeeResource(3)
                         ->assertSee('1-1 of 1')
-                        ->applyFilter('Select First', '')
+                        ->selectFilter('Select First', '')
                         ->pause(1500)
                         ->assertSeeResource(1)
                         ->assertSeeResource(2)
@@ -131,7 +130,7 @@ class IndexFilterTest extends DuskTestCase
         UserFactory::new()->times(25)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                 ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
@@ -139,7 +138,7 @@ class IndexFilterTest extends DuskTestCase
                         ->nextPage()
                         ->assertQueryStringHas('users_page', 2)
                         ->assertSee('26-29 of 29')
-                        ->applyFilter('Select First', '1')
+                        ->selectFilter('Select First', '1')
                         ->pause(1500)
                         ->assertSeeResource(1)
                         ->assertDontSeeResource(2)
@@ -158,7 +157,7 @@ class IndexFilterTest extends DuskTestCase
     public function date_filter_interactions_does_not_close_filter_dropdown()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                 ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
@@ -184,17 +183,17 @@ class IndexFilterTest extends DuskTestCase
     public function test_filters_can_be_applied_to_resources()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
-                            ->applyFilter('Select First', '1')
+                            ->selectFilter('Select First', '1')
                             ->waitForTable()
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3)
                             ->assertSee('1-1 of 1')
-                            ->applyFilter('Select First', '2')
+                            ->selectFilter('Select First', '2')
                             ->waitForTable()
                             ->assertDontSeeResource(1)
                             ->assertSeeResource(2)
@@ -213,7 +212,7 @@ class IndexFilterTest extends DuskTestCase
     public function test_filters_can_be_applied_to_resources_received_from_url($url)
     {
         $this->browse(function (Browser $browser) use ($url) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit($url)
                     ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
@@ -233,17 +232,17 @@ class IndexFilterTest extends DuskTestCase
     public function test_filters_can_be_deselected()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable(25)
-                            ->applyFilter('Select First', '1')
+                            ->selectFilter('Select First', '1')
                             ->pause(1500)
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3)
                             ->assertSee('1-1 of 1')
-                            ->applyFilter('Select First', '')
+                            ->selectFilter('Select First', '')
                             ->pause(1500)
                             ->assertSeeResource(1)
                             ->assertSeeResource(2)
@@ -261,7 +260,7 @@ class IndexFilterTest extends DuskTestCase
     public function test_date_filter_interactions_does_not_close_filter_dropdown()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()

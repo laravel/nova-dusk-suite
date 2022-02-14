@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Dock;
-use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
@@ -23,7 +22,7 @@ class SoftDeletingDetailTest extends DuskTestCase
         DockFactory::new()->create(['name' => 'Test Dock']);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->assertSee('Test Dock');
 
@@ -39,7 +38,7 @@ class SoftDeletingDetailTest extends DuskTestCase
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->runAction('mark-as-active')
                     ->waitForText('The action ran successfully!');
@@ -58,7 +57,7 @@ class SoftDeletingDetailTest extends DuskTestCase
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->edit()
                     ->on(new Update('docks', 1))
@@ -76,7 +75,7 @@ class SoftDeletingDetailTest extends DuskTestCase
         DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->delete()
                     ->on(new Detail('docks', 1));
@@ -95,7 +94,7 @@ class SoftDeletingDetailTest extends DuskTestCase
         DockFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->restore()
                     ->waitForText('The dock was restored!')
@@ -118,7 +117,7 @@ class SoftDeletingDetailTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Update('docks', 1))
                     ->type('@name', 'world')
                     ->update()
@@ -143,7 +142,7 @@ class SoftDeletingDetailTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->runAction('mark-as-active')
                     ->waitForText('The action ran successfully!', 25);
@@ -163,7 +162,7 @@ class SoftDeletingDetailTest extends DuskTestCase
         DockFactory::new()->create(['deleted_at' => now()]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->forceDelete()
                     ->on(new Index('docks'));
@@ -180,10 +179,10 @@ class SoftDeletingDetailTest extends DuskTestCase
     public function relationships_can_be_searched()
     {
         $dock = DockFactory::new()->create();
-        $dock->ships()->save($ship = ShipFactory::new()->create());
+        $dock->ships()->save(ShipFactory::new()->create());
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->waitForTable(25)
@@ -202,10 +201,10 @@ class SoftDeletingDetailTest extends DuskTestCase
     public function soft_deleting_resources_can_be_manipulated_from_their_child_index()
     {
         $dock = DockFactory::new()->create();
-        $dock->ships()->save($ship = ShipFactory::new()->create());
+        $dock->ships()->save(ShipFactory::new()->create());
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->withTrashed();
@@ -228,10 +227,10 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function can_navigate_to_create_relationship_screen()
     {
-        $dock = DockFactory::new()->create();
+        DockFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->runCreateRelation('ships')
                     ->assertQueryStringHas('viaResource', 'docks')
@@ -251,7 +250,7 @@ class SoftDeletingDetailTest extends DuskTestCase
         $dock->ships()->saveMany(ShipFactory::new()->times(10)->create());
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->waitForTable(25)
@@ -278,7 +277,7 @@ class SoftDeletingDetailTest extends DuskTestCase
         $dock->ships()->saveMany(ShipFactory::new()->times(10)->create());
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->waitForTable(25)
@@ -308,7 +307,7 @@ class SoftDeletingDetailTest extends DuskTestCase
         $dock2->ships()->save($ship2 = ShipFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->waitForTable(25)
@@ -335,7 +334,7 @@ class SoftDeletingDetailTest extends DuskTestCase
         $dock2->ships()->save($ship2 = ShipFactory::new()->create());
 
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
                         $browser->waitForTable(25)

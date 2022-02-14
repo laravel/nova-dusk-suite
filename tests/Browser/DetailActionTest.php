@@ -18,13 +18,13 @@ class DetailActionTest extends DuskTestCase
     public function can_run_actions_on_resource()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs($user = User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->runAction('mark-as-active')
                     ->waitForText('The action ran successfully!');
 
-            $this->assertEquals(1, $user->fresh()->active);
+            $this->assertEquals(1, User::find(1)->active);
 
             $browser->blank();
         });
@@ -40,7 +40,7 @@ class DetailActionTest extends DuskTestCase
         $user->roles()->attach($role);
 
         $this->browse(function (Browser $browser) use ($user, $role) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 4))
                     ->waitForTextIn('h1', 'User Details: 4');
 
@@ -67,7 +67,7 @@ class DetailActionTest extends DuskTestCase
     public function cannot_run_standalone_actions_on_deleted_resource()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 4))
                     ->waitForTextIn('h1', 'User Details: 4');
 
@@ -88,12 +88,12 @@ class DetailActionTest extends DuskTestCase
     public function actions_can_be_cancelled_without_effect()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs($user = User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->cancelAction('mark-as-active');
 
-            $this->assertEquals(0, $user->fresh()->active);
+            $this->assertEquals(0, User::find(1)->active);
 
             $browser->blank();
         });
@@ -113,7 +113,7 @@ class DetailActionTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
-            $browser->loginAs(User::find(1))
+            $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->within(new IndexComponent('posts'), function ($browser) {

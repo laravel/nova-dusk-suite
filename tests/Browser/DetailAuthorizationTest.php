@@ -16,12 +16,11 @@ class DetailAuthorizationTest extends DuskTestCase
      */
     public function detail_page_should_not_be_accessible_if_not_authorized_to_view()
     {
-        $user = User::find(1);
         $post = PostFactory::new()->create();
-        $user->shouldBlockFrom('post.view.'.$post->id);
+        User::find(1)->shouldBlockFrom('post.view.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($user, $post) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) use ($post) {
+            $browser->loginAs(1)
                     ->visit(new Page("/resources/posts/{$post->id}"))
                     ->assertForbidden();
 
@@ -34,12 +33,11 @@ class DetailAuthorizationTest extends DuskTestCase
      */
     public function cant_navigate_to_edit_page_if_not_authorized()
     {
-        $user = User::find(1);
         $post = PostFactory::new()->create();
-        $user->shouldBlockFrom('post.update.'.$post->id);
+        User::find(1)->shouldBlockFrom('post.update.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($user, $post) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) use ($post) {
+            $browser->loginAs(1)
                     ->visit(new Detail('posts', $post->id))
                     ->assertMissing('@edit-resource-button');
 
@@ -52,12 +50,11 @@ class DetailAuthorizationTest extends DuskTestCase
      */
     public function resource_cant_be_deleted_if_not_authorized()
     {
-        $user = User::find(1);
         $post = PostFactory::new()->create();
-        $user->shouldBlockFrom('post.delete.'.$post->id);
+        User::find(1)->shouldBlockFrom('post.delete.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($user, $post) {
-            $browser->loginAs($user)
+        $this->browse(function (Browser $browser) use ($post) {
+            $browser->loginAs(1)
                     ->visit(new Detail('posts', $post->id))
                     ->assertMissing('@open-delete-modal-button');
 
