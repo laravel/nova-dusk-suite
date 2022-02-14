@@ -23,6 +23,28 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     protected static $baseServePort = 8085;
 
     /**
+     * Get Application's base path.
+     *
+     * @return string
+     */
+    public static function applicationBasePath()
+    {
+        return realpath(__DIR__.'/../');
+    }
+
+    /**
+     * Setup the test environment.
+     */
+    protected function setUp(): void
+    {
+        $this->afterApplicationCreated(function () {
+            $this->withoutMockingConsoleOutput();
+        });
+
+        parent::setUp();
+    }
+
+    /**
      * Server specific setup. It may share alot with the main setUp() method, but
      * should exclude things like DB migrations so we don't end up wiping the
      * DB content mid test. Using this method means we can be explicit.
@@ -37,16 +59,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
             $config->set('app.url', static::applicationBaseUrl());
             $config->set('filesystems.disks.public.url', static::applicationBaseUrl().'/storage');
         });
-    }
-
-    /**
-     * Get Application's base path.
-     *
-     * @return string
-     */
-    public static function applicationBasePath()
-    {
-        return realpath(__DIR__.'/../');
     }
 
     /**
@@ -157,7 +169,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     {
         $this->artisan('migrate:fresh', [
             '--seed' => true,
-        ])->run();
+        ]);
     }
 
     /**
