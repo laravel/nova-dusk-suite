@@ -22,7 +22,7 @@ class InvoiceItemFactory extends Factory
     public function definition()
     {
         return [
-            'invoice_id' => InvoiceFactory::new()->create()->id,
+            'invoice_id' => InvoiceFactory::new(),
         ];
     }
 }

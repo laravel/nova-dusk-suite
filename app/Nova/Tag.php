@@ -3,7 +3,7 @@
 namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\MorphToMany;
+use Laravel\Nova\Fields\MorphedByMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -41,7 +41,7 @@ class Tag extends Resource
             ID::make('ID', 'id')->sortable(),
             Text::make('Name', 'name')->sortable(),
 
-            MorphToMany::make('Posts', 'posts')
+            MorphedByMany::make('Posts', 'posts')
                         ->display('title')
                         ->fields(function () {
                             return [
