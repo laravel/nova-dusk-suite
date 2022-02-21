@@ -22,7 +22,7 @@ class SailFactory extends Factory
     public function definition()
     {
         return [
-            'ship_id' => ShipFactory::new()->create(),
+            'ship_id' => ShipFactory::new(),
             'inches' => random_int(50, 100),
         ];
     }

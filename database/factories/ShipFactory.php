@@ -22,7 +22,7 @@ class ShipFactory extends Factory
     public function definition()
     {
         return [
-            'dock_id' => DockFactory::new()->create(),
+            'dock_id' => DockFactory::new(),
             'name' => $this->faker->word(),
         ];
     }
