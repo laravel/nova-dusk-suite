@@ -5,6 +5,7 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
+use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Text;
 
 /**
@@ -58,6 +59,14 @@ class Video extends Resource
             Text::make('Title', 'title')->sortable(),
 
             MorphMany::make('Comments', 'comments'),
+
+            MorphToMany::make('Tags', 'tags')
+                    ->display('name')
+                    ->fields(function () {
+                        return [
+                            Text::make('Notes', 'notes')->rules('max:20'),
+                        ];
+                    })->searchable(file_exists(base_path('.searchable'))),
         ];
     }
 

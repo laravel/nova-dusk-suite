@@ -24,7 +24,7 @@ class CommentFactory extends Factory
     {
         return [
             'commentable_type' => Post::class,
-            'commentable_id' => PostFactory::new()->create(),
+            'commentable_id' => PostFactory::new(),
             'body' => $this->faker->words(3, true),
         ];
     }
