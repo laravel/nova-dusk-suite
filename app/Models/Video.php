@@ -18,4 +18,14 @@ class Video extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+
+    /**
+     * Get all of the tags for the post.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable')->withPivot('notes');
+    }
 }
