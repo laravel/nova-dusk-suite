@@ -13,7 +13,4 @@ mix
     postcssImport(),
     tailwindcss('tailwind.config.js'),
   ])
-  .alias({
-    '@': path.join(__dirname, 'vendor/laravel/nova/resources/js'),
-  })
   .nova('otwell/sidebar-tool')
