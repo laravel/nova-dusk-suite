@@ -1,5 +1,6 @@
 const mix = require('laravel-mix')
 const webpack = require('webpack')
+const path = require('path')
 
 class NovaExtension {
   name() {
@@ -18,9 +19,25 @@ class NovaExtension {
     })
   }
 
+  webpackRules() {
+    return {
+      test: /\.(postcss)$/,
+      use: [
+        'vue-style-loader',
+        { loader: 'css-loader', options: { importLoaders: 1 } },
+        'postcss-loader'
+      ]
+    }
+  }
+
   webpackConfig(webpackConfig) {
     webpackConfig.externals = {
       vue: 'Vue'
+    }
+
+    webpackConfig.resolve.alias = {
+      ...(webpackConfig.resolve.alias || {}),
+      '@': path.join(__dirname, 'vendor/laravel/nova/resources/js'),
     }
 
     webpackConfig.output = {
