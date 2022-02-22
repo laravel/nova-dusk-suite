@@ -9,6 +9,6 @@ mix
   .vue({ version: 3 })
   .css('resources/css/field.css', 'css')
   .alias({
-    'laravel-nova': path.join(__dirname, 'resources/js/mixins'),
+    '@': path.join(__dirname, 'vendor/laravel/nova/resources/js'),
   })
   .nova('otwell/custom-field')
