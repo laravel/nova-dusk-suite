@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { FormField, HandlesValidationErrors } from '@/mixins'
+import { FormField, HandlesValidationErrors } from 'laravel-nova'
 
 export default {
   mixins: [FormField, HandlesValidationErrors],
