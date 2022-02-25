@@ -73,10 +73,8 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
                         ->selectRelation('commentable-type', 'videos')
                         ->pause(750)
                         ->withTrashedRelation('commentable')
-                        ->searchRelation('commentable', $video->id)
-                        ->pause(1500)
-                        ->assertSeeIn('@commentable-search-input-result-0', $video->title)
-                        ->firstSearchableResult('commentable')
+                        ->searchFirstRelation('commentable', $video->id)
+                        ->assertSelectedSearchResult('commentable', $video->title)
                         ->type('@body', 'Test Comment')
                         ->create();
 

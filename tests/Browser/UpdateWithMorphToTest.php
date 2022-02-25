@@ -52,10 +52,7 @@ class UpdateWithMorphToTest extends DuskTestCase
                         ->within('select[dusk="commentable-type"]', function ($browser) {
                             $browser->assertSee('Link');
                         })
-                        ->waitFor('@commentable-search-input')
-                        ->within('@commentable-search-input', function ($browser) use ($link) {
-                            $browser->assertSee($link->title);
-                        });
+                        ->assertSelectedSearchResult('commentable', $link->title);
 
                 $browser->blank();
             });
@@ -82,10 +79,7 @@ class UpdateWithMorphToTest extends DuskTestCase
                             $browser->assertEnabled('')
                                     ->assertSelected('', 'posts');
                         })
-                        ->assertEnabled('@commentable-search-input')
-                        ->within('@commentable-search-input', function ($browser) use ($post) {
-                            $browser->assertSee($post->title);
-                        });
+                        ->assertSelectedSearchResult('commentable', $post->title);
 
                 $browser->blank();
             });
