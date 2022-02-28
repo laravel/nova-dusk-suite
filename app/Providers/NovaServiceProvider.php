@@ -7,6 +7,7 @@ use App\Nova\Dashboards\Posts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Events\ServingNova;
+use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
@@ -23,10 +24,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         parent::boot();
 
-        Nova::userMenu(function (Request $request) {
-            return [
-                MenuItem::make('My Account')->path('/resources/users/'.$request->user()->id),
-            ];
+        Nova::userMenu(function (Request $request, Menu $menu) {
+            $menu->append(
+                MenuItem::make('My Account')->path('/resources/users/'.$request->user()->id)
+            );
+
+            return $menu;
         });
     }
 
