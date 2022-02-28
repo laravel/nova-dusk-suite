@@ -18,14 +18,14 @@ class AuthenticatesUserTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) use ($targetUrl, $expectedUrl) {
             $browser->logout()
-                    ->assertGuest()
-                    ->visit(Nova::url($targetUrl))
-                    ->on(new Login)
-                    ->type('email', 'nova@laravel.com')
-                    ->type('password', 'password')
-                    ->click('button[type="submit"]')
-                    ->waitForLocation(Nova::url($expectedUrl))
-                    ->assertPathIs(Nova::url($expectedUrl));
+                ->assertGuest()
+                ->visit(Nova::url($targetUrl))
+                ->on(new Login())
+                ->type('email', 'nova@laravel.com')
+                ->type('password', 'password')
+                ->click('button[type="submit"]')
+                ->waitForLocation(Nova::url($expectedUrl))
+                ->assertPathIs(Nova::url($expectedUrl));
 
             $browser->blank();
         });
@@ -38,11 +38,13 @@ class AuthenticatesUserTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Dashboard())
-                    ->press('Taylor Otwell')
-                    ->press('Logout')
-                    ->on(new Login)
-                    ->assertGuest();
+                ->visit(new Dashboard())
+                ->press('Taylor Otwell')
+                ->press('Logout')
+                ->assertDialogOpened('Are you sure you want to log out?')
+                ->acceptDialog()
+                ->on(new Login())
+                ->assertGuest();
 
             $browser->blank();
         });
@@ -55,11 +57,11 @@ class AuthenticatesUserTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Dashboard())
-                    ->logout()
-                    ->visit((new Dashboard())->url())
-                    ->waitForLocation('/nova/login')
-                    ->assertGuest();
+                ->visit(new Dashboard())
+                ->logout()
+                ->visit((new Dashboard())->url())
+                ->waitForLocation('/nova/login')
+                ->assertGuest();
 
             $browser->blank();
         });
@@ -78,7 +80,7 @@ class AuthenticatesUserTest extends DuskTestCase
             $browser->within('.sidebar-menu', function ($browser) {
                 $browser->clickLink('Users');
             })->waitForLocation('/nova/login')
-            ->assertGuest();
+                ->assertGuest();
 
             $browser->blank();
         });
@@ -93,13 +95,13 @@ class AuthenticatesUserTest extends DuskTestCase
             $browser->loginAs(1)->visit(new Dashboard());
 
             $browser->deleteCookie('nova_dusk_suite_session')
-                    ->script('Nova.$emit("token-expired")');
+                ->script('Nova.$emit("token-expired")');
 
             $browser->waitForLocation('/nova/login')
                 ->type('email', 'nova@laravel.com')
                 ->type('password', 'password')
                 ->click('button[type="submit"]')
-                ->on(new Dashboard);
+                ->on(new Dashboard());
 
             $browser->blank();
         });
