@@ -100,7 +100,7 @@ jobs:
         run: php artisan storage:link
 
       - name: Upgrade Chrome Driver
-        run: vendor/bin/dusk-updater detect --auto-update
+        run: php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
       - name: Prepare Testbench
         run: vendor/bin/testbench-dusk package:discover
       - name: Clear Views
