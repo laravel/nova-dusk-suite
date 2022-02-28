@@ -122,19 +122,19 @@ jobs:
         uses: actions/upload-artifact@v2-preview
         if: failure()
         with:
-          name: screenshots
+          name: "screenshots-php${{ matrix.php }}"
           path: tests/Browser/screenshots/*
 
       - name: Upload Console Errors
         uses: actions/upload-artifact@v2-preview
         if: failure()
         with:
-          name: console
+          name: "console-php${{ matrix.php }}"
           path: tests/Browser/console/*
 
       - name: Upload Laravel Logs
         uses: actions/upload-artifact@v2-preview
         if: failure()
         with:
-          name: log
+          name: "log-php${{ matrix.php }}"
           path: storage/logs/*
