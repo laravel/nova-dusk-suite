@@ -102,9 +102,9 @@ jobs:
       - name: Upgrade Chrome Driver
         run: php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
       - name: Prepare Testbench
-        run: vendor/bin/testbench-dusk package:discover
+        run: php artisan package:discover
       - name: Clear Views
-        run: vendor/bin/testbench-dusk view:clear
+        run: php artisan view:clear
       - name: Start Chrome Driver
         run: vendor/laravel/dusk/bin/chromedriver-linux &
       - name: Sleep for 5 seconds
