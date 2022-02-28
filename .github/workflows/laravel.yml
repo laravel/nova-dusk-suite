@@ -107,10 +107,6 @@ jobs:
         run: php artisan view:clear
       - name: Start Chrome Driver
         run: vendor/laravel/dusk/bin/chromedriver-linux &
-      - name: Sleep for 5 seconds
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '5s'
 
       - name: Execute tests (Dusk tests) via PHPUnit
         run: vendor/bin/phpunit -c phpunit.dusk.xml --exclude-group=external-network,local-time --stop-on-error --stop-on-failure
