@@ -98,17 +98,13 @@ jobs:
         run: php artisan storage:link
 
       - name: Upgrade Chrome Driver
-        run: vendor/bin/dusk-updater detect --auto-update
+        run: php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
       - name: Prepare Testbench
-        run: vendor/bin/testbench-dusk package:discover
+        run: php artisan package:discover
       - name: Clear Views
-        run: vendor/bin/testbench-dusk view:clear
+        run: php artisan view:clear
       - name: Start Chrome Driver
         run: vendor/laravel/dusk/bin/chromedriver-linux &
-      - name: Sleep for 5 seconds
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '5s'
 
       - name: Execute tests (Dusk tests) via PHPUnit
         run: vendor/bin/phpunit -c phpunit.dusk.xml --exclude-group=external-network,local-time --stop-on-error --stop-on-failure
@@ -120,19 +116,19 @@ jobs:
         uses: actions/upload-artifact@v2-preview
         if: failure()
         with:
-          name: screenshots
+          name: "screenshots-php${{ matrix.php }}"
           path: tests/Browser/screenshots/*
 
       - name: Upload Console Errors
         uses: actions/upload-artifact@v2-preview
         if: failure()
         with:
-          name: console
+          name: "console-php${{ matrix.php }}"
           path: tests/Browser/console/*
 
       - name: Upload Laravel Logs
         uses: actions/upload-artifact@v2-preview
         if: failure()
         with:
-          name: log
+          name: "log-php${{ matrix.php }}"
           path: storage/logs/*
