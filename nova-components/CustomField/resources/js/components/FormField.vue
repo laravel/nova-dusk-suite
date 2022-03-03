@@ -8,10 +8,6 @@
         :placeholder="field.name"
         v-model="value"
       />
-
-      <p v-if="hasError" class="my-2 text-danger">
-        {{ firstError }}
-      </p>
     </template>
   </DefaultField>
 </template>

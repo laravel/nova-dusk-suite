@@ -46,8 +46,6 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertSeeResource(4)
                         ->assertSeeResource(5);
                 });
-
-            $browser->blank();
         });
     }
 
@@ -82,8 +80,6 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertDontSeeResource(2)
                         ->assertDontSeeResource(3);
                 });
-
-            $browser->blank();
         });
     }
 }

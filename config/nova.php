@@ -113,27 +113,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Nova Action Resource Class
-    |--------------------------------------------------------------------------
-    |
-    | This configuration option allows you to specify a custom resource class
-    | to use instead of the type that ships with Nova. You may use this to
-    | define any extra form fields or other custom behavior as required.
-    |
-    */
-
-    'actions' => [
-        'resource' => ActionResource::class,
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Nova Storage Disk
     |--------------------------------------------------------------------------
     |
-    | This configuration option allows you to define the default driver
-    | used to storing file related fields, based on filesystems base
-    | configuration in your Laravel application.
+    | This configuration option allows you to define the default disk that
+    | will be used to store files using the Image, File, and other file
+    | related field types. You're welcome to use any configured disk.
     |
      */
 
@@ -154,18 +139,39 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Nova Authentication Routes
+    | Branding
     |--------------------------------------------------------------------------
     |
-    | This option allows you to define custom authentication paths instead
-    | of the default ones that ship with Nova. Feel free to change these
-    | to custom values that work best for your application's routes.
+    | These configuration values allow you to customize the branding of the
+    | Nova interface, including the primary color and the logo that will
+    | be displayed within the Nova interface. This logo value must be
+    | the absolute path to an SVG logo within the local filesystem.
+    |
     */
 
-    'routes' => [
-        'login' => false,
-        'logout' => false,
-        'forgot_password' => false,
-        'reset_password' => false,
+    // 'brand' => [
+    //     'logo' => realpath(__DIR__.'/../public/img/example-logo.svg'),
+
+    //     'colors' => [
+    //         "400" => "24, 182, 155, 0.5",
+    //         "500" => "24, 182, 155",
+    //         "600" => "24, 182, 155, 0.75",
+    //     ]
+    // ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Nova Action Resource Class
+    |--------------------------------------------------------------------------
+    |
+    | This configuration option allows you to specify a custom resource class
+    | to use for action log entries instead of the default that ships with
+    | Nova, thus allowing for the addition of additional UI form fields.
+    |
+    */
+
+    'actions' => [
+        'resource' => ActionResource::class,
     ],
+
 ];
