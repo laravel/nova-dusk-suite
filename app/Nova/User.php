@@ -91,7 +91,9 @@ class User extends Resource
                 return ! $request->user()->isBlockedFrom('resourceTool');
             }),
 
-            HasOne::make('Profile')->nullable(),
+            HasOne::make('Profile')->required(function () {
+                return file_exists(base_path('.hasone-required'));
+            }),
 
             HasMany::make('Posts', 'posts', Post::class),
 
