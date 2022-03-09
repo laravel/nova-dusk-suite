@@ -41,13 +41,17 @@ class UpdateTest extends DuskTestCase
      */
     public function resource_can_be_updated()
     {
-        User::whereKey(1)->update(['name' => 'Taylor']);
+        User::whereKey(1)->update([
+            'name' => 'Taylor',
+            'settings' => ['pagination' => 'simple'],
+        ]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Update('users', 1))
                     ->waitForTextIn('h1', 'Update User: 1')
                     ->assertSee('E-mail address should be unique')
+                    ->assertSelected('@settings.pagination', 'simple')
                     ->type('@name', 'Taylor Otwell upDATED')
                     ->type('@password', 'secret')
                     ->update()

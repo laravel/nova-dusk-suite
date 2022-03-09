@@ -66,7 +66,7 @@ class IndexTest extends DuskTestCase
      */
     public function resource_index_can_show_reload_button_when_received_errors()
     {
-        $this->tweakApplication(function ($app) {
+        $this->beforeServingApplication(function ($app) {
             $app->bind(QueryBuilder::class, function () {
                 throw new \Exception('502');
             });

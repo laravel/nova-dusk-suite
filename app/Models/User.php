@@ -140,4 +140,25 @@ class User extends Authenticatable
         return ! empty($this->blocked_from) &&
                array_key_exists($action, $this->blocked_from);
     }
+
+    /**
+     * Determine if the user can impersonate another user.
+     *
+     * @param void
+     * @return  bool
+     */
+    public function canImpersonate()
+    {
+        return in_array($this->email, ['taylor@laravel.com', 'themsaid@laravel.com', 'david@laravel.com', 'nova@laravel.com']);
+    }
+
+    /**
+     * Determine if the user can be impersonate.
+     *
+     * @return bool
+     */
+    public function canBeImpersonated()
+    {
+        return $this->getKey() !== 1;
+    }
 }
