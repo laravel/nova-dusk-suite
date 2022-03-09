@@ -144,7 +144,6 @@ class User extends Authenticatable
     /**
      * Determine if the user can impersonate another user.
      *
-     * @param void
      * @return bool
      */
     public function canImpersonate()
