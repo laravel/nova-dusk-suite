@@ -18,13 +18,20 @@ class DetailTest extends DuskTestCase
      */
     public function can_view_resource_attributes()
     {
+        User::whereKey(1)->update([
+            'settings' => ['pagination' => 'simple'],
+        ]);
+
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
-                    ->assertSee('User Details: 1')
-                    ->assertSee('Taylor Otwell')
-                    ->assertSee('taylor@laravel.com');
+                    ->within('@users-detail-component', function ($browser) {
+                        $browser->assertSee('User Details: 1')
+                            ->assertSeeIn('@name', 'Taylor Otwell')
+                            ->assertSeeIn('@email', 'taylor@laravel.com')
+                            ->assertSeeIn('@settings.pagination', 'Simple');
+                    });
 
             $browser->blank();
         });
@@ -43,8 +50,11 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Detail('users', $user->id))
                     ->waitForTextIn('h1', 'User Details: '.$user->id)
-                    ->assertSee('User Details: '.$user->id)
-                    ->assertSee($user->email);
+                    ->within('@users-detail-component', function ($browser) use ($user) {
+                        $browser->assertSee('User Details: '.$user->id)
+                            ->assertSeeIn('@id', $user->id)
+                            ->assertSeeIn('@email', $user->email);
+                    });
 
             $browser->blank();
         });

@@ -35,6 +35,8 @@ class RemoveAttachedTest extends DuskTestCase
                                     })->pause(500);
                             });
                     });
+
+            $browser->blank();
         });
 
         $this->assertDatabaseHas('book_purchases', [

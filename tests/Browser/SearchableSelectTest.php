@@ -27,6 +27,8 @@ class SearchableSelectTest extends DuskTestCase
                 $user->refresh();
 
                 $this->assertSame('America/Chicago', $user->profile->timezone);
+
+                $browser->blank();
             });
         });
     }

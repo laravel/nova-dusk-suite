@@ -22,6 +22,7 @@ class CreateTest extends DuskTestCase
                     ->type('@name', 'Adam Wathan')
                     ->type('@email', 'adam@laravel.com')
                     ->type('@password', 'secret')
+                    ->select('@settings.pagination', 'simple')
                     ->create()
                     ->waitForText('The user was created!');
 
@@ -44,6 +45,7 @@ class CreateTest extends DuskTestCase
             $this->assertSame('Adam Wathan', $user->name);
             $this->assertSame('adam@laravel.com', $user->email);
             $this->assertTrue(Hash::check('secret', $user->password));
+            $this->assertSame('simple', $user->settings['pagination']);
             $this->assertTrue($user->active);
             $this->assertSame('https://github.com/adamwathan', $user->profile->github_url);
             $this->assertSame('https://twitter.com/adamwathan', $user->profile->twitter_url);
