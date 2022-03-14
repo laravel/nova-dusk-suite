@@ -183,7 +183,11 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     {
         $this->defineApplicationStates('searchable');
 
-        call_user_func($callback);
+        try {
+            $callback();
+        } finally {
+            @unlink(base_path('.searchable'));
+        }
     }
 
     /**
@@ -196,7 +200,11 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     {
         $this->defineApplicationStates('inline-create');
 
-        call_user_func($callback);
+        try {
+            $callback();
+        } finally {
+            @unlink(base_path('.inline-create'));
+        }
     }
 
     /**
@@ -209,7 +217,11 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     {
         $this->defineApplicationStates('index-query-asc-order');
 
-        call_user_func($callback);
+        try {
+            $callback();
+        } finally {
+            @unlink(base_path('.index-query-asc-order'));
+        }
     }
 
     /**
