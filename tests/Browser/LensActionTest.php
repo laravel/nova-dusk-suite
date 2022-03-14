@@ -19,7 +19,7 @@ class LensActionTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->runAction('mark-as-active');
@@ -47,9 +47,16 @@ class LensActionTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->waitForTable(25)
-                            ->assertDontSeeIn('@1-row', 'Mark As Inactive')
-                            ->assertSeeIn('@2-row', 'Mark As Inactive')
+                        $browser->waitForTable()
+                            ->openControlSelectorById(1)
+                            ->elsewhere('', function ($browser) {
+                                $browser->waitFor('@1-preview-button')
+                                        ->assertMissing('@1-inline-actions');
+                            })
+                            ->openControlSelectorById(2)
+                            ->elsewhereWhenAvailable('@2-inline-actions', function ($browser) {
+                                $browser->assertSee('Mark As Inactive');
+                            })
                             ->runInlineAction(2, 'mark-as-inactive');
                     })->waitForText('The action ran successfully!');
 
