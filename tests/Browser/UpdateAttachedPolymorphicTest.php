@@ -46,26 +46,26 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
      */
     public function attached_searchable_resource_is_locked()
     {
-        $this->whileSearchable(function () {
+        $this->defineApplicationStates('searchable');
+
+        $this->browse(function (Browser $browser) {
             $post = PostFactory::new()->create();
             $tag = TagFactory::new()->create();
             $post->tags()->attach($tag, ['notes' => 'Test Notes']);
 
-            $this->browse(function (Browser $browser) {
-                $browser->loginAs(1)
-                        ->visit(new UpdateAttached('posts', 1, 'tags', 1))
-                        ->assertDisabled('select[dusk="attachable-select"]')
-                        ->whenAvailable('@notes', function ($browser) {
-                            $browser->assertInputValue('', 'Test Notes')
-                                    ->type('', 'Test Notes Updated');
-                        })
-                        ->update()
-                        ->waitForText('The resource was updated!');
+            $browser->loginAs(1)
+                    ->visit(new UpdateAttached('posts', 1, 'tags', 1))
+                    ->assertDisabled('select[dusk="attachable-select"]')
+                    ->whenAvailable('@notes', function ($browser) {
+                        $browser->assertInputValue('', 'Test Notes')
+                                ->type('', 'Test Notes Updated');
+                    })
+                    ->update()
+                    ->waitForText('The resource was updated!');
 
-                $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);
+            $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);
 
-                $browser->blank();
-            });
+            $browser->blank();
         });
     }
 

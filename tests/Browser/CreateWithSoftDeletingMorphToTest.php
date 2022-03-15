@@ -23,16 +23,16 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
      */
     public function test_parent_select_is_locked_when_creating_child_of_soft_deleted_searchable_resource()
     {
-        $this->whileSearchable(function () {
-            $this->parent_select_is_locked_when_creating_child_of_soft_deleted_resource();
-        });
+        $this->defineApplicationStates('searchable');
+
+        $this->parent_select_is_locked_when_creating_child_of_soft_deleted_resource();
     }
 
     protected function parent_select_is_locked_when_creating_child_of_soft_deleted_resource()
     {
-        $video = VideoFactory::new()->create(['deleted_at' => now()]);
+        $this->browse(function (Browser $browser) {
+            $video = VideoFactory::new()->create(['deleted_at' => now()]);
 
-        $this->browse(function (Browser $browser) use ($video) {
             $browser->loginAs(1)
                     ->visit(new Detail('videos', $video->id))
                     ->runCreateRelation('comments')
@@ -52,7 +52,9 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
      */
     public function non_searchable_morph_to_respects_with_trashed_checkbox_state()
     {
-        $this->whileSearchable(function () {
+        $this->defineApplicationStates('searchable');
+
+        $this->browse(function (Browser $browser) {
             $video = VideoFactory::new()->create(['deleted_at' => now()]);
             $video2 = VideoFactory::new()->create();
 
@@ -90,7 +92,9 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
      */
     public function unable_to_uncheck_with_trashed_if_currently_selected_non_searchable_parent_is_trashed()
     {
-        $this->whileSearchable(function () {
+        $this->defineApplicationStates('searchable');
+
+        $this->browse(function (Browser $browser) {
             $video = VideoFactory::new()->create(['deleted_at' => now()]);
             VideoFactory::new()->create();
 
@@ -121,7 +125,9 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
      */
     public function searchable_belongs_to_respects_with_trashed_checkbox_state()
     {
-        $this->whileSearchable(function () {
+        $this->defineApplicationStates('searchable');
+
+        $this->browse(function (Browser $browser) {
             $video = VideoFactory::new()->create(['deleted_at' => now()]);
 
             $this->browse(function (Browser $browser) use ($video) {

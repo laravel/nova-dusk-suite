@@ -148,8 +148,15 @@ class ActionFieldTest extends DuskTestCase
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
-                            ->assertDontSeeIn('@1-row', 'Mark As Inactive')
-                            ->assertSeeIn('@2-row', 'Mark As Inactive');
+                            ->openControlSelectorById(1)
+                            ->elsewhere('', function ($browser) {
+                                $browser->waitFor('@1-preview-button')
+                                        ->assertMissing('@1-inline-actions');
+                            })
+                            ->openControlSelectorById(2)
+                            ->elsewhereWhenAvailable('@2-inline-actions', function ($browser) {
+                                $browser->assertSee('Mark As Inactive');
+                            });
                     });
 
             $this->assertEquals(1, User::find(2)->active);

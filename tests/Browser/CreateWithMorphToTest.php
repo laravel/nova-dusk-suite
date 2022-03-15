@@ -15,25 +15,25 @@ class CreateWithMorphToTest extends DuskTestCase
      */
     public function resource_can_be_created()
     {
-        $this->whileSearchable(function () {
+        $this->defineApplicationStates('searchable');
+
+        $this->browse(function (Browser $browser) {
             $post = PostFactory::new()->create();
 
-            $this->browse(function (Browser $browser) use ($post) {
-                $browser->loginAs(1)
-                        ->visit(new Create('comments'))
-                        ->waitForTextIn('@nova-form', 'Commentable')
-                        ->selectRelation('commentable-type', 'posts')
-                        ->pause(500)
-                        ->searchFirstRelation('commentable', 1)
-                        ->type('@body', 'Test Comment')
-                        ->create()
-                        ->waitForText('The comment was created!')
-                        ->on(new Detail('comments', 1));
+            $browser->loginAs(1)
+                    ->visit(new Create('comments'))
+                    ->waitForTextIn('@nova-form', 'Commentable')
+                    ->selectRelation('commentable-type', 'posts')
+                    ->pause(500)
+                    ->searchFirstRelation('commentable', 1)
+                    ->type('@body', 'Test Comment')
+                    ->create()
+                    ->waitForText('The comment was created!')
+                    ->on(new Detail('comments', 1));
 
-                $this->assertCount(1, $post->fresh()->comments);
+            $this->assertCount(1, $post->fresh()->comments);
 
-                $browser->blank();
-            });
+            $browser->blank();
         });
     }
 
@@ -42,25 +42,25 @@ class CreateWithMorphToTest extends DuskTestCase
      */
     public function searchable_resource_can_be_created()
     {
-        $this->whileSearchable(function () {
+        $this->defineApplicationStates('searchable');
+
+        $this->browse(function (Browser $browser) {
             $post = PostFactory::new()->create();
 
-            $this->browse(function (Browser $browser) use ($post) {
-                $browser->loginAs(1)
-                        ->visit(new Create('comments'))
-                        ->waitForTextIn('@nova-form', 'Commentable')
-                        ->selectRelation('commentable-type', 'posts')
-                        ->pause(500)
-                        ->searchFirstRelation('commentable', 1)
-                        ->type('@body', 'Test Comment')
-                        ->create()
-                        ->waitForText('The comment was created!')
-                        ->on(new Detail('comments', 1));
+            $browser->loginAs(1)
+                    ->visit(new Create('comments'))
+                    ->waitForTextIn('@nova-form', 'Commentable')
+                    ->selectRelation('commentable-type', 'posts')
+                    ->pause(500)
+                    ->searchFirstRelation('commentable', 1)
+                    ->type('@body', 'Test Comment')
+                    ->create()
+                    ->waitForText('The comment was created!')
+                    ->on(new Detail('comments', 1));
 
-                $this->assertCount(1, $post->fresh()->comments);
+            $this->assertCount(1, $post->fresh()->comments);
 
-                $browser->blank();
-            });
+            $browser->blank();
         });
     }
 
@@ -77,16 +77,16 @@ class CreateWithMorphToTest extends DuskTestCase
      */
     public function searchable_resource_can_be_created_via_parent_resource()
     {
-        $this->whileSearchable(function () {
-            $this->resource_can_be_created_via_parent_resource();
-        });
+        $this->defineApplicationStates('searchable');
+
+        $this->resource_can_be_created_via_parent_resource();
     }
 
     protected function resource_can_be_created_via_parent_resource()
     {
-        $post = PostFactory::new()->create();
+        $this->browse(function (Browser $browser) {
+            $post = PostFactory::new()->create();
 
-        $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
                     ->visit(new Detail('posts', $post->id))
                     ->runCreateRelation('comments')

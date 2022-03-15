@@ -46,30 +46,30 @@ class AttachTest extends DuskTestCase
      */
     public function fields_on_intermediate_table_should_be_stored()
     {
-        $this->whileSearchable(function () {
+        $this->defineApplicationStates('searchable');
+
+        $this->browse(function (Browser $browser) {
             $role = RoleFactory::new()->create();
 
-            $this->browse(function (Browser $browser) use ($role) {
-                $browser->loginAs(1)
-                        ->visit(new Detail('users', 1))
-                        ->runAttachRelation('roles')
-                        ->whenAvailable('@via-resource-field', function ($browser) {
-                            $browser->assertSee('User')->assertSee('1');
-                        })
-                        ->selectAttachable($role->id)
-                        ->type('@notes', 'Test Notes')
-                        ->create()
-                        ->waitForText('The resource was attached!')
-                        ->waitFor('[dusk="roles-index-component"] table', 30);
+            $browser->loginAs(1)
+                    ->visit(new Detail('users', 1))
+                    ->runAttachRelation('roles')
+                    ->whenAvailable('@via-resource-field', function ($browser) {
+                        $browser->assertSee('User')->assertSee('1');
+                    })
+                    ->selectAttachable($role->id)
+                    ->type('@notes', 'Test Notes')
+                    ->create()
+                    ->waitForText('The resource was attached!')
+                    ->waitFor('[dusk="roles-index-component"] table', 30);
 
-                $this->assertDatabaseHas('role_user', [
-                    'user_id' => '1',
-                    'role_id' => '1',
-                    'notes' => 'Test Notes',
-                ]);
+            $this->assertDatabaseHas('role_user', [
+                'user_id' => '1',
+                'role_id' => '1',
+                'notes' => 'Test Notes',
+            ]);
 
-                $browser->blank();
-            });
+            $browser->blank();
         });
     }
 

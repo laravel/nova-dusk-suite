@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Tests;
 
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Arr;
 use Laravel\Dusk\Browser;
 use Orchestra\Testbench\Dusk\Foundation\PackageManifest;
 
@@ -180,7 +181,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      */
     protected function whileSearchable(callable $callback)
     {
-        touch(base_path('.searchable'));
+        $this->defineApplicationStates('searchable');
 
         try {
             $callback();
@@ -197,7 +198,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      */
     protected function whileInlineCreate(callable $callback)
     {
-        touch(base_path('.inline-create'));
+        $this->defineApplicationStates('inline-create');
 
         try {
             $callback();
@@ -207,18 +208,39 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     }
 
     /**
+     * Run the given callback with index-query-asc-order functionality enabled.
+     *
      * @param  callable  $callback
      * @return void
      */
     protected function whileIndexQueryAscOrder(callable $callback)
     {
-        touch(base_path('.index-query-asc-order'));
+        $this->defineApplicationStates('index-query-asc-order');
 
         try {
             $callback();
         } finally {
             @unlink(base_path('.index-query-asc-order'));
         }
+    }
+
+    /**
+     * Define application states.
+     *
+     * @param  array|string  $states
+     * @param  \Closure(\Laravel\Dusk\Browser):void  $callback
+     */
+    protected function defineApplicationStates($states)
+    {
+        foreach (Arr::wrap($states) as $state) {
+            touch(base_path(".{$state}"));
+        }
+
+        $this->beforeApplicationDestroyed(function () use ($states) {
+            foreach (Arr::wrap($states) as $state) {
+                @unlink(base_path(".{$state}"));
+            }
+        });
     }
 
     /**
@@ -232,6 +254,8 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
         Browser::$waitSeconds = 25;
 
         return tap(new Browser($driver), function ($browser) {
+            $browser->fitOnFailure = false;
+
             $browser->resize(env('DUSK_WIDTH'), env('DUSK_HEIGHT'));
         });
     }
