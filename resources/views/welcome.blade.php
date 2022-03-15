@@ -27,7 +27,7 @@
                     @auth
                         <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a>
                         @can('viewNova')
-                        <a href="{{ url('/nova') }}" class="text-sm text-gray-700 underline">Nova</a>
+                            <a href="{{ url('/nova') }}" class="ml-4 text-sm text-gray-700 underline">Nova</a>
                         @endcan
                     @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
