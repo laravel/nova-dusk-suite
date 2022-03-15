@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
-         bootstrap="tests/bootstrap.php"
-         colors="true"
->
-    <testsuites>
-        <testsuite name="Browser Test Suite">
-            <directory suffix="Test.php">./tests/Browser</directory>
-        </testsuite>
-    </testsuites>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" backupStaticAttributes="false" beStrictAboutTestsThatDoNotTestAnything="false" bootstrap="tests/bootstrap.php" colors="true" convertDeprecationsToExceptions="false" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false" stopOnFailure="false" xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd">
     <coverage processUncoveredFiles="true">
         <include>
             <directory suffix=".php">./app</directory>
         </include>
     </coverage>
+    <testsuites>
+        <testsuite name="Browser Test Suite">
+            <directory suffix="Test.php">./tests/Browser</directory>
+        </testsuite>
+    </testsuites>
     <php>
         <env name="APP_URL" value="http://127.0.0.1:8085"/>
         <env name="APP_ENV" value="testing"/>
