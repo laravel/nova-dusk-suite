@@ -15,6 +15,12 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @can('viewNova')
+                        <x-nav-link href="/nova">
+                            {{ __('Nova') }}
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
