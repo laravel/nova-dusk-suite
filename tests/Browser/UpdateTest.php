@@ -47,7 +47,7 @@ class UpdateTest extends DuskTestCase
         ]);
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(1)
+            $browser->loginAs(2)
                     ->visit(new Update('users', 1))
                     ->waitForTextIn('h1', 'Update User: 1')
                     ->assertSee('E-mail address should be unique')
@@ -93,7 +93,7 @@ class UpdateTest extends DuskTestCase
     public function resource_can_be_updated_and_user_can_continue_editing()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(1)
+            $browser->loginAs(2)
                     ->visit(new Update('users', 1))
                     ->waitForTextIn('h1', 'Update User: 1')
                     ->type('@name', 'Taylor Otwell Updated')
