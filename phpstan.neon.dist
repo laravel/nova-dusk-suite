@@ -14,6 +14,9 @@ parameters:
     - '#Access to an undefined property Laravel\\Nova\\Fields\\(ActionFields|FormData)#'
     - '#Call to an undefined method Illuminate\\Database\\Eloquent\\[a-zA-Z\\\<\>]+::(withTrashed|onlyTrashed|trashed)\(\)#'
 
+  excludePaths:
+    - app/Http/Controllers/Auth/*.php
+
   checkMissingIterableValueType: false
   noUnnecessaryCollectionCall: false
   checkModelProperties: false
