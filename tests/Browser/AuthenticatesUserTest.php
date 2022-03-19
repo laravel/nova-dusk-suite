@@ -23,8 +23,7 @@ class AuthenticatesUserTest extends DuskTestCase
                 ->on(new Login())
                 ->type('email', 'nova@laravel.com')
                 ->type('password', 'password')
-                ->click('button[type="submit"]')
-                ->waitForLocation(Nova::url($expectedUrl))
+                ->clickAndWaitForReload('button[type="submit"]')
                 ->assertPathIs(Nova::url($expectedUrl));
 
             $browser->blank();
