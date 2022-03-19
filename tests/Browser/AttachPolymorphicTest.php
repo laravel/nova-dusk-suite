@@ -35,7 +35,9 @@ class AttachPolymorphicTest extends DuskTestCase
                     ->create()
                     ->waitForText('The resource was attached!');
 
-            $this->assertEquals($tag->id, Post::find(1)->tags->first()->id);
+            $post = Post::with('tags')->find(1);
+
+            $this->assertEquals($tag->id, $post->tags->first()->id);
 
             $browser->blank();
         });
