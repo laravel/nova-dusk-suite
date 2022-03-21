@@ -34,7 +34,7 @@ class ActionFieldTest extends DuskTestCase
      */
     public function actions_can_receive_and_utilize_field_input()
     {
-        User::find(1)->roles()->attach(RoleFactory::new()->create());
+        RoleFactory::new()->create()->users()->attach(1);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -59,7 +59,7 @@ class ActionFieldTest extends DuskTestCase
      */
     public function actions_modal_shouldnt_closed_when_user_using_shortcut()
     {
-        User::find(1)->roles()->attach(RoleFactory::new()->create());
+        RoleFactory::new()->create()->users()->attach(1);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -88,7 +88,7 @@ class ActionFieldTest extends DuskTestCase
      */
     public function actions_can_be_validated()
     {
-        User::find(1)->roles()->attach(RoleFactory::new()->create());
+        RoleFactory::new()->create()->users()->attach(1);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -111,7 +111,7 @@ class ActionFieldTest extends DuskTestCase
      */
     public function actions_can_be_toggle_between_similar_fields()
     {
-        User::find(1)->roles()->attach(RoleFactory::new()->create());
+        RoleFactory::new()->create()->users()->attach(1);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -170,7 +170,7 @@ class ActionFieldTest extends DuskTestCase
      */
     public function cannot_run_standalone_actions_on_deleted_resource()
     {
-        PostFactory::new()->times(5)->create();
+        PostFactory::new()->times(5)->create(['user_id' => 1]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)

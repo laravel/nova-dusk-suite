@@ -31,7 +31,7 @@ class CreateWithMorphToTest extends DuskTestCase
                     ->waitForText('The comment was created!')
                     ->on(new Detail('comments', 1));
 
-            $this->assertCount(1, $post->fresh()->comments);
+            $this->assertSame(1, $post->loadCount('comments')->comments_count);
 
             $browser->blank();
         });
@@ -58,7 +58,7 @@ class CreateWithMorphToTest extends DuskTestCase
                     ->waitForText('The comment was created!')
                     ->on(new Detail('comments', 1));
 
-            $this->assertCount(1, $post->fresh()->comments);
+            $this->assertSame(1, $post->loadCount('comments')->comments_count);
 
             $browser->blank();
         });
@@ -97,7 +97,7 @@ class CreateWithMorphToTest extends DuskTestCase
                     ->create()
                     ->on(new Detail('comments', 1));
 
-            $this->assertCount(1, $post->fresh()->comments);
+            $this->assertSame(1, $post->loadCount('comments')->comments_count);
 
             $browser->blank();
         });

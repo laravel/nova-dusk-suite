@@ -27,7 +27,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                     ->type('@name', 'Test Ship')
                     ->create();
 
-            $this->assertCount(1, $dock->fresh()->ships);
+            $this->assertSame(1, $dock->loadCount('ships')->ships_count);
 
             $browser->blank();
         });
@@ -55,7 +55,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                     ->type('@inches', 25)
                     ->create();
 
-            $this->assertCount(1, $ship->fresh()->sails);
+            $this->assertSame(1, $ship->loadCount('sails')->sails_count);
 
             $browser->blank();
         });
@@ -79,7 +79,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                     ->type('@inches', 25)
                     ->create();
 
-            $this->assertSame(1, Sail::where('ship_id', $ship->id)->count());
+            $this->assertSame(1, Sail::whereBelongsTo($ship)->count());
 
             $browser->blank();
         });
@@ -105,7 +105,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                     ->type('@name', 'Test Ship')
                     ->create();
 
-            $this->assertCount(1, $dock->fresh()->ships);
+            $this->assertSame(1, $dock->loadCount('ships')->ships_count);
 
             $browser->blank();
         });

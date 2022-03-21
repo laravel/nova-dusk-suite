@@ -29,8 +29,10 @@ class UpdateWithMorphToTest extends DuskTestCase
                     ->update()
                     ->waitForText('The comment was updated');
 
-            $this->assertCount(0, Post::find(1)->comments);
-            $this->assertCount(1, Post::find(2)->comments);
+            $posts = Post::withCount('comments')->findMany([1, 2], ['id']);
+
+            $this->assertSame(0, $posts->find(1)->comments_count);
+            $this->assertSame(1, $posts->find(2)->comments_count);
 
             $browser->blank();
         });
@@ -45,7 +47,7 @@ class UpdateWithMorphToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $link = LinkFactory::new()->create();
-            $link->comments()->save($comment = CommentFactory::new()->create());
+            $link->comments()->save($comment = CommentFactory::new()->make());
 
             $browser->loginAs(1)
                     ->visit(new Update('comments', $comment->id))
@@ -68,7 +70,7 @@ class UpdateWithMorphToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $post = PostFactory::new()->create();
-            $post->comments()->save($comment = CommentFactory::new()->create());
+            $post->comments()->save($comment = CommentFactory::new()->make());
 
             $browser->loginAs(1)
                     ->visit(new Update('comments', $comment->id, [

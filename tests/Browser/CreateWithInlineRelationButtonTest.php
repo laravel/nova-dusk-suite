@@ -23,7 +23,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $dock = DockFactory::new()->create();
-            ShipFactory::new()->count(5)->create();
+            ShipFactory::new()->times(5)->create(['dock_id' => DockFactory::new()->create()]);
 
             $browser->loginAs(1)
                 ->visit(new Create('sails'))
@@ -53,29 +53,27 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             PostFactory::new()->create();
 
-            $this->browse(function (Browser $browser) {
-                $browser->loginAs(1)
-                        ->visit(new Create('comments'))
-                        ->selectRelation('commentable-type', 'posts')
-                        ->pause(500)
-                        ->runInlineCreate('commentable', function ($browser) {
-                            $browser->waitForText('Create User Post', 25)
-                                ->selectRelation('user', 1)
-                                ->type('@title', 'Test Post')
-                                ->type('@body', 'Test Post Body')
-                                ->attach('@attachment', __DIR__.'/Fixtures/Document.pdf');
-                        })
-                        ->waitForText('The user post was created!', 25)
-                        ->type('@body', 'Test Comment Body')
-                        ->create()
-                        ->waitForText('The comment was created!', 25);
+            $browser->loginAs(1)
+                    ->visit(new Create('comments'))
+                    ->selectRelation('commentable-type', 'posts')
+                    ->pause(500)
+                    ->runInlineCreate('commentable', function ($browser) {
+                        $browser->waitForText('Create User Post', 25)
+                            ->selectRelation('user', 1)
+                            ->type('@title', 'Test Post')
+                            ->type('@body', 'Test Post Body')
+                            ->attach('@attachment', __DIR__.'/Fixtures/Document.pdf');
+                    })
+                    ->waitForText('The user post was created!', 25)
+                    ->type('@body', 'Test Comment Body')
+                    ->create()
+                    ->waitForText('The comment was created!', 25);
 
-                $browser->blank();
+            $browser->blank();
 
-                $comment = Comment::with('commentable')->latest()->first();
-                $this->assertNull($comment->attachment);
-                $this->assertNotNull($comment->commentable->attachment);
-            });
+            $comment = Comment::with('commentable')->latest()->first();
+            $this->assertNull($comment->attachment);
+            $this->assertNotNull($comment->commentable->attachment);
         });
     }
 

@@ -18,7 +18,7 @@ class IndexBelongsToFieldTest extends DuskTestCase
     public function belongs_to_field_navigates_to_parent_resource_when_clicked()
     {
         $user = User::find(1);
-        $user->posts()->save(PostFactory::new()->create());
+        $user->posts()->save(PostFactory::new()->make());
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)

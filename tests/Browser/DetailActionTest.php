@@ -35,20 +35,19 @@ class DetailActionTest extends DuskTestCase
      */
     public function cannot_run_actions_on_deleted_resource()
     {
-        $user = User::find(4);
         $role = RoleFactory::new()->create();
-        $user->roles()->attach($role);
+        $role->users()->attach(4);
 
-        $this->browse(function (Browser $browser) use ($user, $role) {
+        $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 4))
                     ->waitForTextIn('h1', 'User Details: 4');
 
-            $browser->within(new IndexComponent('roles'), function ($browser) use ($user, $role) {
+            $browser->within(new IndexComponent('roles'), function ($browser) use ($role) {
                 $browser->waitForTable()
                     ->clickCheckboxForId(1);
 
-                $user->roles()->detach($role);
+                $role->users()->detach(4);
 
                 $browser->runAction('update-pivot-notes', function ($browser) {
                     $browser->assertSee('Provide a description for notes.')

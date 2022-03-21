@@ -67,7 +67,7 @@ class IndexActionTest extends DuskTestCase
      */
     public function cannot_run_standalone_actions_on_deleted_resource()
     {
-        PostFactory::new()->times(5)->create();
+        PostFactory::new()->times(5)->create(['user_id' => 2]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)

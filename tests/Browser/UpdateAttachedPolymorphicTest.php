@@ -35,7 +35,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                     ->update()
                     ->waitForText('The resource was updated!');
 
-            $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);
+            $this->assertEquals('Test Notes Updated', Post::with('tags')->find(1)->tags->first()->pivot->notes);
 
             $browser->blank();
         });
@@ -63,7 +63,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                     ->update()
                     ->waitForText('The resource was updated!');
 
-            $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);
+            $this->assertEquals('Test Notes Updated', Post::with('tags')->find(1)->tags->first()->pivot->notes);
 
             $browser->blank();
         });
@@ -89,7 +89,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                     ->waitForText('The resource was updated!')
                     ->on(new UpdateAttached('posts', 1, 'tags', 1));
 
-            $this->assertEquals('Test Notes Updated', Post::find(1)->tags->first()->pivot->notes);
+            $this->assertEquals('Test Notes Updated', Post::with('tags')->find(1)->tags->first()->pivot->notes);
 
             $browser->blank();
         });
@@ -115,7 +115,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                     ->assertSee('The notes must not be greater than 20 characters.')
                     ->click('@cancel-update-attached-button');
 
-            $this->assertEquals('Test Notes', Post::find(1)->tags->first()->pivot->notes);
+            $this->assertEquals('Test Notes', Post::with('tags')->find(1)->tags->first()->pivot->notes);
 
             $browser->blank();
         });

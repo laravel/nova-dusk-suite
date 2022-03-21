@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\User;
 use Database\Factories\RoleFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
@@ -17,7 +16,7 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
     public function it_shows_exit_warning_if_resource_form_has_changes_when_navigating_to_different_page()
     {
         $role = RoleFactory::new()->create();
-        User::find(1)->roles()->attach($role, ['notes' => 'Test Notes']);
+        $role->users()->attach(1, ['notes' => 'Test Notes']);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -47,7 +46,7 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
     public function it_shows_exit_warning_if_resource_form_has_changes_when_clicking_browser_back_button()
     {
         $role = RoleFactory::new()->create();
-        User::find(1)->roles()->attach($role, ['notes' => 'Test Notes']);
+        $role->users()->attach(1, ['notes' => 'Test Notes']);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -75,7 +74,7 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
     public function it_doesnt_show_exit_warning_if_resource_form_has_changes_when_clicking_cancel()
     {
         $role = RoleFactory::new()->create();
-        User::find(1)->roles()->attach($role, ['notes' => 'Test Notes']);
+        $role->users()->attach(1, ['notes' => 'Test Notes']);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
