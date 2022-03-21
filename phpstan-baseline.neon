@@ -1,7 +1,27 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Cannot call method isBlockedFrom\\(\\) on App\\\\Models\\\\User\\|null\\.$#"
+			count: 1
+			path: app/Nova/User.php
+
+		-
+			message: "#^Cannot access property \\$id on App\\\\Models\\\\User\\|null\\.$#"
+			count: 1
+			path: app/Providers/NovaServiceProvider.php
+
+		-
+			message: "#^Cannot call method isBlockedFrom\\(\\) on App\\\\Models\\\\User\\|null\\.$#"
+			count: 1
+			path: app/Providers/NovaServiceProvider.php
+
+		-
 			message: "#^Parameter \\#1 \\$items of method Laravel\\\\Nova\\\\Menu\\\\Menu\\:\\:append\\(\\) expects iterable, Laravel\\\\Nova\\\\Menu\\\\MenuItem given\\.$#"
 			count: 1
 			path: app/Providers/NovaServiceProvider.php
+
+		-
+			message: "#^Parameter \\#1 \\$key of method Illuminate\\\\Cache\\\\RateLimiting\\\\Limit\\:\\:by\\(\\) expects string, int\\<min, \\-1\\>\\|int\\<1, max\\>\\|string\\|null given\\.$#"
+			count: 1
+			path: app/Providers/RouteServiceProvider.php
 
