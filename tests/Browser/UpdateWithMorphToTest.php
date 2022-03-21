@@ -29,8 +29,10 @@ class UpdateWithMorphToTest extends DuskTestCase
                     ->update()
                     ->waitForText('The comment was updated');
 
-            $this->assertCount(0, Post::find(1)->comments);
-            $this->assertCount(1, Post::find(2)->comments);
+            $posts = Post::withCount('comments')->findMany([1, 2], ['id']);
+
+            $this->assertSame(0, $posts->find(1)->comments_count);
+            $this->assertSame(1, $posts->find(2)->comments_count);
 
             $browser->blank();
         });
