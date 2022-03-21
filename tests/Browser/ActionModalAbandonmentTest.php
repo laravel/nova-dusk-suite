@@ -16,7 +16,7 @@ class ActionModalAbandonmentTest extends DuskTestCase
      */
     public function modal_shows_exit_warning_dialog_if_form_has_changes()
     {
-        User::find(1)->roles()->attach(RoleFactory::new()->create());
+        RoleFactory::new()->create()->users()->attach(1);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -48,7 +48,7 @@ class ActionModalAbandonmentTest extends DuskTestCase
      */
     public function it_doesnt_show_exit_warning_if_modal_has_changes_when_clicking_cancel()
     {
-        User::find(1)->roles()->attach(RoleFactory::new()->create());
+        RoleFactory::new()->create()->users()->attach(1);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)

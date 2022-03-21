@@ -70,6 +70,37 @@ class UpdateTest extends DuskTestCase
     /**
      * @test
      */
+    public function test_user_isnt_logged_out_when_updating_their_own_resource()
+    {
+        User::whereKey(1)->update([
+            'name' => 'Taylor',
+            'settings' => ['pagination' => 'simple'],
+        ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                    ->visit(new Update('users', 1))
+                    ->waitForTextIn('h1', 'Update User: 1')
+                    ->assertSee('E-mail address should be unique')
+                    ->assertSelected('@settings.pagination', 'simple')
+                    ->type('@name', 'Taylor Otwell upDATED')
+                    ->type('@password', 'secret')
+                    ->update()
+                    ->waitForText('The user was updated!')
+                    ->on(new Detail('users', 1));
+
+            $user = User::find(1);
+
+            $this->assertEquals('Taylor Otwell Updated', $user->name);
+            $this->assertTrue(Hash::check('secret', $user->password));
+
+            $browser->logout()->blank();
+        });
+    }
+
+    /**
+     * @test
+     */
     public function validation_errors_are_displayed()
     {
         $this->browse(function (Browser $browser) {

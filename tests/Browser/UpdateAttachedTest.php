@@ -20,7 +20,7 @@ class UpdateAttachedTest extends DuskTestCase
     public function attached_resource_can_be_updated()
     {
         $role = RoleFactory::new()->create();
-        User::find(1)->roles()->attach($role, ['notes' => 'Test Notes']);
+        $role->users()->attach(1, ['notes' => 'Test Notes']);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -51,7 +51,7 @@ class UpdateAttachedTest extends DuskTestCase
     public function attached_resource_can_be_updated_and_can_continue_editing()
     {
         $role = RoleFactory::new()->create();
-        User::find(1)->roles()->attach($role, ['notes' => 'Test Notes']);
+        $role->users()->attach(1, ['notes' => 'Test Notes']);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -89,7 +89,7 @@ class UpdateAttachedTest extends DuskTestCase
     public function validation_errors_are_displayed()
     {
         $role = RoleFactory::new()->create();
-        User::find(1)->roles()->attach($role, ['notes' => 'Test Notes']);
+        $role->users()->attach(1, ['notes' => 'Test Notes']);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -154,6 +154,8 @@ class UpdateAttachedTest extends DuskTestCase
                                 $browser->assertSee('$43.00');
                             });
                     });
+
+            $browser->blank();
         });
     }
 }
