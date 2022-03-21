@@ -47,7 +47,7 @@ class IndexAuthorizationTest extends DuskTestCase
      */
     public function shouldnt_see_id_link_if_blocked_from_viewing()
     {
-        $posts = PostFactory::new()->times(3)->create(['user_id' => 2]);
+        $posts = PostFactory::new()->times(3)->create();
         User::find(1)->shouldBlockFrom(...[
             'post.view.'.$posts[0]->id,
             'user.view.'.$posts[1]->user_id,
