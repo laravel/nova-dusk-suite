@@ -47,7 +47,7 @@ class DetailActionTest extends DuskTestCase
                 $browser->waitForTable()
                     ->clickCheckboxForId(1);
 
-                $user->roles()->detach($role);
+                $role->users()->detach(4);
 
                 $browser->runAction('update-pivot-notes', function ($browser) {
                     $browser->assertSee('Provide a description for notes.')
