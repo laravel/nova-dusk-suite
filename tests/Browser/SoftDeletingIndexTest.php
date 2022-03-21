@@ -123,7 +123,7 @@ class SoftDeletingIndexTest extends DuskTestCase
     public function can_soft_delete_all_matching_resources()
     {
         $dock = DockFactory::new()->create();
-        $dock->ships()->saveMany(ShipFactory::new()->times(3)->create());
+        $dock->ships()->saveMany(ShipFactory::new()->times(3)->make());
 
         $separateShip = ShipFactory::new()->create();
 
@@ -156,7 +156,7 @@ class SoftDeletingIndexTest extends DuskTestCase
     public function can_restore_all_matching_resources()
     {
         $dock = DockFactory::new()->create();
-        $dock->ships()->saveMany(ShipFactory::new()->times(3)->create(['deleted_at' => now()]));
+        $dock->ships()->saveMany(ShipFactory::new()->times(3)->make(['deleted_at' => now()]));
 
         ShipFactory::new()->create();
 
@@ -187,7 +187,7 @@ class SoftDeletingIndexTest extends DuskTestCase
     public function can_force_delete_all_matching_resources()
     {
         $dock = DockFactory::new()->create();
-        $dock->ships()->saveMany(ShipFactory::new()->times(3)->create(['deleted_at' => now()]));
+        $dock->ships()->saveMany(ShipFactory::new()->times(3)->make(['deleted_at' => now()]));
 
         $separateShip = ShipFactory::new()->create();
 

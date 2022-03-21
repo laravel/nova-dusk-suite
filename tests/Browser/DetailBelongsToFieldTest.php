@@ -19,7 +19,7 @@ class DetailBelongsToFieldTest extends DuskTestCase
     public function belongs_to_field_navigates_to_parent_resource_when_clicked()
     {
         $user = User::find(1);
-        $user->posts()->save($post = PostFactory::new()->create());
+        $user->posts()->save($post = PostFactory::new()->make());
 
         $this->browse(function (Browser $browser) use ($user, $post) {
             $browser->loginAs($user)
@@ -58,7 +58,7 @@ class DetailBelongsToFieldTest extends DuskTestCase
         $user = UserFactory::new()->create([
             'id' => 9121018173229432287,
         ]);
-        $user->posts()->save($post = PostFactory::new()->create());
+        $user->posts()->save($post = PostFactory::new()->make());
 
         $this->browse(function (Browser $browser) use ($user, $post) {
             $browser->loginAs(1)

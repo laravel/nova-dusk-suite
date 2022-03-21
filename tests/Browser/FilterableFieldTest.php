@@ -54,13 +54,13 @@ class FilterableFieldTest extends DuskTestCase
     /** @test */
     public function it_can_filter_multiselect_field()
     {
-        Profile::find(1)->forceFill([
+        Profile::whereKey(1)->update([
             'interests' => ['laravel', 'phpunit', 'livewire', 'swoole', 'vue'],
-        ])->save();
+        ]);
 
-        Profile::find(2)->forceFill([
+        Profile::whereKey(2)->update([
             'interests' => ['laravel', 'phpunit', 'swoole', 'react', 'vue'],
-        ])->save();
+        ]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)

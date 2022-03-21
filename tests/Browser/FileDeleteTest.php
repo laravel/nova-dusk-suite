@@ -35,7 +35,7 @@ class FileDeleteTest extends DuskTestCase
 
             // Validate file no longer exists.
             Storage::disk('public')->assertMissing($photo);
-            $this->assertEmpty(Captain::query()->get());
+            $this->assertSame(0, Captain::count());
         });
     }
 }

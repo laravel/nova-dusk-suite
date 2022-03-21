@@ -3,7 +3,6 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Post;
-use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Update;
@@ -16,7 +15,9 @@ class UpdateWithBelongsToTest extends DuskTestCase
      */
     public function resource_can_be_updated_to_new_parent()
     {
-        User::find(1)->posts()->save($post = PostFactory::new()->make());
+        $post = PostFactory::new()->create([
+            'user_id' => 1,
+        ]);
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
@@ -26,7 +27,7 @@ class UpdateWithBelongsToTest extends DuskTestCase
                     ->update()
                     ->waitForText('The user post was updated');
 
-            $posts = Post::all();
+            $posts = Post::whereIn('user_id', [1, 2])->get();
 
             $this->assertCount(0, $posts->where('user_id', 1));
             $this->assertCount(1, $posts->where('user_id', 2));
@@ -40,7 +41,9 @@ class UpdateWithBelongsToTest extends DuskTestCase
      */
     public function belongs_to_field_should_ignore_query_parameters_when_editing()
     {
-        User::find(1)->posts()->save($post = PostFactory::new()->make());
+        $post = PostFactory::new()->create([
+            'user_id' => 1,
+        ]);
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)

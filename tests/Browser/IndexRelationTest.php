@@ -17,7 +17,7 @@ class IndexRelationTest extends DuskTestCase
     public function relationships_can_be_searched()
     {
         $user = User::find(1);
-        $user->posts()->save(PostFactory::new()->create());
+        $user->posts()->save(PostFactory::new()->make());
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -39,8 +39,9 @@ class IndexRelationTest extends DuskTestCase
      */
     public function can_navigate_to_create_relationship_screen()
     {
-        $user = User::find(1);
-        $user->posts()->save(PostFactory::new()->create());
+        PostFactory::new()->create([
+            'user_id' => 1,
+        ]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)

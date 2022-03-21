@@ -47,7 +47,7 @@ class UpdateWithMorphToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $link = LinkFactory::new()->create();
-            $link->comments()->save($comment = CommentFactory::new()->create());
+            $link->comments()->save($comment = CommentFactory::new()->make());
 
             $browser->loginAs(1)
                     ->visit(new Update('comments', $comment->id))
@@ -70,7 +70,7 @@ class UpdateWithMorphToTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $post = PostFactory::new()->create();
-            $post->comments()->save($comment = CommentFactory::new()->create());
+            $post->comments()->save($comment = CommentFactory::new()->make());
 
             $browser->loginAs(1)
                     ->visit(new Update('comments', $comment->id, [
