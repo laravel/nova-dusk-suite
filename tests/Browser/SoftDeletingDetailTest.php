@@ -246,8 +246,7 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function relations_can_be_paginated()
     {
-        $dock = DockFactory::new()->create();
-        $dock->ships()->saveMany(ShipFactory::new()->times(10)->make());
+        ShipFactory::new()->times(10)->create(['dock_id' => DockFactory::new()->create()]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -273,8 +272,7 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function relations_can_be_sorted()
     {
-        $dock = DockFactory::new()->create();
-        $dock->ships()->saveMany(ShipFactory::new()->times(10)->make());
+        ShipFactory::new()->times(10)->create(['dock_id' => DockFactory::new()->create()]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -300,11 +298,8 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function actions_on_all_matching_relations_should_be_scoped_to_the_relation()
     {
-        $dock = DockFactory::new()->create();
-        $dock->ships()->save($ship = ShipFactory::new()->make());
-
-        $dock2 = DockFactory::new()->create();
-        $dock2->ships()->save($ship2 = ShipFactory::new()->make());
+        $ship = ShipFactory::new()->create();
+        $ship2 = ShipFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
             $browser->loginAs(1)
@@ -327,11 +322,8 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function deleting_all_matching_relations_is_scoped_to_the_relationships()
     {
-        $dock = DockFactory::new()->create();
-        $dock->ships()->save($ship = ShipFactory::new()->make());
-
-        $dock2 = DockFactory::new()->create();
-        $dock2->ships()->save($ship2 = ShipFactory::new()->make());
+        $ship = ShipFactory::new()->create();
+        $ship2 = ShipFactory::new()->create();
 
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
             $browser->loginAs(1)

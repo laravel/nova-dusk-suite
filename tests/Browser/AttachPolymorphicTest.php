@@ -21,7 +21,7 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->defineApplicationStates('searchable');
 
         $this->browse(function (Browser $browser) {
-            PostFactory::new()->create();
+            PostFactory::new()->create(['user_id' => 1]);
             $tag = TagFactory::new()->create();
 
             $browser->loginAs(1)
@@ -51,7 +51,7 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->defineApplicationStates('searchable');
 
         $this->browse(function (Browser $browser) {
-            PostFactory::new()->create();
+            PostFactory::new()->create(['user_id' => 1]);
             $tag = TagFactory::new()->create();
 
             $browser->loginAs(1)
@@ -81,7 +81,7 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->defineApplicationStates('searchable');
 
         $this->browse(function (Browser $browser) {
-            PostFactory::new()->create();
+            PostFactory::new()->create(['user_id' => 1]);
             $tag = TagFactory::new()->create();
 
             $browser->loginAs(1)
@@ -107,7 +107,7 @@ class AttachPolymorphicTest extends DuskTestCase
      */
     public function validation_errors_are_displayed()
     {
-        PostFactory::new()->create();
+        PostFactory::new()->create(['user_id' => 1]);
         TagFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
@@ -138,7 +138,7 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->defineApplicationStates('searchable');
 
         $this->browse(function (Browser $browser) {
-            PostFactory::new()->create();
+            PostFactory::new()->create(['user_id' => 1]);
             $tag = TagFactory::new()->create();
 
             $browser->loginAs(1)

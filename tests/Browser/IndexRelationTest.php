@@ -61,13 +61,8 @@ class IndexRelationTest extends DuskTestCase
      */
     public function relations_can_be_paginated()
     {
-        PostFactory::new()->times(10)->create([
-            'user_id' => 1,
-        ]);
-
-        PostFactory::new()->create([
-            'user_id' => 2,
-        ]);
+        PostFactory::new()->times(10)->create(['user_id' => 1]);
+        PostFactory::new()->create(['user_id' => 2]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -94,13 +89,8 @@ class IndexRelationTest extends DuskTestCase
      */
     public function relations_can_be_sorted()
     {
-        PostFactory::new()->times(10)->create([
-            'user_id' => 1,
-        ]);
-
-        PostFactory::new()->create([
-            'user_id' => 2,
-        ]);
+        PostFactory::new()->times(10)->create(['user_id' => 1]);
+        PostFactory::new()->create(['user_id' => 2]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -127,13 +117,8 @@ class IndexRelationTest extends DuskTestCase
      */
     public function deleting_all_matching_relations_is_scoped_to_the_relationships()
     {
-        $post = PostFactory::new()->create([
-            'user_id' => 1,
-        ]);
-
-        $post2 = PostFactory::new()->create([
-            'user_id' => 2,
-        ]);
+        $post = PostFactory::new()->create(['user_id' => 1]);
+        $post2 = PostFactory::new()->create(['user_id' => 2]);
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(1)
@@ -157,9 +142,7 @@ class IndexRelationTest extends DuskTestCase
      */
     public function relations_filter_should_not_change_query_string_when_filter_has_not_been_applied()
     {
-        PostFactory::new()->times(10)->create([
-            'user_id' => 1,
-        ]);
+        PostFactory::new()->times(10)->create(['user_id' => 1]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)

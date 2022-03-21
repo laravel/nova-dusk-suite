@@ -14,12 +14,8 @@ class FilterableFieldTest extends DuskTestCase
     /** @test */
     public function it_can_filter_belongs_to_field()
     {
-        PostFactory::new()->times(3)->create([
-            'user_id' => 1,
-        ]);
-        PostFactory::new()->times(2)->create([
-            'user_id' => 2,
-        ]);
+        PostFactory::new()->times(3)->create(['user_id' => 1]);
+        PostFactory::new()->times(2)->create(['user_id' => 2]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)

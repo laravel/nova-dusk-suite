@@ -15,9 +15,7 @@ class UpdateWithBelongsToTest extends DuskTestCase
      */
     public function resource_can_be_updated_to_new_parent()
     {
-        $post = PostFactory::new()->create([
-            'user_id' => 1,
-        ]);
+        $post = PostFactory::new()->create(['user_id' => 1]);
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
@@ -41,9 +39,7 @@ class UpdateWithBelongsToTest extends DuskTestCase
      */
     public function belongs_to_field_should_ignore_query_parameters_when_editing()
     {
-        $post = PostFactory::new()->create([
-            'user_id' => 1,
-        ]);
+        $post = PostFactory::new()->create(['user_id' => 1]);
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)

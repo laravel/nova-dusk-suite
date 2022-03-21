@@ -23,7 +23,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $dock = DockFactory::new()->create();
-            ShipFactory::new()->count(5)->create();
+            ShipFactory::new()->times(5)->create(['dock_id' => DockFactory::new()->create()]);
 
             $browser->loginAs(1)
                 ->visit(new Create('sails'))
