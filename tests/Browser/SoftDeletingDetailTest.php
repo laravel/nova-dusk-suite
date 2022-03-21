@@ -178,8 +178,7 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function relationships_can_be_searched()
     {
-        $dock = DockFactory::new()->create();
-        $dock->ships()->save(ShipFactory::new()->make());
+        ShipFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -200,8 +199,7 @@ class SoftDeletingDetailTest extends DuskTestCase
      */
     public function soft_deleting_resources_can_be_manipulated_from_their_child_index()
     {
-        $dock = DockFactory::new()->create();
-        $dock->ships()->save(ShipFactory::new()->make());
+        ShipFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
