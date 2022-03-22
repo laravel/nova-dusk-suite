@@ -21,4 +21,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+Route::get('/subscribers/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth:web-subscribers'])->name('subscribers.dashboard');
+
 require __DIR__.'/auth.php';
