@@ -192,6 +192,7 @@ class User extends Resource
                     return $model->active === true && (int) $model->getKey() !== 1;
                 }),
             new Actions\Sleep,
+            Actions\ExportAsCsv::make(),
             Actions\StandaloneTask::make()->standalone(),
             Actions\RedirectToGoogle::make()->withoutConfirmation(),
             Actions\ChangeCreatedAt::make()->showOnDetail(),
