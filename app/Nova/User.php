@@ -5,6 +5,7 @@ namespace App\Nova;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\BooleanGroup;
@@ -201,6 +202,7 @@ class User extends Resource
                 ->canRun(function ($request, $model) {
                     return is_null($model->profile);
                 }),
+            ExportAsCsv::make(),
         ];
     }
 
