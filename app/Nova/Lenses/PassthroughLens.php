@@ -2,6 +2,7 @@
 
 namespace App\Nova\Lenses;
 
+use App\Nova\Actions\CreateUserProfile;
 use App\Nova\Actions\MarkAsActive;
 use App\Nova\Actions\MarkAsInactive;
 use App\Nova\Filters\SelectFirst;
@@ -85,6 +86,12 @@ class PassthroughLens extends Lens
             MarkAsInactive::make()->showInline()->canRun(function ($request, $model) {
                 return $model->active === true && (int) $model->getKey() !== 1;
             }),
+            CreateUserProfile::make()
+                ->showInline()
+                ->showOnDetail()
+                ->canRun(function ($request, $model) {
+                    return is_null($model->profile);
+                }),
             ExportAsCsv::make('Export As CSV for Lens'),
         ];
     }
