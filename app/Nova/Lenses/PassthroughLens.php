@@ -85,7 +85,7 @@ class PassthroughLens extends Lens
             MarkAsInactive::make()->showInline()->canRun(function ($request, $model) {
                 return $model->active === true && (int) $model->getKey() !== 1;
             }),
-            ExportAsCsv::make(),
+            ExportAsCsv::make('Export As CSV for Lens'),
         ];
     }
 }
