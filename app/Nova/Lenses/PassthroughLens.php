@@ -5,6 +5,7 @@ namespace App\Nova\Lenses;
 use App\Nova\Actions\MarkAsActive;
 use App\Nova\Actions\MarkAsInactive;
 use App\Nova\Filters\SelectFirst;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\LensRequest;
@@ -80,10 +81,11 @@ class PassthroughLens extends Lens
     public function actions(NovaRequest $request)
     {
         return [
-            new MarkAsActive(),
+            MarkAsActive::make(),
             MarkAsInactive::make()->showInline()->canRun(function ($request, $model) {
                 return $model->active === true && (int) $model->getKey() !== 1;
             }),
+            ExportAsCsv::make(),
         ];
     }
 }
