@@ -4,9 +4,9 @@ namespace App\Nova;
 
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
@@ -56,7 +56,7 @@ class Project extends Resource
 
             Text::make('Name'),
 
-            Trix::make('Description')->nullable(),
+            Markdown::make('Description')->nullable(),
 
             Select::make('Type')->options($productTypes)->displayUsing(function ($value) use ($productTypes) {
                 return $productTypes[$value] ?? null;
