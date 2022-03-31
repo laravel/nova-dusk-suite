@@ -138,6 +138,7 @@ class Post extends Resource
     {
         return [
             new Filters\SelectFirst('user_id'),
+            new Filters\UserPost,
         ];
     }
 }
