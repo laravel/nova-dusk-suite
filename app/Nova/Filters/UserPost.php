@@ -17,8 +17,6 @@ class UserPost extends BooleanFilter
      */
     public function apply(Request $request, $query, $value)
     {
-        ray($value);
-
         return $query->when($value['has-attachment'] === true, function ($query) {
             $query->whereNotNull('attachment');
         });
