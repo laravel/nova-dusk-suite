@@ -17,6 +17,10 @@ export default {
         return {sidebarResponse: null}
     },
 
+    beforeRouteLeave(to, from, next) {
+        console.dir({ to, from })
+    },
+
     mounted() {
         axios.get('/nova-vendor/custom-sidebar-tool').then(response => {
             this.sidebarResponse = response.data
