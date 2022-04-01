@@ -3,10 +3,12 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
+use Database\Factories\SubscriberFactory;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Dashboard;
+use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -133,6 +135,41 @@ class ImpersonatesUserTest extends DuskTestCase
                     ->acceptDialog()
                     ->on(new Dashboard())
                     ->assertAuthenticatedAs(User::find(2));
+
+            $browser->blank();
+        });
+    }
+
+    /** @test */
+    public function it_can_impersonate_another_user_using_different_guard()
+    {
+        $this->browse(function (Browser $browser) {
+            $user = User::find(2);
+
+            $subscriber = SubscriberFactory::new()->create([
+                'password' => 'a-unique-password',
+            ]);
+
+            $browser->loginAs($user)
+                    ->visit(new Index('subscribers'))
+                    ->within(new IndexComponent('subscribers'), function ($browser) use ($user, $subscriber) {
+                        $browser->openControlSelectorById($subscriber->id)
+                                ->elsewhere('', function ($browser) use ($user, $subscriber) {
+                                    $browser->assertVisible("@{$subscriber->id}-replicate-button")
+                                            ->assertVisible("@{$subscriber->id}-impersonate-button")
+                                            ->clickAndWaitForReload("@{$subscriber->id}-impersonate-button")
+                                            ->assertPathIs('/')
+                                            ->assertAuthenticatedAs($user)
+                                            ->assertAuthenticatedAs($subscriber, 'web-subscribers');
+                                });
+                    })
+                    ->visit(new Dashboard())
+                    ->press($user->name)
+                    ->press('Stop Impersonating')
+                    ->assertDialogOpened('Are you sure you want to stop impersonating?')
+                    ->acceptDialog()
+                    ->on(new Dashboard())
+                    ->assertAuthenticatedAs($user);
 
             $browser->blank();
         });

@@ -153,7 +153,7 @@ class IndexRelationTest extends DuskTestCase
                                 ->assertQueryStringMissing('posts_filter')
                                 ->selectFilter('Select First', '3')
                                 ->waitForEmptyDialog()
-                                ->assertQueryStringHas('posts_filter', 'W3siQXBwXFxOb3ZhXFxGaWx0ZXJzXFxTZWxlY3RGaXJzdCI6IjMifV0=');
+                                ->assertQueryStringHas('posts_filter', 'W3siQXBwXFxOb3ZhXFxGaWx0ZXJzXFxTZWxlY3RGaXJzdCI6IjMifSx7IkFwcFxcTm92YVxcRmlsdGVyc1xcVXNlclBvc3QiOnsiaGFzLWF0dGFjaG1lbnQiOmZhbHNlfX1d');
                     });
 
             $browser->blank();
