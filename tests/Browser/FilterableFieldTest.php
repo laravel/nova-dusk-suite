@@ -23,7 +23,7 @@ class FilterableFieldTest extends DuskTestCase
                 ->within(new IndexComponent('posts'), function ($browser) {
                     $browser->waitForTable()
                         ->runFilter(function ($browser) {
-                            $browser->select('select[dusk="user-default-belongs-to-field-filter-select"]', 1);
+                            $browser->select('select[dusk="user-default-belongs-to-field-filter"]', 1);
                         })
                         ->waitForTable()
                         ->assertSeeResource(1)
@@ -33,7 +33,7 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertDontSeeResource(5);
 
                     $browser->runFilter(function ($browser) {
-                        $browser->select('select[dusk="user-default-belongs-to-field-filter-select"]', 2);
+                        $browser->select('select[dusk="user-default-belongs-to-field-filter"]', 2);
                     })
                         ->waitForTable()
                         ->assertDontSeeResource(1)
@@ -64,14 +64,14 @@ class FilterableFieldTest extends DuskTestCase
                 ->within(new IndexComponent('profiles'), function ($browser) {
                     $browser->waitForTable()
                         ->runFilter(function ($browser) {
-                            $browser->select('select[dusk="interests-default-multi-select-field-filter-select"]', ['laravel', 'phpunit']);
+                            $browser->select('select[dusk="interests-default-multi-select-field-filter"]', ['laravel', 'phpunit']);
                         })->waitForTable()
                         ->assertSeeResource(1)
                         ->assertSeeResource(2)
                         ->assertDontSeeResource(3);
 
                     $browser->runFilter(function ($browser) {
-                        $browser->select('select[dusk="interests-default-multi-select-field-filter-select"]', ['laravel', 'livewire']);
+                        $browser->select('select[dusk="interests-default-multi-select-field-filter"]', ['laravel', 'livewire']);
                     })
                         ->waitForTable()
                         ->assertSeeResource(1)

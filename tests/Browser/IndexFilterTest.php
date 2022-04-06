@@ -166,7 +166,7 @@ class IndexFilterTest extends DuskTestCase
                         ->pause(500)
                         ->elsewhere('', function ($browser) {
                             $browser->assertVisible('@filter-per-page')
-                                ->type('input[dusk="date-filter"]', '')
+                                ->type('input[dusk="Created-date-filter"]', '')
                                 ->assertVisible('@filter-per-page');
                         })
                         ->closeCurrentDropdown()
@@ -269,7 +269,7 @@ class IndexFilterTest extends DuskTestCase
                             ->pause(500)
                             ->elsewhere('', function ($browser) {
                                 $browser->assertVisible('@filter-per-page')
-                                    ->type('input[dusk="date-filter"]', '')
+                                    ->type('input[dusk="Created-date-filter"]', '')
                                     ->assertVisible('@filter-per-page');
                             })
                             ->closeCurrentDropdown()
