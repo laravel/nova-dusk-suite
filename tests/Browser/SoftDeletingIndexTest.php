@@ -53,6 +53,7 @@ class SoftDeletingIndexTest extends DuskTestCase
                             ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->deleteSelected()
+                            ->waitForTable()
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3);
@@ -80,7 +81,9 @@ class SoftDeletingIndexTest extends DuskTestCase
                             ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->restoreSelected()
+                            ->waitForTable()
                             ->withoutTrashed()
+                            ->waitForTable()
                             ->waitForText('Docks')
                             ->assertSeeResource(1)
                             ->assertSeeResource(2)
@@ -108,6 +111,7 @@ class SoftDeletingIndexTest extends DuskTestCase
                             ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->forceDeleteSelected()
+                            ->waitForTable()
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3);
@@ -133,6 +137,7 @@ class SoftDeletingIndexTest extends DuskTestCase
                         $browser->waitForTable()
                             ->selectAllMatching()
                             ->deleteSelected()
+                            ->waitForEmptyDialog()
                             ->assertDontSeeResource(1)
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3)
@@ -170,6 +175,7 @@ class SoftDeletingIndexTest extends DuskTestCase
                         $browser->waitForTable()
                             ->selectAllMatching()
                             ->restoreSelected()
+                            ->waitForTable()
                             ->assertSeeResource(1)
                             ->assertSeeResource(2)
                             ->assertSeeResource(3);
@@ -203,6 +209,7 @@ class SoftDeletingIndexTest extends DuskTestCase
                         $browser->waitForTable()
                             ->selectAllMatching()
                             ->forceDeleteSelected()
+                            ->waitForEmptyDialog()
                             ->assertDontSeeResource(1)
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3);

@@ -20,7 +20,7 @@ class IndexDeletionTest extends DuskTestCase
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
                                 ->deleteResourceById(3)
-                                ->pause(1500)
+                                ->waitForTable()
                                 ->assertSeeResource(1)
                                 ->assertSeeResource(2)
                                 ->assertDontSeeResource(3)
@@ -65,6 +65,7 @@ class IndexDeletionTest extends DuskTestCase
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
                             ->searchFor('David')
+                            ->waitForTable()
                             ->selectAllMatching()
                             ->deleteSelected()
                             ->clearSearch()

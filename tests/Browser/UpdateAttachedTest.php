@@ -33,6 +33,10 @@ class UpdateAttachedTest extends DuskTestCase
                     ->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })
+                    ->whenAvailable('select[dusk="attachable-select"]', function ($browser) {
+                        $browser->assertDisabled('')
+                                ->assertSelected('', '1');
+                    })
                     ->assertDisabled('select[dusk="attachable-select"]')
                     ->assertInputValue('@notes', 'Test Notes')
                     ->type('@notes', 'Test Notes Updated')
@@ -101,6 +105,10 @@ class UpdateAttachedTest extends DuskTestCase
                     ->on(new UpdateAttached('users', 1, 'roles', 1))
                     ->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
+                    })
+                    ->whenAvailable('select[dusk="attachable-select"]', function ($browser) {
+                        $browser->assertDisabled('')
+                                ->assertSelected('', '1');
                     })
                     ->type('@notes', str_repeat('A', 30))
                     ->update()
