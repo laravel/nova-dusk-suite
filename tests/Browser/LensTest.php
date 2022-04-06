@@ -234,7 +234,7 @@ class LensTest extends DuskTestCase
                             ->clickCheckboxForId(2)
                             ->pause(175)
                             ->deleteSelected()
-                            ->pause(1500)
+                            ->waitForTable()
                             ->assertSeeResource(1)
                             ->assertDontSeeResource(2)
                             ->assertDontSeeResource(3);

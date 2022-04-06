@@ -21,7 +21,7 @@ class LensFilterTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->setPerPage('50')
                                 ->waitForTable()
                                 ->assertSeeResource(50)
@@ -44,7 +44,7 @@ class LensFilterTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->setPerPage('50')
                                 ->waitForTable()
                                 ->assertSeeResource(50)
@@ -53,7 +53,7 @@ class LensFilterTest extends DuskTestCase
                     })
                     ->refresh()
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->assertSeeResource(50)
                                 ->assertSeeResource(25)
                                 ->assertSeeResource(1);
@@ -97,7 +97,7 @@ class LensFilterTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Lens('users', 'passthrough-lens'))
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                             ->selectFilter('Select First', '1')
                             ->waitForTable()
                             ->assertSeeResource(1)

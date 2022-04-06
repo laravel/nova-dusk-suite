@@ -21,7 +21,6 @@ class PivotActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
-                    ->pause(1500)
                     ->within(new IndexComponent('roles'), function ($browser) {
                         $browser->waitForTable()
                                 ->clickCheckboxForId(1)

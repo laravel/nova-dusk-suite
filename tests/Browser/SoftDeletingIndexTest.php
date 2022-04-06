@@ -84,7 +84,6 @@ class SoftDeletingIndexTest extends DuskTestCase
                             ->waitForTable()
                             ->withoutTrashed()
                             ->waitForTable()
-                            ->waitForText('Docks')
                             ->assertSeeResource(1)
                             ->assertSeeResource(2)
                             ->assertSeeResource(3);
