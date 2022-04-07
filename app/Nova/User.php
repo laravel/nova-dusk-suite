@@ -9,6 +9,8 @@ use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\BooleanGroup;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
@@ -32,6 +34,13 @@ class User extends Resource
      * @var string
      */
     public static $model = 'App\Models\User';
+
+    /**
+     * The single value that should be used to represent the resource when being displayed.
+     *
+     * @var string
+     */
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -60,6 +69,8 @@ class User extends Resource
                     (new Search($query, $value))->handle(__CLASS__, [$attribute, 'email']);
                 })->showOnPreview(),
 
+            // Gravatar::make(),
+
             Text::make('Email', 'email')->sortable()->rules('required', 'email', 'max:255')
                 ->help('E-mail address should be unique')
                 ->creationRules('unique:users,email')
@@ -87,6 +98,8 @@ class User extends Resource
             ->noValueText('No permissions selected.')
             ->filterable()
             ->showOnPreview(),
+
+            DateTime::make('Created At')->readonly()->filterable(),
 
             ResourceTool::make()->canSee(function ($request) {
                 return ! $request->user()->isBlockedFrom('resourceTool');
@@ -235,5 +248,15 @@ class User extends Resource
         }
 
         return '/resources/'.static::uriKey().'/'.$resource->getKey();
+    }
+
+    /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string
+     */
+    public function subtitle()
+    {
+        return $this->email;
     }
 }
