@@ -243,7 +243,10 @@ class User extends Resource
      */
     public static function redirectAfterCreate(NovaRequest $request, $resource)
     {
-        if ($resource->model() && (! $resource->model()->relationLoaded('profile') || is_null($resource->model()->profile))) {
+        if ($resource->model()
+            && (! $resource->model()->relationLoaded('profile') || is_null($resource->model()->profile))
+            && Profile::authorizedToCreate($request)
+        ) {
             return '/resources/profiles/new?viaResource='.static::uriKey().'&viaResourceId='.$resource->getKey().'&viaRelationship=profile';
         }
 
