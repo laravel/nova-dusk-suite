@@ -27,6 +27,7 @@ class IndexRelationTest extends DuskTestCase
                         $browser->waitForTable()
                                 ->assertSeeResource(1)
                                 ->searchFor('No Matching Posts')
+                                ->waitForEmptyDialog()
                                 ->assertDontSeeResource(1);
                     });
 

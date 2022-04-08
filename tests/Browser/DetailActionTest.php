@@ -119,7 +119,7 @@ class DetailActionTest extends DuskTestCase
                         $browser->waitForTable()
                                 ->selectAllMatching()
                                 ->runAction('mark-as-active');
-                    });
+                    })->waitForText('The action ran successfully!');
 
             $this->assertEquals(1, $post->fresh()->active);
             $this->assertEquals(0, $post2->fresh()->active);

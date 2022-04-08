@@ -168,6 +168,7 @@ class IndexTest extends DuskTestCase
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
                                 ->searchFor('3')
+                                ->waitForTable()
                                 ->assertDontSeeResource(1)
                                 ->assertDontSeeResource(2)
                                 ->assertSeeResource(3)
@@ -179,6 +180,7 @@ class IndexTest extends DuskTestCase
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
                                 ->searchFor('Taylor')
+                                ->waitForTable()
                                 ->assertSeeResource(1)
                                 ->assertDontSeeResource(2)
                                 ->assertDontSeeResource(3);
@@ -200,6 +202,7 @@ class IndexTest extends DuskTestCase
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
                                 ->searchFor('3')
+                                ->waitForTable()
                                 ->assertDontSeeResource(1)
                                 ->assertDontSeeResource(2)
                                 ->assertSeeResource(3)
@@ -238,6 +241,7 @@ class IndexTest extends DuskTestCase
                                 ->assertSelectAllMatchingCount(4)
                                 ->closeCurrentDropdown()
                                 ->searchFor('Taylor')
+                                ->waitForTable()
                                 ->assertSelectAllMatchingCount(1)
                                 ->assertSee('1-1 of 1');
                     });

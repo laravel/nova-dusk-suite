@@ -78,6 +78,7 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->delete()
+                    ->waitForText('The dock was deleted!')
                     ->on(new Detail('docks', 1));
 
             $this->assertEquals(1, Dock::onlyTrashed()->count());
@@ -184,9 +185,10 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->assertSeeResource(1)
                                 ->searchFor('No Matching Ships')
+                                ->waitForEmptyDialog()
                                 ->assertDontSeeResource(1);
                     });
 
@@ -250,7 +252,7 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->assertSeeResource(10)
                                 ->assertDontSeeResource(1)
                                 ->nextPage()
@@ -276,7 +278,7 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->assertSeeResource(10)
                                 ->assertSeeResource(6)
                                 ->assertDontSeeResource(1)
@@ -303,7 +305,7 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->selectAllMatching()
                                 ->runAction('mark-as-active');
                     });
@@ -327,7 +329,7 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->selectAllMatching()
                                 ->deleteSelected();
                     });

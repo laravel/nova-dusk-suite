@@ -26,7 +26,7 @@ class ActionModalAbandonmentTest extends DuskTestCase
                             ->selectAction('update-required-pivot-notes', function ($browser) {
                                 $browser->elsewhere('', function ($browser) {
                                     $browser->whenAvailable('.modal[data-modal-open=true]', function ($browser) {
-                                        $browser->type('@notes', 'Custom Notes');
+                                        $browser->keys('@notes', 'Custom Notes', '{tab}');
                                     })
                                     ->assertPresent('.modal[data-modal-open=true]')
                                     ->keys('', '{escape}')

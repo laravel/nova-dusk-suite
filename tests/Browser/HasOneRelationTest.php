@@ -50,6 +50,7 @@ class HasOneRelationTest extends DuskTestCase
                     ->type('@email', 'adam@laravel.com')
                     ->type('@password', 'secret')
                     ->click('@create-profile-relation-button')
+                    ->waitForText('GitHub URL')
                     ->type('@github_url', 'https://github.com/adamwathan')
                     ->type('@twitter_url', 'https://twitter.com/adamwathan')
                     ->select('select[dusk="timezone"]', 'UTC')
@@ -81,6 +82,7 @@ class HasOneRelationTest extends DuskTestCase
             $browser->loginAs(4)
                     ->visit(new Update('users', 4))
                     ->click('@create-profile-relation-button')
+                    ->waitForText('GitHub URL')
                     ->type('@github_url', 'https://github.com/laravel/nova')
                     ->select('select[dusk="timezone"]', 'UTC')
                     ->select('select[dusk="interests"]', ['laravel', 'phpunit', 'vue'])
@@ -105,6 +107,7 @@ class HasOneRelationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Update('users', 1))
+                    ->waitForText('Profile')
                     ->type('@github_url', 'https://github.com/laravel')
                     ->type('@twitter_url', 'https://twitter.com/laravelphp')
                     ->select('select[dusk="timezone"]', 'UTC')

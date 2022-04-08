@@ -21,9 +21,8 @@ class PivotActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
-                    ->pause(1500)
                     ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->clickCheckboxForId(1)
                                 ->openActionSelector()
                                 ->within('@action-select', function ($browser) {
@@ -46,14 +45,11 @@ class PivotActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
-                    ->pause(1500)
                     ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitForTable(25)
+                        $browser->waitForTable()
                                 ->clickCheckboxForId(1)
                                 ->runAction('update-pivot-notes');
-                    });
-
-            $browser->waitForText('The action ran successfully!', 25);
+                    })->waitForText('The action ran successfully!');
 
             $this->assertEquals('Pivot Action Notes', User::find(1)->roles()->first()->pivot->notes);
 
