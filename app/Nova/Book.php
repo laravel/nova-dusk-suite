@@ -52,9 +52,7 @@ class Book extends Resource
                 return $request->isUpdateOrUpdateAttachedRequest();
             })->showOnPreview(),
             Boolean::make('Active')->default(function ($request) {
-                if ($request->isCreateOrAttachRequest()) {
-                    return true;
-                }
+                return true;
             })->filterable()
             ->showOnPreview(),
 

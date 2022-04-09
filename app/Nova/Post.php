@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\File;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\MorphMany;
@@ -67,7 +68,13 @@ class Post extends Resource
 
             Text::make('Title', 'title')->sortable(),
             Textarea::make('Body', 'body')->stacked(),
-            File::make('Attachment')->nullable(),
+            File::make('Attachment')
+                ->nullable()
+                ->dependsOn('user', function ($field, NovaRequest $request, FormData $formData) {
+                    if ($formData->user == 4) {
+                        $field->hide();
+                    }
+                }),
 
             MorphMany::make('Comments', 'comments'),
 
