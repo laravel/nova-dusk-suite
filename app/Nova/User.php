@@ -157,7 +157,8 @@ class User extends Resource
                                         : null;
                         }),
                     ])
-                )->allowDuplicateRelations(),
+                )->filterable()
+                ->allowDuplicateRelations(),
         ];
     }
 
