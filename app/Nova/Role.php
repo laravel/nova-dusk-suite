@@ -54,7 +54,8 @@ class Role extends Resource
                                 new Actions\UpdateRequiredPivotNotes,
                             ];
                         })
-                        ->prunable(),
+                        ->prunable()
+                        ->filterable(),
         ];
     }
 
