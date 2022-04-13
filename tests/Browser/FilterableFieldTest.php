@@ -3,9 +3,12 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Profile;
+use Carbon\Carbon;
 use Database\Factories\PostFactory;
+use Illuminate\Support\Facades\DB;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -77,6 +80,45 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertSeeResource(1)
                         ->assertDontSeeResource(2)
                         ->assertDontSeeResource(3);
+                });
+
+            $browser->blank();
+        });
+    }
+
+    /** @test */
+    public function it_can_filter_belongs_to_many_field()
+    {
+        DB::table('book_purchases')->insert([
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 39, 'purchased_at' => Carbon::yesterday()->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 34, 'purchased_at' => Carbon::now()->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 3, 'type' => 'gift', 'price' => 34, 'purchased_at' => Carbon::now()->toDatetimeString()],
+        ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
+                    $browser->waitForTable()
+                            ->assertSeeResource(4, 1)
+                            ->assertSeeResource(4, 2)
+                            ->assertSeeResource(3, 3)
+                            ->runFilter(function ($browser) {
+                                $browser->whenAvailable('select[dusk="giftBooks-default-belongs-to-many-field-filter"]', function ($browser) {
+                                    $browser->select('', 4);
+                                });
+                            })->waitForTable()
+                            ->assertSeeResource(4, 1)
+                            ->assertSeeResource(4, 2)
+                            ->assertDontSeeResource(3, 3)
+                            ->runFilter(function ($browser) {
+                                $browser->whenAvailable('select[dusk="giftBooks-default-belongs-to-many-field-filter"]', function ($browser) {
+                                    $browser->select('', 3);
+                                });
+                            })->waitForTable()
+                            ->assertDontSeeResource(4, 1)
+                            ->assertDontSeeResource(4, 2)
+                            ->assertSeeResource(3, 3);
                 });
 
             $browser->blank();
