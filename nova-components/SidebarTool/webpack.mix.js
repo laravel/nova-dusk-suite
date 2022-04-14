@@ -3,7 +3,7 @@ let path = require('path')
 let tailwindcss = require('tailwindcss')
 let postcssImport = require('postcss-import')
 
-require('./mix')
+require('./nova.mix')
 
 mix
   .setPublicPath('dist')
