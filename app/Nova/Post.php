@@ -87,7 +87,6 @@ class Post extends Resource
                         ];
                     })->searchable(file_exists(base_path('.searchable'))),
 
-
             new Heading('Social Data'),
 
             KeyValue::make('Meta')->nullable(),
