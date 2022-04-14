@@ -42,12 +42,12 @@ class Address extends Resource
             Place::make('Address', 'address_line_1'),
             Text::make('Address Line 2', 'address_line_2'),
 
-            new Panel('More Address Details', [
+            (new Panel('More Address Details', [
                 Text::make('City'),
                 Text::make('State'),
                 Text::make('Postal Code'),
                 Text::make('Country'),
-            ]),
+            ]))->limit(2)->help('Details information'),
         ];
     }
 
