@@ -5,9 +5,11 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Database\Factories\PeopleFactory;
+use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Update;
+use Laravel\Nova\Testing\Browser\Pages\UpdateAttached;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class DateFieldTest extends DuskTestCase
@@ -35,7 +37,20 @@ class DateFieldTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new Update('people', $person->getKey()))
                     ->typeOnDate('@created_at', $now)
-                    ->update();
+                    ->update()
+                    ->waitForText('The person was updated!');
+
+            $person->refresh();
+
+            $this->assertEquals(
+                $now,
+                $person->created_at
+            );
+
+            $browser->visit(new Update('people', $person->getKey()))
+                    ->type('@name', 'Tess')
+                    ->update()
+                    ->waitForText('The person was updated!');
 
             $person->refresh();
 
@@ -81,6 +96,48 @@ class DateFieldTest extends DuskTestCase
             $this->assertEquals(
                 $now->toDateTimeString(),
                 $book->pivot->purchased_at->toDateTimeString()
+            );
+
+            $browser->visit(new UpdateAttached('users', $user->id, 'books', 4, 'personalBooks', 1))
+                    ->assertSeeIn('h1', 'Update attached Book: 1')
+                    ->type('@price', '44')
+                    ->update();
+
+            $book = $user->personalBooks()->first();
+
+            $this->assertEquals(
+                $now->toDateTimeString(),
+                $book->pivot->purchased_at->toDateTimeString()
+            );
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     * @group local-time
+     */
+    public function can_reset_datetime_input()
+    {
+        $now = CarbonImmutable::now();
+
+        $ship = ShipFactory::new()->create([
+            'departed_at' => $now,
+        ]);
+
+        $this->browse(function (Browser $browser) use ($now, $ship) {
+            $browser->loginAs(1)
+                    ->visit(new Update('ships', $ship->id))
+                    ->type('@departed_at', '')
+                    ->update()
+                    ->waitForText('The ship was updated!');
+
+            $ship->fresh();
+
+            $this->assertEquals(
+                $now->toDateTimeString(),
+                $ship->departed_at->toDateTimeString()
             );
 
             $browser->blank();

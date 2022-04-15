@@ -4,7 +4,11 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\File;
+<<<<<<< HEAD
 use Laravel\Nova\Fields\FormData;
+=======
+>>>>>>> origin/8.3
+use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\MorphMany;
@@ -85,6 +89,8 @@ class Post extends Resource
                             Text::make('Notes', 'notes')->rules('max:20'),
                         ];
                     })->searchable(file_exists(base_path('.searchable'))),
+
+            new Heading('Social Data'),
 
             KeyValue::make('Meta')->nullable(),
         ];

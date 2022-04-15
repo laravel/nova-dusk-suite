@@ -48,7 +48,7 @@ class Address extends Resource
                 Text::make('State'),
                 Text::make('Postal Code'),
                 Text::make('Country'),
-            ])->limit(3),
+            ])->limit(3)->help('Details information'),
         ];
     }
 

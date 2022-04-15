@@ -15,8 +15,6 @@ class CreateWithMorphToTest extends DuskTestCase
      */
     public function resource_can_be_created()
     {
-        $this->defineApplicationStates('searchable');
-
         $this->browse(function (Browser $browser) {
             $post = PostFactory::new()->create();
 
@@ -25,7 +23,7 @@ class CreateWithMorphToTest extends DuskTestCase
                     ->waitForTextIn('@nova-form', 'Commentable')
                     ->selectRelation('commentable-type', 'posts')
                     ->pause(500)
-                    ->searchFirstRelation('commentable', 1)
+                    ->selectRelation('commentable-select', 1)
                     ->type('@body', 'Test Comment')
                     ->create()
                     ->waitForText('The comment was created!')
