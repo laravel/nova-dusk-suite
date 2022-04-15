@@ -4,10 +4,7 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\File;
-<<<<<<< HEAD
 use Laravel\Nova\Fields\FormData;
-=======
->>>>>>> origin/8.3
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\KeyValue;
