@@ -15,6 +15,7 @@ class CreateWithHasOneTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Create('people'))
                 ->type('@name', 'Adam Wathan')
+                ->typeOnDate('@created_at', now())
                 ->create()
                 ->visit(new Detail('people', 1))
                 ->runCreateRelation('employees')
