@@ -54,11 +54,18 @@ class Project extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
 
-            Text::make('Name'),
+            Select::make('Name')->options([
+                'Nova' => 'Nova',
+                'Spark' => 'Spark',
+                'Forge' => 'Forge',
+                'Envoyer' => 'Envoyer',
+                'Vapor' => 'Vapor',
+                'Secret' => 'Secret',
+            ])->displayUsingLabels(),
 
             Markdown::make('Description')->nullable(),
 
-            Select::make('Type')->options($productTypes)->displayUsing(function ($value) use ($productTypes) {
+            Select::make('Type')->options([])->displayUsing(function ($value) use ($productTypes) {
                 return $productTypes[$value] ?? null;
             })->dependsOn('name', function (Select $field, $request, $formData) use ($productTypes) {
                 if (in_array($formData->name, ['Nova', 'Spark'])) {
@@ -69,6 +76,8 @@ class Project extends Resource
                     $field->options(collect($productTypes)->filter(function ($title, $type) {
                         return $type === 'service';
                     }))->default('service');
+                } else {
+                    $field->option($productTypes);
                 }
             })->nullable()->rules(['nullable', Rule::in(array_keys($productTypes))]),
         ];
