@@ -216,7 +216,7 @@ class User extends Resource
                 ->canRun(function ($request, $model) {
                     return is_null($model->profile);
                 }),
-            ExportAsCsv::make(),
+            ExportAsCsv::make()->withTypeSelector(),
         ];
     }
 
