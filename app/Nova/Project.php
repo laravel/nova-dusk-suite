@@ -75,8 +75,8 @@ class Project extends Resource
                     $field->options(collect($productTypes)->filter(function ($title, $type) {
                         return $type === 'service';
                     }))->default('service');
-                } else {
-                    $field->option($productTypes);
+                } elseif (in_array($formData->name, ['Secret'])) { {
+                    $field->options($productTypes);
                 }
             })->nullable()->rules(['nullable', Rule::in(array_keys($productTypes))]),
         ];
