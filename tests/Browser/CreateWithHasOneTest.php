@@ -17,6 +17,7 @@ class CreateWithHasOneTest extends DuskTestCase
                 ->type('@name', 'Adam Wathan')
                 ->typeOnDate('@created_at', now())
                 ->create()
+                ->waitForText('The person was created!')
                 ->visit(new Detail('people', 1))
                 ->runCreateRelation('employees')
                 ->assertDisabled('select[dusk="people"]')
