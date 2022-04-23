@@ -19,7 +19,8 @@ class CreateWithHasOneTest extends DuskTestCase
                 ->create()
                 ->visit(new Detail('people', 1))
                 ->runCreateRelation('employees')
-                ->assertDisabled('select[dusk="people"]');
+                ->assertDisabled('select[dusk="people"]')
+                ->click('@cancel-create-button');
 
             $browser->blank();
         });
