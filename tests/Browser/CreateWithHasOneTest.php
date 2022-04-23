@@ -2,6 +2,7 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
+use Illuminate\Support\Carbon;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
@@ -15,7 +16,7 @@ class CreateWithHasOneTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Create('people'))
                 ->type('@name', 'Adam Wathan')
-                ->typeOnDate('@created_at', now())
+                ->typeOnDate('@created_at', Carbon::createFromDate(2022, 4, 3))
                 ->create()
                 ->waitForText('The person was created!')
                 ->visit(new Detail('people', 1))
