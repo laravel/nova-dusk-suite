@@ -11,6 +11,8 @@
         </testsuite>
     </testsuites>
     <php>
+        <ini name="memory_limit" value="256M"/>
+
         <env name="APP_URL" value="http://127.0.0.1:8085"/>
         <env name="APP_ENV" value="testing"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
