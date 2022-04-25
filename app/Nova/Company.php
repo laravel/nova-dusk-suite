@@ -53,7 +53,8 @@ class Company extends Resource
                         $field->readonly(false);
                     }
                 })
-                ->readonly(),
+                ->readonly()
+                ->nullable(),
         ];
     }
 
