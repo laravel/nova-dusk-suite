@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -46,6 +47,13 @@ class Company extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make('Name'),
+            Country::make('Country')
+                ->dependsOn('name', function ($field, $request, $formData) {
+                    if ($formData->name !== 'Laravel LLC') {
+                        $field->readonly(false);
+                    }
+                })
+                ->readonly(),
         ];
     }
 
