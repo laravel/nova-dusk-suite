@@ -56,14 +56,14 @@ class DependentFieldTest extends DuskTestCase
                     $browser->assertSelectMissingOptions('@type', ['product', 'service'])
                             ->assertSelected('@type', '')
                             ->select('@name', 'Secret')
-                            ->pause(1500)
+                            ->pause(3000)
                             ->assertSelectHasOptions('@type', ['product', 'service'])
                             ->select('@name', 'Nova')
-                            ->pause(1500)
+                            ->pause(3000)
                             ->assertSelectMissingOption('@type', 'service')
                             ->assertSelected('@type', 'product')
                             ->select('@name', 'Forge')
-                            ->pause(1500)
+                            ->pause(3000)
                             ->assertSelectMissingOption('@type', 'product')
                             ->assertSelected('@type', 'service');
                 });
