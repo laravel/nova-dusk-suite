@@ -83,7 +83,7 @@ jobs:
         run: npm --prefix "./nova/" ci
 
       - name: Compile Asset for Laravel Nova
-        run: npm --prefix "./nova/" run dev
+        run: npm --prefix "./nova/" run prod
         env:
           TAILWIND_MODE: build
 
