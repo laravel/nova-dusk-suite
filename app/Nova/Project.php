@@ -3,8 +3,9 @@
 namespace App\Nova;
 
 use Illuminate\Validation\Rule;
+use Laravel\Nova\Fields\Code;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -62,11 +63,19 @@ class Project extends Resource
                 'Secret' => 'Secret',
             ])->displayUsingLabels(),
 
-            Markdown::make('Description')->nullable(),
+            Code::make('Description')
+                ->dependsOn('name', function (Code $field, NovaRequest $request, FormData $formData) {
+                    if ($formData->name === 'Secret') {
+                        $field->show();
+                    }
+                })
+                ->language('text/x-markdown')
+                ->hide()
+                ->nullable(),
 
             Select::make('Type')->options([])->displayUsing(function ($value) use ($productTypes) {
                 return $productTypes[$value] ?? null;
-            })->dependsOn('name', function (Select $field, $request, $formData) use ($productTypes) {
+            })->dependsOn('name', function (Select $field, NovaRequest $request, FormData $formData) use ($productTypes) {
                 if (in_array($formData->name, ['Nova', 'Spark'])) {
                     $field->options(collect($productTypes)->filter(function ($title, $type) {
                         return $type === 'product';
