@@ -23,7 +23,7 @@ class QueuedActionTest extends DuskTestCase
                         $browser->waitForTable()
                                 ->scrollIntoView('')
                                 ->assertSee('Sleep')
-                                ->assertSee('Finished');
+                                ->assertSee('FINISHED');
                     });
 
             $browser->blank();
