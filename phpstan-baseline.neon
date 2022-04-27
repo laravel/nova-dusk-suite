@@ -1,7 +1,3 @@
 parameters:
-	ignoreErrors:
-		-
-			message: "#^Parameter \\#1 \\$items of method Laravel\\\\Nova\\\\Menu\\\\Menu\\:\\:append\\(\\) expects iterable, Laravel\\\\Nova\\\\Menu\\\\MenuItem given\\.$#"
-			count: 1
-			path: app/Providers/NovaServiceProvider.php
+	ignoreErrors: []
 
