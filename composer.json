@@ -71,7 +71,7 @@
             "@php artisan nova:publish --force"
         ],
         "dusk:assets": [
-            "npm --prefix=./nova/ install",
+            "npm --prefix=./nova/ ci",
             "TAILWIND_MODE=build npm --prefix=./nova/ run prod",
             "@php artisan nova:publish --force"
         ],
