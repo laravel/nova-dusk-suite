@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Nova\Dashboards\Main;
 use App\Nova\Dashboards\Posts;
+use Carbon\CarbonInterval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Events\ServingNova;
@@ -94,6 +95,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
+        Nova::notificationPollingInterval(CarbonInterval::days(1)->totalSeconds);
+
         Nova::serving(function (ServingNova $event) {
             if (! is_null($pagination = data_get($event->request->user(), 'settings.pagination'))) {
                 config(['nova.pagination' => $pagination]);
