@@ -73,4 +73,25 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
             $browser->blank();
         });
     }
+
+    /** @test */
+    public function it_doesnt_show_exit_warning_if_resource_form_after_save_and_create_another_when_clicking_cancel()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                    ->visit(new Index('videos'))
+                    ->runCreate()
+                    ->keys('@title', 'Hello World', '{tab}')
+                    ->click('@create-and-add-another-button')
+                    ->waitForText('The user video was created!')
+                    ->click('@cancel-create-button')
+                    ->on(new Index('videos'));
+
+            $this->assertDatabaseHas('videos', [
+                'title' => 'Hello World',
+            ]);
+
+            $browser->blank();
+        });
+    }
 }
