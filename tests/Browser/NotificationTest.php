@@ -5,7 +5,6 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Notifications\NovaNotification;
-use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Components\HeaderComponent;
 use Laravel\Nova\Testing\Browser\Pages\Dashboard;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -13,18 +12,6 @@ use Laravel\Nova\URL;
 
 class NotificationTest extends DuskTestCase
 {
-    /**
-     * Setup the test environment.
-     */
-    protected function setUp(): void
-    {
-        $this->afterApplicationCreated(function () {
-            Nova::$withNotificationCenter = true;
-        });
-
-        parent::setUp();
-    }
-
     /** @test */
     public function it_can_view_own_notitications()
     {

@@ -39,8 +39,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      */
     protected function setUp(): void
     {
-        Nova::$withNotificationCenter = false;
-
         $this->afterApplicationCreated(function () {
             $this->withoutMockingConsoleOutput();
         });
