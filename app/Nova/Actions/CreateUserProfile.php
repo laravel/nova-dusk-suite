@@ -55,7 +55,16 @@ class CreateUserProfile extends Action
         return [
             Text::make('Twitter Profile', 'twitter')->nullable(),
             Text::make('GitHub Username', 'github')->nullable(),
-            Timezone::make('Timezone')->default('UTC'),
+            Timezone::make('Timezone')
+                ->dependsOn(['github'], function (Timezone $field, NovaRequest $request, FormData $formData) {
+                    switch ($formData->github) {
+                        case 'crynobone':
+                            $field->default('Asia/Kuala_Lumpur');
+                            break;
+                        default:
+                            $field->default('UTC');
+                    }
+                })->default('UTC'),
         ];
     }
 }
