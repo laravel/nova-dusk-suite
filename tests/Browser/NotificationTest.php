@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Notifications\NovaNotification;
+use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Components\HeaderComponent;
 use Laravel\Nova\Testing\Browser\Pages\Dashboard;
 use Laravel\Nova\Tests\DuskTestCase;
