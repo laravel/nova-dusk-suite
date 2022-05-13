@@ -17,7 +17,7 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
                     ->visit(new Index('videos'))
                     ->runCreate()
                     ->keys('@title', 'Hello World', '{tab}')
-                    ->within('.sidebar-menu', function ($browser) {
+                    ->within('@sidebar-menu', function ($browser) {
                         $browser->clickLink('Users');
                     })
                     ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')

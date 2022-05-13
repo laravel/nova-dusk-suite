@@ -76,7 +76,7 @@ class AuthenticatesUserTest extends DuskTestCase
 
             $browser->deleteCookie('nova_dusk_suite_session');
 
-            $browser->within('.sidebar-menu', function ($browser) {
+            $browser->within('@sidebar-menu', function ($browser) {
                 $browser->clickLink('Users');
             })->waitForLocation('/nova/login')
                 ->assertGuest();

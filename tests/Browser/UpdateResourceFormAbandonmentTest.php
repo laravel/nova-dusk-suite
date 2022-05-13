@@ -22,7 +22,7 @@ class UpdateResourceFormAbandonmentTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Update('videos', $video->id))
                     ->type('@title', 'Hello World')
-                    ->within('.sidebar-menu', function ($browser) {
+                    ->within('@sidebar-menu', function ($browser) {
                         $browser->clickLink('Users');
                     })
                     ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
