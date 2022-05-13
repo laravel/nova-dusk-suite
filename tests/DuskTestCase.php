@@ -5,7 +5,6 @@ namespace Laravel\Nova\Tests;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Arr;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Nova;
 use Orchestra\Testbench\Dusk\Foundation\PackageManifest;
 
 abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
