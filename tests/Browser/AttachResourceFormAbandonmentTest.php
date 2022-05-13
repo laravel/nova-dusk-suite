@@ -23,7 +23,7 @@ class AttachResourceFormAbandonmentTest extends DuskTestCase
                         $browser->assertSee('User')->assertSee('1');
                     })
                     ->keys('@notes', 'Test Notes', '{tab}')
-                    ->within('.sidebar-menu', function ($browser) {
+                    ->within('@sidebar-menu', function ($browser) {
                         $browser->clickLink('Users');
                     })
                     ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')

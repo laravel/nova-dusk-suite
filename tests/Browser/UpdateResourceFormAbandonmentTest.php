@@ -22,7 +22,7 @@ class UpdateResourceFormAbandonmentTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Update('videos', $video->id))
                     ->type('@title', 'Hello World')
-                    ->within('.sidebar-menu', function ($browser) {
+                    ->within('@sidebar-menu', function ($browser) {
                         $browser->clickLink('Users');
                     })
                     ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
@@ -80,6 +80,31 @@ class UpdateResourceFormAbandonmentTest extends DuskTestCase
                     ->on(new Index('videos'));
 
             $this->assertDatabaseMissing('videos', [
+                'title' => 'Hello World',
+            ]);
+
+            $browser->blank();
+        });
+    }
+
+    /** @test */
+    public function it_doesnt_show_exit_warning_if_resource_form_after_save_and_create_another_when_clicking_cancel()
+    {
+        $video = VideoFactory::new()->create([
+            'title' => 'Demo',
+        ]);
+
+        $this->browse(function (Browser $browser) use ($video) {
+            $browser->loginAs(1)
+                    ->visit(new Index('videos'))
+                    ->visit(new Update('videos', $video->id))
+                    ->type('@title', 'Hello World')
+                    ->click('@update-and-continue-editing-button')
+                    ->waitForText('The user video was updated!')
+                    ->click('@cancel-update-button')
+                    ->on(new Index('videos'));
+
+            $this->assertDatabaseHas('videos', [
                 'title' => 'Hello World',
             ]);
 

@@ -209,7 +209,7 @@ class IndexTest extends DuskTestCase
                                 ->assertDontSeeResource(4)
                                 ->assertQueryStringHas('users_search', '3');
                     })
-                    ->within('.sidebar-menu', function ($browser) {
+                    ->within('@sidebar-menu', function ($browser) {
                         $browser->clickLink('Users');
                     })
                     ->waitForTextIn('h1', 'Users')

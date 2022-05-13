@@ -28,12 +28,12 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Dashboard())
-                    ->assertDontSeeIn('div.sidebar-menu[role="navigation"]', 'User Posts')
+                    ->assertDontSeeIn('div[dusk="sidebar-menu"][role="navigation"]', 'User Posts')
                     ->visit(new Page('/resources/posts'))
                     ->assertForbidden();
 
             $browser->visit(new Dashboard())
-                    ->assertDontSeeIn('div.sidebar-menu[role="navigation"]', 'Users')
+                    ->assertDontSeeIn('div[dusk="sidebar-menu"][role="navigation"]', 'Users')
                     ->visit(new Page('/resources/users'))
                     ->assertForbidden()
                     ->visit(new Detail('users', 1));

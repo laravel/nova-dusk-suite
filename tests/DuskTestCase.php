@@ -30,7 +30,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      */
     public static function applicationBasePath()
     {
-        return realpath(__DIR__.'/../');
+        return realpath(__DIR__.'/../vendor/laravel/nova-dusk-suite');
     }
 
     /**
@@ -183,11 +183,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     {
         $this->defineApplicationStates('searchable');
 
-        try {
-            $callback();
-        } finally {
-            @unlink(base_path('.searchable'));
-        }
+        call_user_func($callback);
     }
 
     /**
@@ -200,11 +196,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     {
         $this->defineApplicationStates('inline-create');
 
-        try {
-            $callback();
-        } finally {
-            @unlink(base_path('.inline-create'));
-        }
+        call_user_func($callback);
     }
 
     /**
@@ -217,11 +209,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     {
         $this->defineApplicationStates('index-query-asc-order');
 
-        try {
-            $callback();
-        } finally {
-            @unlink(base_path('.index-query-asc-order'));
-        }
+        call_user_func($callback);
     }
 
     /**
