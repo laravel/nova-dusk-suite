@@ -30,7 +30,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      */
     public static function applicationBasePath()
     {
-        return realpath(__DIR__.'/../vendor/laravel/nova-dusk-suite');
+        return realpath(__DIR__.'/../');
     }
 
     /**
