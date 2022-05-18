@@ -19,13 +19,6 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexTest extends DuskTestCase
 {
-    protected function tearDown(): void
-    {
-        $this->removeApplicationTweaks();
-
-        parent::tearDown();
-    }
-
     /**
      * @test
      */
@@ -83,6 +76,8 @@ class IndexTest extends DuskTestCase
 
             $browser->blank();
         });
+
+        $this->removeApplicationTweaks();
     }
 
     /**
@@ -151,77 +146,6 @@ class IndexTest extends DuskTestCase
                     })
                     ->on(new Update('users', 1))
                     ->assertSeeIn('h1', 'Update User');
-
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function resources_can_be_searched()
-    {
-        $this->browse(function (Browser $browser) {
-            // Search For Single User By ID...
-            $browser->loginAs(1)
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
-                                ->searchFor('3')
-                                ->waitForTable()
-                                ->assertDontSeeResource(1)
-                                ->assertDontSeeResource(2)
-                                ->assertSeeResource(3)
-                                ->assertSee('1-1 of 1');
-                    });
-
-            // Search For Single User By Name...
-            $browser->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
-                                ->searchFor('Taylor')
-                                ->waitForTable()
-                                ->assertSeeResource(1)
-                                ->assertDontSeeResource(2)
-                                ->assertDontSeeResource(3);
-                    });
-
-            $browser->blank();
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function resources_search_query_will_reset_on_revisit()
-    {
-        $this->browse(function (Browser $browser) {
-            // Search For Single User By ID...
-            $browser->loginAs(1)
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
-                                ->searchFor('3')
-                                ->waitForTable()
-                                ->assertDontSeeResource(1)
-                                ->assertDontSeeResource(2)
-                                ->assertSeeResource(3)
-                                ->assertDontSeeResource(4)
-                                ->assertQueryStringHas('users_search', '3');
-                    })
-                    ->within('@sidebar-menu', function ($browser) {
-                        $browser->clickLink('Users');
-                    })
-                    ->waitForTextIn('h1', 'Users')
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
-                                ->assertValue('@search', '')
-                                ->assertQueryStringMissing('users_search', '')
-                                ->assertSeeResource(1)
-                                ->assertSeeResource(2)
-                                ->assertSeeResource(3)
-                                ->assertSeeResource(4);
-                    });
 
             $browser->blank();
         });
