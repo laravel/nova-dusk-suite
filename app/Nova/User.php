@@ -123,7 +123,7 @@ class User extends Resource
                     ->options([
                         'simple' => 'Simple',
                         'load-more' => 'Load More',
-                        'link' => 'Link',
+                        'links' => 'Link',
                     ])
                     ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
                         data_set($model, $attribute, $request->input((string) Str::of($requestAttribute)->replace('.', '_')));
