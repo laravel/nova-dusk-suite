@@ -15,7 +15,6 @@
     "laravel-mix": "^6.0.41",
     "postcss": "^8.3.11",
     "postcss-import": "^14.0.2",
-    "vue": "^3.2.19",
     "vue-loader": "^16.8.3"
   },
   "dependencies": {

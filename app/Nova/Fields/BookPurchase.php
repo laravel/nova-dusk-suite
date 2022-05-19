@@ -79,9 +79,9 @@ class BookPurchase
 
                     $field->rules(['required', 'numeric', 'min:0', 'max:99'])
                         ->help('Price starts from $0-$99');
-                })->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
-                    $model->{$attribute} = $request[$requestAttribute] ?? now();
-                })->filterable(),
+                })
+                ->asMinorUnits()
+                ->filterable(),
 
             Select::make('Type')
                 ->options([
@@ -101,8 +101,8 @@ class BookPurchase
 
             $this->mergeWhen($this->showTimestamps, function () {
                 return [
-                    DateTime::make('Created At'),
-                    DateTime::make('Updated At'),
+                    DateTime::make('Created At')->readonly(),
+                    DateTime::make('Updated At')->readonly(),
                 ];
             }),
         ];

@@ -75,7 +75,9 @@ class Book extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [];
+        return [
+            Metrics\BookPurchases::make()->onlyOnDetail(),
+        ];
     }
 
     /**

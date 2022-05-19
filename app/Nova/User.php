@@ -83,7 +83,8 @@ class User extends Resource
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}')
                 ->sortable()
-                ->showOnPreview(),
+                ->showOnPreview()
+                ->copyable(),
 
             Password::make('Password', 'password')
                 ->onlyOnForms()
@@ -123,7 +124,7 @@ class User extends Resource
                     ->options([
                         'simple' => 'Simple',
                         'load-more' => 'Load More',
-                        'link' => 'Link',
+                        'links' => 'Link',
                     ])
                     ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
                         data_set($model, $attribute, $request->input((string) Str::of($requestAttribute)->replace('.', '_')));

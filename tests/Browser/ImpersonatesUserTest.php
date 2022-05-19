@@ -174,4 +174,43 @@ class ImpersonatesUserTest extends DuskTestCase
             $browser->blank();
         });
     }
+
+    /** @test */
+    public function it_can_impersonate_another_user_using_different_guard_with_nova_guard_on_none_default()
+    {
+        $this->beforeServingApplication(function ($app, $config) {
+            $config->set('auth.defaults.guard', 'web-subscribers');
+            $config->set('nova.guard', 'web');
+        });
+
+        $this->browse(function (Browser $browser) {
+            $user = User::find(2);
+
+            $subscriber = SubscriberFactory::new()->create([
+                'password' => 'a-unique-password',
+            ]);
+
+            $browser->loginAs($user, 'web')
+                    ->visit(new Index('subscribers'))
+                    ->within(new IndexComponent('subscribers'), function ($browser) use ($subscriber) {
+                        $browser->openControlSelectorById($subscriber->id)
+                                ->elsewhere('', function ($browser) use ($subscriber) {
+                                    $browser->assertVisible("@{$subscriber->id}-replicate-button")
+                                            ->assertVisible("@{$subscriber->id}-impersonate-button")
+                                            ->clickAndWaitForReload("@{$subscriber->id}-impersonate-button")
+                                            ->assertPathIs('/')
+                                            ->assertAuthenticatedAs($subscriber);
+                                });
+                    })
+                    ->visit(new Dashboard())
+                    ->press($user->name)
+                    ->press('Stop Impersonating')
+                    ->assertDialogOpened('Are you sure you want to stop impersonating?')
+                    ->acceptDialog()
+                    ->on(new Dashboard())
+                    ->assertAuthenticatedAs($user, 'web');
+
+            $browser->blank();
+        });
+    }
 }
