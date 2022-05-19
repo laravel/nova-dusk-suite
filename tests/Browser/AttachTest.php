@@ -109,8 +109,8 @@ class AttachTest extends DuskTestCase
         Carbon::setTestNow($now = Carbon::now());
 
         DB::table('book_purchases')->insert([
-            ['user_id' => 1, 'book_id' => 3, 'type' => 'personal', 'price' => 39, 'purchased_at' => $now->toDatetimeString()],
-            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 34, 'purchased_at' => $now->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 3, 'type' => 'personal', 'price' => 3900, 'purchased_at' => $now->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3400, 'purchased_at' => $now->toDatetimeString()],
         ]);
 
         $this->browse(function (Browser $browser) {
@@ -201,7 +201,7 @@ class AttachTest extends DuskTestCase
         $this->assertDatabaseHas('book_purchases', [
             'user_id' => '1',
             'book_id' => '4',
-            'price' => 39,
+            'price' => 3900,
             'type' => 'gift',
         ]);
     }
@@ -215,7 +215,7 @@ class AttachTest extends DuskTestCase
         Carbon::setTestNow($now = Carbon::now());
 
         DB::table('book_purchases')->insert([
-            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 34, 'purchased_at' => $now->copy()->subDay(1)->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3400, 'purchased_at' => $now->copy()->subDay(1)->toDatetimeString()],
         ]);
 
         $this->browse(function (Browser $browser) use ($now) {
