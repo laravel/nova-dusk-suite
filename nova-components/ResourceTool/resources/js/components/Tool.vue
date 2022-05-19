@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col md:flex-row -mx-6 px-6">
+  <div class="flex flex-col md:flex-row -mx-6 px-6 break-all lg:break-words">
     <p>
       Resource Tool for <span class="field-name">{{ fieldName }}</span>
     </p>
