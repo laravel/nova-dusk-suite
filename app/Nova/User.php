@@ -83,7 +83,8 @@ class User extends Resource
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}')
                 ->sortable()
-                ->showOnPreview(),
+                ->showOnPreview()
+                ->copyable(),
 
             Password::make('Password', 'password')
                 ->onlyOnForms()
