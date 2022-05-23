@@ -10,6 +10,7 @@ use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\BooleanGroup;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
@@ -104,6 +105,11 @@ class User extends Resource
                 'delete' => 'Delete',
             ])
             ->noValueText('No permissions selected.')
+            ->dependsOn('email', function (BooleanGroup $field, NovaRequest $request, FormData $formData) {
+                if (! Str::endsWith($formData->email, 'laravel.com')) {
+                    return $field->options(['read' => 'Read']);
+                }
+            })
             ->filterable()
             ->showOnPreview(),
 
