@@ -76,7 +76,10 @@ class Profile extends Resource
                 'hack' => ['label' => 'Hack'],
             ])->filterable(),
 
+            // HasOne::make('Passport'),
+
             HasOne::ofMany('Latest Post', 'latestPost', Post::class),
+
         ];
     }
 

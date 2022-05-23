@@ -34,6 +34,16 @@ class Profile extends Model
     }
 
     /**
+     * Get the profile's passport.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function passport()
+    {
+        return $this->hasOne(Passport::class);
+    }
+
+    /**
      * Get the profile latest post.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
