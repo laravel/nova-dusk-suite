@@ -7,7 +7,6 @@ use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\KeyValue;
-use Laravel\Nova\Fields\MorphToActionTarget;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -103,7 +102,7 @@ class Notification extends Resource
             KeyValue::make('Data'),
 
             Boolean::make('Read', function ($value) {
-                return ! is_nulL($this->read_at);
+                return ! is_null($this->read_at);
             }),
 
             DateTime::make('Read At'),
