@@ -163,10 +163,10 @@ class FilterableFieldTest extends DuskTestCase
     public function it_can_filter_belongs_to_many_field()
     {
         DB::table('book_purchases')->insert([
-            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 39, 'purchased_at' => Carbon::yesterday()->toDatetimeString()],
-            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 34, 'purchased_at' => Carbon::now()->toDatetimeString()],
-            ['user_id' => 1, 'book_id' => 3, 'type' => 'gift', 'price' => 34, 'purchased_at' => Carbon::now()->toDatetimeString()],
-            ['user_id' => 2, 'book_id' => 4, 'type' => 'gift', 'price' => 39, 'purchased_at' => Carbon::now()->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3900, 'purchased_at' => Carbon::yesterday()->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3400, 'purchased_at' => Carbon::now()->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 3, 'type' => 'gift', 'price' => 3400, 'purchased_at' => Carbon::now()->toDatetimeString()],
+            ['user_id' => 2, 'book_id' => 4, 'type' => 'gift', 'price' => 3900, 'purchased_at' => Carbon::now()->toDatetimeString()],
         ]);
 
         $this->browse(function (Browser $browser) {
@@ -206,10 +206,10 @@ class FilterableFieldTest extends DuskTestCase
     public function it_can_filter_belongs_to_many_field_via_relationship()
     {
         DB::table('book_purchases')->insert([
-            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 39, 'purchased_at' => Carbon::yesterday()->toDatetimeString()],
-            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 34, 'purchased_at' => Carbon::now()->toDatetimeString()],
-            ['user_id' => 1, 'book_id' => 3, 'type' => 'gift', 'price' => 34, 'purchased_at' => Carbon::now()->toDatetimeString()],
-            ['user_id' => 2, 'book_id' => 4, 'type' => 'gift', 'price' => 39, 'purchased_at' => Carbon::now()->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3900, 'purchased_at' => Carbon::yesterday()->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3400, 'purchased_at' => Carbon::now()->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 3, 'type' => 'gift', 'price' => 3400, 'purchased_at' => Carbon::now()->toDatetimeString()],
+            ['user_id' => 2, 'book_id' => 4, 'type' => 'gift', 'price' => 3900, 'purchased_at' => Carbon::now()->toDatetimeString()],
         ]);
 
         $this->browse(function (Browser $browser) {

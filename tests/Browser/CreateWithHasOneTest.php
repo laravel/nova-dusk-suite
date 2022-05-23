@@ -25,4 +25,20 @@ class CreateWithHasOneTest extends DuskTestCase
             $browser->blank();
         });
     }
+
+    public function test_has_one_doesnt_open_on_pressing_enter_key()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new Create('users'))
+                ->keys('@name', ['{enter}'])
+                ->waitForText('There was a problem submitting the form.')
+                ->assertSee('The Name field is required.')
+                ->assertSee('The Email field is required.')
+                ->assertSee('The Password field is required.')
+                ->assertVisible('@create-profile-relation-button');
+
+            $browser->blank();
+        });
+    }
 }

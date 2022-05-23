@@ -19,8 +19,8 @@ class RemoveAttachedTest extends DuskTestCase
         Carbon::setTestNow($now = Carbon::now());
 
         DB::table('book_purchases')->insert([
-            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 34, 'purchased_at' => $now->toDatetimeString()],
-            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 32, 'purchased_at' => $now->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3400, 'purchased_at' => $now->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3200, 'purchased_at' => $now->toDatetimeString()],
         ]);
 
         $this->browse(function (Browser $browser) {
@@ -42,14 +42,14 @@ class RemoveAttachedTest extends DuskTestCase
         $this->assertDatabaseHas('book_purchases', [
             'user_id' => 1,
             'book_id' => 4,
-            'price' => 34,
+            'price' => 3400,
             'type' => 'gift',
         ]);
 
         $this->assertDatabaseMissing('book_purchases', [
             'user_id' => 1,
             'book_id' => 4,
-            'price' => 32,
+            'price' => 3200,
             'type' => 'gift',
         ]);
     }
