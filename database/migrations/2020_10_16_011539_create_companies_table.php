@@ -19,6 +19,7 @@ class CreateCompaniesTable extends Migration
             $table->string('country')->nullable();
             $table->string('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
