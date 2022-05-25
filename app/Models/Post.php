@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Actions\Actionable;
 
 class Post extends Model
 {
-    use Actionable;
+    use Actionable, SoftDeletes;
 
     /**
      * The attributes that should be cast to native types.
