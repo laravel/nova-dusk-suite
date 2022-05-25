@@ -131,8 +131,8 @@ class IndexRelationTest extends DuskTestCase
                                 ->deleteSelected();
                     });
 
-            $this->assertNull($post->fresh());
-            $this->assertNotNull($post2->fresh());
+            $this->assertNull(Post::find($post->id));
+            $this->assertNotNull(Post::find($post2->id));
 
             $browser->blank();
         });
