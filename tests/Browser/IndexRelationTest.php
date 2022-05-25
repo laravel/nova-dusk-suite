@@ -2,6 +2,7 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
+use App\Models\Post;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
