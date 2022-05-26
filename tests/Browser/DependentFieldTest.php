@@ -19,12 +19,25 @@ class DependentFieldTest extends DuskTestCase
                 ->waitForTextIn('h1', 'Create User Post')
                 ->assertDontSeeIn('@nova-form', 'Attachment');
 
-            $browser->blank();
-
             $browser->loginAs(1)
                 ->visit(new Create('posts'))
                 ->waitForTextIn('h1', 'Create User Post')
                 ->assertSeeIn('@nova-form', 'Attachment');
+
+            $browser->loginAs(1)
+                ->visit(new Create('users'))
+                ->waitForTextIn('h1', 'Create User')
+                ->assertMissing('input[type="checkbox"][name="create"]')
+                ->assertPresent('input[type="checkbox"][name="read"]')
+                ->assertMissing('input[type="checkbox"][name="update"]')
+                ->assertMissing('input[type="checkbox"][name="delete"]')
+                ->type('@email', 'mior@laravel.com')
+                ->pause(2000)
+                ->assertPresent('input[type="checkbox"][name="create"]')
+                ->assertPresent('input[type="checkbox"][name="read"]')
+                ->assertPresent('input[type="checkbox"][name="update"]')
+                ->assertPresent('input[type="checkbox"][name="delete"]')
+                ->click('@cancel-create-button');
 
             $browser->blank();
         });
@@ -58,6 +71,7 @@ class DependentFieldTest extends DuskTestCase
                             ->select('@name', 'Secret')
                             ->pause(1500)
                             ->assertSelectHasOptions('@type', ['product', 'service'])
+                            ->assertSelected('@type', '')
                             ->select('@name', 'Nova')
                             ->pause(1500)
                             ->assertSelectMissingOption('@type', 'service')

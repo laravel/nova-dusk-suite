@@ -72,7 +72,7 @@ class User extends Resource
 
             Text::make('Name', 'name')->sortable()->rules('required')
                 ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
-                    $model->{$attribute} = Str::title($request->input($attribute));
+                    $model->{$attribute} = Str::title($request->input($requestAttribute));
                 })->filterable(function ($request, $query, $value, $attribute) {
                     (new Search($query, $value))->handle(__CLASS__, [$attribute, 'email']);
                 })->showOnPreview(),

@@ -40,7 +40,7 @@ class Address extends Resource
     {
         return [
             ID::make()->sortable(),
-            Place::make('Address', 'address_line_1'),
+            Text::make('Address', 'address_line_1'),
             Text::make('Address Line 2', 'address_line_2'),
 
             Panel::make('More Address Details', [
