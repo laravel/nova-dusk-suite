@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Post;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
@@ -132,8 +131,8 @@ class IndexRelationTest extends DuskTestCase
                                 ->deleteSelected();
                     });
 
-            $this->assertNull(Post::find($post->id));
-            $this->assertNotNull(Post::find($post2->id));
+            $this->assertNull($post->fresh());
+            $this->assertNotNull($post2->fresh());
 
             $browser->blank();
         });
