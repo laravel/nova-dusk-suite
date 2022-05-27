@@ -43,7 +43,7 @@ class AddComment extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make('User')->searchable(),
+            BelongsTo::make('User'),
 
             Text::make('Body')->rules('required'),
         ];
