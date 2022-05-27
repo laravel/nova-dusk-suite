@@ -132,7 +132,7 @@ class AttachDuplicationTest extends DuskTestCase
         Carbon::setTestNow($now = Carbon::parse('2021-02-16 12:55:00'));
 
         DB::table('book_purchases')->insert([
-            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 34, 'purchased_at' => $now->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3400, 'purchased_at' => $now->toDatetimeString()],
         ]);
 
         $this->browse(function (Browser $browser) use ($now) {
@@ -141,7 +141,7 @@ class AttachDuplicationTest extends DuskTestCase
                     ->runAttachRelation('books', 'giftBooks')
                     ->assertSeeIn('h1', 'Attach Book')
                     ->selectAttachable(4)
-                    ->type('@price', '34')
+                    ->type('@price', '34.00')
                     ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now)
                     ->create()
                     ->waitForText('There was a problem submitting the form.')

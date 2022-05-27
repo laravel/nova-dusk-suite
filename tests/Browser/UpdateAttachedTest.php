@@ -131,7 +131,7 @@ class UpdateAttachedTest extends DuskTestCase
 
         DB::table('book_purchases')->insert([
             ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3400, 'purchased_at' => $now->toDatetimeString()],
-            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3220, 'purchased_at' => $now->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3260, 'purchased_at' => $now->toDatetimeString()],
         ]);
 
         $this->browse(function (Browser $browser) {
@@ -140,7 +140,8 @@ class UpdateAttachedTest extends DuskTestCase
                     ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
                         $browser->waitForTable()
                             ->within('tr[data-pivot-id="2"]', function ($browser) {
-                                $browser->click('@4-edit-attached-button');
+                                $browser->assertSee('$32.60')
+                                        ->click('@4-edit-attached-button');
                             });
                     })
                     ->on(new UpdateAttached('users', 1, 'books', 4))
@@ -148,7 +149,8 @@ class UpdateAttachedTest extends DuskTestCase
                         $browser->assertSee('User')->assertSee('1');
                     })
                     ->whenAvailable('@price', function ($browser) {
-                        $browser->type('', '43');
+                        $browser->assertValue('', 32.60)
+                                ->type('', '43');
                     })
                     ->update()
                     ->waitForText('The resource was updated!')
