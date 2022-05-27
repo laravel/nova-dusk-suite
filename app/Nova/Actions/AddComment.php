@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -24,8 +25,6 @@ class AddComment extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        ray($fields->all());
-
         $models->each(function ($model) use ($fields) {
             $comment = (new Comment)->forceFill([
                 'body' => $fields->body,
@@ -44,9 +43,9 @@ class AddComment extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            Text::make('Body'),
+            BelongsTo::make('User')->searchable(),
 
-            \Laravel\Nova\Fields\BelongsTo::make('User')->searchable(),
+            Text::make('Body')->rules('required'),
         ];
     }
 }
