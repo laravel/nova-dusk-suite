@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         return app()->bound('auth.login.redirect')
-            ? app('auth.login.redirect', [$request])
+            ? app('auth.login.redirect')->handle($request)
             : redirect()->intended(RouteServiceProvider::HOME);
     }
 
