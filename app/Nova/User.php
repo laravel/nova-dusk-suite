@@ -221,12 +221,16 @@ class User extends Resource
                     return $model->active === true && (int) $model->getKey() !== 1;
                 }),
             new Actions\Sleep,
+            new Actions\SendNotification(),
             Actions\StandaloneTask::make()->standalone(),
             Actions\RedirectToGoogle::make()->withoutConfirmation(),
             Actions\ChangeCreatedAt::make()->showOnDetail(),
             Actions\CreateUserProfile::make()
                 ->showInline()
                 ->showOnDetail()
+                ->canSee(function ($request) {
+                    return ! $request->allResourcesSelected();
+                })
                 ->canRun(function ($request, $model) {
                     return is_null($model->profile);
                 }),
