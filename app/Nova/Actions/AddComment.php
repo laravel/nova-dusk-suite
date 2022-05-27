@@ -24,6 +24,8 @@ class AddComment extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
+        ray($fields->all());
+
         $models->each(function ($model) use ($fields) {
             $comment = (new Comment)->forceFill([
                 'body' => $fields->body,
@@ -43,6 +45,8 @@ class AddComment extends Action
     {
         return [
             Text::make('Body'),
+
+            \Laravel\Nova\Fields\BelongsTo::make('User')->searchable(),
         ];
     }
 }
