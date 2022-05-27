@@ -3,7 +3,7 @@
 namespace Otwell\SidebarTool;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Menu\MenuItem;
+use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 
@@ -28,6 +28,8 @@ class SidebarTool extends Tool
      */
     public function menu(Request $request)
     {
-        return new MenuItem('Sidebar Tool', 'sidebar-tool');
+        return MenuSection::make('Sidebar Tool')
+                ->path('sidebar-tool')
+                ->icon('server');
     }
 }
