@@ -227,6 +227,9 @@ class User extends Resource
             Actions\CreateUserProfile::make()
                 ->showInline()
                 ->showOnDetail()
+                ->canSee(function ($request) {
+                    return ! $request->allResourcesSelected();
+                })
                 ->canRun(function ($request, $model) {
                     return is_null($model->profile);
                 }),
