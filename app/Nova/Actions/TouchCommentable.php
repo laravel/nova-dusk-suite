@@ -6,7 +6,6 @@ use App\Nova\Link;
 use App\Nova\Post;
 use App\Nova\Video;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
