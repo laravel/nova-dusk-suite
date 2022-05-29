@@ -103,7 +103,9 @@ class Comment extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            Actions\TouchCommentable::make()->standalone(),
+        ];
     }
 
     /**

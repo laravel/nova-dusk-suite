@@ -27,6 +27,7 @@ class AddComment extends Action
     {
         $models->each(function ($model) use ($fields) {
             $comment = (new Comment)->forceFill([
+                'user_id' => optional($fields->user)->getKey() ?? null,
                 'body' => $fields->body,
             ]);
 
@@ -43,7 +44,7 @@ class AddComment extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make('User'),
+            BelongsTo::make('User')->nullable(),
 
             Text::make('Body')->rules('required'),
         ];
