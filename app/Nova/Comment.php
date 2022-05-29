@@ -40,8 +40,9 @@ class Comment extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
+            BelongsTo::make('User')->nullable(),
             $this->commentable(),
-            Text::make('Body', 'body'),
+            Text::make('Body', 'body')->rules('required'),
             File::make('Attachment')->nullable(),
         ];
     }
