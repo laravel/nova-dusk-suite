@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphTo;
@@ -40,8 +41,9 @@ class Comment extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
+            BelongsTo::make('User')->nullable(),
             $this->commentable(),
-            Text::make('Body', 'body'),
+            Text::make('Body', 'body')->rules('required'),
             File::make('Attachment')->nullable(),
         ];
     }
@@ -101,7 +103,9 @@ class Comment extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            Actions\TouchCommentable::make()->standalone(),
+        ];
     }
 
     /**
