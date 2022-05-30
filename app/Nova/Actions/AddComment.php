@@ -46,14 +46,14 @@ class AddComment extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            Boolean::make('System Notification')
+            Boolean::make('Anonymous Comment', 'anonymous')
                 ->default(true),
 
             BelongsTo::make('User')
                 ->hide()
-                ->rules('required_if:system_notification,false')
-                ->dependsOn('system_notification', function (BelongsTo $field, NovaRequest $request, FormData $formData) {
-                    if ($formData->system_notification === false) {
+                ->rules('required_if:anonymous,false')
+                ->dependsOn('anonymous', function (BelongsTo $field, NovaRequest $request, FormData $formData) {
+                    if ($formData->anonymous === false) {
                         $field->show();
                     }
                 }),
