@@ -121,7 +121,7 @@ class SendNotification extends Action
                     }
 
                     $field->options($options);
-                })
+                }),
         ];
     }
 }
