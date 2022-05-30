@@ -53,8 +53,8 @@ class AddComment extends Action
             BelongsTo::make('User')
                 ->hide()
                 ->rules([
-                    Rule::excludeIf(function () use ($request) {
-                        return in_array($request->anonymous, [1, 'true', true]);
+                    Rule::requiredIf(function () use ($request) {
+                        return in_array($request->anonymous, [0, 'false', false]);
                     }),
                 ])
                 ->dependsOn('anonymous', function (BelongsTo $field, NovaRequest $request, FormData $formData) {
