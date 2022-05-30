@@ -6,7 +6,6 @@ use App\Models\Comment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
-use Illuminate\Validation\Rule;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\BelongsTo;
@@ -52,14 +51,10 @@ class AddComment extends Action
 
             BelongsTo::make('User')
                 ->hide()
-                ->rules([
-                    Rule::requiredIf(function () use ($request) {
-                        return in_array($request->anonymous, [0, 'false', false]);
-                    }),
-                ])
+                ->rules('sometimes')
                 ->dependsOn('anonymous', function (BelongsTo $field, NovaRequest $request, FormData $formData) {
                     if ($formData->anonymous === false) {
-                        $field->show();
+                        $field->show()->rules('required');
                     }
                 }),
 
