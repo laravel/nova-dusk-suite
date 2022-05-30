@@ -9,6 +9,8 @@ use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -44,7 +46,17 @@ class AddComment extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make('User')->nullable(),
+            Boolean::make('System Notification')
+                ->default(true),
+
+            BelongsTo::make('User')
+                ->hide()
+                ->rules('required_if:system_notification,false')
+                ->dependsOn('system_notification', function (BelongsTo $field, NovaRequest $request, FormData $formData) {
+                    if ($formData->system_notification === false) {
+                        $field->show();
+                    }
+                }),
 
             Text::make('Body')->rules('required'),
         ];
