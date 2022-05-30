@@ -125,7 +125,9 @@ class SendNotification extends Action
                         $field->readonly(false);
                     }
 
-                    $field->options($options);
+                    $field->options(collect($options)->map(function ($value) {
+                        return ['label' => $value, 'value' => $value];
+                    }));
                 }),
         ];
     }
