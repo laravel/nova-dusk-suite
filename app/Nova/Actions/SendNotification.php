@@ -103,6 +103,7 @@ class SendNotification extends Action
             Select::make('Icon')
                 ->rules(['required'])
                 ->options([])
+                ->readonly()
                 ->dependsOn('type', function (Select $field, NovaRequest $request, FormData $formData) {
                     $options = [
                         'light-bulb',
@@ -118,6 +119,10 @@ class SendNotification extends Action
                             'trash',
                             'emoji-sad',
                         ];
+                    }
+
+                    if (! empty($formData->type)) {
+                        $field->readonly(false);
                     }
 
                     $field->options($options);
