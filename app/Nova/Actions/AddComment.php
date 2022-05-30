@@ -10,6 +10,7 @@ use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -50,9 +51,10 @@ class AddComment extends Action
 
             BelongsTo::make('User')
                 ->hide()
+                ->rules('required_if:system_notification,false')
                 ->dependsOn('system_notification', function (BelongsTo $field, NovaRequest $request, FormData $formData) {
-                    if ($FormData->system_notification === false) {
-                        $field->show()->rules('required');
+                    if ($formData->system_notification === false) {
+                        $field->show();
                     }
                 }),
 
