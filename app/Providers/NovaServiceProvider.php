@@ -83,7 +83,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
             (new SidebarTool)->canSee(function (Request $request) {
-                return ! $request->user()->isBlockedFrom('sidebarTool');
+                return ! (optional($request->user())->isBlockedFrom('sidebarTool') || false);
             }),
         ];
     }
