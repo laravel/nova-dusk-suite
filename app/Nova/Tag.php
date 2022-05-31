@@ -39,7 +39,8 @@ class Tag extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
-            Text::make('Name', 'name')->sortable(),
+
+            Text::make('Name', 'name')->rules('required')->sortable(),
 
             MorphedByMany::make('Posts', 'posts')
                         ->display('title')
