@@ -46,7 +46,8 @@ class Ship extends Resource
         return [
             ID::make('ID', 'id')->sortable(),
             BelongsTo::make('Dock', 'dock')->display('name')->searchable(),
-            Text::make('Name', 'name')->sortable(),
+            Text::make('Name', 'name')->rules('required')->sortable(),
+
             DateTime::make('Departed At', 'departed_at'),
 
             BelongsToMany::make('Captains', 'captains')

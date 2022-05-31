@@ -39,7 +39,7 @@ class Role extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
-            Text::make('Name', 'name')->sortable(),
+            Text::make('Name', 'name')->rules('required')->sortable(),
 
             BelongsToMany::make('Users', 'users')
                         ->display('name')
