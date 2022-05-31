@@ -55,6 +55,7 @@ class Invoice extends Resource
     {
         return [
             ID::make()->sortable(),
+
             HasMany::make('InvoiceItem', 'items'),
         ];
     }

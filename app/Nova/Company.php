@@ -2,7 +2,6 @@
 
 namespace App\Nova;
 
-use App\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\ID;

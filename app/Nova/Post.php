@@ -68,7 +68,9 @@ class Post extends Resource
                 ->filterable(),
 
             Text::make('Title', 'title')->rules('required')->sortable(),
+
             Textarea::make('Body', 'body')->rules('required')->stacked(),
+
             File::make('Attachment')
                 ->nullable()
                 ->dependsOn('user', function ($field, NovaRequest $request, FormData $formData) {

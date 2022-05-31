@@ -47,7 +47,7 @@ class Employee extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
 
-            Text::make(__('Attendance')),
+            Text::make(__('Attendance'))->rules('required'),
 
             BelongsTo::make(__('Person'), 'people', People::class)
                 ->filterable(),

@@ -55,6 +55,7 @@ class InvoiceItem extends Resource
     {
         return [
             ID::make()->sortable(),
+
             BelongsTo::make('Invoice', 'invoice'),
         ];
     }

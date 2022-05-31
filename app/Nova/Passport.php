@@ -51,9 +51,12 @@ class Passport extends Resource
     {
         return [
             ID::make()->sortable(),
+
             BelongsTo::make('Profile'),
-            Text::make('Serial Number', 'value'),
-            Country::make('Country'),
+
+            Text::make('Serial Number', 'value')->rules('required'),
+
+            Country::make('Country')->rules('required'),
         ];
     }
 
