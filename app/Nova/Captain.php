@@ -41,7 +41,9 @@ class Captain extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
-            Text::make('Name', 'name')->sortable(),
+
+            Text::make('Name', 'name')
+                ->rules('required')->sortable(),
 
             Image::make('Photo', 'photo')
                 ->prunable(),

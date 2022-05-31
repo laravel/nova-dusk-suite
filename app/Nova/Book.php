@@ -47,10 +47,15 @@ class Book extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
-            Text::make(__('SKU'), 'sku')->sortable()->showOnPreview(),
+            Text::make(__('SKU'), 'sku')
+                ->rules('required')
+                ->sortable()
+                ->showOnPreview(),
+
             Text::make('Title')->readonly(function ($request) {
                 return $request->isUpdateOrUpdateAttachedRequest();
-            })->showOnPreview(),
+            })->creationRules('required')->showOnPreview(),
+
             Boolean::make('Active')->default(function ($request) {
                 return true;
             })->filterable()

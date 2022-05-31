@@ -48,7 +48,8 @@ class Company extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make('Name'),
+
+            Text::make('Name')->rules('required'),
 
             Markdown::make('Description')
                 ->dependsOn('name', function (Markdown $field, NovaRequest $request, FormData $formData) {
