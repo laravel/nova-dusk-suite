@@ -67,8 +67,10 @@ class Post extends Resource
                 ->showCreateRelationButton(file_exists(base_path('.inline-create')))
                 ->filterable(),
 
-            Text::make('Title', 'title')->sortable(),
-            Textarea::make('Body', 'body')->stacked(),
+            Text::make('Title', 'title')->rules('required')->sortable(),
+
+            Textarea::make('Body', 'body')->rules('required')->stacked(),
+
             File::make('Attachment')
                 ->nullable()
                 ->dependsOn('user', function ($field, NovaRequest $request, FormData $formData) {

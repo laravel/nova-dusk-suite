@@ -61,7 +61,7 @@ class Project extends Resource
                 'Envoyer' => 'Envoyer',
                 'Vapor' => 'Vapor',
                 'Secret' => 'Secret',
-            ])->displayUsingLabels(),
+            ])->rules('required')->displayUsingLabels(),
 
             Code::make('Description')
                 ->dependsOn('name', function (Code $field, NovaRequest $request, FormData $formData) {

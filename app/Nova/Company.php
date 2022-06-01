@@ -2,10 +2,10 @@
 
 namespace App\Nova;
 
-use App\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -48,7 +48,8 @@ class Company extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make('Name'),
+
+            Text::make('Name')->rules('required'),
 
             Markdown::make('Description')
                 ->dependsOn('name', function (Markdown $field, NovaRequest $request, FormData $formData) {

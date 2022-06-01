@@ -41,12 +41,16 @@ class Sail extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
+
             Text::make('Name', 'name')->nullable(),
+
             BelongsTo::make('Ship', 'ship')
                 ->display('name')
                 ->showCreateRelationButton(file_exists(base_path('.inline-create')))
                 ->searchable(file_exists(base_path('.searchable'))),
-            Number::make('Inches', 'inches')->sortable()->filterable(),
+
+            Number::make('Inches', 'inches')->rules('required')->sortable()->filterable(),
+
             Slug::make('Slug', 'slug')->from('Name')->showOnUpdating(false),
         ];
     }

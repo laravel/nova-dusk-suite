@@ -40,8 +40,10 @@ class Link extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
-            Text::make('Title', 'title')->sortable(),
-            URL::make('Url', 'url'),
+
+            Text::make('Title', 'title')->rules('required')->sortable(),
+
+            URL::make('Url', 'url')->rules('required'),
 
             MorphMany::make('Comments', 'comments'),
         ];

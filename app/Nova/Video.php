@@ -57,7 +57,8 @@ class Video extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
-            Text::make('Title', 'title')->sortable(),
+
+            Text::make('Title', 'title')->rules('required')->sortable(),
 
             MorphMany::make('Comments', 'comments'),
 

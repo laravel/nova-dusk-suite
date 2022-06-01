@@ -39,14 +39,16 @@ class Address extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Address', 'address_line_1'),
+
+            Text::make('Address', 'address_line_1')->rules('required'),
+
             Text::make('Address Line 2', 'address_line_2'),
 
             Panel::make('More Address Details', [
-                Text::make('City'),
-                Text::make('State'),
-                Text::make('Postal Code'),
-                Text::make('Country'),
+                Text::make('City')->rules('required'),
+                Text::make('State')->rules('required'),
+                Text::make('Postal Code')->rules('required'),
+                Text::make('Country')->rules('required'),
             ])->limit(3)->help('Details information'),
         ];
     }
