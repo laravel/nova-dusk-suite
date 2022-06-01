@@ -88,6 +88,7 @@ class BookPurchase
                     'personal' => 'Personal',
                     'gift' => 'Gift',
                 ])
+                ->rules('required')
                 ->default($this->type)
                 ->readonly(function () {
                     return ! is_null($this->type);
