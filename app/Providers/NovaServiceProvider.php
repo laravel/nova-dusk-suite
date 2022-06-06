@@ -26,9 +26,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         parent::boot();
 
         Nova::userMenu(function (Request $request, Menu $menu) {
-            $menu->append(
-                MenuItem::make('My Account')->path('/resources/users/'.$request->user()->id)
-            );
+            if ($request->user()) {
+                $menu->append(
+                    MenuItem::make('My Account')->path('/resources/users/'.$request->user()->id)
+                );
+            }
 
             return $menu;
         });
