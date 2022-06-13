@@ -1,0 +1,1 @@
+Nova.booting((function(o){}));
