@@ -121,7 +121,7 @@ class User extends Resource
 
             HasOne::make('Profile')->required(function () {
                 return file_exists(base_path('.hasone-required'));
-            }),
+            })->help('User Personal Profile Information'),
 
             HasMany::make('Posts', 'posts', Post::class),
 
@@ -158,7 +158,8 @@ class User extends Resource
                         ->filterable(),
 
             BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
-                ->fields(new Fields\BookPurchase('personal')),
+                ->fields(new Fields\BookPurchase('personal'))
+                ->help('Self-purchased books'),
 
             BelongsToMany::make('Gift Books', 'giftBooks', Book::class)
                 ->fields(
@@ -172,7 +173,8 @@ class User extends Resource
                         }),
                     ])
                 )->filterable()
-                ->allowDuplicateRelations(),
+                ->allowDuplicateRelations()
+                ->help('Books purchased as gift'),
         ];
     }
 
