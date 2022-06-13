@@ -25,6 +25,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         parent::boot();
 
+        Nova::remoteScript(mix('js/nova.js'));
+
         Nova::userMenu(function (Request $request, Menu $menu) {
             if ($request->user()) {
                 $menu->append(

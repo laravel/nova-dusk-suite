@@ -1,0 +1,3 @@
+Nova.booting((app) => {
+  //
+})

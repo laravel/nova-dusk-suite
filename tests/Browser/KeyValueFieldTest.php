@@ -36,7 +36,7 @@ class KeyValueFieldTest extends DuskTestCase
     public function it_can_display_associated_array_keyvalue()
     {
         $post = PostFactory::new()->create([
-            'meta' => ['project' => 'laravel', 'tool' => 'nova'],
+            'meta' => ['project' => 'laravel', 'tool' => 'nova', 'length' => 20],
         ]);
 
         $this->browse(function (Browser $browser) use ($post) {
@@ -44,8 +44,10 @@ class KeyValueFieldTest extends DuskTestCase
                     ->visit(new Detail('posts', $post->id))
                     ->assertInputValue('@key-value-key-0', 'tool')
                     ->assertInputValue('@key-value-value-0', 'nova')
-                    ->assertInputValue('@key-value-key-1', 'project')
-                    ->assertInputValue('@key-value-value-1', 'laravel');
+                    ->assertInputValue('@key-value-key-1', 'length')
+                    ->assertInputValue('@key-value-value-1', 20)
+                    ->assertInputValue('@key-value-key-2', 'project')
+                    ->assertInputValue('@key-value-value-2', 'laravel');
 
             $browser->blank();
         });
@@ -78,15 +80,15 @@ class KeyValueFieldTest extends DuskTestCase
     public function it_does_not_preserve_order_associated_array_keyvalue()
     {
         $post = PostFactory::new()->create([
-            'meta' => ['project' => 'laravel', 'tool' => 'nova'],
+            'meta' => ['project' => 'laravel', 'tool' => 'nova', 'length' => 20],
         ]);
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
                     ->visit(new Update('posts', $post->id))
                     ->click('@meta-add-key-value')
-                    ->type('@key-value-key-2', 'framework')
-                    ->type('@key-value-value-2', 'Laravel Framework v8')
+                    ->type('@key-value-key-3', 'framework')
+                    ->type('@key-value-value-3', 'Laravel Framework v8')
                     ->update();
 
             $post->refresh();
@@ -94,6 +96,7 @@ class KeyValueFieldTest extends DuskTestCase
             $json = new AssertableJsonString($post->getRawOriginal('meta'));
             $json->assertExact([
                 'tool' => 'nova',
+                'length' => 20,
                 'project' => 'laravel',
                 'framework' => 'Laravel Framework v8',
             ]);
