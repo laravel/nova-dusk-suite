@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Resource as NovaResource;
 
 /**
@@ -58,5 +59,17 @@ abstract class Resource extends NovaResource
     public static function relatableQuery(NovaRequest $request, $query)
     {
         return parent::relatableQuery($request, $query);
+    }
+
+    /**
+     * Return the menu item that should represent the resource.
+     *
+     * @return \Laravel\Nova\Menu\MenuItem
+     */
+    public static function menuItem()
+    {
+        return MenuItem::resource(static::class)->withBadge(function () {
+            return static::$model::count();
+        });
     }
 }
