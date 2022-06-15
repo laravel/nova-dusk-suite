@@ -3,8 +3,6 @@
 namespace App\Nova\Dashboards;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
-use Laravel\Nova\Badge;
 use Laravel\Nova\Dashboard;
 use Laravel\Nova\Menu\MenuItem;
 
