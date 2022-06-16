@@ -2,7 +2,10 @@
 
 namespace App\Nova\Dashboards;
 
+use App\Models\Post;
+use Illuminate\Http\Request;
 use Laravel\Nova\Dashboard;
+use Laravel\Nova\Menu\MenuItem;
 
 class Posts extends Dashboard
 {
@@ -41,5 +44,21 @@ class Posts extends Dashboard
     public function uriKey()
     {
         return 'posts-dashboard';
+    }
+
+    /**
+     * Build the menu that renders the navigation links for the tool.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    public function menu(Request $request)
+    {
+        $newPostsInLast24Hours = Post::whereBetween('created_at', [now()->subHours(24), now()])->count();
+
+        return MenuItem::dashboard(static::class)
+                    ->withBadgeIf(function () use ($newPostsInLast24Hours) {
+                        return $newPostsInLast24Hours;
+                    }, 'info', $newPostsInLast24Hours > 0);
     }
 }
