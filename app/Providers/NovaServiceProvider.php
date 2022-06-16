@@ -28,10 +28,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         Nova::remoteScript(mix('js/nova.js'));
 
         Nova::userMenu(function (Request $request, Menu $menu) {
-            if ($request->user()) {
+            if ($user = $request->user()) {
                 $menu->append(
                     MenuItem::make('My Account')->path('/resources/users/'.$request->user()->id)
                 );
+
+                if ($user->active === false) {
+                    $menu->append(
+                        MenuItem::externalLink('Verify User', "/tests/verify-user/{$user->id}")->method('POST', ['_token' => csrf_token()])
+                    );
+                }
             }
 
             return $menu;
