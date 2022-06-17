@@ -37,6 +37,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])->canSee(function () use ($user) {
                         return ! $user->active;
                     })
+                )->append(
+                    MenuSection::make('Links', [
+                        MenuItem::externalLink('Dashboard', url('/dashboard')),
+                        MenuItem::externalLink('Nova Website', 'https://nova.laravel.com'),
+                    ])
                 );
             }
 
