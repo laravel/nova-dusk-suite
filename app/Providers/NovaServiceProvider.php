@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuItem;
+use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Otwell\SidebarTool\SidebarTool;
@@ -27,17 +28,31 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         Nova::remoteScript(mix('js/nova.js'));
 
+        Nova::mainMenu(function (Request $request, Menu $menu) {
+            if ($user = $request->user()) {
+                $menu->append(
+                    MenuSection::make('Account Verification', [
+                        MenuItem::externalLink('Verify Using Inertia', "/tests/verify-user/{$user->id}")->method('POST', ['_token' => csrf_token()], ['inertia' => true]),
+                        MenuItem::externalLink('Verify Using XHR', "/tests/verify-user/{$user->id}")->method('POST', ['_token' => csrf_token()], ['inertia' => false]),
+                    ])->canSee(function () use ($user) {
+                        return ! $user->active;
+                    })
+                );
+            }
+
+            return $menu;
+        });
+
         Nova::userMenu(function (Request $request, Menu $menu) {
             if ($user = $request->user()) {
                 $menu->append(
                     MenuItem::make('My Account')->path('/resources/users/'.$request->user()->id)
+                )->append(
+                    MenuItem::externalLink('Verify Account', "/tests/verify-user/{$user->id}")->method('POST', ['_token' => csrf_token()])
+                        ->canSee(function () use ($user) {
+                            return ! $user->active;
+                        })
                 );
-
-                if ($user->active === false) {
-                    $menu->append(
-                        MenuItem::externalLink('Verify User', "/tests/verify-user/{$user->id}")->method('POST', ['_token' => csrf_token()])
-                    );
-                }
             }
 
             return $menu;
