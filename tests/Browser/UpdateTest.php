@@ -112,7 +112,7 @@ class UpdateTest extends DuskTestCase
                     ->waitForText('There was a problem submitting the form.')
                     ->assertSee('E-mail address should be unique')
                     ->assertSee('The Name field is required.')
-                    ->click('@cancel-update-button');
+                    ->cancel();
 
             $browser->blank();
         });

@@ -146,7 +146,7 @@ class AttachDuplicationTest extends DuskTestCase
                     ->create()
                     ->waitForText('There was a problem submitting the form.')
                     ->assertSee('This books is already attached.')
-                    ->click('@cancel-attach-button');
+                    ->cancel();
 
             $browser->blank();
         });

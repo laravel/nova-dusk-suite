@@ -7,7 +7,7 @@ use Carbon\CarbonImmutable;
 use Database\Factories\PeopleFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Testing\Browser\Pages\UpdateAttached;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -82,12 +82,11 @@ class DateFieldTest extends DuskTestCase
             $local = $now->setTimezone($userTimezone);
 
             $browser->loginAs($user)
-                    ->visit(new Detail('users', $user->id))
-                    ->runAttachRelation('books', 'personalBooks')
+                    ->visit(new Attach('users', $user->id, 'books', 'personalBooks'))
                     ->assertSeeIn('h1', 'Attach Book')
                     ->selectAttachable(4)
                     ->type('@price', '34')
-                    ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $local)
+                    ->typeOnDateTimeLocal('@purchased_at', $local)
                     ->create()
                     ->waitForText('The resource was attached!');
 

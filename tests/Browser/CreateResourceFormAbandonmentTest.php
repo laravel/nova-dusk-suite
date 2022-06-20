@@ -63,7 +63,7 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
                     ->visit(new Index('videos'))
                     ->runCreate()
                     ->keys('@title', 'Hello World', '{tab}')
-                    ->click('@cancel-create-button')
+                    ->cancel()
                     ->on(new Index('videos'));
 
             $this->assertDatabaseMissing('videos', [
@@ -84,7 +84,7 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
                     ->keys('@title', 'Hello World', '{tab}')
                     ->click('@create-and-add-another-button')
                     ->waitForText('The user video was created!')
-                    ->click('@cancel-create-button')
+                    ->cancel()
                     ->on(new Index('videos'));
 
             $this->assertDatabaseHas('videos', [
