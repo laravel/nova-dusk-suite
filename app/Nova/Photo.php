@@ -2,32 +2,27 @@
 
 namespace App\Nova;
 
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\HasOne;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\MorphOne;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-/**
- * @template TModel of \App\Models\People
- * @extends \App\Nova\Resource<TModel>
- */
-class People extends Resource
+class Photo extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<TModel>
+     * @var string
      */
-    public static $model = \App\Models\People::class;
+    public static $model = \App\Models\Photo::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -47,16 +42,14 @@ class People extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
+            ID::make()->sortable(),
 
-            Text::make(__('Name'))->rules('required'),
+            MorphTo::make('Imageable')->types([
+                Company::class,
+                People::class,
+            ]),
 
-            Date::make('Created At')->filterable(),
-
-            /** RELATION */
-            HasOne::make(__('Employee'), 'employee', Employee::class)->exceptOnForms(),
-
-            MorphOne::make('Photo'),
+            Image::make('URL'),
         ];
     }
 
