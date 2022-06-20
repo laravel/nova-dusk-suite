@@ -21,6 +21,16 @@ class People extends Model
     }
 
     /**
+     * Get the company's photo.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function photo()
+    {
+        return $this->morphOne(Photo::class, 'imageable');
+    }
+
+    /**
      * Get the indexable data array for the model.
      *
      * @return array

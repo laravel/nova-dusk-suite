@@ -71,7 +71,7 @@ class AttachResourceFormAbandonmentTest extends DuskTestCase
                         $browser->assertSee('User')->assertSee('1');
                     })
                     ->keys('@notes', 'Test Notes', '{tab}')
-                    ->click('@cancel-attach-button')
+                    ->cancel()
                     ->on(new Detail('users', 1));
 
             $browser->blank();

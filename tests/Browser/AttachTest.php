@@ -89,7 +89,7 @@ class AttachTest extends DuskTestCase
                     ->create()
                     ->waitForText('There was a problem submitting the form.', 15)
                     ->assertSee('The role field is required.')
-                    ->click('@cancel-attach-button');
+                    ->cancel();
 
             $this->assertDatabaseMissing('role_user', [
                 'user_id' => '1',

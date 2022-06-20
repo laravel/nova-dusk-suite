@@ -76,7 +76,7 @@ class UpdateResourceFormAbandonmentTest extends DuskTestCase
                     ->visit(new Index('videos'))
                     ->visit(new Update('videos', $video->id))
                     ->type('@title', 'Hello World')
-                    ->click('@cancel-update-button')
+                    ->cancel()
                     ->on(new Index('videos'));
 
             $this->assertDatabaseMissing('videos', [
@@ -101,7 +101,7 @@ class UpdateResourceFormAbandonmentTest extends DuskTestCase
                     ->type('@title', 'Hello World')
                     ->click('@update-and-continue-editing-button')
                     ->waitForText('The user video was updated!')
-                    ->click('@cancel-update-button')
+                    ->cancel()
                     ->on(new Index('videos'));
 
             $this->assertDatabaseHas('videos', [

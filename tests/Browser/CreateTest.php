@@ -69,7 +69,7 @@ class CreateTest extends DuskTestCase
                     ->assertSee('The Name field is required.')
                     ->assertSee('The Email field is required.')
                     ->assertSee('The Password field is required.')
-                    ->click('@cancel-create-button');
+                    ->cancel();
 
             $browser->blank();
         });

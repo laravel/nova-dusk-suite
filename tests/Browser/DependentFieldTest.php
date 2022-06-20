@@ -37,7 +37,7 @@ class DependentFieldTest extends DuskTestCase
                 ->assertPresent('input[type="checkbox"][name="read"]')
                 ->assertPresent('input[type="checkbox"][name="update"]')
                 ->assertPresent('input[type="checkbox"][name="delete"]')
-                ->click('@cancel-create-button');
+                ->cancel();
 
             $browser->blank();
         });
