@@ -8,6 +8,7 @@ use Database\Factories\PeopleFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
+use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Testing\Browser\Pages\UpdateAttached;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -66,6 +67,34 @@ class DateFieldTest extends DuskTestCase
     /**
      * @test
      * @group local-time
+     * @dataProvider localiseDateDataProvider
+     */
+    public function can_pick_date_using_date_input_and_maintain_current_value_on_validation_errors($date, $userTimezone)
+    {
+        $user = User::find(1);
+        $now = CarbonImmutable::parse($date, config('app.timezone'));
+
+        tap($user->profile, function ($profile) use ($userTimezone) {
+            $profile->timezone = $userTimezone;
+            $profile->save();
+        });
+
+        $this->browse(function (Browser $browser) use ($now, $user) {
+            $browser->loginAs($user)
+                    ->visit(new Create('people'))
+                    ->typeOnDate('@created_at', $now)
+                    ->create()
+                    ->waitForText('There was a problem submitting the form.')
+                    ->assertValue('@created_at', $now->toDateString())
+                    ->cancel();
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     * @group local-time
      * @dataProvider localiseDatetimeDataProvider
      */
     public function can_pick_date_using_datetime_input($datetime, $userTimezone)
@@ -108,6 +137,37 @@ class DateFieldTest extends DuskTestCase
                 $now->toDateTimeString(),
                 $book->pivot->purchased_at->toDateTimeString()
             );
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @test
+     * @group local-time
+     * @dataProvider localiseDatetimeDataProvider
+     */
+    public function can_pick_date_using_datetime_input_and_maintain_current_value_on_validation_errors($datetime, $userTimezone)
+    {
+        $user = User::find(1);
+        $now = CarbonImmutable::parse($datetime, config('app.timezone'));
+
+        tap($user->profile, function ($profile) use ($userTimezone) {
+            $profile->timezone = $userTimezone;
+            $profile->save();
+        });
+
+        $this->browse(function (Browser $browser) use ($now, $user, $userTimezone) {
+            $local = $now->setTimezone($userTimezone);
+
+            $browser->loginAs($user)
+                    ->visit(new Attach('users', $user->id, 'books', 'personalBooks'))
+                    ->assertSeeIn('h1', 'Attach Book')
+                    ->typeOnDateTimeLocal('@purchased_at', $local)
+                    ->create()
+                    ->waitForText('There was a problem submitting the form.')
+                    ->assertValue('@purchased_at', $local->toDateTimeLocalString())
+                    ->cancel();
 
             $browser->blank();
         });
