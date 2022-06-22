@@ -26,14 +26,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         parent::boot();
 
+        Nova::remoteStyle(mix('css/nova.css'));
         Nova::remoteScript(mix('js/nova.js'));
 
         Nova::mainMenu(function (Request $request, Menu $menu) {
             if ($user = $request->user()) {
                 $menu->append(
                     MenuSection::make('Account Verification', [
-                        MenuItem::externalLink('Verify Using Inertia', "/tests/verify-user/{$user->id}")->method('POST', ['_token' => csrf_token()], ['inertia' => true]),
-                        MenuItem::externalLink('Verify Using XHR', "/tests/verify-user/{$user->id}")->method('POST', ['_token' => csrf_token()], ['inertia' => false]),
+                        MenuItem::externalLink('Verify Using Inertia', "/tests/verify-user/{$user->id}")->method('POST', ['_token' => csrf_token()], []),
                     ])->canSee(function () use ($user) {
                         return ! $user->active;
                     })

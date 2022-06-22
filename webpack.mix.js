@@ -17,4 +17,8 @@ mix.js('resources/js/app.js', 'public/js')
     require('postcss-import'),
     require('tailwindcss'),
     require('autoprefixer'),
+  ])
+  .postCss('resources/css/nova.css', 'public/css', [
+    require('postcss-import'),
+    require('autoprefixer'),
   ]);
