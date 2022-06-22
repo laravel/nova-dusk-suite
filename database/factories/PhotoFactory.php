@@ -45,7 +45,7 @@ class PhotoFactory extends Factory
     }
 
     /**
-     * Indicate that the model's should be assigned to company.
+     * Indicate that the model's should be assigned to person.
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */

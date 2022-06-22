@@ -13,8 +13,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class HasOneRelationTest extends DuskTestCase
 {
-    /** @test */
-    public function has_one_relation_does_not_add_duplicate_using_create_button()
+    public function test_has_one_relation_does_not_add_duplicate_using_create_button()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -27,8 +26,7 @@ class HasOneRelationTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function has_one_relation_does_not_have_create_and_add_another_button()
+    public function test_has_one_relation_does_not_have_create_and_add_another_button()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -40,8 +38,7 @@ class HasOneRelationTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function can_create_resource_with_inline_has_one_relationship()
+    public function test_can_create_resource_with_inline_has_one_relationship()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -75,8 +72,7 @@ class HasOneRelationTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function can_create_inline_has_one_relationship_on_existing_resource()
+    public function test_can_create_inline_has_one_relationship_on_existing_resource()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(4)
@@ -101,8 +97,7 @@ class HasOneRelationTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function can_update_inline_has_one_relationship_on_existing_resource()
+    public function test_can_update_inline_has_one_relationship_on_existing_resource()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
