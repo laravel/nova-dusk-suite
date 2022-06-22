@@ -26,8 +26,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         parent::boot();
 
-        Nova::remoteStyle(mix('css/nova.css'));
-        Nova::remoteScript(mix('js/nova.js'));
+        // Nova::remoteStyle(mix('css/nova.css'));
+        // Nova::remoteScript(mix('js/nova.js'));
 
         Nova::mainMenu(function (Request $request, Menu $menu) {
             if ($user = $request->user()) {
