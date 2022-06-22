@@ -55,11 +55,13 @@ class Profile extends Resource
 
             URL::make('GitHub URL')->filterable(function ($request, $query, $value, $attribute) {
                 $query->where($attribute, '=', 'https://github.com/'.$value);
-            })->nullable(),
+            })->nullable()
+            ->updateRules(['nullable', 'unique:profiles,github_url,{{resourceId}}']),
 
             URL::make('Twitter URL')->displayUsing(function ($value) {
                 return str_replace('https://twitter.com/', '@', $value);
-            })->nullable(),
+            })->nullable()
+            ->updateRules(['nullable', 'unique:profiles,twitter_url,{{resourceId}}']),
 
             Timezone::make('Timezone')
                     ->nullable()
