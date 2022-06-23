@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use Database\Factories\VideoFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\SidebarComponent;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
@@ -22,7 +23,7 @@ class UpdateResourceFormAbandonmentTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Update('videos', $video->id))
                     ->type('@title', 'Hello World')
-                    ->within('@sidebar-menu', function ($browser) {
+                    ->within(new SidebarComponent(), function ($browser) {
                         $browser->clickLink('Users');
                     })
                     ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')

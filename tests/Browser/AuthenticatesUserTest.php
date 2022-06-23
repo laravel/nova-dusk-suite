@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Nova;
+use Laravel\Nova\Testing\Browser\Components\SidebarComponent;
 use Laravel\Nova\Testing\Browser\Pages\Dashboard;
 use Laravel\Nova\Testing\Browser\Pages\Login;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -67,7 +68,7 @@ class AuthenticatesUserTest extends DuskTestCase
 
             $browser->deleteCookie('nova_dusk_suite_session');
 
-            $browser->within('@sidebar-menu', function ($browser) {
+            $browser->within(new SidebarComponent(), function ($browser) {
                 $browser->clickLink('Users');
             })->waitForLocation('/nova/login')
                 ->assertGuest();

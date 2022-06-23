@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\SidebarComponent;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -17,7 +18,7 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
                     ->visit(new Index('videos'))
                     ->runCreate()
                     ->keys('@title', 'Hello World', '{tab}')
-                    ->within('@sidebar-menu', function ($browser) {
+                    ->within(new SidebarComponent(), function ($browser) {
                         $browser->clickLink('Users');
                     })
                     ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
