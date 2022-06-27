@@ -34,6 +34,16 @@ class Profile extends Model
     }
 
     /**
+     * Get the company the profile is belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    /**
      * Get the profile's passport.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use Database\Factories\RoleFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\SidebarComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\UpdateAttached;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
@@ -30,7 +31,7 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
                         $browser->assertSee('User')->assertSee('1');
                     })
                     ->keys('@notes', 'Test Notes Updated', '{tab}')
-                    ->within('@sidebar-menu', function ($browser) {
+                    ->within(new SidebarComponent(), function ($browser) {
                         $browser->clickLink('Users');
                     })
                     ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')

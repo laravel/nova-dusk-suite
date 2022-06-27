@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\FormData;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphOne;
@@ -28,7 +29,7 @@ class Company extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -36,7 +37,7 @@ class Company extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'name',
     ];
 
     /**
@@ -71,6 +72,8 @@ class Company extends Resource
                 ->nullable(),
 
             MorphOne::make('Photo'),
+
+            HasMany::make('Profiles'),
         ];
     }
 

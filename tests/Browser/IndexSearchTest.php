@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\SidebarComponent;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -56,7 +57,7 @@ class IndexSearchTest extends DuskTestCase
                                 ->assertDontSeeResource(4)
                                 ->assertQueryStringHas('users_search', '3');
                     })
-                    ->within('@sidebar-menu', function ($browser) {
+                    ->within(new SidebarComponent(), function ($browser) {
                         $browser->clickLink('Users');
                     })
                     ->waitForTextIn('h1', 'Users')

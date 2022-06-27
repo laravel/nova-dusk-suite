@@ -18,4 +18,14 @@ class Company extends Model
     {
         return $this->morphOne(Photo::class, 'imageable');
     }
+
+    /**
+     * Get all of the company's profiles.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function profiles()
+    {
+        return $this->hasMany(Profile::class);
+    }
 }
