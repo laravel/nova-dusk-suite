@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Profile;
+use App\Models\User;
 use Carbon\Carbon;
 use Database\Factories\PostFactory;
 use Illuminate\Support\Facades\DB;
@@ -15,8 +16,54 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class FilterableFieldTest extends DuskTestCase
 {
-    /** @test */
-    public function it_can_filter_belongs_to_field()
+    public function test_it_can_filter_boolean_field()
+    {
+        User::whereIn('id', [2, 4])->update(['active' => true]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new UserIndex())
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertDontSeeIn('@filter-selector', '1')
+                        ->assertSeeResource(1)
+                        ->assertSeeResource(2)
+                        ->assertSeeResource(3)
+                        ->assertSeeResource(4)
+                        ->runFilter(function ($browser) {
+                            $browser->click('@active-default-boolean-field-filter');
+                        })
+                        ->waitForTable()
+                        ->assertSeeIn('@filter-selector', '1')
+                        ->assertDontSeeResource(1)
+                        ->assertSeeResource(2)
+                        ->assertDontSeeResource(3)
+                        ->assertSeeResource(4)
+                        ->runFilter(function ($browser) {
+                            $browser->click('@active-default-boolean-field-filter');
+                        })
+                        ->waitForTable()
+                        ->assertSeeIn('@filter-selector', '1')
+                        ->assertSeeResource(1)
+                        ->assertDontSeeResource(2)
+                        ->assertSeeResource(3)
+                        ->assertDontSeeResource(4)
+                        ->runFilter(function ($browser) {
+                            $browser->click('@active-default-boolean-field-filter');
+                        })
+                        ->waitForTable()
+                        ->assertDontSeeIn('@filter-selector', '1')
+                        ->assertSeeResource(1)
+                        ->assertSeeResource(2)
+                        ->assertSeeResource(3)
+                        ->assertSeeResource(4);
+                });
+
+            $browser->blank();
+        });
+    }
+
+    public function test_it_can_filter_belongs_to_field()
     {
         PostFactory::new()->times(3)->create(['user_id' => 1]);
         PostFactory::new()->times(2)->create(['user_id' => 2]);
@@ -61,8 +108,7 @@ class FilterableFieldTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function it_can_filter_searchable_belongs_to_field()
+    public function test_it_can_filter_searchable_belongs_to_field()
     {
         PostFactory::new()->times(3)->create(['user_id' => 1]);
         PostFactory::new()->times(2)->create(['user_id' => 2]);
@@ -123,8 +169,7 @@ class FilterableFieldTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function it_can_filter_multiselect_field()
+    public function test_it_can_filter_multiselect_field()
     {
         Profile::whereKey(1)->update([
             'interests' => ['laravel', 'phpunit', 'livewire', 'swoole', 'vue'],
@@ -159,8 +204,7 @@ class FilterableFieldTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function it_can_filter_belongs_to_many_field()
+    public function test_it_can_filter_belongs_to_many_field()
     {
         DB::table('book_purchases')->insert([
             ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3900, 'purchased_at' => Carbon::yesterday()->toDatetimeString()],
@@ -202,8 +246,7 @@ class FilterableFieldTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function it_can_filter_belongs_to_many_field_via_relationship()
+    public function test_it_can_filter_belongs_to_many_field_via_relationship()
     {
         DB::table('book_purchases')->insert([
             ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3900, 'purchased_at' => Carbon::yesterday()->toDatetimeString()],
