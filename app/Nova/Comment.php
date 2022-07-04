@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\File;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
@@ -43,9 +44,15 @@ class Comment extends Resource
             ID::make('ID', 'id')->sortable(),
             BelongsTo::make('User')->nullable(),
 
-            $this->commentable(),
+            $commentable = $this->commentable(),
 
-            Text::make('Body', 'body')->rules('required'),
+            Text::make('Body', 'body')
+                ->rules('required')
+                ->dependsOn($commentable, function (Text $field, NovaRequest $request, FormData $formData) {
+                    if ($formData->commentable_type === 'videos') {
+                        $field->rules('required', 'min:10');
+                    }
+                }),
 
             File::make('Attachment')->nullable(),
         ];
