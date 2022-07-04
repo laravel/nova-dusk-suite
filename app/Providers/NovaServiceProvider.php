@@ -57,6 +57,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->canSee(function () use ($user) {
                             return ! $user->active;
                         })
+                )->append(
+                    MenuItem::externalLink('Dashboard', route('dashboard'))
                 );
             }
 
