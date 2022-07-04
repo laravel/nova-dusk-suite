@@ -14,10 +14,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function cant_view_update_page_if_not_authorized_to_update()
+    public function test_cant_view_update_page_if_not_authorized_to_update()
     {
         $post = PostFactory::new()->create();
         $post2 = PostFactory::new()->create();
@@ -36,14 +33,11 @@ class UpdateTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function resource_can_be_updated()
+    public function test_resource_can_be_updated()
     {
         User::whereKey(1)->update([
             'name' => 'Taylor',
-            'settings' => ['pagination' => 'simple'],
+            'settings' => json_encode(['pagination' => 'simple']),
         ]);
 
         $this->browse(function (Browser $browser) {
@@ -67,14 +61,11 @@ class UpdateTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function test_user_isnt_logged_out_when_updating_their_own_resource()
     {
         User::whereKey(1)->update([
             'name' => 'Taylor',
-            'settings' => ['pagination' => 'simple'],
+            'settings' => json_encode(['pagination' => 'simple']),
         ]);
 
         $this->browse(function (Browser $browser) {
@@ -98,10 +89,7 @@ class UpdateTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function validation_errors_are_displayed()
+    public function test_validation_errors_are_displayed()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -118,10 +106,7 @@ class UpdateTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function resource_can_be_updated_and_user_can_continue_editing()
+    public function test_resource_can_be_updated_and_user_can_continue_editing()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(2)
