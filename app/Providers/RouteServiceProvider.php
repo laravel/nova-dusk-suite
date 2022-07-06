@@ -2,11 +2,14 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\SignedStorageUrlController;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Laravel\Vapor\Contracts\SignedStorageUrlController as SignedStorageUrlControllerContract;
+
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -47,6 +50,19 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
         });
+    }
+
+    /**
+     * Register the Nova routes.
+     *
+     * @return void
+     */
+    protected function routes()
+    {
+        $this->app->singleton(
+            SignedStorageUrlControll0erContract::class,
+            SignedStorageUrlController::class
+        );
     }
 
     /**
