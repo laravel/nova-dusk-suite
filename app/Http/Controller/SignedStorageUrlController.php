@@ -6,7 +6,6 @@ use Aws\S3\S3Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
 use Laravel\Vapor\Contracts\SignedStorageUrlController as SignedStorageUrlControllerContract;
 
 class SignedStorageUrlController extends \Illuminate\Routing\Controller implements SignedStorageUrlControllerContract
