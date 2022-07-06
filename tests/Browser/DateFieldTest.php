@@ -47,6 +47,7 @@ class DateFieldTest extends DuskTestCase
 
             $browser->visit(new Update('people', $person->getKey()))
                     ->type('@name', 'Tess')
+                    ->assertValue('@created_at', $now->toDateString())
                     ->update()
                     ->waitForText('The person was updated!');
 
@@ -93,6 +94,7 @@ class DateFieldTest extends DuskTestCase
     {
         yield ['Dec 13 1983', 'America/Chicago'];
         yield ['Dec 13 1983', 'Asia/Kuala_Lumpur'];
+        yield ['Dec 13 1983', 'America/Santo_Domingo'];
         yield ['Dec 13 1983', 'UTC'];
     }
 }
