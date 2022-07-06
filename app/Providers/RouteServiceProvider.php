@@ -23,6 +23,19 @@ class RouteServiceProvider extends ServiceProvider
     public const HOME = '/nova';
 
     /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->singleton(
+            SignedStorageUrlControll0erContract::class,
+            SignedStorageUrlController::class
+        );
+    }
+
+    /**
      * The controller namespace for the application.
      *
      * When present, controller route declarations will automatically be prefixed with this namespace.
@@ -50,19 +63,6 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
         });
-    }
-
-    /**
-     * Register the Nova routes.
-     *
-     * @return void
-     */
-    protected function routes()
-    {
-        $this->app->singleton(
-            SignedStorageUrlControll0erContract::class,
-            SignedStorageUrlController::class
-        );
     }
 
     /**
