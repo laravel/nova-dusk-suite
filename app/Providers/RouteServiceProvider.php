@@ -28,6 +28,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        parent::register();
+
         $this->app->singleton(
             SignedStorageUrlControllerContract::class,
             SignedStorageUrlController::class
