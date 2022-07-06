@@ -2,11 +2,14 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\SignedStorageUrlController;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Laravel\Vapor\Contracts\SignedStorageUrlController as SignedStorageUrlControllerContract;
+
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -27,6 +30,19 @@ class RouteServiceProvider extends ServiceProvider
      * @var string|null
      */
     protected $namespace = null; // 'App\\Http\\Controllers';
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->singleton(
+            SignedStorageUrlControll0erContract::class,
+            SignedStorageUrlController::class
+        );
+    }
 
     /**
      * Define your route model bindings, pattern filters, etc.
