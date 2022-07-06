@@ -30,7 +30,7 @@ class RouteServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(
-            SignedStorageUrlControll0erContract::class,
+            SignedStorageUrlControllerContract::class,
             SignedStorageUrlController::class
         );
     }
