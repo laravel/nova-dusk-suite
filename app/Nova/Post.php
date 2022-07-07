@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\FormData;
@@ -62,6 +63,11 @@ class Post extends Resource
                 ->sortable()
                 ->default(function ($request) {
                     return $request->user()->id > 1 ? $request->user()->id : null;
+                })
+                ->dependsOn('title', function (BelongsTo $field, NovaRequest $request, FormData $formData) {
+                    if (Str::startsWith($formData->title, 'Space Pilgrim:')) {
+                        $field->default(1);
+                    }
                 })
                 ->searchable(file_exists(base_path('.searchable')))
                 ->showCreateRelationButton(file_exists(base_path('.inline-create')))
