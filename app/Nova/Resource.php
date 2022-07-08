@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Resource as NovaResource;
@@ -18,6 +19,21 @@ abstract class Resource extends NovaResource
      * @var bool
      */
     public static $trafficCop = false;
+
+    /**
+     * Get meta information about this resource for client side consumption.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array<string, mixed>
+     */
+    public static function additionalInformation(Request $request)
+    {
+        $user = $request->user();
+
+        return array_filter([
+            'clickAction' => ! is_null($user) ? data_get($user, 'settings.clickAction') : null,
+        ]);
+    }
 
     /**
      * Build an "index" query for the given resource.
