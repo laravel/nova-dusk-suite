@@ -137,6 +137,19 @@ class User extends Resource
                     })
                     ->displayUsingLabels()
                     ->hideFromIndex(),
+
+                Select::make('Click Action', 'settings.clickAction')
+                    ->options([
+                        'view' => 'View',
+                        'update' => 'Update',
+                        'select' => 'Select',
+                        'ignore' => 'Ignore',
+                    ])
+                    ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                        data_set($model, $attribute, $request->input((string) Str::of($requestAttribute)->replace('.', '_')));
+                    })
+                    ->displayUsingLabels()
+                    ->hideFromIndex(),
             ]),
 
             BelongsToMany::make('Roles')
