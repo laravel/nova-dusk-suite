@@ -140,8 +140,8 @@ class User extends Resource
 
                 Select::make('Click Action', 'settings.clickAction')
                     ->options([
-                        'view' => 'View',
-                        'update' => 'Update',
+                        'detail' => 'View',
+                        'edit' => 'Update',
                         'select' => 'Select',
                         'ignore' => 'Ignore',
                     ])
