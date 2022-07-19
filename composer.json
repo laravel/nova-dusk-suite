@@ -15,7 +15,8 @@
         "laravel/scout": "^9.4.3",
         "laravel/tinker": "^2.7",
         "laravel/vapor-core": "^2.22",
-        "league/flysystem-aws-s3-v3": "^3.0"
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "nova-kit/nova-on-vapor": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
