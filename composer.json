@@ -16,8 +16,7 @@
         "laravel/tinker": "^2.7",
         "laravel/vapor-core": "^2.22",
         "league/flysystem-aws-s3-v3": "^3.0",
-        "nova-kit/nova-on-vapor": "^1.0",
-        "otwell/remember-token-copier": "*"
+        "nova-kit/nova-on-vapor": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -35,6 +34,7 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Otwell\\CustomField\\": "nova-components/CustomField/src/",
+            "Otwell\\RememberTokenCopier\\": "nova-components/RememberTokenCopier/src/",
             "Otwell\\ResourceTool\\": "nova-components/ResourceTool/src/",
             "Otwell\\SidebarTool\\": "nova-components/SidebarTool/src/"
         }

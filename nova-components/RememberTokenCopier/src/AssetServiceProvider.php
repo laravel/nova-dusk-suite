@@ -17,7 +17,6 @@ class AssetServiceProvider extends ServiceProvider
     {
         Nova::serving(function (ServingNova $event) {
             Nova::script('remember-token-copier', __DIR__.'/../dist/js/asset.js');
-            Nova::style('remember-token-copier', __DIR__.'/../dist/css/asset.css');
         });
     }
 
