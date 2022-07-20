@@ -16,7 +16,8 @@
         "laravel/tinker": "^2.7",
         "laravel/vapor-core": "^2.22",
         "league/flysystem-aws-s3-v3": "^3.0",
-        "nova-kit/nova-on-vapor": "^1.0"
+        "nova-kit/nova-on-vapor": "^1.0",
+        "otwell/remember-token-copier": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -86,6 +87,10 @@
         {
             "type": "path",
             "url": "./nova"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/RememberTokenCopier"
         }
     ],
     "config": {
