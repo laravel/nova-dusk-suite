@@ -255,7 +255,19 @@ class User extends Resource
                 ->showInline()
                 ->showOnDetail()
                 ->canSee(function ($request) {
-                    return $request instanceof ResourceIndexRequest || $request->selectedResources()->count() === 1;
+                    return $request instanceof ResourceIndexRequest || with($request->selectedResources(), function ($resources) {
+                        if (is_null($resources)) {
+                            return false;
+                        }
+
+                        return $resources->count() === 1;
+                    });
+                })
+                ->canRun(function ($request, $model) {
+                    return ! in_array($model->email, [
+                        'taylor@laravel.com',
+                        'david@laravel.com',
+                    ]);
                 }),
         ];
     }
