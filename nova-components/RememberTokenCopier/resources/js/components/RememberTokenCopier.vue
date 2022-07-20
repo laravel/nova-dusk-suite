@@ -1,5 +1,5 @@
 <template>
-  <Modal :show="true">
+  <Modal>
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
       <ModalHeader v-text="data.title" />
 
