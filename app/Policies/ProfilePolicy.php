@@ -21,7 +21,7 @@ class ProfilePolicy
     {
         return ! $user->isBlockedFrom('profile.viewAny')
             ? Response::allow()
-            : Response::deny();
+            : Response::denyAsNotFound();
     }
 
     /**
@@ -35,7 +35,7 @@ class ProfilePolicy
     {
         return ! $user->isBlockedFrom('profile.view.'.$profile->id)
             ? Response::allow()
-            : Response::deny();
+            : Response::denyAsNotFound();
     }
 
     /**
