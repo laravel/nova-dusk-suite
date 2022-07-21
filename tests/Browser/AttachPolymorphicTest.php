@@ -85,9 +85,7 @@ class AttachPolymorphicTest extends DuskTestCase
             $tag = TagFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Detail('posts', 1))
-                    ->runAttachRelation('tags')
-                    ->on(new Attach('posts', 1, 'tags'))
+                    ->visit(new Attach('posts', 1, 'tags', null, true))
                     ->searchFirstRelation('tags', $tag->id)
                     ->type('@notes', 'Test Notes')
                     ->create()
@@ -112,8 +110,7 @@ class AttachPolymorphicTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('posts', 1))
-                    ->runAttachRelation('tags')
+                    ->visit(new Attach('posts', 1, 'tags', null, true))
                     ->whenAvailable('@notes', function ($browser) {
                         $browser->type('', str_repeat('A', 30));
                     })
@@ -142,8 +139,7 @@ class AttachPolymorphicTest extends DuskTestCase
             $tag = TagFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Detail('posts', 1))
-                    ->runAttachRelation('tags')
+                    ->visit(new Attach('posts', 1, 'tags', null, true))
                     ->searchFirstRelation('tags', $tag->id)
                     ->type('@notes', str_repeat('A', 30))
                     ->create()

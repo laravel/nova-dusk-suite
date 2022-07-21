@@ -37,6 +37,29 @@ class DependentBelongsToFieldTest extends DuskTestCase
         });
     }
 
+    public function test_it_can_submit_depends_on_belongs_to_on_first_load()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(4)
+                ->visit(new Create('posts'))
+                ->waitForTextIn('h1', 'Create User Post')
+                ->assertDontSeeIn('@nova-form', 'Attachment')
+                ->type('@title', 'Space Pilgrim: Episode 1')
+                ->type('@body', 'Content')
+                ->pause(2000)
+                ->assertSelected('@user', 1)
+                ->create();
+
+            $browser->blank();
+
+            $this->assertDatabaseHas('posts', [
+                'user_id' => 1,
+                'title' => 'Space Pilgrim: Episode 1',
+                'body' => 'Content',
+            ]);
+        });
+    }
+
     public function test_it_can_retrieve_correct_dependent_state_on_edit()
     {
         $this->browse(function (Browser $browser) {

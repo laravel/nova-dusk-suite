@@ -22,8 +22,7 @@ class AttachDuplicationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->runAttachRelation('roles')
+                    ->visit(new Attach('users', 1, 'roles'))
                     ->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })
@@ -59,8 +58,7 @@ class AttachDuplicationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($now) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->runAttachRelation('books', 'giftBooks')
+                    ->visit(new Attach('users', 1, 'books', 'giftBooks'))
                     ->assertSeeIn('h1', 'Attach Book')
                     ->selectAttachable(4)
                     ->type('@price', '39')
@@ -102,8 +100,7 @@ class AttachDuplicationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($now) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->runAttachRelation('books', 'personalBooks')
+                    ->visit(new Attach('users', 1, 'books', 'personalBooks'))
                     ->assertSeeIn('h1', 'Attach Book')
                     ->selectAttachable(4)
                     ->type('@price', '34')
@@ -137,8 +134,7 @@ class AttachDuplicationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($now) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->runAttachRelation('books', 'giftBooks')
+                    ->visit(new Attach('users', 1, 'books', 'giftBooks'))
                     ->assertSeeIn('h1', 'Attach Book')
                     ->selectAttachable(4)
                     ->type('@price', '34.00')

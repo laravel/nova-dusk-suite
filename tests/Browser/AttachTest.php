@@ -7,6 +7,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -21,8 +22,7 @@ class AttachTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->runAttachRelation('roles')
+                    ->visit(new Attach('users', 1, 'roles'))
                     ->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })
@@ -51,8 +51,7 @@ class AttachTest extends DuskTestCase
             $role = RoleFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->runAttachRelation('roles')
+                    ->visit(new Attach('users', 1, 'roles'))
                     ->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })
@@ -81,8 +80,7 @@ class AttachTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->runAttachRelation('roles')
+                    ->visit(new Attach('users', 1, 'roles'))
                     ->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })

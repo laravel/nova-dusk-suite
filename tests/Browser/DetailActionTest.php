@@ -22,7 +22,7 @@ class DetailActionTest extends DuskTestCase
                     ->visit(new Detail('users', 1))
                     ->waitForTextIn('h1', 'User Details: 1')
                     ->runAction('mark-as-active')
-                    ->waitForText('The action ran successfully!');
+                    ->waitForText('The action was executed successfully.');
 
             $this->assertEquals(1, User::find(1)->active);
 
@@ -119,7 +119,7 @@ class DetailActionTest extends DuskTestCase
                         $browser->waitForTable()
                                 ->selectAllMatching()
                                 ->runAction('mark-as-active');
-                    })->waitForText('The action ran successfully!');
+                    })->waitForText('The action was executed successfully.');
 
             $this->assertEquals(1, $post->fresh()->active);
             $this->assertEquals(0, $post2->fresh()->active);
