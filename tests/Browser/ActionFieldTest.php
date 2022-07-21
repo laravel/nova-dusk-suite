@@ -46,7 +46,7 @@ class ActionFieldTest extends DuskTestCase
                                 $browser->assertSee('Provide a description for notes.')
                                         ->type('@notes', 'Custom Notes');
                             });
-                    })->waitForText('The action ran successfully!');
+                    })->waitForText('The action was executed successfully.');
 
             $this->assertEquals('Custom Notes', User::with('roles')->find(1)->roles->first()->pivot->notes);
 
@@ -128,7 +128,7 @@ class ActionFieldTest extends DuskTestCase
                             ->runAction('update-required-pivot-notes', function ($browser) {
                                 $browser->type('@notes', 'Custom Notes Updated');
                             });
-                    })->waitForText('The action ran successfully!');
+                    })->waitForText('The action was executed successfully.');
 
             $this->assertEquals('Custom Notes Updated', User::with('roles')->find(1)->roles->first()->pivot->notes);
 

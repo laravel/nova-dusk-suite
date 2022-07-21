@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class ProfilePolicy
 {
@@ -18,7 +19,9 @@ class ProfilePolicy
      */
     public function viewAny(User $user)
     {
-        return ! $user->isBlockedFrom('profile.viewAny');
+        return ! $user->isBlockedFrom('profile.viewAny')
+            ? Response::allow()
+            : Response::deny();
     }
 
     /**
@@ -30,7 +33,9 @@ class ProfilePolicy
      */
     public function view(User $user, Profile $profile)
     {
-        return ! $user->isBlockedFrom('profile.view.'.$profile->id);
+        return ! $user->isBlockedFrom('profile.view.'.$profile->id)
+            ? Response::allow()
+            : Response::deny();
     }
 
     /**
@@ -41,7 +46,9 @@ class ProfilePolicy
      */
     public function create(User $user)
     {
-        return ! $user->isBlockedFrom('profile.create');
+        return ! $user->isBlockedFrom('profile.create')
+            ? Response::allow()
+            : Response::deny();
     }
 
     /**
@@ -53,7 +60,9 @@ class ProfilePolicy
      */
     public function update(User $user, Profile $profile)
     {
-        return ! $user->isBlockedFrom('profile.update.'.$profile->id);
+        return ! $user->isBlockedFrom('profile.update.'.$profile->id)
+            ? Response::allow()
+            : Response::deny();
     }
 
     /**

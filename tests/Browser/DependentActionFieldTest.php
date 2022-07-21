@@ -33,7 +33,7 @@ class DependentActionFieldTest extends DuskTestCase
                                 ->type('@action_text', 'View Release')
                                 ->select('@icon', 'download');
                         });
-                })->waitForText('The action ran successfully!');
+                })->waitForText('The action was executed successfully.');
 
             $this->assertDatabaseHas('nova_notifications', [
                 'type' => NovaNotification::class,
@@ -69,7 +69,7 @@ class DependentActionFieldTest extends DuskTestCase
                             ->typeSlowly('@message', 'Please change your password')
                             ->select('@icon', 'exclamation-circle');
                     });
-            })->waitForText('The action ran successfully!');
+            })->waitForText('The action was executed successfully.');
 
             $this->assertDatabaseHas('nova_notifications', [
                 'type' => NovaNotification::class,
@@ -108,7 +108,7 @@ class DependentActionFieldTest extends DuskTestCase
                                 });
                         });
                 })
-                ->waitForText('The action ran successfully!');
+                ->waitForText('The action was executed successfully.');
 
             $this->assertDatabaseHas('comments', [
                 'commentable_type' => $post->getMorphClass(),
@@ -129,7 +129,7 @@ class DependentActionFieldTest extends DuskTestCase
                                     $browser->select('', 4);
                                 });
                         });
-            })->waitForText('The action ran successfully!');
+            })->waitForText('The action was executed successfully.');
 
             $this->assertDatabaseHas('comments', [
                 'commentable_type' => $post->getMorphClass(),

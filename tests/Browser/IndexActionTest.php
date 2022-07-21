@@ -27,7 +27,7 @@ class IndexActionTest extends DuskTestCase
                             ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->runAction('mark-as-active');
-                    })->waitForText('The action ran successfully!');
+                    })->waitForText('The action was executed successfully.');
 
             $this->assertEquals([
                 1 => false,
@@ -101,7 +101,7 @@ class IndexActionTest extends DuskTestCase
                         $browser->waitForTable()
                             ->selectAllMatching()
                             ->runAction('mark-as-active');
-                    })->waitForText('The action ran successfully!');
+                    })->waitForText('The action was executed successfully.');
 
             $this->assertEquals(0, User::where('active', '=', 0)->count());
 
