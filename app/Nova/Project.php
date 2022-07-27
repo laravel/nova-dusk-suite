@@ -64,21 +64,26 @@ class Project extends Resource
                 'Secret' => 'Secret',
             ])->rules('required')->displayUsingLabels(),
 
-            Boolean::make('Show Description', function () {
-                return false;
-            })->onlyOnForms()
-            ->hideWhenUpdating(),
+            Boolean::make('Show Description')
+                ->onlyOnForms()
+                ->hideWhenUpdating()
+                ->resolveUsing(function () {
+                    return false;
+                })
+                ->fillUsing(function () {
+                    //
+                }),
 
             Code::make('Description')
                 ->dependsOn(['name', 'show_description'], function (Code $field, NovaRequest $request, FormData $formData) {
                     if ($formData->name === 'Secret') {
                         $field->show()->default('## Laravel Labs');
-                    }
-
-                    if ($formData->show_description === true) {
-                        $field->default('## Laravel')->show();
                     } else {
-                        $field->hide();
+                        if ($formData->show_description === true) {
+                            $field->default('## Laravel')->show();
+                        } else {
+                            $field->hide();
+                        }
                     }
                 })
                 ->language('text/x-markdown')
