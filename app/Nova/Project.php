@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Validation\Rule;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\ID;
@@ -63,14 +64,23 @@ class Project extends Resource
                 'Secret' => 'Secret',
             ])->rules('required')->displayUsingLabels(),
 
+            Boolean::make('Show Description')
+                ->onlyOnForms()
+                ->hideWhenUpdating(),
+
             Code::make('Description')
-                ->dependsOn('name', function (Code $field, NovaRequest $request, FormData $formData) {
+                ->dependsOn(['name', 'show_description'], function (Code $field, NovaRequest $request, FormData $formData) {
                     if ($formData->name === 'Secret') {
                         $field->show()->default('## Laravel Labs');
                     }
+
+                    if ($formData->show_description === true) {
+                        $field->default('## Laravel')->show();
+                    } else {
+                        $field->hide();
+                    }
                 })
                 ->language('text/x-markdown')
-                ->hide()
                 ->nullable(),
 
             Select::make('Type')->options([])->displayUsing(function ($value) use ($productTypes) {
