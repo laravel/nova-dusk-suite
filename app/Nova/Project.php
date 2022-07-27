@@ -66,7 +66,7 @@ class Project extends Resource
             Code::make('Description')
                 ->dependsOn('name', function (Code $field, NovaRequest $request, FormData $formData) {
                     if ($formData->name === 'Secret') {
-                        $field->show();
+                        $field->show()->default('## Laravel Labs');
                     }
                 })
                 ->language('text/x-markdown')
