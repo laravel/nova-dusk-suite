@@ -62,6 +62,7 @@ class Profile extends Resource
             URL::make('Twitter URL')->displayUsing(function ($value) {
                 return str_replace('https://twitter.com/', '@', $value);
             })->nullable()
+            ->rules(['different:github_url'])
             ->updateRules(['nullable', 'unique:profiles,twitter_url,{{resourceId}}']),
 
             Timezone::make('Timezone')
