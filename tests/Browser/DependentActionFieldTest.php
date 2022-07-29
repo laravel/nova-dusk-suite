@@ -46,7 +46,7 @@ class DependentActionFieldTest extends DuskTestCase
                     'actionText' => 'View Release',
                     'actionUrl' => [
                         'url' => 'https://nova.laravel.com/released/4.0.0',
-                        'remote' =>true,
+                        'remote' => true,
                     ],
                     'type' => 'success',
                     'iconClass' => 'text-green-500',

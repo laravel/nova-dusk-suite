@@ -33,7 +33,7 @@ class ResourceTableSelectionTest extends DuskTestCase
                             ->clickCheckboxForId(2)
                             ->clickCheckboxForId(1)
                             ->within('@select-all-dropdown', function (Browser $browser) {
-                                $browser->assertNotChecked('input[type="checkbox"]')
+                                $browser->assertIndeterminate('input[type="checkbox"]')
                                     ->click('')
                                     ->elsewhereWhenAvailable('@select-all-button', function (Browser $browser) {
                                         $browser->assertChecked('input[type="checkbox"]');
@@ -49,7 +49,7 @@ class ResourceTableSelectionTest extends DuskTestCase
                         $browser->waitForTable()
                             ->selectAllOnCurrentPage()
                             ->within('@select-all-dropdown', function (Browser $browser) {
-                                $browser->assertNotChecked('input[type="checkbox"]')
+                                $browser->assertIndeterminate('input[type="checkbox"]')
                                     ->click('')
                                     ->elsewhereWhenAvailable('@select-all-button', function (Browser $browser) {
                                         $browser->assertChecked('input[type="checkbox"]');
@@ -74,7 +74,7 @@ class ResourceTableSelectionTest extends DuskTestCase
                         $browser->waitForTable()
                             ->selectAllOnCurrentPage()
                             ->within('@select-all-dropdown', function (Browser $browser) {
-                                $browser->assertNotChecked('input[type="checkbox"]')
+                                $browser->assertIndeterminate('input[type="checkbox"]')
                                     ->click('')
                                     ->elsewhereWhenAvailable('@select-all-button', function (Browser $browser) {
                                         $browser->assertChecked('input[type="checkbox"]');
@@ -140,7 +140,7 @@ class ResourceTableSelectionTest extends DuskTestCase
                             ->assertChecked('[dusk="3-row"] input.checkbox')
                             ->assertChecked('[dusk="4-row"] input.checkbox')
                             ->within('@select-all-dropdown', function (Browser $browser) {
-                                $browser->assertNotChecked('input[type="checkbox"]')
+                                $browser->assertIndeterminate('input[type="checkbox"]')
                                     ->click('')
                                     ->elsewhereWhenAvailable('@select-all-button', function (Browser $browser) {
                                         $browser->assertChecked('input[type="checkbox"]');
