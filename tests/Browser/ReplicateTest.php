@@ -52,7 +52,7 @@ class ReplicateTest extends DuskTestCase
     {
         $post = PostFactory::new()->create([
             'meta' => ['framework' => 'laravel'],
-            'attachment' =>  __DIR__.'/Fixtures/StardewTaylor.png',
+            'attachment' => __DIR__.'/Fixtures/StardewTaylor.png',
         ]);
 
         $this->browse(function (Browser $browser) use ($post) {
