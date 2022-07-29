@@ -98,7 +98,18 @@ class Post extends Resource
 
             new Heading('Social Data'),
 
-            KeyValue::make('Meta')->nullable(),
+            KeyValue::make('Meta')
+                ->dependsOn('title', function (KeyValue $field, NovaRequest $request, FormData $formData) {
+                    if (Str::startsWith($formData->title, 'Space Pilgrim:')) {
+                        $field->default([
+                            'Series' => 'Space Pilgrim',
+                        ]);
+                    } elseif (Str::startsWith($formData->title, 'Nova:')) {
+                        $field->default([
+                            'Series' => 'Laravel Nova',
+                        ]);
+                    }
+                })->nullable(),
         ];
     }
 
