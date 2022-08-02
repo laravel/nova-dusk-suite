@@ -8,7 +8,6 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Metrics\MetricTableRow;
 use Laravel\Nova\Metrics\Table;
-use Laravel\Nova\Nova;
 
 class NewPosts extends Table
 {
