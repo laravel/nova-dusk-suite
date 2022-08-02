@@ -26,7 +26,7 @@ class NewPosts extends Table
                 ->subtitle(Str::limit($post->body, 10))
                 ->actions(function () use ($post) {
                     return [
-                        MenuItem::make('Edit', Nova::url("/resources/posts/{$post->id}/edit")),
+                        MenuItem::make('Edit', "/resources/posts/{$post->id}/edit"),
                     ];
                 });
         })->all();
