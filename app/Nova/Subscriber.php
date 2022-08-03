@@ -5,6 +5,7 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
+use Laravel\Nova\Fields\Email;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
@@ -54,12 +55,13 @@ class Subscriber extends Resource
                     (new Search($query, $value))->handle(__CLASS__, [$attribute, 'email']);
                 })->showOnPreview(),
 
-            Text::make('Email', 'email')->sortable()->rules('required', 'email', 'max:255')
+            Email::make('Email', 'email')->sortable()->rules('required', 'email', 'max:255')
                 ->help('E-mail address should be unique')
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}')
                 ->sortable()
-                ->showOnPreview(),
+                ->showOnPreview()
+                ->filterable(),
 
             Password::make('Password', 'password')
                 ->onlyOnForms()
