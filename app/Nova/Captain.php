@@ -96,7 +96,9 @@ class Captain extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            Actions\FieldsAction::make()->standalone(),
+        ];
     }
 
     /**
