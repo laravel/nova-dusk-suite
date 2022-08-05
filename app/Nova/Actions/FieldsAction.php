@@ -49,6 +49,7 @@ class FieldsAction extends Action
             Fields\Trix::make('Trix'),
             Fields\URL::make('URL'),
             Fields\Text::make('Text'),
+            Fields\Text::make('Stacked_Field_Text')->stacked(),
         ];
     }
 }
