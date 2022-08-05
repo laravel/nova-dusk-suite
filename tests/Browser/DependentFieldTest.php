@@ -109,10 +109,10 @@ class DependentFieldTest extends DuskTestCase
                 ->waitForTextIn('h1', 'Create Company')
                 ->within(new FormComponent, function ($browser) {
                     $browser->fieldValue(
-                        'description',
-                        'Creators of Tailwind CSS, Tailwind UI, and Refactoring UI.'
-                    )->type('@name', 'Tailwind Labs Inc')
-                    ->select('@country', 'US');
+                            'description',
+                            'Creators of Tailwind CSS, Tailwind UI, and Refactoring UI.'
+                        )->type('@name', 'Tailwind Labs Inc')
+                        ->select('@country', 'US');
                 })
                 ->create()
                 ->waitForText('The company was created!');
