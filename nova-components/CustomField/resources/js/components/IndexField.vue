@@ -1,9 +1,13 @@
 <template>
-  <span>{{ field.value }}</span>
+  <span>{{ fieldValue }}</span>
 </template>
 
 <script>
+import { FieldValue } from 'laravel-nova'
+
 export default {
+  mixins: [FieldValue],
+
   props: ['resourceName', 'field'],
 }
 </script>

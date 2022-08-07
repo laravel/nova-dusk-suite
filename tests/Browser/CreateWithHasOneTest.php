@@ -36,7 +36,8 @@ class CreateWithHasOneTest extends DuskTestCase
                 ->assertSee('The Name field is required.')
                 ->assertSee('The Email field is required.')
                 ->assertSee('The Password field is required.')
-                ->assertVisible('@create-profile-relation-button');
+                ->assertVisible('@create-profile-relation-button')
+                ->cancel();
 
             $browser->blank();
         });
