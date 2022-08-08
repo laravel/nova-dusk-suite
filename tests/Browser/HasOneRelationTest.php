@@ -121,4 +121,31 @@ class HasOneRelationTest extends DuskTestCase
             $browser->blank();
         });
     }
+
+    public function test_can_handle_inline_dependent_rules_validation()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                    ->visit(new Update('users', 1))
+                    ->waitForText('Profile')
+                    ->type('@github_url', 'https://github.com/laravel')
+                    ->type('@twitter_url', 'https://github.com/laravel')
+                    ->update()
+                    ->waitForText('There was a problem submitting the form.')
+                    ->assertSee('The Twitter URL and GitHub URL must be different.')
+                    ->cancel();
+
+            $browser->loginAs(1)
+                    ->visit(new Update('profiles', 1))
+                    ->waitForText('Profile')
+                    ->type('@github_url', 'https://github.com/laravel')
+                    ->type('@twitter_url', 'https://github.com/laravel')
+                    ->update()
+                    ->waitForText('There was a problem submitting the form.')
+                    ->assertSee('The Twitter URL and GitHub URL must be different.')
+                    ->cancel();
+
+            $browser->blank();
+        });
+    }
 }
