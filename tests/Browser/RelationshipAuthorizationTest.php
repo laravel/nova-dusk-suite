@@ -47,7 +47,8 @@ class RelationshipAuthorizationTest extends DuskTestCase
                     ->selectRelation('commentable-type', 'posts')
                     ->pause(500)
                     ->assertSelectMissingOption('@commentable-select', $post->title)
-                    ->assertSelectMissingOption('@commentable-select', $post->id);
+                    ->assertSelectMissingOption('@commentable-select', $post->id)
+                    ->cancel();
 
             $browser->blank();
         });

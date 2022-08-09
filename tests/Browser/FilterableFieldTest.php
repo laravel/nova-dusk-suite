@@ -6,6 +6,7 @@ use App\Models\Profile;
 use App\Models\User;
 use Carbon\Carbon;
 use Database\Factories\PostFactory;
+use Database\Factories\SubscriberFactory;
 use Illuminate\Support\Facades\DB;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
@@ -105,6 +106,33 @@ class FilterableFieldTest extends DuskTestCase
                 });
 
             $browser->blank();
+        });
+    }
+
+    public function test_it_can_filter_email_field()
+    {
+        $this->browse(function (Browser $browser) {
+            $subscribers = SubscriberFactory::new()->times(5)->create();
+
+            $browser->loginAs(1)
+                ->visit(new Index('subscribers'))
+                ->within(new IndexComponent('subscribers'), function ($browser) use ($subscribers) {
+                    $browser->waitForTable()
+                            ->assertSeeResource(1)
+                            ->assertSeeResource(2)
+                            ->assertSeeResource(3)
+                            ->assertSeeResource(4)
+                            ->assertSeeResource(5)
+                            ->runFilter(function ($browser) use ($subscribers) {
+                                $browser->type('@email-default-email-field-filter', $subscribers[2]->email);
+                            })
+                            ->waitForTable()
+                            ->assertDontSeeResource(1)
+                            ->assertDontSeeResource(2)
+                            ->assertSeeResource(3)
+                            ->assertDontSeeResource(4)
+                            ->assertDontSeeResource(5);
+                });
         });
     }
 

@@ -58,6 +58,12 @@ class Company extends Resource
                     if (! empty($formData->name)) {
                         $field->show();
                     }
+
+                     $field->default(
+                        ! in_array($formData->name, ['Laravel LLC', 'Tailwind Labs Inc'])
+                            ? "{$formData->name}'s Description"
+                            : ''
+                    );
                 })
                 ->hide()
                 ->nullable(),
