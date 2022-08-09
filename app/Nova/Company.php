@@ -59,7 +59,7 @@ class Company extends Resource
                         $field->show();
                     }
 
-                     $field->default(
+                    $field->default(
                         ! in_array($formData->name, ['Laravel LLC', 'Tailwind Labs Inc'])
                             ? "{$formData->name}'s Description"
                             : ''
