@@ -10,7 +10,32 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class GlobalSearchTest extends DuskTestCase
 {
-    public function test_can_search_resource_as_big_int()
+    public function test_it_closes_the_search_results_when_search_query_is_empty()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                    ->visit(new Dashboard())
+                    ->within('@global-search-component', function ($browser) {
+                        $browser->type('@global-search', 'a')
+                            ->elsewhereWhenAvailable('@global-search-results', function ($browser) {
+                                $browser->assertSee('BOOKS')->assertSee('USERS');
+                            })
+                            ->elsewhere('', function ($browser) {
+                                $browser->assertMissing('@global-search-empty-results');
+                            })
+                            ->keys('@global-search', '{backspace}')
+                            ->pause(1000)
+                            ->elsewhere('', function ($browser) {
+                                $browser->assertMissing('@global-search-results')
+                                    ->assertMissing('@global-search-empty-results');
+                            });
+                    });
+
+            $browser->blank();
+        });
+    }
+
+    public function test_it_can_search_resource_as_big_int()
     {
         $user = UserFactory::new()->create([
             'id' => 9121018173229432287,
