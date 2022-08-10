@@ -97,6 +97,19 @@ class DependentFieldTest extends DuskTestCase
                 'country' => null,
             ]);
 
+            $browser->visit(new Create('companies'))
+                ->waitForTextIn('h1', 'Create Company')
+                ->type('@name', 'Laravel')
+                ->pause(1500)
+                ->create()
+                ->waitForText('The company was created!');
+
+            $this->assertDatabaseHas('companies', [
+                'name' => 'Laravel',
+                'description' => "Laravel's Description",
+                'country' => null,
+            ]);
+
             $browser->blank();
         });
     }
