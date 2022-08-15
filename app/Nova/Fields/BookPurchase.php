@@ -2,6 +2,7 @@
 
 namespace App\Nova\Fields;
 
+use App\Nova\Book;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
@@ -68,7 +69,13 @@ class BookPurchase
         return [
             Currency::make('Price')
                 ->dependsOn(['books', 'personalBooks', 'giftBooks'], function ($field, NovaRequest $request, $formData) {
-                    $bookId = (int) $formData->resource($request->viaRelationship, $formData->{$request->viaRelationship});
+                    $bookId = (int) transform(Book::uriKey(), function ($resourceName) use ($request, $formData) {
+                        if ($resourceName === $request->relatedResource) {
+                            return $formData->resource($resourceName, $formData->{$request->viaRelationship});
+                        }
+
+                        return $formData->resource($resourceName);
+                    });
 
                     if ($bookId == 1) {
                         $field->rules(['required', 'numeric', 'min:10', 'max:199'])
