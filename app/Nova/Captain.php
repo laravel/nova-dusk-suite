@@ -7,6 +7,7 @@ use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\VaporImage;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
@@ -39,6 +40,8 @@ class Captain extends Resource
      */
     public function fields(NovaRequest $request)
     {
+        $user = $request->user();
+
         return [
             ID::make('ID', 'id')->sortable(),
 
@@ -46,8 +49,23 @@ class Captain extends Resource
                 ->rules('required')
                 ->sortable(),
 
-            Image::make('Photo', 'photo')
-                ->prunable(),
+            $this->merge(function () use ($user) {
+                $storage = $user->settings['storage'] ?? 'local' === 'local';
+
+                if ($storage === 's3') {
+                    return [
+                        VaporImage::make('Photo', 'photo')
+                            ->prunable()
+                            ->help('Using cloud storage'),
+                    ];
+                }
+
+                return [
+                    Image::make('Photo', 'photo')
+                        ->prunable()
+                        ->help('Using local storage'),
+                ];
+            }),
 
             BelongsToMany::make('Ships', 'ships')
                         ->display('name')
