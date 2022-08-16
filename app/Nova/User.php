@@ -151,6 +151,17 @@ class User extends Resource
                     })
                     ->displayUsingLabels()
                     ->hideFromIndex(),
+
+                Select::make('Storage', 'settings.storage')
+                    ->options([
+                        'local' => 'Local',
+                        's3' => 'Cloud',
+                    ])
+                    ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                        data_set($model, $attribute, $request->input((string) Str::of($requestAttribute)->replace('.', '_')));
+                    })
+                    ->displayUsingLabels()
+                    ->hideFromIndex(),
             ]),
 
             BelongsToMany::make('Roles')
