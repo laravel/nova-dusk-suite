@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Nova;
 
 /**
  * @template TModel of \App\Models\Comment
@@ -51,6 +52,12 @@ class Comment extends Resource
                 ->dependsOn($commentable, function (Text $field, NovaRequest $request, FormData $formData) {
                     if ($formData->commentable_type === 'videos') {
                         $field->rules('required', 'min:10');
+                    }
+
+                    $model = Nova::modelInstanceForKey($formData->commentable_type);
+
+                    if (! is_null($model) && ! is_null($formData->commentable)) {
+                        ray($model->newInstance()->find($formData->commentable));
                     }
                 }),
 
