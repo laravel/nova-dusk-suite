@@ -2,6 +2,7 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
+use App\Models\Post;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Create;
@@ -30,6 +31,8 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 ->type('@title', 'Space Pilgrim: Episode 1')
                 ->pause(2000)
                 ->assertSelected('@user', 1)
+                ->assertInputValue('@key-value-key-0', 'Series')
+                ->assertInputValue('@key-value-value-0', 'Space Pilgrim')
                 ->assertSeeIn('@nova-form', 'Attachment')
                 ->cancel();
 
@@ -48,6 +51,8 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 ->type('@body', 'Content')
                 ->pause(2000)
                 ->assertSelected('@user', 1)
+                ->assertInputValue('@key-value-key-0', 'Series')
+                ->assertInputValue('@key-value-value-0', 'Space Pilgrim')
                 ->create();
 
             $browser->blank();
@@ -57,6 +62,10 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 'title' => 'Space Pilgrim: Episode 1',
                 'body' => 'Content',
             ]);
+
+            tap(Post::latest()->first(), function ($post) {
+                $this->assertSame(['Series' => 'Space Pilgrim'], $post->meta);
+            });
         });
     }
 
