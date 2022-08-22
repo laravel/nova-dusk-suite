@@ -30,6 +30,8 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 ->type('@title', 'Space Pilgrim: Episode 1')
                 ->pause(2000)
                 ->assertSelected('@user', 1)
+                ->assertInputValue('@key-value-key-0', 'Series')
+                ->assertInputValue('@key-value-value-0', 'Space Pilgrim')
                 ->assertSeeIn('@nova-form', 'Attachment')
                 ->cancel();
 
@@ -48,6 +50,8 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 ->type('@body', 'Content')
                 ->pause(2000)
                 ->assertSelected('@user', 1)
+                ->assertInputValue('@key-value-key-0', 'Series')
+                ->assertInputValue('@key-value-value-0', 'Space Pilgrim')
                 ->create();
 
             $browser->blank();
@@ -56,6 +60,7 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 'user_id' => 1,
                 'title' => 'Space Pilgrim: Episode 1',
                 'body' => 'Content',
+                'meta' => $this->castAsJson(['Series' => 'Space Pilgrim']),
             ]);
         });
     }

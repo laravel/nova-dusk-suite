@@ -51,7 +51,9 @@ class Company extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
 
-            Text::make('Name')->rules('required'),
+            Text::make('Name')
+                ->rules('required')
+                ->suggestions(['Laravel LLC', 'Tailwind Labs Inc']),
 
             Markdown::make('Description')
                 ->dependsOn('name', function (Markdown $field, NovaRequest $request, FormData $formData) {
