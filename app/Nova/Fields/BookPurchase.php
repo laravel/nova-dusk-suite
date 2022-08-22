@@ -69,13 +69,7 @@ class BookPurchase
         return [
             Currency::make('Price')
                 ->dependsOn(['books', 'personalBooks', 'giftBooks'], function ($field, NovaRequest $request, $formData) {
-                    $bookId = (int) transform(Book::uriKey(), function ($resourceName) use ($request, $formData) {
-                        if ($resourceName === $request->relatedResource) {
-                            return $formData->resource($resourceName, $formData->{$request->viaRelationship});
-                        }
-
-                        return $formData->resource($resourceName);
-                    });
+                    $bookId = (int) $formData->resource(Book::uriKey());
 
                     if ($bookId == 1) {
                         $field->rules(['required', 'numeric', 'min:10', 'max:199'])
