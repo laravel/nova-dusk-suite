@@ -50,14 +50,14 @@ class Comment extends Resource
             Text::make('Body', 'body')
                 ->rules('required')
                 ->dependsOn($commentable, function (Text $field, NovaRequest $request, FormData $formData) {
-                    if ($formData->commentable_type === 'videos') {
-                        $field->rules('required', 'min:10');
+                    $model = Nova::modelInstanceForKey($formData->commentable_type ?? $request->viaResource);
+
+                    if ($model instanceof \App\Models\Video) {
+                        $field->rules('required', 'min:10')->help('Video requires minimum 10 characters!');
                     }
 
-                    $model = Nova::modelInstanceForKey($formData->commentable_type);
-
-                    if (! is_null($model) && ! is_null($formData->commentable)) {
-                        ray($model->newInstance()->find($formData->commentable));
+                    if (! is_null($model)) {
+                        ray($model->newInstance()->find($formData->commentable ?? $request->viaResourceId));
                     }
                 }),
 
