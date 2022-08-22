@@ -40,7 +40,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 )->append(
                     MenuSection::make('Links', [
                         MenuItem::externalLink('Dashboard', url('/dashboard'), 'self'),
-                        MenuItem::externalLink('Nova Website', 'https://nova.laravel.com'),
+                        MenuItem::externalLink('Nova Website', 'https://nova.laravel.com')->openInNewTab(),
                     ])
                 );
             }
