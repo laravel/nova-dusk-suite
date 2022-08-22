@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Post;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Create;
@@ -61,11 +60,8 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 'user_id' => 1,
                 'title' => 'Space Pilgrim: Episode 1',
                 'body' => 'Content',
+                'meta' => $this->castAsJson(['Series' => 'Space Pilgrim']),
             ]);
-
-            tap(Post::latest()->first(), function ($post) {
-                $this->assertSame(['Series' => 'Space Pilgrim'], $post->meta);
-            });
         });
     }
 
