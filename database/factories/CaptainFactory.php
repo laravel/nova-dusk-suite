@@ -23,7 +23,7 @@ class CaptainFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'photo'=> '',
+            'photo' => '',
         ];
     }
 }
