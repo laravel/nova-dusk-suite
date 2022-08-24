@@ -47,13 +47,13 @@ jobs:
 
       - name: Compile Asset for Nova Components
         run: |
-          npm --prefix "./nova-components/CustomField" run ci
+          npm --prefix "./nova-components/CustomField" ci
           npm --prefix "./nova-components/CustomField" run production
-          npm --prefix "./nova-components/RememberTokenCopier" run ci
+          npm --prefix "./nova-components/RememberTokenCopier" ci
           npm --prefix "./nova-components/RememberTokenCopier" run production
-          npm --prefix "./nova-components/ResourceTool" run ci
+          npm --prefix "./nova-components/ResourceTool" ci
           npm --prefix "./nova-components/ResourceTool" run production
-          npm --prefix "./nova-components/SidebarTool" run ci
+          npm --prefix "./nova-components/SidebarTool" ci
           npm --prefix "./nova-components/SidebarTool" run production
         env:
           TAILWIND_MODE: build
