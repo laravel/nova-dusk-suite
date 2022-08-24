@@ -15,6 +15,17 @@ jobs:
         with:
           node-version: '14.x'
 
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - uses: actions/checkout@v2
+        name: Checkout private tools
+        with:
+          repository: laravel/nova
+          token: ${{ secrets.MY_GITHUB_TOKEN }}
+          path: nova
+          ref: "4.0"
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
