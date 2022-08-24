@@ -1,0 +1,49 @@
+name: Update Nova Component Assets
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, intl, fileinfo
+          coverage: none
+
+      - name: Install dependencies
+        uses: "ramsey/composer-install@v1"
+        with:
+          dependency-versions: "highest"
+          composer-options: "--prefer-dist --no-cache"
+
+      - name: Publish webpack.mix.js
+        run: cp ./nova/webpack.mix.js.dist ./nova/webpack.mix.js
+
+      - name: Install NPM on Laravel Nova
+        run: npm --prefix "./nova/" ci
+
+      - name: Compile Asset for Nova Components
+        run: |
+          npm --prefix "./nova-components/CustomField" run prod
+          npm --prefix "./nova-components/RememberTokenCopier" run prod
+          npm --prefix "./nova-components/ResourceTool" run prod
+          npm --prefix "./nova-components/SidebarTool" run prod
+        env:
+          TAILWIND_MODE: build
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update Assets
