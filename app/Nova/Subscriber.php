@@ -78,13 +78,13 @@ class Subscriber extends Resource
                 ])->label(function ($value) {
                     return Str::title($value);
                 }),
-                // ->filterable(function ($request, $query, $value) {
-                //     return $query->when($value === 'active', function ($query) {
-                //         $query->whereNotNull('email_verified_at');
-                //     })->when($value === 'inactive', function ($query) {
-                //         $query->whereNull('email_verified_at');
-                //     });
-                // }),
+            // ->filterable(function ($request, $query, $value) {
+            //     return $query->when($value === 'active', function ($query) {
+            //         $query->whereNotNull('email_verified_at');
+            //     })->when($value === 'inactive', function ($query) {
+            //         $query->whereNull('email_verified_at');
+            //     });
+            // }),
         ];
     }
 
