@@ -5,6 +5,7 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Email;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
@@ -67,6 +68,23 @@ class Subscriber extends Resource
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
+
+            Badge::make('Status')
+                ->resolveUsing(function () {
+                    return ! is_null($this->email_verified_at) ? 'active' : 'inactive';
+                })->map([
+                    'inactive' => 'danger',
+                    'active' => 'success',
+                ])->label(function ($value) {
+                    return Str::title($value);
+                }),
+                // ->filterable(function ($request, $query, $value) {
+                //     return $query->when($value === 'active', function ($query) {
+                //         $query->whereNotNull('email_verified_at');
+                //     })->when($value === 'inactive', function ($query) {
+                //         $query->whereNull('email_verified_at');
+                //     });
+                // }),
         ];
     }
 

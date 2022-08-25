@@ -13,18 +13,23 @@ use Laravel\Nova\Tests\DuskTestCase;
 class DateFieldTest extends DuskTestCase
 {
     /**
-     * @test
      * @group local-time
      * @dataProvider localiseDateDataProvider
      */
-    public function can_pick_date_using_date_input($date, $userTimezone)
+    public function test_can_pick_date_using_date_input($date, $appTimezone, $userTimezone)
     {
+        $this->beforeServingApplication(function ($app, $config) use ($appTimezone) {
+            $config->set('app.timezone', $appTimezone);
+        });
+
         $person = PeopleFactory::new()->create([
             'name' => 'Tess Hemphill',
         ]);
 
         $user = User::find(1);
         $now = CarbonImmutable::parse($date, config('app.timezone'));
+
+        $this->assertSame($appTimezone, config('app.timezone'));
 
         tap($user->profile, function ($profile) use ($userTimezone) {
             $profile->timezone = $userTimezone;
@@ -40,9 +45,9 @@ class DateFieldTest extends DuskTestCase
 
             $person->refresh();
 
-            $this->assertEquals(
-                $now,
-                $person->created_at
+            $this->assertSame(
+                $now->toDateString(),
+                $person->created_at->toDateString()
             );
 
             $browser->visit(new Update('people', $person->getKey()))
@@ -53,9 +58,9 @@ class DateFieldTest extends DuskTestCase
 
             $person->refresh();
 
-            $this->assertEquals(
-                $now,
-                $person->created_at
+            $this->assertSame(
+                $now->toDateString(),
+                $person->created_at->toDateString()
             );
 
             $browser->blank();
@@ -63,14 +68,19 @@ class DateFieldTest extends DuskTestCase
     }
 
     /**
-     * @test
      * @group local-time
      * @dataProvider localiseDateDataProvider
      */
-    public function can_pick_date_using_date_input_and_maintain_current_value_on_validation_errors($date, $userTimezone)
+    public function test_can_pick_date_using_date_input_and_maintain_current_value_on_validation_errors($date, $appTimezone, $userTimezone)
     {
+        $this->beforeServingApplication(function ($app, $config) use ($appTimezone) {
+            $config->set('app.timezone', $appTimezone);
+        });
+
         $user = User::find(1);
         $now = CarbonImmutable::parse($date, config('app.timezone'));
+
+        $this->assertSame($appTimezone, config('app.timezone'));
 
         tap($user->profile, function ($profile) use ($userTimezone) {
             $profile->timezone = $userTimezone;
@@ -92,9 +102,11 @@ class DateFieldTest extends DuskTestCase
 
     public function localiseDateDataProvider()
     {
-        yield ['Dec 13 1983', 'America/Chicago'];
-        yield ['Dec 13 1983', 'Asia/Kuala_Lumpur'];
-        yield ['Dec 13 1983', 'America/Santo_Domingo'];
-        yield ['Dec 13 1983', 'UTC'];
+        yield ['Dec 13 1983', 'UTC', 'America/Chicago'];
+        yield ['Dec 13 1983', 'UTC', 'Asia/Kuala_Lumpur'];
+        yield ['Dec 13 1983', 'UTC', 'America/Santo_Domingo'];
+        yield ['Dec 13 1983', 'UTC', 'UTC'];
+        yield ['Dec 13 1983', 'America/Sao_Paulo', 'America/Manaus'];
+        yield ['Aug 18 2022', 'America/Sao_Paulo', 'America/Manaus'];
     }
 }
