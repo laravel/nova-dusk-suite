@@ -122,9 +122,9 @@ class Post extends Resource
     public function cards(NovaRequest $request)
     {
         return [
-            Metrics\PostCountOverTime::make(), //->refreshWhenFilterChanged(),
-            Metrics\PostCountByUser::make(), //->refreshWhenFilterChanged(),
-            Metrics\PostCount::make(), //->refreshWhenFilterChanged(),
+            Metrics\PostCountOverTime::make()->refreshWhenFiltersChange(),
+            Metrics\PostCountByUser::make()->refreshWhenFiltersChange(),
+            Metrics\PostCount::make()->refreshWhenFiltersChange(),
 
             Metrics\CommentCount::make()->onlyOnDetail(),
         ];
