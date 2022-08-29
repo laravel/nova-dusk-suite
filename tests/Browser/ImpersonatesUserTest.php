@@ -8,14 +8,14 @@ use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Dashboard;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class ImpersonatesUserTest extends DuskTestCase
 {
-    /** @test */
-    public function it_can_impersonate_another_user()
+    public function test_it_can_impersonate_another_user()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(2)
@@ -42,6 +42,8 @@ class ImpersonatesUserTest extends DuskTestCase
                                             ->assertVisible('@4-impersonate-button')
                                             ->clickAndWaitForReload('@4-impersonate-button')
                                             ->assertPathIs('/')
+                                            ->assertQueryStringHas('impersonator', 2)
+                                            ->assertQueryStringHas('impersonated', 4)
                                             ->assertAuthenticatedAs(User::find(4));
                                 });
                     })
@@ -73,15 +75,14 @@ class ImpersonatesUserTest extends DuskTestCase
                     ->press('Stop Impersonating')
                     ->assertDialogOpened('Are you sure you want to stop impersonating?')
                     ->acceptDialog()
-                    ->on(new Dashboard())
+                    ->on(new Detail('users', 4))
                     ->assertAuthenticatedAs(User::find(2));
 
             $browser->blank();
         });
     }
 
-    /** @test */
-    public function it_can_impersonate_another_user_with_different_password()
+    public function test_it_can_impersonate_another_user_with_different_password()
     {
         $this->browse(function (Browser $browser) {
             $user = UserFactory::new()->create([
@@ -97,6 +98,8 @@ class ImpersonatesUserTest extends DuskTestCase
                                             ->assertVisible("@{$user->id}-impersonate-button")
                                             ->clickAndWaitForReload("@{$user->id}-impersonate-button")
                                             ->assertPathIs('/')
+                                            ->assertQueryStringHas('impersonator', 2)
+                                            ->assertQueryStringHas('impersonated', $user->id)
                                             ->assertAuthenticatedAs($user);
                                 });
                     })
@@ -133,15 +136,14 @@ class ImpersonatesUserTest extends DuskTestCase
                     ->press('Stop Impersonating')
                     ->assertDialogOpened('Are you sure you want to stop impersonating?')
                     ->acceptDialog()
-                    ->on(new Dashboard())
+                    ->on(new Detail('users', $user->id))
                     ->assertAuthenticatedAs(User::find(2));
 
             $browser->blank();
         });
     }
 
-    /** @test */
-    public function it_can_impersonate_another_user_using_different_guard()
+    public function test_it_can_impersonate_another_user_using_different_guard()
     {
         $this->browse(function (Browser $browser) {
             $user = User::find(2);
@@ -159,6 +161,8 @@ class ImpersonatesUserTest extends DuskTestCase
                                             ->assertVisible("@{$subscriber->id}-impersonate-button")
                                             ->clickAndWaitForReload("@{$subscriber->id}-impersonate-button")
                                             ->assertPathIs('/')
+                                            ->assertQueryStringHas('impersonator', $user->id)
+                                            ->assertQueryStringHas('impersonated', $subscriber->id)
                                             ->assertAuthenticatedAs($user)
                                             ->assertAuthenticatedAs($subscriber, 'web-subscribers');
                                 });
@@ -168,15 +172,14 @@ class ImpersonatesUserTest extends DuskTestCase
                     ->press('Stop Impersonating')
                     ->assertDialogOpened('Are you sure you want to stop impersonating?')
                     ->acceptDialog()
-                    ->on(new Dashboard())
+                    ->on(new Detail('subscribers', $subscriber->id))
                     ->assertAuthenticatedAs($user);
 
             $browser->blank();
         });
     }
 
-    /** @test */
-    public function it_can_impersonate_another_user_using_different_guard_with_nova_guard_on_none_default()
+    public function test_it_can_impersonate_another_user_using_different_guard_with_nova_guard_on_none_default()
     {
         $this->beforeServingApplication(function ($app, $config) {
             $config->set('auth.defaults.guard', 'web-subscribers');
@@ -192,13 +195,15 @@ class ImpersonatesUserTest extends DuskTestCase
 
             $browser->loginAs($user, 'web')
                     ->visit(new Index('subscribers'))
-                    ->within(new IndexComponent('subscribers'), function ($browser) use ($subscriber) {
+                    ->within(new IndexComponent('subscribers'), function ($browser) use ($user, $subscriber) {
                         $browser->openControlSelectorById($subscriber->id)
-                                ->elsewhere('', function ($browser) use ($subscriber) {
+                                ->elsewhere('', function ($browser) use ($user, $subscriber) {
                                     $browser->assertVisible("@{$subscriber->id}-replicate-button")
                                             ->assertVisible("@{$subscriber->id}-impersonate-button")
                                             ->clickAndWaitForReload("@{$subscriber->id}-impersonate-button")
                                             ->assertPathIs('/')
+                                            ->assertQueryStringHas('impersonator', $user->id)
+                                            ->assertQueryStringHas('impersonated', $subscriber->id)
                                             ->assertAuthenticatedAs($subscriber);
                                 });
                     })
@@ -207,7 +212,7 @@ class ImpersonatesUserTest extends DuskTestCase
                     ->press('Stop Impersonating')
                     ->assertDialogOpened('Are you sure you want to stop impersonating?')
                     ->acceptDialog()
-                    ->on(new Dashboard())
+                    ->on(new Detail('subscribers', $subscriber->id))
                     ->assertAuthenticatedAs($user, 'web');
 
             $browser->blank();

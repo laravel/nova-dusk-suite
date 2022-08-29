@@ -6,6 +6,7 @@ use Laravel\Nova\Http\Middleware\Authorize;
 use Laravel\Nova\Http\Middleware\BootTools;
 use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
 use Laravel\Nova\Http\Middleware\HandleInertiaRequests;
+use Laravel\Nova\Nova;
 
 return [
 
@@ -186,4 +187,21 @@ return [
     'actions' => [
         'resource' => ActionResource::class,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Nova Impersonation Redirection URLs
+    |--------------------------------------------------------------------------
+    |
+    | This configuration option allows you to specify a URL where Nova should
+    | redirect an administrator after impersonating another user and a URL
+    | to redirect the administrator after stopping impersonating a user.
+    |
+    */
+
+    'impersonation' => [
+        'started' => '/',
+        'stopped' => Nova::url('/'),
+    ],
+
 ];
