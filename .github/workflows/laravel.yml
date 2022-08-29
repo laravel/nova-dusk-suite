@@ -92,7 +92,7 @@ jobs:
         run: chmod -R 777 storage bootstrap/cache
 
       - name: Prepare assets
-        run: php artisan nova:publish --force
+        run: php artisan nova:publish
 
       - name: Prepare storage
         run: php artisan storage:link
