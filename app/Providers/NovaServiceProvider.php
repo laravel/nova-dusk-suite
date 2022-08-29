@@ -6,8 +6,11 @@ use App\Nova\Dashboards\Main;
 use App\Nova\Dashboards\Posts;
 use Carbon\CarbonInterval;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Events\ServingNova;
+use Laravel\Nova\Events\StartedImpersonating;
+use Laravel\Nova\Events\StoppedImpersonating;
 use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
@@ -28,6 +31,26 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         // Nova::remoteStyle(mix('css/nova.css'));
         // Nova::remoteScript(mix('js/nova.js'));
+
+        Event::listen(StartedImpersonating::class, function ($event) {
+            config([
+                'nova.impersonation.started' => '/?'.http_build_query([
+                    'impersonated' => $event->impersonated->getKey(),
+                    'impersonator' => $event->impersonator->getKey(),
+                ]),
+            ]);
+        });
+
+        Event::listen(StoppedImpersonating::class, function ($event) {
+            $resource = Nova::resourceForModel($event->impersonated);
+
+            config([
+                'nova.impersonation.stopped' => route('nova.pages.detail', [
+                    'resource' => $resource::uriKey(),
+                    'resourceId' => $event->impersonated->getKey(),
+                ]),
+            ]);
+        });
 
         Nova::mainMenu(function (Request $request, Menu $menu) {
             if ($user = $request->user()) {
