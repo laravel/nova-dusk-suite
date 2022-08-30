@@ -6,7 +6,6 @@ use Laravel\Nova\Http\Middleware\Authorize;
 use Laravel\Nova\Http\Middleware\BootTools;
 use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
 use Laravel\Nova\Http\Middleware\HandleInertiaRequests;
-use Laravel\Nova\Nova;
 
 return [
 
@@ -201,7 +200,7 @@ return [
 
     'impersonation' => [
         'started' => '/',
-        'stopped' => Nova::url('/'),
+        'stopped' => '/',
     ],
 
 ];
