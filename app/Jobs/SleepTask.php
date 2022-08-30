@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -38,6 +37,6 @@ class SleepTask implements ShouldQueue
      */
     public function handle()
     {
-        ray('Running '.__CLASS__. ' on Model['.$this->model->getKey().']');
+        ray('Running '.__CLASS__.' on Model['.$this->model->getKey().']');
     }
 }
