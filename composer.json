@@ -38,10 +38,7 @@
             "Otwell\\RememberTokenCopier\\": "nova-components/RememberTokenCopier/src/",
             "Otwell\\ResourceTool\\": "nova-components/ResourceTool/src/",
             "Otwell\\SidebarTool\\": "nova-components/SidebarTool/src/"
-        },
-        "files": [
-            "app/Nova/helpers.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
