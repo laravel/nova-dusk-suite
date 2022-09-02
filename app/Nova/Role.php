@@ -55,7 +55,8 @@ class Role extends Resource
                             ];
                         })
                         ->prunable()
-                        ->filterable(),
+                        ->filterable()
+                        ->reorderAttachables(! file_exists('reorder-attachables')),
         ];
     }
 
