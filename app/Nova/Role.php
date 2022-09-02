@@ -56,7 +56,7 @@ class Role extends Resource
                         })
                         ->prunable()
                         ->filterable()
-                        ->reorderAttachables(! file_exists('reorder-attachables')),
+                        ->reorderAttachables(! file_exists('disable-reordering')),
         ];
     }
 
