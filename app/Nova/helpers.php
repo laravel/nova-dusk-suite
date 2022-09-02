@@ -5,20 +5,20 @@ namespace App\Nova;
 function uses_searchable()
 {
     return function () {
-        return file_exists(base_path('.searchable'));
+        return app('uses_searchable');
     };
 }
 
 function uses_inline_create()
 {
     return function () {
-        return file_exists(base_path('.inline-create'));
+        return app('uses_inline_create');
     };
 }
 
 function uses_without_reordering()
 {
     return function () {
-        return ! file_exists(base_path('.disable-reordering'));
+        return app('uses_without_reordering');
     };
 }
