@@ -69,6 +69,7 @@ class Post extends Resource
                         $field->default(1);
                     }
                 })
+                ->reorderAssociatables(! file_exists(base_path('.reorder-associatables'))
                 ->searchable(file_exists(base_path('.searchable')))
                 ->showCreateRelationButton(file_exists(base_path('.inline-create')))
                 ->filterable(),
