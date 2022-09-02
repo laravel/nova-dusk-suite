@@ -68,8 +68,8 @@ class Video extends Resource
                         return [
                             Text::make('Notes', 'notes')->rules('max:20'),
                         ];
-                    })->searchable(file_exists(base_path('.searchable')))
-                    ->showCreateRelationButton(file_exists(base_path('.inline-create'))),
+                    })->searchable(uses_searchable())
+                    ->showCreateRelationButton(uses_inline_create()),
         ];
     }
 

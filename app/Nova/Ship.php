@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\DateTime;
@@ -63,7 +64,7 @@ class Ship extends Resource
                             ];
                         })
                         ->prunable()
-                        ->searchable(file_exists(base_path('.searchable'))),
+                        ->searchable(uses_searchable()),
 
             HasMany::make('Sails', 'sails', Sail::class),
         ];
