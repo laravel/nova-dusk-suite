@@ -179,7 +179,7 @@ class User extends Resource
                         })
                         ->referToPivotAs('Role Assignment')
                         ->prunable()
-                        ->showCreateRelationButton(file_exists(base_path('.inline-create')))
+                        ->showCreateRelationButton(uses_inline_create())
                         ->filterable(),
 
             BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
