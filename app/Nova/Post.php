@@ -155,7 +155,7 @@ class Post extends Resource
         return [
             new Actions\MarkAsActive,
             new Actions\AddComment,
-            // Actions\BatchableSleep::make(),
+            Actions\BatchableSleep::make(),
             Actions\StandaloneTask::make()->standalone(),
         ];
     }
