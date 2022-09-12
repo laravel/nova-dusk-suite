@@ -6,6 +6,7 @@ use App\Nova\Book;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -68,7 +69,7 @@ class BookPurchase
     {
         return [
             Currency::make('Price')
-                ->dependsOn(['books', 'personalBooks', 'giftBooks'], function ($field, NovaRequest $request, $formData) {
+                ->dependsOn(['books', 'personalBooks', 'giftBooks'], function ($field, NovaRequest $request, FormData $formData) {
                     $bookId = (int) $formData->resource(Book::uriKey());
 
                     if ($bookId == 1) {
