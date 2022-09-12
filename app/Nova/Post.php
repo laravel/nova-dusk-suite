@@ -69,7 +69,7 @@ class Post extends Resource
                         $field->default(1);
                     }
                 })
-                ->reorderAssociatables(uses_without_reordering())
+                ->reorderAssociatables(uses_with_reordering())
                 ->searchable(uses_searchable())
                 ->showCreateRelationButton(uses_inline_create())
                 ->filterable(),
