@@ -63,7 +63,7 @@ class Ship extends Resource
                             ];
                         })
                         ->prunable()
-                        ->searchable(file_exists(base_path('.searchable'))),
+                        ->searchable(uses_searchable()),
 
             HasMany::make('Sails', 'sails', Sail::class),
         ];

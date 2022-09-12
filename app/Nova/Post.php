@@ -69,9 +69,9 @@ class Post extends Resource
                         $field->default(1);
                     }
                 })
-                ->reorderAssociatables(! file_exists(base_path('.disable-reordering')))
-                ->searchable(file_exists(base_path('.searchable')))
-                ->showCreateRelationButton(file_exists(base_path('.inline-create')))
+                ->reorderAssociatables(uses_without_reordering())
+                ->searchable(uses_searchable())
+                ->showCreateRelationButton(uses_inline_create())
                 ->filterable(),
 
             Text::make('Title', 'title')->rules('required')->sortable(),
@@ -94,8 +94,8 @@ class Post extends Resource
                         return [
                             Text::make('Notes', 'notes')->rules('max:20'),
                         ];
-                    })->searchable(file_exists(base_path('.searchable')))
-                    ->showCreateRelationButton(file_exists(base_path('.inline-create'))),
+                    })->searchable(uses_searchable())
+                    ->showCreateRelationButton(uses_inline_create()),
 
             new Heading('Social Data'),
 
@@ -155,7 +155,7 @@ class Post extends Resource
         return [
             new Actions\MarkAsActive,
             new Actions\AddComment,
-            // Actions\BatchableSleep::make(),
+            Actions\BatchableSleep::make(),
             Actions\StandaloneTask::make()->standalone(),
         ];
     }

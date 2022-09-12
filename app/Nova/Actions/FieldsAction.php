@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields;
 use Laravel\Nova\Fields\ActionFields;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class FieldsAction extends Action
@@ -34,22 +35,32 @@ class FieldsAction extends Action
      */
     public function fields(NovaRequest $request)
     {
+        $toggleReadonly = function ($field) {
+            $field->dependsOn('use_readonly', function ($field, NovaRequest $request, FormData $formData) {
+                $field->readonly($formData->use_readonly);
+            });
+        };
+
         return [
-            Fields\Boolean::make('Boolean'),
-            Fields\Color::make('Color'),
-            Fields\Date::make('Date'),
-            Fields\DateTime::make('DateTime'),
-            Fields\Email::make('E-mail Address', 'email'),
-            Fields\File::make('File'),
-            Fields\Hidden::make('Hidden'),
-            Fields\KeyValue::make('KeyValue'),
-            Fields\Markdown::make('Markdown'),
-            Fields\Number::make('Number'),
-            Fields\Password::make('Password'),
+            Fields\Boolean::make('Toggle Readonly', 'use_readonly')->default(false),
+            Fields\Boolean::make('Boolean')->tap($toggleReadonly),
+            Fields\Color::make('Color')->tap($toggleReadonly),
+            Fields\Date::make('Date')->tap($toggleReadonly),
+            Fields\DateTime::make('DateTime')->tap($toggleReadonly),
+            Fields\Email::make('E-mail Address', 'email')->tap($toggleReadonly),
+            Fields\File::make('File')->tap($toggleReadonly),
+            Fields\Hidden::make('Hidden')->tap($toggleReadonly),
+            Fields\KeyValue::make('KeyValue')->tap($toggleReadonly),
+            Fields\Markdown::make('Markdown')->tap($toggleReadonly),
+            Fields\Number::make('Number')->tap($toggleReadonly),
+            Fields\Number::make('Range Number')->withMeta(['type' => 'range'])->tap($toggleReadonly),
+            Fields\Password::make('Password')->tap($toggleReadonly),
             Fields\Trix::make('Trix'),
-            Fields\URL::make('URL'),
-            Fields\Text::make('Text'),
-            Fields\Text::make('Stacked_Field_Text')->stacked(),
+            Fields\Trix::make('Readonly Trix')->readonly(),
+            Fields\URL::make('URL')->tap($toggleReadonly),
+            Fields\Text::make('Text')->tap($toggleReadonly),
+            Fields\Text::make('Stacked_Field_Text')->stacked()->tap($toggleReadonly),
+            Fields\Textarea::make('Textarea')->tap($toggleReadonly),
         ];
     }
 }
