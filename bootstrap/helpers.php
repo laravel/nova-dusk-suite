@@ -19,5 +19,5 @@ function uses_with_reordering()
 
 function uses_without_reordering()
 {
-    return ! app('uses_without_reordering');
+    return ! app('uses_with_reordering');
 }
