@@ -105,8 +105,6 @@ class BookPurchase
                     } else {
                         $field->readonly(false)->rules('required');
                     }
-                })->fillUsing(function () {
-                    //
                 })->onlyOnForms(),
 
             Hidden::make('Type', 'type')
