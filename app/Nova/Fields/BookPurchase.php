@@ -86,6 +86,12 @@ class BookPurchase
                 ->asMinorUnits()
                 ->filterable(),
 
+            Select::make('Type')
+                ->options([
+                    'personal' => 'Personal',
+                    'gift' => 'Gift',
+                ])->exceptOnForms(),
+
             Select::make('Type', 'typeSelector')
                 ->options([
                     'personal' => 'Personal',
@@ -101,7 +107,7 @@ class BookPurchase
                     }
                 })->fillUsing(function () {
                     //
-                }),
+                })->onlyOnForms(),
 
             Hidden::make('Type', 'type')
                 ->dependsOn(['price', 'typeSelector'], function ($field, NovaRequest $request, FormData $formData) {
