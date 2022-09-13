@@ -86,37 +86,49 @@ class BookPurchase
                 ->asMinorUnits()
                 ->filterable(),
 
-            $this->mergeUnless(is_null($this->type), function () {
+            $this->mergeWhen(is_null($this->type), function () {
                 return [
                     Select::make('Type')
                         ->options([
                             'personal' => 'Personal',
                             'gift' => 'Gift',
-                        ])->rules('required'),
-                ];
-            }),
-
-            $this->mergeWhen(is_null($this->type), function () {
-                return [
-                    Select::make('Type', 'typeSelector')
-                        ->options([
-                            'personal' => 'Personal',
-                            'gift' => 'Gift',
                         ])
+                        ->rules('required')
                         ->dependsOn('price', function ($field, NovaRequest $request, FormData $formData) {
                             if (! is_null($formData->price) && $formData->price == 0) {
-                                $field->rules('required')->readonly()->default('gift');
-                            } else {
-                                $field->readonly()->default($this->type);
+                                $field->readonly()->default('gift');
                             }
-                        })->onlyOnForms(),
-
-                    Hidden::make('Type', 'type')
-                        ->dependsOn(['price', 'typeSelector'], function ($field, NovaRequest $request, FormData $formData) {
-                            $field->default($formData->typeSelector);
-                        })->onlyOnForms(),
+                        }),
                 ];
             }),
+
+            $this->mergeUnless(is_null($this->type), function () {
+                return [
+                    Select::make('Type')->options([
+                        'personal' => 'Personal',
+                        'gift' => 'Gift',
+                    ])
+                    ->readonly()
+                    ->default($this->type),
+                ];
+            }),
+
+            Hidden::make('Type', 'hiddenType')
+                ->tap(function ($field) {
+                    $field->resolveUsing(function ($value, $resource) {
+                        return $resource->type;
+                    })
+                    ->fillUsing(function ($request, $model, $attribute, $requestAttribute) use ($field) {
+                        $value = $request->input($attribute);
+
+                        if (! $field->isValidNullValue($value)) {
+                            $model->type = $value;
+                        }
+                    })->dependsOn(['price', 'type'], function ($field, NovaRequest $request, FormData $formData) {
+                        $field->default($formData->type);
+                    });
+                })
+                ->onlyOnForms(),
 
             DateTime::make('Purchased At')
                 ->rules('required')
