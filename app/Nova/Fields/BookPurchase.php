@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\FormData;
+use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -85,16 +86,27 @@ class BookPurchase
                 ->asMinorUnits()
                 ->filterable(),
 
-            Select::make('Type')
+            Select::make('Type', 'typeSelector')
                 ->options([
                     'personal' => 'Personal',
                     'gift' => 'Gift',
                 ])
-                ->rules('required')
-                ->default($this->type)
-                ->readonly(function () {
-                    return ! is_null($this->type);
+                ->dependsOn('price', function ($field, NovaRequest $request, FormData $formData) {
+                    if (is_null($this->type) && ! is_null($formData->price) && $formData->price == 0) {
+                        $field->rules('required')->readonly()->default('gift');
+                    } elseif (! is_null($this->type)) {
+                        $field->readonly()->default($this->type);
+                    } else {
+                        $field->readonly(false)->rules('required');
+                    }
+                })->fillUsing(function () {
+                    //
                 }),
+
+            Hidden::make('Type', 'type')
+                ->dependsOn(['price', 'typeSelector'], function ($field, NovaRequest $request, FormData $formData) {
+                    $field->default($formData->typeSelector);
+                })->onlyOnForms(),
 
             DateTime::make('Purchased At')
                 ->rules('required')
