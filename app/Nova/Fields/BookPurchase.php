@@ -102,7 +102,7 @@ class BookPurchase
                 ];
             }),
 
-            $this->mergeUnless(is_null($this->type), function () {
+            $this->mergeWhen(! is_null($this->type), function () {
                 return [
                     Select::make('Type')->options([
                         'personal' => 'Personal',
