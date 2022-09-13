@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\FormData;
+use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -85,16 +86,49 @@ class BookPurchase
                 ->asMinorUnits()
                 ->filterable(),
 
-            Select::make('Type')
-                ->options([
-                    'personal' => 'Personal',
-                    'gift' => 'Gift',
-                ])
-                ->rules('required')
-                ->default($this->type)
-                ->readonly(function () {
-                    return ! is_null($this->type);
-                }),
+            $this->mergeWhen(is_null($this->type), function () {
+                return [
+                    Select::make('Type')
+                        ->options([
+                            'personal' => 'Personal',
+                            'gift' => 'Gift',
+                        ])
+                        ->rules('required')
+                        ->dependsOn('price', function ($field, NovaRequest $request, FormData $formData) {
+                            if (! is_null($formData->price) && $formData->price == 0) {
+                                $field->readonly()->default('gift');
+                            }
+                        }),
+                ];
+            }),
+
+            $this->mergeUnless(is_null($this->type), function () {
+                return [
+                    Select::make('Type')->options([
+                        'personal' => 'Personal',
+                        'gift' => 'Gift',
+                    ])
+                    ->readonly()
+                    ->default($this->type),
+                ];
+            }),
+
+            Hidden::make('Type', 'hiddenType')
+                ->tap(function ($field) {
+                    $field->resolveUsing(function ($value, $resource) {
+                        return $resource->type;
+                    })
+                    ->fillUsing(function ($request, $model, $attribute, $requestAttribute) use ($field) {
+                        $value = $request->input($attribute);
+
+                        if (! $field->isValidNullValue($value)) {
+                            $model->type = $value;
+                        }
+                    })->dependsOn(['price', 'type'], function ($field, NovaRequest $request, FormData $formData) {
+                        $field->default($formData->type);
+                    });
+                })
+                ->onlyOnForms(),
 
             DateTime::make('Purchased At')
                 ->rules('required')
