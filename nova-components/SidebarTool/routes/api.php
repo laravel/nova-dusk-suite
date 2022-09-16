@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/sleep', function (Request $request) {
     sleep(5);
 
-    return 'Hello World';
+    return $request->user();
 });
 
 Route::get('/', function (Request $request) {
