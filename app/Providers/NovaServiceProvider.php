@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Events\StartedImpersonating;
 use Laravel\Nova\Events\StoppedImpersonating;
+use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
@@ -86,6 +87,22 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             }
 
             return $menu;
+        });
+
+        Field::macro('showWhen', function (bool $condition) {
+            if ($condition === true) {
+                $this->show();
+            } else {
+                $this->hide();
+            }
+        });
+
+        Field::macro('showUnless', function (bool $condition) {
+            if ($condition === true) {
+                $this->hide();
+            } else {
+                $this->show();
+            }
         });
     }
 

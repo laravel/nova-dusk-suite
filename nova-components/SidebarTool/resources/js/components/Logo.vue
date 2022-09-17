@@ -17,7 +17,11 @@ export default {
       Nova.request().get('/nova-vendor/custom-sidebar-tool/sleep', {
         cancelToken: new CancelToken(canceller => this.canceller = canceller),
       }).then(response => {
-        console.dir({ response })
+        console.dir({
+          response: response.data,
+          headers: response.headers,
+          status: response.status
+        })
       })
     },
   },
