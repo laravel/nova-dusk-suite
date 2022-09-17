@@ -89,7 +89,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             return $menu;
         });
 
-
         Field::macro('showWhen', function (bool $condition) {
             if ($condition === true) {
                 $this->show();
@@ -97,7 +96,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 $this->hide();
             }
         });
-
 
         Field::macro('showUnless', function (bool $condition) {
             if ($condition === true) {
