@@ -44,7 +44,7 @@ class ResourceTableSelectionTest extends DuskTestCase
                                     ->assertSelectAllOnCurrentPageChecked()
                                     ->assertSelectAllMatchingNotChecked()
                                     ->assertSelectAllMatchingCount(4);
-                            });
+                            })->closeCurrentDropdown();
                     });
 
             $browser->blank();
