@@ -11,6 +11,9 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class DependentPivotFieldTest extends DuskTestCase
 {
+    /**
+     * @group local-time
+     */
     public function test_it_can_apply_depends_on_pivot_fields()
     {
         Carbon::setTestNow($now = Carbon::now());
