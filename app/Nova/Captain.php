@@ -116,6 +116,9 @@ class Captain extends Resource
     {
         return [
             Actions\FieldsAction::make()->standalone(),
+            tap(Actions\FieldsAction::make()->standalone()->fullscreen(), function ($action) {
+                $action->name = 'Fields Action (fullscreen)';
+            }),
         ];
     }
 
