@@ -90,19 +90,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         });
 
         Field::macro('showWhen', function (bool $condition) {
-            if ($condition === true) {
-                $this->show();
-            } else {
-                $this->hide();
-            }
+            return $condition === true ? $this->show() : $this->hide();
         });
 
         Field::macro('showUnless', function (bool $condition) {
-            if ($condition === true) {
-                $this->hide();
-            } else {
-                $this->show();
-            }
+            return $condition === true ? $this->hide() : $this->show();
         });
     }
 

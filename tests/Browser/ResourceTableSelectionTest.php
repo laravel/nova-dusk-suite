@@ -20,44 +20,30 @@ class ResourceTableSelectionTest extends DuskTestCase
                         $browser->waitForTable()
                             ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
                                 $browser->assertCheckboxIsNotChecked()
-                                    ->click('')
-                                    ->elsewhereWhenAvailable('@select-all-button', function (Browser $browser) {
-                                        $browser->assertNotChecked('input[type="checkbox"]');
-                                    })
-                                    ->elsewhereWhenAvailable('@select-all-matching-button', function (Browser $browser) {
-                                        $browser->assertNotChecked('input[type="checkbox"]');
-                                    });
+                                    ->assertSelectAllOnCurrentPageNotChecked()
+                                    ->assertSelectAllMatchingNotChecked();
                             })
-                            ->closeCurrentDropdown()
                             ->clickCheckboxForId(4)
                             ->clickCheckboxForId(3)
                             ->clickCheckboxForId(2)
                             ->clickCheckboxForId(1)
                             ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
                                 $browser->assertCheckboxIsIndeterminate()
-                                    ->click('')
-                                    ->elsewhereWhenAvailable('@select-all-button', function (Browser $browser) {
-                                        $browser->assertChecked('input[type="checkbox"]');
-                                    })
-                                    ->elsewhereWhenAvailable('@select-all-matching-button', function (Browser $browser) {
-                                        $browser->assertNotChecked('input[type="checkbox"]')->assertSeeIn('span:nth-child(2)', 4);
-                                    });
-                            })->closeCurrentDropdown();
+                                    ->assertSelectAllOnCurrentPageChecked()
+                                    ->assertSelectAllMatchingNotChecked()
+                                    ->assertSelectAllMatchingCount(4);
+                            });
                     });
 
             $browser->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
-                            ->selectAllOnCurrentPage()
                             ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
-                                $browser->assertCheckboxIsIndeterminate()
-                                    ->click('')
-                                    ->elsewhereWhenAvailable('@select-all-button', function (Browser $browser) {
-                                        $browser->assertChecked('input[type="checkbox"]');
-                                    })
-                                    ->elsewhereWhenAvailable('@select-all-matching-button', function (Browser $browser) {
-                                        $browser->assertNotChecked('input[type="checkbox"]')->assertSeeIn('span:nth-child(2)', 4);
-                                    });
+                                $browser->selectAllOnCurrentPage()
+                                    ->assertCheckboxIsIndeterminate()
+                                    ->assertSelectAllOnCurrentPageChecked()
+                                    ->assertSelectAllMatchingNotChecked()
+                                    ->assertSelectAllMatchingCount(4);
                             })->closeCurrentDropdown();
                     });
 
@@ -70,20 +56,17 @@ class ResourceTableSelectionTest extends DuskTestCase
         UserFactory::new()->times(50)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->visit(new UserIndex)
+            $browser->loginAs(1)
+                    ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()
-                            ->selectAllOnCurrentPage()
                             ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
-                                $browser->assertCheckboxIsIndeterminate()
-                                    ->click('')
-                                    ->elsewhereWhenAvailable('@select-all-button', function (Browser $browser) {
-                                        $browser->assertChecked('input[type="checkbox"]');
-                                    })
-                                    ->elsewhereWhenAvailable('@select-all-matching-button', function (Browser $browser) {
-                                        $browser->assertNotChecked('input[type="checkbox"]')->assertSeeIn('span:nth-child(2)', 4);
-                                    });
-                            })->closeCurrentDropdown();
+                                $browser->selectAllOnCurrentPage()
+                                    ->assertCheckboxIsIndeterminate()
+                                    ->assertSelectAllOnCurrentPageChecked()
+                                    ->assertSelectAllMatchingNotChecked()
+                                    ->assertSelectAllMatchingCount(4);
+                            });
                     });
 
             $browser->blank();
@@ -109,14 +92,10 @@ class ResourceTableSelectionTest extends DuskTestCase
                             ->assertNotChecked('[dusk="4-row"] input.checkbox')
                             ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
                                 $browser->assertCheckboxIsNotChecked()
-                                    ->click('')
-                                    ->elsewhereWhenAvailable('@select-all-button', function (Browser $browser) {
-                                        $browser->assertNotChecked('input[type="checkbox"]');
-                                    })
-                                    ->elsewhereWhenAvailable('@select-all-matching-button', function (Browser $browser) {
-                                        $browser->assertNotChecked('input[type="checkbox"]')->assertSeeIn('span:nth-child(2)', 4);
-                                    });
-                            })->closeCurrentDropdown();
+                                    ->assertSelectAllOnCurrentPageNotChecked()
+                                    ->assertSelectAllMatchingNotChecked()
+                                    ->assertSelectAllMatchingCount(4);
+                            });
                     });
 
             $browser->blank();
@@ -142,14 +121,10 @@ class ResourceTableSelectionTest extends DuskTestCase
                             ->assertChecked('[dusk="4-row"] input.checkbox')
                             ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
                                 $browser->assertCheckboxIsIndeterminate()
-                                    ->click('')
-                                    ->elsewhereWhenAvailable('@select-all-button', function (Browser $browser) {
-                                        $browser->assertChecked('input[type="checkbox"]');
-                                    })
-                                    ->elsewhereWhenAvailable('@select-all-matching-button', function (Browser $browser) {
-                                        $browser->assertNotChecked('input[type="checkbox"]');
-                                    });
-                            })->closeCurrentDropdown();
+                                    ->assertSelectAllOnCurrentPageChecked()
+                                    ->assertSelectAllMatchingNotChecked()
+                                    ->assertSelectAllMatchingCount(4);
+                            });
                     });
 
             $browser->blank();
