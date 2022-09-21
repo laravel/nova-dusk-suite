@@ -50,7 +50,7 @@ class FileAttachTest extends DuskTestCase
 
             // Delete the file...
             $browser->visit(new Update('captains', $captain->id))
-                    ->whenAvailable('@photo-delete-link', function ($browser) {
+                    ->whenAvailable('button[dusk="photo-delete-link"]', function ($browser) {
                         $browser->click('');
                     })
                     ->whenAvailable('.modal[data-modal-open="true"]', function ($browser) {
