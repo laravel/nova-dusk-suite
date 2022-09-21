@@ -88,7 +88,7 @@ class PivotFileAttachTest extends DuskTestCase
 
             // Delete the file...
             $browser->visit(new UpdateAttached('captains', $captain->id, 'ships', $ship->id))
-                    ->whenAvailable('@contract-internal-delete-link', function ($browser) {
+                    ->whenAvailable('button[dusk="contract-delete-link"]', function ($browser) {
                         $browser->click('');
                     })
                     ->whenAvailable('.modal[data-modal-open="true"]', function ($browser) {
