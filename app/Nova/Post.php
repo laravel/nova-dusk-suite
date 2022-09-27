@@ -115,6 +115,26 @@ class Post extends Resource
     }
 
     /**
+     * Get the fields displayed by the resource for preview.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function fieldsForPreview(NovaRequest $request)
+    {
+        return [
+            ID::make('ID', 'id'),
+            BelongsTo::make('User', 'user')->display('name')->canSee(function ($request) {
+                return $request->user()->getKey() != $this->user_id;
+            }),
+            Text::make('Title', 'title'),
+            Textarea::make('Body', 'body')->alwaysShow(),
+            File::make('Attachment')->nullable(),
+            KeyValue::make('Meta'),
+        ];
+    }
+
+    /**
      * Get the cards available for the request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
