@@ -14,6 +14,7 @@ use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
 /**
  * @template TModel of \App\Models\Post
@@ -130,7 +131,9 @@ class Post extends Resource
             Text::make('Title', 'title'),
             Textarea::make('Body', 'body')->alwaysShow(),
             File::make('Attachment')->nullable(),
-            KeyValue::make('Meta'),
+            Panel::make('Social Data', [
+                KeyValue::make('Meta'),
+            ]),
         ];
     }
 
