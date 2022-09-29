@@ -77,6 +77,9 @@ jobs:
           dependency-versions: "${{ matrix.dependencies }}"
           composer-options: "--prefer-dist --no-cache"
 
+      - name: List Installed Dependencies
+        run: composer show -D
+
       - name: Publish webpack.mix.js
         run: cp ./nova/webpack.mix.js.dist ./nova/webpack.mix.js
 
