@@ -115,7 +115,7 @@ jobs:
         run: php artisan serve --port=8085 --no-reload &
 
       - name: Execute tests (Dusk tests) via PHPUnit
-        run: vendor/bin/testbench-dusk package:dusk -c phpunit.dusk.xml --exclude-group=external-network,local-time --stop-on-error --stop-on-failure
+        run: vendor/bin/phpunit -c phpunit.dusk.xml --exclude-group=external-network,local-time --stop-on-error --stop-on-failure --testdox
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
