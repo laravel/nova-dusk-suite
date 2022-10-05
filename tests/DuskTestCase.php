@@ -38,11 +38,33 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      */
     protected function setUp(): void
     {
+        static::serve(static::getBaseServeHost(), static::getBaseServePort());
+
         $this->afterApplicationCreated(function () {
             $this->withoutMockingConsoleOutput();
         });
 
         parent::setUp();
+    }
+
+    /**
+     * Teardown the test environment.
+     */
+    protected function tearDown(): void
+    {
+        static::stopServing();
+
+        parent::tearDown();
+    }
+
+    /**
+     * Begin a server for the tests.
+     *
+     * @return void
+     */
+    public static function setUpBeforeClass(): void
+    {
+        //
     }
 
     /**
@@ -60,6 +82,18 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
             $config->set('app.url', static::applicationBaseUrl());
             $config->set('filesystems.disks.public.url', static::applicationBaseUrl().'/storage');
         });
+    }
+
+    /**
+     * Reset serving on a given host and port. As a safety net, we will
+     * shut down all servers if we.
+     *
+     * @return void
+     */
+    public static function resetServing(): void
+    {
+        static::stopServing();
+        static::serve(static::getBaseServeHost(), static::getBaseServePort());
     }
 
     /**
