@@ -112,7 +112,7 @@ jobs:
       - name: Start Chrome Driver
         run: vendor/laravel/dusk/bin/chromedriver-linux &
       - name: Run Laravel Server
-        run: php artisan serve --no-reload &
+        run: php artisan serve --port=8085 --no-reload &
 
       - name: Execute tests (Dusk tests) via PHPUnit
         run: vendor/bin/testbench-dusk package:dusk -c phpunit.dusk.xml --exclude-group=external-network,local-time --stop-on-error --stop-on-failure
