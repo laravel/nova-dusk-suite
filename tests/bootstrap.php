@@ -4,7 +4,7 @@ use Orchestra\Testbench\Dusk\Options;
 
 require __DIR__.'/../vendor/autoload.php';
 
-if (isset($_ENV['USE_OCTANE']) || isset($_SERVER['USE_OCTANE'])) {
+if (isset($_ENV['APP_SERVED']) || isset($_SERVER['APP_SERVED'])) {
     Options::$providesApplicationServer = false;
 }
 
