@@ -38,33 +38,11 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      */
     protected function setUp(): void
     {
-        static::serve(static::getBaseServeHost(), static::getBaseServePort());
-
         $this->afterApplicationCreated(function () {
             $this->withoutMockingConsoleOutput();
         });
 
         parent::setUp();
-    }
-
-    /**
-     * Teardown the test environment.
-     */
-    protected function tearDown(): void
-    {
-        static::stopServing();
-
-        parent::tearDown();
-    }
-
-    /**
-     * Begin a server for the tests.
-     *
-     * @return void
-     */
-    public static function setUpBeforeClass(): void
-    {
-        //
     }
 
     /**
@@ -85,15 +63,14 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     }
 
     /**
-     * Reset serving on a given host and port. As a safety net, we will
-     * shut down all servers if we.
+     * Reload serving on a given host and port.
      *
      * @return void
      */
-    public static function resetServing(): void
+    public static function reloadServing(): void
     {
         static::stopServing();
-        static::serve(static::getBaseServeHost(), static::getBaseServePort());
+        static::serve(static::$baseServeHost, static::$baseServePort);
     }
 
     /**
