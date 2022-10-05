@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Models\Video as VideoModel;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\FormData;
@@ -52,7 +53,7 @@ class Comment extends Resource
                 ->dependsOn($commentable, function (Text $field, NovaRequest $request, FormData $formData) {
                     $model = Nova::modelInstanceForKey($formData->commentable_type ?? $request->viaResource);
 
-                    if ($model instanceof \App\Models\Video) {
+                    if ($model instanceof VideoModel) {
                         $field->rules('required', 'min:10')->help('Video requires minimum 10 characters!');
                     }
 

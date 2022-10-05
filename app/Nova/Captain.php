@@ -40,8 +40,6 @@ class Captain extends Resource
      */
     public function fields(NovaRequest $request)
     {
-        $user = $request->user();
-
         return [
             ID::make('ID', 'id')->sortable(),
 
@@ -49,8 +47,8 @@ class Captain extends Resource
                 ->rules('required')
                 ->sortable(),
 
-            $this->merge(function () use ($user) {
-                $storage = $user->settings['storage'] ?? 'local' === 'local';
+            $this->merge(function () use ($request) {
+                $storage = $request->user()->settings['storage'] ?? 'local' === 'local';
 
                 if ($storage === 's3') {
                     return [

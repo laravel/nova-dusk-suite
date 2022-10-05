@@ -14,11 +14,10 @@ use Laravel\Nova\Tests\DuskTestCase;
 class DateTimeFieldTest extends DuskTestCase
 {
     /**
-     * @test
      * @group local-time
      * @dataProvider localiseDatetimeDataProvider
      */
-    public function can_pick_date_using_datetime_input($datetime, $userTimezone)
+    public function test_can_pick_date_using_datetime_input($datetime, $userTimezone)
     {
         $user = User::find(1);
         $now = CarbonImmutable::parse($datetime, config('app.timezone'));
@@ -64,11 +63,10 @@ class DateTimeFieldTest extends DuskTestCase
     }
 
     /**
-     * @test
      * @group local-time
      * @dataProvider localiseDatetimeDataProvider
      */
-    public function can_pick_date_using_datetime_input_and_maintain_current_value_on_validation_errors($datetime, $userTimezone)
+    public function test_can_pick_date_using_datetime_input_and_maintain_current_value_on_validation_errors($datetime, $userTimezone)
     {
         $user = User::find(1);
         $now = CarbonImmutable::parse($datetime, config('app.timezone'));
@@ -95,10 +93,9 @@ class DateTimeFieldTest extends DuskTestCase
     }
 
     /**
-     * @test
      * @group local-time
      */
-    public function can_reset_datetime_input()
+    public function test_can_reset_datetime_input()
     {
         $now = CarbonImmutable::now();
 
