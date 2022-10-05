@@ -111,15 +111,12 @@ jobs:
         run: php artisan view:clear
       - name: Start Chrome Driver
         run: vendor/laravel/dusk/bin/chromedriver-linux &
-      - name: Run Laravel Server
-        run: php artisan serve --port=8085 --no-reload &
 
       - name: Execute tests (Dusk tests) via PHPUnit
-        run: vendor/bin/phpunit -c phpunit.dusk.xml --exclude-group=external-network,local-time --stop-on-error --stop-on-failure --testdox
+        run: vendor/bin/phpunit -c phpunit.dusk.xml --exclude-group=external-network,local-time --stop-on-error --stop-on-failure
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
-          APP_SERVED: true
 
       - name: Upload Failed Screenshots
         uses: actions/upload-artifact@v2-preview
