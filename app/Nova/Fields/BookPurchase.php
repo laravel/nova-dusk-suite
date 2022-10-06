@@ -137,14 +137,14 @@ class BookPurchase
 
             Status::make('Status')
                 ->resolveUsing(function ($value, $resource) {
-                $purchasedAt = $resource->purchased_at;
+                    $purchasedAt = $resource->purchased_at;
 
-                if (is_null($purchasedAt)) {
-                    return 'n/a';
-                }
+                    if (is_null($purchasedAt)) {
+                        return 'n/a';
+                    }
 
-                return $purchasedAt->lessThan(now()) ? 'completed' : 'waiting';
-            })->loadingWhen(['waiting'])
+                    return $purchasedAt->lessThan(now()) ? 'completed' : 'waiting';
+                })->loadingWhen(['waiting'])
             ->failedWhen(['n/a'])
             ->textAlign(Status::CENTER_ALIGN),
 
