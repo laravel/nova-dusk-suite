@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Status;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class BookPurchase
@@ -133,6 +134,19 @@ class BookPurchase
             DateTime::make('Purchased At')
                 ->rules('required')
                 ->default(now()->second(0)),
+
+            Status::make('Status')
+                ->resolveUsing(function ($value, $resource) {
+                $purchasedAt = $resource->purchased_at;
+
+                if (is_null($purchasedAt)) {
+                    return 'n/a';
+                }
+
+                return $purchasedAt->lessThan(now()) ? 'completed' : 'waiting';
+            })->loadingWhen(['waiting'])
+            ->failedWhen(['n/a'])
+            ->textAlign(Status::CENTER_ALIGN),
 
             $this->merge($this->appends),
 
