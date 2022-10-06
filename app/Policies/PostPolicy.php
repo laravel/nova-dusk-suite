@@ -6,6 +6,9 @@ use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Http\Request;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Nova;
 
 class PostPolicy
 {
@@ -42,7 +45,15 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        return ! $user->isBlockedFrom('post.create');
+        return Nova::whenServing(function (NovaRequest $request) use ($user) {
+            if ($request->viaResource) {
+                return ! $user->isBlockedFrom('post.create.viaResource');
+            }
+
+            return ! $user->isBlockedFrom('post.create');
+        }, function (Request $request) {
+            return ! $user->isBlockedFrom('post.create');
+        });
     }
 
     /**

@@ -60,6 +60,8 @@ class DateTimeFieldTest extends DuskTestCase
 
             $browser->blank();
         });
+
+        static::reloadServing();
     }
 
     /**
@@ -90,6 +92,8 @@ class DateTimeFieldTest extends DuskTestCase
 
             $browser->blank();
         });
+
+        static::reloadServing();
     }
 
     /**

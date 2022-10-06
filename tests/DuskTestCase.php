@@ -63,6 +63,17 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     }
 
     /**
+     * Reload serving on a given host and port.
+     *
+     * @return void
+     */
+    public static function reloadServing(): void
+    {
+        static::stopServing();
+        static::serve(static::$baseServeHost, static::$baseServePort);
+    }
+
+    /**
      * Get package providers.
      *
      * @param  \Illuminate\Foundation\Application  $app

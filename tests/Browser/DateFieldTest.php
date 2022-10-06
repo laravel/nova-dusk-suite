@@ -65,6 +65,8 @@ class DateFieldTest extends DuskTestCase
 
             $browser->blank();
         });
+
+        static::reloadServing();
     }
 
     /**
@@ -98,6 +100,8 @@ class DateFieldTest extends DuskTestCase
 
             $browser->blank();
         });
+
+        static::reloadServing();
     }
 
     public function localiseDateDataProvider()
