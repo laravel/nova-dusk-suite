@@ -76,7 +76,7 @@ class Profile extends Resource
                 $timezone = $this->timezone ?? config('app.timezone');
 
                 return sprintf('%s (%s)',
-                    now()->timezone($timezone)->format('H:i a'),
+                    now()->timezone($timezone)->format('h:i a'),
                     $timezone
                 );
             })->hideFromIndex(),
