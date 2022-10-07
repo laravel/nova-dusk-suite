@@ -70,9 +70,10 @@ class Profile extends Resource
                     ->nullable()
                     ->rules(['nullable', Rule::in(timezone_identifiers_list())])
                     ->filterable()
-                    ->searchable(uses_searchable()),
+                    ->searchable(uses_searchable())
+                    ->hideFromDetail(),
 
-            Text::make('Current Time', function () {
+            Text::make('Time (Timezone)', function () {
                 $timezone = $this->timezone ?? config('app.timezone');
 
                 return sprintf('%s (%s)',
