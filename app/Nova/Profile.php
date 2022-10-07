@@ -7,6 +7,7 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MultiSelect;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Timezone;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -69,7 +70,17 @@ class Profile extends Resource
                     ->nullable()
                     ->rules(['nullable', Rule::in(timezone_identifiers_list())])
                     ->filterable()
-                    ->searchable(uses_searchable()),
+                    ->searchable(uses_searchable())
+                    ->hideFromDetail(),
+
+            Text::make('Time (Timezone)', function () {
+                $timezone = $this->timezone ?? config('app.timezone');
+
+                return sprintf('%s (%s)',
+                    now()->timezone($timezone)->format('h:i a'),
+                    $timezone
+                );
+            })->hideFromIndex(),
 
             MultiSelect::make('Interests')->options([
                 'laravel' => ['label' => 'Laravel', 'group' => 'PHP'],
