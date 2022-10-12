@@ -62,7 +62,9 @@ class Project extends Resource
                 'Envoyer' => 'Envoyer',
                 'Vapor' => 'Vapor',
                 'Secret' => 'Secret',
-            ])->rules('required')->displayUsingLabels(),
+            ])->rules('required')
+            ->placeholder(__('Choose a project'))
+            ->displayUsingLabels(),
 
             Boolean::make('Show Description')
                 ->onlyOnForms()

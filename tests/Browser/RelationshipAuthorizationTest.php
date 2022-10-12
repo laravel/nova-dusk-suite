@@ -10,33 +10,88 @@ use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class RelationshipAuthorizationTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function resource_cant_be_added_to_parent_if_not_authorized()
+    public function test_resource_cant_be_added_to_parent_if_not_authorized()
     {
-        $user = User::find(1);
-        $user->shouldBlockFrom('user.addPost.'.$user->id);
+        $user = tap(User::find(3), function ($user) {
+            $user->shouldBlockFrom('post.create.viaResource');
+        });
+        User::find(2)->shouldBlockFrom('user.addPost.'.$user->id);
+        User::find(1)->shouldBlockFrom('post.create');
 
         $this->browse(function (Browser $browser) use ($user) {
-            $browser->loginAs($user)
+            $browser->loginAs(3)
+                ->visit(new Index('posts'))
+                ->within(new IndexComponent('posts'), function (Browser $browser) {
+                    $browser->assertVisible('@create-button');
+                })
+                ->visit(new Detail('users', 2))
+                ->within(new IndexComponent('posts'), function (Browser $browser) {
+                    $browser->assertMissing('@create-button');
+                })
+                ->visit(new Detail('users', $user->id))
+                ->within(new IndexComponent('posts'), function (Browser $browser) {
+                    $browser->assertMissing('@create-button');
+                })
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('posts'), function (Browser $browser) {
+                    $browser->assertMissing('@create-button');
+                });
+
+            $browser->loginAs(2)
                     ->visit(new Create('posts'))
                     ->pause(500)
                     ->assertSelectMissingOption('@user', $user->id)
                     ->assertSelectMissingOption('@user', $user->name);
 
+            $browser->visit((new Create('posts', [
+                'viaResource' => 'users',
+                'viaResourceId' => $user->id,
+                'viaRelationship' => 'posts',
+                'relationshipType' => 'hasMany',
+            ]))->url())->assertNotFound();
+
+            $browser->visit(new Index('posts'))
+                ->within(new IndexComponent('posts'), function (Browser $browser) {
+                    $browser->assertVisible('@create-button');
+                })
+                ->visit(new Detail('users', 2))
+                ->within(new IndexComponent('posts'), function (Browser $browser) {
+                    $browser->assertVisible('@create-button');
+                })
+                ->visit(new Detail('users', $user->id))
+                ->within(new IndexComponent('posts'), function (Browser $browser) {
+                    $browser->assertMissing('@create-button');
+                })
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('posts'), function (Browser $browser) {
+                    $browser->assertVisible('@create-button');
+                });
+
+            $browser->loginAs(1)
+                ->visit(new Index('posts'))
+                ->within(new IndexComponent('posts'), function (Browser $browser) {
+                    $browser->assertMissing('@create-button');
+                })->visit(new Detail('users', 1))
+                ->within(new IndexComponent('posts'), function (Browser $browser) {
+                    $browser->assertMissing('@create-button');
+                })
+                ->visit(new Detail('users', 3))
+                ->within(new IndexComponent('posts'), function (Browser $browser) {
+                    $browser->assertMissing('@create-button');
+                });
+
             $browser->blank();
         });
+
+        $this->reloadServing();
     }
 
-    /**
-     * @test
-     */
-    public function morphable_resource_cant_be_added_to_parent_if_not_authorized()
+    public function test_morphable_resource_cant_be_added_to_parent_if_not_authorized()
     {
         $post = PostFactory::new()->create();
         User::find(1)->shouldBlockFrom('post.addComment.'.$post->id);
@@ -54,10 +109,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function create_button_should_be_missing_from_detail_index_when_not_authorized()
+    public function test_create_button_should_be_missing_from_detail_index_when_not_authorized()
     {
         $post = PostFactory::new()->create();
         User::find(1)->shouldBlockFrom('post.addComment.'.$post->id);
@@ -73,10 +125,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function resource_cant_be_attached_to_parent_if_not_authorized()
+    public function test_resource_cant_be_attached_to_parent_if_not_authorized()
     {
         $post = PostFactory::new()->create();
         $tag = TagFactory::new()->create();
@@ -92,10 +141,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function attach_button_should_be_missing_from_detail_index_when_not_authorized()
+    public function test_attach_button_should_be_missing_from_detail_index_when_not_authorized()
     {
         $post = PostFactory::new()->create();
         User::find(1)->shouldBlockFrom('post.attachAnyTag.'.$post->id);
