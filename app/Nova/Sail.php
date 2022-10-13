@@ -47,7 +47,8 @@ class Sail extends Resource
             BelongsTo::make('Ship', 'ship')
                 ->display('name')
                 ->showCreateRelationButton(uses_inline_create())
-                ->searchable(uses_searchable()),
+                ->searchable(uses_searchable())
+                ->peekable(),
 
             Number::make('Inches', 'inches')->rules('required')->sortable()->filterable(),
 

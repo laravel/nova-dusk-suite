@@ -42,9 +42,9 @@ class Dock extends Resource
         return [
             ID::make('ID', 'id')->sortable(),
 
-            Text::make('Name', 'name')->rules('required')->sortable(),
+            Text::make('Name', 'name')->rules('required')->sortable()->showWhenPeeking(),
 
-            Color::make('color')->nullable(),
+            Color::make('color')->nullable()->showWhenPeeking(),
 
             HasMany::make('Ships', 'ships'),
 
