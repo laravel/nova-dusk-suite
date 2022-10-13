@@ -45,10 +45,10 @@ class Ship extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
-            BelongsTo::make('Dock', 'dock')->display('name')->searchable(),
-            Text::make('Name', 'name')->rules('required')->sortable(),
+            BelongsTo::make('Dock', 'dock')->display('name')->searchable()->peekable()->showWhenPeeking(),
+            Text::make('Name', 'name')->rules('required')->sortable()->showWhenPeeking(),
 
-            DateTime::make('Departed At', 'departed_at'),
+            DateTime::make('Departed At', 'departed_at')->showWhenPeeking(),
 
             BelongsToMany::make('Captains', 'captains')
                         ->display('name')
