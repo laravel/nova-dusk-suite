@@ -108,7 +108,7 @@ class User extends Resource
             ->noValueText('No permissions selected.')
             ->dependsOn('email', function (BooleanGroup $field, NovaRequest $request, FormData $formData) {
                 if (! Str::endsWith($formData->email, 'laravel.com')) {
-                    return $field->options(['read' => 'Read']);
+                    $field->options(['read' => 'Read']);
                 }
             })
             ->filterable()
@@ -244,7 +244,7 @@ class User extends Resource
             Actions\MarkAsInactive::make()
                 ->showInline()
                 ->showOnDetail()
-                ->canRun(function ($request, $model) {
+                ->canRun(function (NovaRequest $request, $model) {
                     return $model->active === true && (int) $model->getKey() !== 1;
                 }),
             new Actions\Sleep,
@@ -255,17 +255,17 @@ class User extends Resource
             Actions\CreateUserProfile::make()
                 ->showInline()
                 ->showOnDetail()
-                ->canSee(function ($request) {
+                ->canSee(function (NovaRequest $request) {
                     return ! $request->allResourcesSelected();
                 })
-                ->canRun(function ($request, $model) {
+                ->canRun(function (NovaRequest $request, $model) {
                     return is_null($model->profile);
                 }),
             ExportAsCsv::make()->withTypeSelector(),
             Actions\RememberTokenCopier::make()
                 ->showInline()
                 ->showOnDetail()
-                ->canSee(function ($request) {
+                ->canSee(function (NovaRequest $request) {
                     return $request instanceof ResourceIndexRequest || with($request->selectedResources(), function ($resources) {
                         if (is_null($resources)) {
                             return false;
