@@ -3,7 +3,6 @@
 namespace App\Nova\Fields;
 
 use App\Nova\Book;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
