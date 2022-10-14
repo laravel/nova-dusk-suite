@@ -43,6 +43,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         });
 
         Event::listen(StoppedImpersonating::class, function ($event) {
+            /** @var class-string<\Laravel\Nova\Resource> $resource */
             $resource = Nova::resourceForModel($event->impersonated);
 
             config([
@@ -63,7 +64,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     })
                 )->append(
                     MenuSection::make('Links', [
-                        MenuItem::externalLink('Dashboard', url('/dashboard'), 'self'),
+                        MenuItem::externalLink('Dashboard', url('/dashboard')),
                         MenuItem::externalLink('Nova Website', 'https://nova.laravel.com')->openInNewTab(),
                     ])
                 );
@@ -82,7 +83,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             return ! $user->active;
                         })
                 )->append(
-                    MenuItem::externalLink('Dashboard', route('dashboard'), 'self')
+                    MenuItem::externalLink('Dashboard', route('dashboard'))
                 );
             }
 
@@ -90,10 +91,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         });
 
         Field::macro('showWhen', function (bool $condition) {
+            /** @phpstan-ignore-next-line */
             return $condition === true ? $this->show() : $this->hide();
         });
 
         Field::macro('showUnless', function (bool $condition) {
+            /** @phpstan-ignore-next-line */
             return $condition === true ? $this->hide() : $this->show();
         });
     }
@@ -168,7 +171,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         });
 
         Nova::userTimezone(function (Request $request) {
-            /** @param  string|null  $default */
+            /** @param string|null $default */
             $default = config('app.timezone');
 
             return $request->user()->profile->timezone ?? $default;

@@ -32,6 +32,7 @@ class BatchableSleep extends Action implements BatchableAction, ShouldQueue
     {
         if (! $this->isStandalone()) {
             foreach ($models as $model) {
+                /** @phpstan-ignore-next-line */
                 $this->batch()->add(new SleepTask($model));
 
                 $this->markAsFinished($model);
@@ -60,8 +61,10 @@ class BatchableSleep extends Action implements BatchableAction, ShouldQueue
     public function withBatch(ActionFields $fields, PendingBatch $batch)
     {
         $batch->then(function (Batch $batch) {
+            /** @phpstan-ignore-next-line */
             ray($batch->resourceIds)->orange();
         })->catch(function (Batch $batch, Throwable $e) {
+            /** @phpstan-ignore-next-line */
             ray()->exception($e);
             // First batch job failure detected...
         })->finally(function (Batch $batch) {

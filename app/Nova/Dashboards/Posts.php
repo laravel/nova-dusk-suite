@@ -59,7 +59,7 @@ class Posts extends Dashboard
 
         return MenuItem::dashboard(static::class)
                     ->withBadgeIf(function () use ($newPostsInLast24Hours) {
-                        return $newPostsInLast24Hours;
+                        return (string) $newPostsInLast24Hours;
                     }, 'info', $newPostsInLast24Hours > 0);
     }
 }

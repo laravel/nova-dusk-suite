@@ -3,6 +3,7 @@
 namespace App\Nova\Fields;
 
 use App\Nova\Book;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
@@ -115,17 +116,17 @@ class BookPurchase
             }),
 
             Hidden::make('Type', 'hiddenType')
-                ->tap(function ($field) {
+                ->tap(function (Hidden $field) {
                     $field->resolveUsing(function ($value, $resource) {
                         return $resource->type;
                     })
-                    ->fillUsing(function ($request, $model, $attribute, $requestAttribute) use ($field) {
+                    ->fillUsing(function (NovaRequest $request, $model, $attribute, $requestAttribute) use ($field) {
                         $value = $request->input($attribute);
 
                         if (! $field->isValidNullValue($value)) {
                             $model->type = $value;
                         }
-                    })->dependsOn(['price', 'type'], function ($field, NovaRequest $request, FormData $formData) {
+                    })->dependsOn(['price', 'type'], function (Hidden $field, NovaRequest $request, FormData $formData) {
                         $field->default($formData->type);
                     });
                 })

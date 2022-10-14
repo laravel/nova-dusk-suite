@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Nova;
 
 /**
  * @template TModel of \App\Models\Project
@@ -63,7 +64,7 @@ class Project extends Resource
                 'Vapor' => 'Vapor',
                 'Secret' => 'Secret',
             ])->rules('required')
-            ->placeholder(__('Choose a project'))
+            ->placeholder(Nova::__('Choose a project'))
             ->displayUsingLabels(),
 
             Boolean::make('Show Description')

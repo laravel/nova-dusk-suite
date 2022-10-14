@@ -1,3 +1,57 @@
 parameters:
-	ignoreErrors: []
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$badgeCallback of method Laravel\\\\Nova\\\\Menu\\\\MenuItem\\:\\:withBadgeIf\\(\\) expects \\(callable\\(\\)\\: Laravel\\\\Nova\\\\Badge\\)\\|Laravel\\\\Nova\\\\Badge\\|string, Closure\\(\\)\\: numeric\\-string given\\.$#"
+			count: 1
+			path: app/Nova/Dashboards/Posts.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$type\\.$#"
+			count: 1
+			path: app/Nova/Fields/BookPurchase.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Support\\\\HigherOrderTapProxy\\|Laravel\\\\Nova\\\\Fields\\\\Hidden\\:\\:onlyOnForms\\(\\)\\.$#"
+			count: 1
+			path: app/Nova/Fields/BookPurchase.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Nova\\\\Notification\\<TModel of Laravel\\\\Nova\\\\Notifications\\\\Notification\\>\\:\\:\\$read_at\\.$#"
+			count: 1
+			path: app/Nova/Notification.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of method Laravel\\\\Nova\\\\Fields\\\\Field\\:\\:placeholder\\(\\) expects string, string\\|null given\\.$#"
+			count: 1
+			path: app/Nova/Project.php
+
+		-
+			message: "#^Access to an undefined static property static\\(App\\\\Nova\\\\Resource\\<TModel of Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\)\\:\\:\\$model\\.$#"
+			count: 1
+			path: app/Nova/Resource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Nova\\\\Subscriber\\:\\:\\$email_verified_at\\.$#"
+			count: 1
+			path: app/Nova/Subscriber.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of method Laravel\\\\Nova\\\\Actions\\\\Action\\:\\:canSee\\(\\) expects Closure\\(Illuminate\\\\Http\\\\Request\\)\\: bool, Closure\\(Laravel\\\\Nova\\\\Http\\\\Requests\\\\NovaRequest\\)\\: bool given\\.$#"
+			count: 2
+			path: app/Nova/User.php
+
+		-
+			message: "#^Parameter \\#1 \\$items of method Laravel\\\\Nova\\\\Menu\\\\Menu\\:\\:append\\(\\) expects iterable\\|Laravel\\\\Nova\\\\Menu\\\\MenuItem, Laravel\\\\Nova\\\\Menu\\\\MenuSection given\\.$#"
+			count: 2
+			path: app/Providers/NovaServiceProvider.php
+
+		-
+			message: "#^Parameter \\#1 \\$seconds of static method Laravel\\\\Nova\\\\Nova\\:\\:notificationPollingInterval\\(\\) expects int, float given\\.$#"
+			count: 1
+			path: app/Providers/NovaServiceProvider.php
+
+		-
+			message: "#^Right side of \\|\\| is always false\\.$#"
+			count: 1
+			path: app/Providers/NovaServiceProvider.php
 

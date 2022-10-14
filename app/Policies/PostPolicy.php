@@ -51,7 +51,7 @@ class PostPolicy
             }
 
             return ! $user->isBlockedFrom('post.create');
-        }, function (Request $request) {
+        }, function (Request $request) use ($user) {
             return ! $user->isBlockedFrom('post.create');
         });
     }

@@ -23,6 +23,7 @@ class SleepTask implements ShouldQueue
     /**
      * Create a new job instance.
      *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
      */
     public function __construct($model)
