@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Link;
 use App\Models\Taggable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        Model::preventLazyLoading(function () {
+            return (bool) config('app.debug');
+        });
+
         $this->app->instance('uses_searchable', file_exists(base_path('.searchable')));
         $this->app->instance('uses_inline_create', file_exists(base_path('.inline-create')));
         $this->app->instance('uses_with_reordering', ! file_exists(base_path('.disable-reordering')));
