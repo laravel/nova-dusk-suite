@@ -259,7 +259,7 @@ class User extends Resource
                     return ! $request->allResourcesSelected();
                 })
                 ->canRun(function (NovaRequest $request, $model) {
-                    return is_null($model->profile);
+                    return is_null($model->loadMissing('profile')->profile);
                 }),
             ExportAsCsv::make()->withTypeSelector(),
             Actions\RememberTokenCopier::make()
