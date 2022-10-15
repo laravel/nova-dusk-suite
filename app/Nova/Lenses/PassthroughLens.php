@@ -90,7 +90,7 @@ class PassthroughLens extends Lens
                 ->showInline()
                 ->showOnDetail()
                 ->canRun(function ($request, $model) {
-                    return is_null($model->profile);
+                    return is_null($model->loadMissing('profile')->profile);
                 }),
             ExportAsCsv::make('Export As CSV for Lens'),
         ];
