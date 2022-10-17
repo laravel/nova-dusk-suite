@@ -17,9 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        Model::preventLazyLoading(function () {
-            return (bool) config('app.debug');
-        });
+        Model::preventLazyLoading((bool) config('app.debug'));
 
         $this->app->instance('uses_searchable', file_exists(base_path('.searchable')));
         $this->app->instance('uses_inline_create', file_exists(base_path('.inline-create')));

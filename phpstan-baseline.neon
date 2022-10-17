@@ -36,11 +36,6 @@ parameters:
 			path: app/Nova/Subscriber.php
 
 		-
-			message: "#^Parameter \\#1 \\$callback of method Laravel\\\\Nova\\\\Actions\\\\Action\\:\\:canSee\\(\\) expects Closure\\(Illuminate\\\\Http\\\\Request\\)\\: bool, Closure\\(Laravel\\\\Nova\\\\Http\\\\Requests\\\\NovaRequest\\)\\: bool given\\.$#"
-			count: 2
-			path: app/Nova/User.php
-
-		-
 			message: "#^Parameter \\#1 \\$items of method Laravel\\\\Nova\\\\Menu\\\\Menu\\:\\:append\\(\\) expects iterable\\|Laravel\\\\Nova\\\\Menu\\\\MenuItem, Laravel\\\\Nova\\\\Menu\\\\MenuSection given\\.$#"
 			count: 2
 			path: app/Providers/NovaServiceProvider.php

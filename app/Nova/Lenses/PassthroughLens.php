@@ -90,10 +90,10 @@ class PassthroughLens extends Lens
             CreateUserProfile::make()
                 ->showInline()
                 ->showOnDetail()
-                ->canSee(function ($request) {
+                ->canSee(function (NovaRequest $request) {
                     return $request->resource() === UserResource::class;
                 })
-                ->canRun(function ($request, $model) {
+                ->canRun(function (NovaRequest $request, $model) {
                     return is_null($model->loadMissing('profile')->profile);
                 }),
             ExportAsCsv::make('Export As CSV for Lens'),
