@@ -6,6 +6,7 @@ use App\Models\Link;
 use App\Models\Taggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,7 +18,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        Model::preventLazyLoading((bool) config('app.debug'));
+        if (version_compare(Application::VERSION, '9.35.0', '<')) {
+            Model::preventLazyLoading((bool) config('app.debug'));
+        } else {
+            Model::shouldBeStrict((bool) config('app.debug'));
+        }
 
         $this->app->instance('uses_searchable', file_exists(base_path('.searchable')));
         $this->app->instance('uses_inline_create', file_exists(base_path('.inline-create')));
