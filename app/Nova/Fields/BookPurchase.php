@@ -115,21 +115,23 @@ class BookPurchase
             }),
 
             Hidden::make('Type', 'hiddenType')
+                ->onlyOnForms()
+                ->resolveUsing(function ($value, $resource) {
+                    return $resource->type;
+                })
+                ->dependsOn(['price', 'type'], function (Hidden $field, NovaRequest $request, FormData $formData) {
+                    $field->default($formData->type);
+                })
                 ->tap(function (Hidden $field) {
-                    $field->resolveUsing(function ($value, $resource) {
-                        return $resource->type;
-                    })
-                    ->fillUsing(function (NovaRequest $request, $model, $attribute, $requestAttribute) use ($field) {
+                    $field->fillUsing(function (NovaRequest $request, $model, $attribute, $requestAttribute) use ($field) {
                         $value = $request->input($attribute);
 
                         if (! $field->isValidNullValue($value)) {
+                            /* @var \App\Models\BookPurchase $model */
                             $model->type = $value;
                         }
-                    })->dependsOn(['price', 'type'], function (Hidden $field, NovaRequest $request, FormData $formData) {
-                        $field->default($formData->type);
                     });
-                })
-                ->onlyOnForms(),
+                }),
 
             DateTime::make('Purchased At')
                 ->rules('required')

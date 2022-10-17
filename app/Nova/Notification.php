@@ -13,13 +13,15 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 /**
  * @template TModel of \Laravel\Nova\Notifications\Notification
  * @extends \App\Nova\Resource<TModel>
+ *
+ * @property \Carbon\CarbonInterface|null $read_at
  */
 class Notification extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
     public static $model = \Laravel\Nova\Notifications\Notification::class;
 

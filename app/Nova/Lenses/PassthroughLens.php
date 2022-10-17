@@ -6,6 +6,7 @@ use App\Nova\Actions\CreateUserProfile;
 use App\Nova\Actions\MarkAsActive;
 use App\Nova\Actions\MarkAsInactive;
 use App\Nova\Filters\SelectFirst;
+use App\Nova\User as UserResource;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -89,8 +90,11 @@ class PassthroughLens extends Lens
             CreateUserProfile::make()
                 ->showInline()
                 ->showOnDetail()
-                ->canRun(function ($request, $model) {
-                    return is_null($model->profile);
+                ->canSee(function (NovaRequest $request) {
+                    return $request->resource() === UserResource::class;
+                })
+                ->canRun(function (NovaRequest $request, $model) {
+                    return is_null($model->loadMissing('profile')->profile);
                 }),
             ExportAsCsv::make('Export As CSV for Lens'),
         ];

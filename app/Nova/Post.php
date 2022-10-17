@@ -126,7 +126,9 @@ class Post extends Resource
         return [
             ID::make('ID', 'id'),
             BelongsTo::make('User', 'user')->display('name')->canSee(function ($request) {
-                return $request->user()->getKey() != $this->user_id;
+                return transform($request->user(), function ($user) {
+                    return $user->getKey() != $this->user_id;
+                });
             }),
             Text::make('Title', 'title'),
             Textarea::make('Body', 'body')->alwaysShow(),

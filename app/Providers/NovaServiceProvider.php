@@ -55,7 +55,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         });
 
         Nova::mainMenu(function (Request $request, Menu $menu) {
-            if ($user = $request->user()) {
+            transform($request->user(), function ($user) use ($menu) {
                 $menu->append(
                     MenuSection::make('Account Verification', [
                         MenuItem::externalLink('Verify Using Inertia', "/tests/verify-user/{$user->id}")->method('POST', ['_token' => csrf_token()], []),
@@ -68,15 +68,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::externalLink('Nova Website', 'https://nova.laravel.com')->openInNewTab(),
                     ])
                 );
-            }
+            });
 
             return $menu;
         });
 
         Nova::userMenu(function (Request $request, Menu $menu) {
-            if ($user = $request->user()) {
+            transform($request->user(), function ($user) use ($menu) {
                 $menu->append(
-                    MenuItem::make('My Account')->path('/resources/users/'.$request->user()->id)
+                    MenuItem::make('My Account')->path('/resources/users/'.$user->id)
                 )->append(
                     MenuItem::externalLink('Verify Account', "/tests/verify-user/{$user->id}")->method('POST', ['_token' => csrf_token()])
                         ->canSee(function () use ($user) {
@@ -85,7 +85,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 )->append(
                     MenuItem::externalLink('Dashboard', route('dashboard'))
                 );
-            }
+            });
 
             return $menu;
         });
@@ -150,7 +150,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
             (new SidebarTool)->canSee(function (Request $request) {
-                return ! (optional($request->user())->isBlockedFrom('sidebarTool') || false);
+                return ! transform($request->user(), function ($user) {
+                    return $user->isBlockedFrom('sidebarTool');
+                }, false);
             }),
         ];
     }

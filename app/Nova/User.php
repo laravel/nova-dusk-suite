@@ -117,7 +117,9 @@ class User extends Resource
             DateTime::make('Created At')->readonly()->filterable(),
 
             ResourceTool::make()->canSee(function ($request) {
-                return ! $request->user()->isBlockedFrom('resourceTool');
+                return ! transform($request->user(), function ($user) {
+                    return $user->isBlockedFrom('resourceTool');
+                });
             }),
 
             HasOne::make('Profile')->required(function () {
@@ -259,7 +261,7 @@ class User extends Resource
                     return ! $request->allResourcesSelected();
                 })
                 ->canRun(function (NovaRequest $request, $model) {
-                    return is_null($model->profile);
+                    return is_null($model->loadMissing('profile')->profile);
                 }),
             ExportAsCsv::make()->withTypeSelector(),
             Actions\RememberTokenCopier::make()
@@ -271,6 +273,7 @@ class User extends Resource
                             return false;
                         }
 
+                        /** @var \Illuminate\Support\Collection $resources */
                         return $resources->count() === 1;
                     });
                 })

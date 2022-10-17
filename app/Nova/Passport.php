@@ -9,12 +9,16 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+/**
+ * @template TModel of \App\Models\Passport
+ * @extends \App\Nova\Resource<TModel>
+ */
 class Passport extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
     public static $model = \App\Models\Passport::class;
 

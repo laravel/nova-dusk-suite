@@ -8,12 +8,16 @@ use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+/**
+ * @template TModel of \App\Models\Photo
+ * @extends \App\Nova\Resource<TModel>
+ */
 class Photo extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
     public static $model = \App\Models\Photo::class;
 
