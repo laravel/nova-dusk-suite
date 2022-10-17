@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$badgeCallback of method Laravel\\\\Nova\\\\Menu\\\\MenuItem\\:\\:withBadgeIf\\(\\) expects Laravel\\\\Nova\\\\Badge\\|Laravel\\\\Nova\\\\TBadgeCallback\\|string, Closure given\\.$#"
+			message: "#^Parameter \\#1 \\$badgeCallback of method Laravel\\\\Nova\\\\Menu\\\\MenuItem\\:\\:withBadgeIf\\(\\) expects \\(callable\\(\\)\\: Laravel\\\\Nova\\\\Badge\\)\\|Laravel\\\\Nova\\\\Badge\\|string, Closure\\(\\)\\: numeric\\-string given\\.$#"
 			count: 1
 			path: app/Nova/Dashboards/Posts.php
 
@@ -19,11 +19,6 @@ parameters:
 			message: "#^Access to an undefined property App\\\\Nova\\\\Notification\\<TModel of Laravel\\\\Nova\\\\Notifications\\\\Notification\\>\\:\\:\\$read_at\\.$#"
 			count: 1
 			path: app/Nova/Notification.php
-
-		-
-			message: "#^Parameter \\#1 \\$items of method Laravel\\\\Nova\\\\Menu\\\\Menu\\:\\:append\\(\\) expects iterable\\|Laravel\\\\Nova\\\\Menu\\\\MenuItem, Laravel\\\\Nova\\\\Menu\\\\MenuSection given\\.$#"
-			count: 2
-			path: app/Providers/NovaServiceProvider.php
 
 		-
 			message: "#^Parameter \\#1 \\$seconds of static method Laravel\\\\Nova\\\\Nova\\:\\:notificationPollingInterval\\(\\) expects int, float given\\.$#"
