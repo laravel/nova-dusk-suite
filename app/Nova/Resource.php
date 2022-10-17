@@ -77,15 +77,16 @@ abstract class Resource extends NovaResource
         return parent::relatableQuery($request, $query);
     }
 
-    /**
-     * Return the menu item that should represent the resource.
-     *
-     * @return \Laravel\Nova\Menu\MenuItem
-     */
-    public static function menuItem()
-    {
-        return MenuItem::resource(static::class)->withBadge(function () {
-            return static::$model::count();
-        });
-    }
+    // /**
+    //  * Return the menu item that should represent the resource.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @return \Laravel\Nova\Menu\MenuItem
+    //  */
+    // public function menu(Request $request)
+    // {
+    //     return MenuItem::resource(static::class)->withBadge(function () {
+    //         return static::newModel()->query()->count();
+    //     });
+    // }
 }

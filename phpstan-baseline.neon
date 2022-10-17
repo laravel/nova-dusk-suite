@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$badgeCallback of method Laravel\\\\Nova\\\\Menu\\\\MenuItem\\:\\:withBadgeIf\\(\\) expects \\(callable\\(\\)\\: Laravel\\\\Nova\\\\Badge\\)\\|Laravel\\\\Nova\\\\Badge\\|string, Closure\\(\\)\\: numeric\\-string given\\.$#"
+			message: "#^Parameter \\#1 \\$badgeCallback of method Laravel\\\\Nova\\\\Menu\\\\MenuItem\\:\\:withBadgeIf\\(\\) expects Laravel\\\\Nova\\\\Badge\\|Laravel\\\\Nova\\\\TBadgeCallback\\|string, Closure given\\.$#"
 			count: 1
 			path: app/Nova/Dashboards/Posts.php
 
@@ -19,21 +19,6 @@ parameters:
 			message: "#^Access to an undefined property App\\\\Nova\\\\Notification\\<TModel of Laravel\\\\Nova\\\\Notifications\\\\Notification\\>\\:\\:\\$read_at\\.$#"
 			count: 1
 			path: app/Nova/Notification.php
-
-		-
-			message: "#^Parameter \\#1 \\$text of method Laravel\\\\Nova\\\\Fields\\\\Field\\:\\:placeholder\\(\\) expects string, string\\|null given\\.$#"
-			count: 1
-			path: app/Nova/Project.php
-
-		-
-			message: "#^Access to an undefined static property static\\(App\\\\Nova\\\\Resource\\<TModel of Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\)\\:\\:\\$model\\.$#"
-			count: 1
-			path: app/Nova/Resource.php
-
-		-
-			message: "#^Access to an undefined property App\\\\Nova\\\\Subscriber\\:\\:\\$email_verified_at\\.$#"
-			count: 1
-			path: app/Nova/Subscriber.php
 
 		-
 			message: "#^Parameter \\#1 \\$items of method Laravel\\\\Nova\\\\Menu\\\\Menu\\:\\:append\\(\\) expects iterable\\|Laravel\\\\Nova\\\\Menu\\\\MenuItem, Laravel\\\\Nova\\\\Menu\\\\MenuSection given\\.$#"

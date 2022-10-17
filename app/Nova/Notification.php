@@ -19,7 +19,7 @@ class Notification extends Resource
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
     public static $model = \Laravel\Nova\Notifications\Notification::class;
 
