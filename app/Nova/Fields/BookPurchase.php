@@ -147,8 +147,8 @@ class BookPurchase
 
                     return $purchasedAt->lessThan(now()) ? 'completed' : 'waiting';
                 })->loadingWhen(['waiting'])
-            ->failedWhen(['n/a'])
-            ->textAlign(Status::CENTER_ALIGN),
+                ->failedWhen(['n/a'])
+                ->textAlign(Status::CENTER_ALIGN),
 
             $this->merge($this->appends),
 
