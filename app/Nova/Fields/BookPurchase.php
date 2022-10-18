@@ -137,18 +137,17 @@ class BookPurchase
                 ->rules('required')
                 ->default(now()->second(0)),
 
-            Status::make('Status')
-                ->resolveUsing(function ($value, $resource) {
-                    $purchasedAt = $resource->purchased_at;
+            Status::make('Status', function ($pivot) {
+                $purchasedAt = $pivot->purchased_at;
 
-                    if (is_null($purchasedAt)) {
-                        return 'n/a';
-                    }
+                if (is_null($purchasedAt)) {
+                    return 'n/a';
+                }
 
-                    return $purchasedAt->lessThan(now()) ? 'completed' : 'waiting';
-                })->loadingWhen(['waiting'])
-                ->failedWhen(['n/a'])
-                ->textAlign(Status::CENTER_ALIGN),
+                return $purchasedAt->lessThan(now()) ? 'completed' : 'waiting';
+            })->loadingWhen(['waiting'])
+            ->failedWhen(['n/a'])
+            ->textAlign(Status::CENTER_ALIGN),
 
             $this->merge($this->appends),
 
