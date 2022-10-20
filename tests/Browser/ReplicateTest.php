@@ -14,10 +14,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class ReplicateTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function can_replicate_a_resource()
+    public function test_can_replicate_a_resource()
     {
         $post = PostFactory::new()->create([
             'meta' => ['framework' => 'laravel'],
@@ -41,14 +38,11 @@ class ReplicateTest extends DuskTestCase
         $this->assertNotSame($post2->getKey(), $post->getKey());
         $this->assertSame('Replicated Post', $post2->title);
         $this->assertSame($post2->user_id, $post->user_id);
-        $this->assertSame($post2->content, $post->content);
+        $this->assertSame($post2->body, $post->body);
         $this->assertSame($post2->meta, $post->meta);
     }
 
-    /**
-     * @test
-     */
-    public function can_replicate_a_resource_without_deletable_field()
+    public function test_can_replicate_a_resource_without_deletable_field()
     {
         $post = PostFactory::new()->create([
             'meta' => ['framework' => 'laravel'],
@@ -73,10 +67,7 @@ class ReplicateTest extends DuskTestCase
         $this->assertNull($post2->attachment);
     }
 
-    /**
-     * @test
-     */
-    public function can_navigate_to_replicate_resource_screen()
+    public function test_can_navigate_to_replicate_resource_screen()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -95,10 +86,7 @@ class ReplicateTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function cannot_replicate_a_resource_when_blocked_via_policy()
+    public function test_cannot_replicate_a_resource_when_blocked_via_policy()
     {
         User::find(1)->shouldBlockFrom('user.replicate.4');
 
