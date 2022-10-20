@@ -20,7 +20,6 @@ class AppServiceProvider extends ServiceProvider
     {
         if (version_compare(Application::VERSION, '9.35.0', '>=')) {
             Model::shouldBeStrict((bool) config('app.debug'));
-            Model::preventAccessingMissingAttributes(false);
         } else {
             Model::preventLazyLoading((bool) config('app.debug'));
         }
