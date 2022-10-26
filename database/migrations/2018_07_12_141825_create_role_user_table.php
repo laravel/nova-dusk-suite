@@ -14,8 +14,11 @@ class CreateRoleUserTable extends Migration
     public function up()
     {
         Schema::create('role_user', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->foreignId('role_id');
+            $table->foreignId('user_id');
+            $table->string('notes')->nullable();
+
+            $table->index(['role_id', 'user_id']);
         });
     }
 
