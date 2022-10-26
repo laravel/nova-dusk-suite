@@ -77,7 +77,17 @@ class User extends Authenticatable
      */
     public function roles()
     {
-        return $this->belongsToMany(Role::class)->withPivot('notes');
+        return $this->belongsToMany(Role::class)->withPivot('notes')->withTimestamps();
+    }
+
+    /**
+     * Get all of the projects attached to the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class)->withTimestamps();
     }
 
     /**
