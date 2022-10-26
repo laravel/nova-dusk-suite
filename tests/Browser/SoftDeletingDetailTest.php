@@ -81,7 +81,7 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
                     ->runAction('mark-as-active')
-                    ->waitForText('The action was executed successfully.', 25);
+                    ->waitForText('The action was executed successfully.');
 
             $browser->blank();
 

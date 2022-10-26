@@ -123,7 +123,6 @@ class LensFilterTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($url) {
             $browser->loginAs(1)
                     ->visit($url)
-                    ->waitFor('@passthrough-lens-lens-component', 25)
                     ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                         $browser->waitForTable()
                             ->assertDontSeeResource(1)
