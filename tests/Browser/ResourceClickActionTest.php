@@ -18,7 +18,7 @@ class ResourceClickActionTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new UserIndex())
                 ->within(new IndexComponent('users'), function (Browser $browser) {
-                    $browser->click('@3-row');
+                    $browser->click('tr[dusk="3-row"] td:nth-child(3)');
                 })
                 ->waitForLocation((new Detail('users', 3))->url());
 
@@ -40,28 +40,28 @@ class ResourceClickActionTest extends DuskTestCase
             $browser->loginAs($fetchUser(1, 'detail'))
                 ->visit(new UserIndex())
                 ->within(new IndexComponent('users'), function (Browser $browser) {
-                    $browser->click('@3-row');
+                    $browser->click('tr[dusk="3-row"] td:nth-child(3)');
                 })
                 ->waitForLocation((new Detail('users', 3))->url());
 
             $browser->loginAs($fetchUser(2, 'edit'))
                 ->visit(new UserIndex())
                 ->within(new IndexComponent('users'), function (Browser $browser) {
-                    $browser->click('@3-row');
+                    $browser->click('tr[dusk="3-row"] td:nth-child(3)');
                 })
                 ->waitForLocation((new Update('users', 3))->url());
 
             $browser->loginAs($fetchUser(3, 'select'))
                 ->visit(new UserIndex())
                 ->within(new IndexComponent('users'), function (Browser $browser) {
-                    $browser->click('@3-row')
+                    $browser->click('tr[dusk="3-row"] td:nth-child(3)')
                         ->assertChecked('[dusk="3-row"] input.checkbox');
                 });
 
             $browser->loginAs($fetchUser(4, 'ignore'))
                 ->visit(new UserIndex())
                 ->within(new IndexComponent('users'), function (Browser $browser) {
-                    $browser->click('@3-row')
+                    $browser->click('tr[dusk="3-row"] td:nth-child(3)')
                         ->assertNotChecked('[dusk="3-row"] input.checkbox');
                 })->assertPathIs((new UserIndex())->url());
 
