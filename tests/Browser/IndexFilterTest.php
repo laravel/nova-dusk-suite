@@ -188,7 +188,6 @@ class IndexFilterTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($url) {
             $browser->loginAs(1)
                     ->visit($url)
-                    ->waitFor('@users-index-component', 25)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->assertDontSeeResource(1)
                             ->assertDontSeeResource(2)

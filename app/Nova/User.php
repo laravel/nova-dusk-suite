@@ -17,6 +17,7 @@ use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Http\Requests\ResourceIndexRequest;
@@ -58,7 +59,7 @@ class User extends Resource
      *
      * @var array
      */
-    public static $with = ['profile'];
+    public static $with = ['profile', 'projects'];
 
     /**
      * Get the fields displayed by the resource.
@@ -115,6 +116,8 @@ class User extends Resource
             ->showOnPreview(),
 
             DateTime::make('Created At')->readonly()->filterable(),
+
+            Tag::make('Projects'),
 
             ResourceTool::make()->canSee(function ($request) {
                 return ! transform($request->user(), function ($user) {

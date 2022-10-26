@@ -81,6 +81,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get all of the projects attached to the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class)->withTimestamps();
+    }
+
+    /**
      * Get all of the puchases that belong to the book.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

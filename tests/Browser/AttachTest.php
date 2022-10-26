@@ -59,7 +59,7 @@ class AttachTest extends DuskTestCase
                     ->type('@notes', 'Test Notes')
                     ->create()
                     ->waitForText('The resource was attached!')
-                    ->waitFor('[dusk="roles-index-component"] table', 30);
+                    ->waitFor('[dusk="roles-index-component"] table');
 
             $this->assertDatabaseHas('role_user', [
                 'user_id' => '1',
