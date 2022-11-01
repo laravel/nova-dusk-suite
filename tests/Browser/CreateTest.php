@@ -22,7 +22,7 @@ class CreateTest extends DuskTestCase
                     ->type('@name', 'Adam Wathan')
                     ->type('@email', 'adam@laravel.com')
                     ->type('@password', 'secret')
-                    ->select('@settings.pagination', 'simple')
+                    ->select('@settings->pagination', 'simple')
                     ->create()
                     ->waitForText('The user was created!');
 
