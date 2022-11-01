@@ -19,7 +19,7 @@ class Video extends Resource
      *
      * @var class-string<TModel>
      */
-    public static $model = 'App\Models\Video';
+    public static $model = \App\Models\Video::class;
 
     /**
      * The columns that should be searched.

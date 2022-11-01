@@ -22,7 +22,7 @@ class Ship extends Resource
      *
      * @var class-string<TModel>
      */
-    public static $model = 'App\Models\Ship';
+    public static $model = \App\Models\Ship::class;
 
     /**
      * The columns that should be searched.

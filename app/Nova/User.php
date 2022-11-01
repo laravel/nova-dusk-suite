@@ -34,9 +34,9 @@ class User extends Resource
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<TModel>
      */
-    public static $model = 'App\Models\User';
+    public static $model = \App\Models\User::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
