@@ -14,10 +14,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexAuthorizationTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function resource_index_can_be_totally_blocked_via_view_any()
+    public function test_resource_index_can_be_totally_blocked_via_view_any()
     {
         PostFactory::new()->create();
         User::find(1)->shouldBlockFrom(...[
@@ -42,10 +39,7 @@ class IndexAuthorizationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function shouldnt_see_id_link_if_blocked_from_viewing()
+    public function test_shouldnt_see_id_link_if_blocked_from_viewing()
     {
         $posts = PostFactory::new()->times(3)->create();
         User::find(1)->shouldBlockFrom(...[
@@ -72,10 +66,7 @@ class IndexAuthorizationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function shouldnt_see_edit_button_if_blocked_from_updating()
+    public function test_edit_button_is_disabled_when_blocked_from_updating()
     {
         $post = PostFactory::new()->create(['user_id' => 2]);
         $post2 = PostFactory::new()->create(['user_id' => 2]);
@@ -86,18 +77,15 @@ class IndexAuthorizationTest extends DuskTestCase
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                         $browser->waitForTable()
-                                ->assertMissing('@'.$post->id.'-edit-button')
-                                ->assertVisible('@'.$post2->id.'-edit-button');
+                                ->assertButtonDisabled('@'.$post->id.'-edit-button')
+                                ->assertButtonEnabled('@'.$post2->id.'-edit-button');
                     });
 
             $browser->blank();
         });
     }
 
-    /**
-     * @test
-     */
-    public function shouldnt_see_delete_button_if_blocked_from_deleting()
+    public function test_delete_button_is_disabled_when_blocked_from_deleting()
     {
         $post = PostFactory::new()->create(['user_id' => 2]);
         $post2 = PostFactory::new()->create(['user_id' => 2]);
@@ -108,18 +96,15 @@ class IndexAuthorizationTest extends DuskTestCase
                     ->visit(new Index('posts'))
                     ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                         $browser->waitForTable()
-                                ->assertMissing('@'.$post->id.'-delete-button')
-                                ->assertVisible('@'.$post2->id.'-delete-button');
+                                ->assertButtonDisabled('@'.$post->id.'-delete-button')
+                                ->assertButtonEnabled('@'.$post2->id.'-delete-button');
                     });
 
             $browser->blank();
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_delete_resources_using_checkboxes_only_if_authorized_to_delete_them()
+    public function test_can_delete_resources_using_checkboxes_only_if_authorized_to_delete_them()
     {
         PostFactory::new()->times(3)->create(['user_id' => 2]);
         User::find(1)->shouldBlockFrom('post.delete.1');
@@ -143,10 +128,7 @@ class IndexAuthorizationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_delete_all_matching_resources_only_if_authorized_to_delete_them()
+    public function test_can_delete_all_matching_resources_only_if_authorized_to_delete_them()
     {
         PostFactory::new()->times(3)->create(['user_id' => 2]);
         User::find(1)->shouldBlockFrom('post.delete.1');
