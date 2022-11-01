@@ -117,7 +117,9 @@ class User extends Resource
 
             DateTime::make('Created At')->readonly()->filterable(),
 
-            Tag::make('Projects'),
+            Tag::make('Projects')
+                ->displayAsList()
+                ->withPreview(),
 
             ResourceTool::make()->canSee(function ($request) {
                 return ! $request->user()->isBlockedFrom('resourceTool');
