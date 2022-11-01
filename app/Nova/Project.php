@@ -2,12 +2,15 @@
 
 namespace App\Nova;
 
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\UiAvatar;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 
@@ -67,6 +70,8 @@ class Project extends Resource
             ->placeholder(Nova::__('Choose a project'))
             ->displayUsingLabels(),
 
+            UiAvatar::make(),
+
             Boolean::make('Show Description')
                 ->onlyOnForms()
                 ->hideWhenUpdating()
@@ -90,6 +95,11 @@ class Project extends Resource
                     }
                 })
                 ->language('text/x-markdown')
+                ->onlyOnForms()
+                ->nullable(),
+
+            Markdown::make('Description')
+                ->exceptOnForms()
                 ->nullable(),
 
             Select::make('Type')->options([])->displayUsing(function ($value) use ($productTypes) {
@@ -152,5 +162,17 @@ class Project extends Resource
     public function actions(NovaRequest $request)
     {
         return [];
+    }
+
+    /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string|null
+     */
+    public function subtitle()
+    {
+        return transform($this->type, function () {
+            return Str::title($this->type);
+        });
     }
 }
