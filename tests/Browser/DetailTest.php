@@ -30,7 +30,7 @@ class DetailTest extends DuskTestCase
                         $browser->assertSee('User Details: 1')
                             ->assertSeeIn('@name', 'Taylor Otwell')
                             ->assertSeeIn('@email', 'taylor@laravel.com')
-                            ->assertSeeIn('@settings.pagination', 'Simple');
+                            ->assertSeeIn('@settings->pagination', 'Simple');
                     });
 
             $browser->blank();

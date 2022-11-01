@@ -134,39 +134,30 @@ class User extends Resource
             HasMany::make('Posts', 'posts', Post::class),
 
             new Panel('Settings', [
-                Select::make('Pagination', 'settings.pagination')
+                Select::make('Pagination', 'settings->pagination')
                     ->options([
                         'simple' => 'Simple',
                         'load-more' => 'Load More',
                         'links' => 'Link',
                     ])
-                    ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
-                        data_set($model, $attribute, $request->input((string) Str::of($requestAttribute)->replace('.', '_')));
-                    })
                     ->displayUsingLabels()
                     ->hideFromIndex(),
 
-                Select::make('Click Action', 'settings.clickAction')
+                Select::make('Click Action', 'settings->clickAction')
                     ->options([
                         'detail' => 'View',
                         'edit' => 'Update',
                         'select' => 'Select',
                         'ignore' => 'Ignore',
                     ])
-                    ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
-                        data_set($model, $attribute, $request->input((string) Str::of($requestAttribute)->replace('.', '_')));
-                    })
                     ->displayUsingLabels()
                     ->hideFromIndex(),
 
-                Select::make('Storage', 'settings.storage')
+                Select::make('Storage', 'settings->storage')
                     ->options([
                         'local' => 'Local',
                         's3' => 'Cloud',
                     ])
-                    ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
-                        data_set($model, $attribute, $request->input((string) Str::of($requestAttribute)->replace('.', '_')));
-                    })
                     ->displayUsingLabels()
                     ->hideFromIndex(),
             ]),

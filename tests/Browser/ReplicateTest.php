@@ -115,4 +115,15 @@ class ReplicateTest extends DuskTestCase
             $browser->blank();
         });
     }
+
+    public function test_cannot_replicate_a_none_existing_resource()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                    ->visit(new Page('/resources/users/1000/replicate'))
+                    ->assertNotFound();
+
+            $browser->blank();
+        });
+    }
 }
