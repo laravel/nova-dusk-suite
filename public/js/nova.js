@@ -1,1 +1,1 @@
-Nova.booting((function(o){}));
+Nova.booting((function(e){Nova.request().interceptors.response.use((function(e){return console.dir({response:e}),e}),(function(e){return console.dir({error:e}),Promise.reject(e)}))}));

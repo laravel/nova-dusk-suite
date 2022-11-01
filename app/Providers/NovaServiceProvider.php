@@ -31,7 +31,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         parent::boot();
 
         // Nova::remoteStyle(mix('css/nova.css'));
-        // Nova::remoteScript(mix('js/nova.js'));
+        Nova::remoteScript(mix('js/nova.js'));
 
         Event::listen(StartedImpersonating::class, function ($event) {
             config([
