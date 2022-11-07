@@ -53,7 +53,7 @@ class AddComment extends Action
                 ->hide()
                 ->rules('sometimes')
                 ->dependsOn('anonymous', function (BelongsTo $field, NovaRequest $request, FormData $formData) {
-                    if ($formData->anonymous === false) {
+                    if (filter_var($formData->anonymous, FILTER_VALIDATE_BOOLEAN) === false) {
                         $field->show()->rules('required');
                     }
                 }),
