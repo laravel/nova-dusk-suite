@@ -22,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->instance('uses_searchable', file_exists(base_path('.searchable')));
         $this->app->instance('uses_inline_create', file_exists(base_path('.inline-create')));
         $this->app->instance('uses_with_reordering', ! file_exists(base_path('.disable-reordering')));
+        $this->app->instance('uses_breadcrumbs', ! file_exists(base_path('.disable-breadcrumbs')));
     }
 
     /**
