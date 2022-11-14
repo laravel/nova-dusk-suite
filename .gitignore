@@ -17,7 +17,8 @@ yarn-error.log
 
 .searchable
 .inline-create
-.index-query-asc-order
+.disable-reordering
+.disable-breadcrumbs
 
 /public/vendor/nova/*
 /resources/lang/vendor/nova/*

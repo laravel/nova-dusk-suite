@@ -33,6 +33,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         // Nova::remoteStyle(mix('css/nova.css'));
         Nova::remoteScript(mix('js/nova.js'));
 
+        Nova::withBreadcrumbs(function ($request) {
+            return $this->app->make('uses_breadcrumbs');
+        });
+
         Event::listen(StartedImpersonating::class, function ($event) {
             config([
                 'nova.impersonation.started' => '/?'.http_build_query([

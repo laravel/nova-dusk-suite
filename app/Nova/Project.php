@@ -87,7 +87,7 @@ class Project extends Resource
                     if ($formData->name === 'Secret') {
                         $field->show()->default('## Laravel Labs');
                     } else {
-                        if ($formData->show_description === true) {
+                        if ($formData->boolean('show_description') === true) {
                             $field->default('## Laravel')->show();
                         } else {
                             $field->hide();

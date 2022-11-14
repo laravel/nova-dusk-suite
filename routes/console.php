@@ -37,3 +37,13 @@ Artisan::command('inline-create:off', function () {
     File::delete(base_path('.inline-create'));
     $this->comment('Disable inline-create');
 });
+
+Artisan::command('breadcrumb:on', function () {
+    File::delete(base_path('.disable-breadcrumb'));
+    $this->comment('Enable Breadcrumb');
+});
+
+Artisan::command('breadcrumb:off', function () {
+    File::put(base_path('.disable-breadcrumb'), '');
+    $this->comment('Disable Breadcrumb');
+});
