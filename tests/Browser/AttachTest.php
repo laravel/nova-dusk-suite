@@ -6,6 +6,7 @@ use Database\Factories\RoleFactory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
@@ -13,22 +14,21 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class AttachTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function resource_can_be_attached()
+    public function test_resource_can_be_attached()
     {
-        $role = RoleFactory::new()->create();
+        $this->browse(function (Browser $browser) {
+            $role = RoleFactory::new()->create();
 
-        $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(1)
-                    ->visit(new Attach('users', 1, 'roles'))
-                    ->whenAvailable('@via-resource-field', function ($browser) {
+                ->visit(new Attach('users', 1, 'roles'))
+                ->within(new FormComponent(), function ($browser) use ($role) {
+                    $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })
-                    ->selectAttachable($role->id)
-                    ->create()
-                    ->waitForText('The resource was attached!');
+                    ->selectAttachable($role->id);
+                })
+                ->create()
+                ->waitForText('The resource was attached!');
 
             $this->assertDatabaseHas('role_user', [
                 'user_id' => '1',
@@ -40,10 +40,7 @@ class AttachTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function fields_on_intermediate_table_should_be_stored()
+    public function test_fields_on_intermediate_table_should_be_stored()
     {
         $this->defineApplicationStates('searchable');
 
@@ -51,15 +48,17 @@ class AttachTest extends DuskTestCase
             $role = RoleFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Attach('users', 1, 'roles'))
-                    ->whenAvailable('@via-resource-field', function ($browser) {
+                ->visit(new Attach('users', 1, 'roles'))
+                ->within(new FormComponent(), function ($browser) use ($role) {
+                    $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })
                     ->selectAttachable($role->id)
-                    ->type('@notes', 'Test Notes')
-                    ->create()
-                    ->waitForText('The resource was attached!')
-                    ->waitFor('[dusk="roles-index-component"] table');
+                    ->type('@notes', 'Test Notes');
+                })
+                ->create()
+                ->waitForText('The resource was attached!')
+                ->waitFor('[dusk="roles-index-component"] table');
 
             $this->assertDatabaseHas('role_user', [
                 'user_id' => '1',
@@ -71,23 +70,22 @@ class AttachTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function validation_errors_are_displayed()
+    public function test_validation_errors_are_displayed()
     {
         RoleFactory::new()->create();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Attach('users', 1, 'roles'))
-                    ->whenAvailable('@via-resource-field', function ($browser) {
+                ->visit(new Attach('users', 1, 'roles'))
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
-                    })
-                    ->create()
-                    ->waitForText('There was a problem submitting the form.', 15)
-                    ->assertSee('The role field is required.')
-                    ->cancel();
+                    });
+                })
+                ->create()
+                ->waitForText('There was a problem submitting the form.', 15)
+                ->assertSee('The role field is required.')
+                ->cancel();
 
             $this->assertDatabaseMissing('role_user', [
                 'user_id' => '1',
@@ -98,10 +96,7 @@ class AttachTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function it_display_attachable_resource_based_on_relationship()
+    public function test_it_display_attachable_resource_based_on_relationship()
     {
         Carbon::setTestNow($now = Carbon::now());
 
@@ -112,17 +107,17 @@ class AttachTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
-                        $browser->waitForTable()
-                            ->assertSeeResource(4)
-                            ->assertDontSeeResource(3);
-                    })
-                    ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
-                        $browser->waitForTable()
-                            ->assertSeeResource(3)
-                            ->assertDontSeeResource(4);
-                    });
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertSeeResource(4)
+                        ->assertDontSeeResource(3);
+                })
+                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertSeeResource(3)
+                        ->assertDontSeeResource(4);
+                });
 
             $browser->blank();
         });
