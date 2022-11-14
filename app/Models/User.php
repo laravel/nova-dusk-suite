@@ -61,6 +61,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the user profile's passport.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
+     */
+    public function passport()
+    {
+        return $this->hasOneThrough(Passport::class, Profile::class);
+    }
+
+    /**
      * Get all of the user's posts.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

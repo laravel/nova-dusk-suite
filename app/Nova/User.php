@@ -14,6 +14,7 @@ use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Fields\HasOneThrough;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Select;
@@ -130,6 +131,8 @@ class User extends Resource
             HasOne::make('Profile')->required(function () {
                 return file_exists(base_path('.hasone-required'));
             })->help('User Personal Profile Information'),
+
+            HasOneThrough::make('Passport'),
 
             HasMany::make('Posts', 'posts', Post::class),
 
