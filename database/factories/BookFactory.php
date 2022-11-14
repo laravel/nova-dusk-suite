@@ -11,7 +11,7 @@ class BookFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<\App\Models\Book>
      */
     protected $model = Book::class;
 

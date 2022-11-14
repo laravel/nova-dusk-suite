@@ -11,7 +11,7 @@ class SubscriberFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<\App\Models\Subscriber>
      */
     protected $model = Subscriber::class;
 

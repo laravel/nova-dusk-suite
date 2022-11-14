@@ -10,7 +10,7 @@ class VideoFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<\App\Models\Video>
      */
     protected $model = Video::class;
 
