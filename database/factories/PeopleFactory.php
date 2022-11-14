@@ -10,7 +10,7 @@ class PeopleFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<\App\Models\People>
      */
     protected $model = People::class;
 

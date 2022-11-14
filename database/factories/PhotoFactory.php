@@ -12,7 +12,7 @@ class PhotoFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<\App\Models\Photo>
      */
     protected $model = Photo::class;
 

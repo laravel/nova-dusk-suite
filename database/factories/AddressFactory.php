@@ -10,7 +10,7 @@ class AddressFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<\App\Models\Address>
      */
     protected $model = Address::class;
 

@@ -10,7 +10,7 @@ class SailFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<\App\Models\Sail>
      */
     protected $model = Sail::class;
 

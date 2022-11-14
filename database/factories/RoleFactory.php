@@ -10,7 +10,7 @@ class RoleFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var string
+     * @var class-string<\App\Models\Role>
      */
     protected $model = Role::class;
 
