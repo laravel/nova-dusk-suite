@@ -5,40 +5,42 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function resource_can_be_created()
+    public function test_resource_can_be_created()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Create('users'))
-                    ->type('@name', 'Adam Wathan')
-                    ->type('@email', 'adam@laravel.com')
-                    ->type('@password', 'secret')
-                    ->select('@settings->pagination', 'simple')
-                    ->create()
-                    ->waitForText('The user was created!');
+                ->visit(new Create('users'))
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->type('@name', 'Adam Wathan')
+                        ->type('@email', 'adam@laravel.com')
+                        ->type('@password', 'secret')
+                        ->select('@settings->pagination', 'simple');
+                })
+                ->create()
+                ->waitForText('The user was created!');
 
             $user = User::orderBy('id', 'desc')->first();
 
             $browser->on(new Create('profiles'))
-                    ->assertQueryStringHas('viaResource', 'users')
-                    ->assertQueryStringHas('viaResourceId', $user->id)
-                    ->assertQueryStringHas('viaRelationship', 'profile')
-                    ->type('@github_url', 'https://github.com/adamwathan')
-                    ->type('@twitter_url', 'https://twitter.com/adamwathan')
-                    ->select('select[dusk="timezone"]', 'UTC')
-                    ->select('select[dusk="interests"]', ['laravel', 'phpunit'])
-                    ->create()
-                    ->waitForText('The profile was created!')
-                    ->on(new Detail('users', $user->id));
+                ->assertQueryStringHas('viaResource', 'users')
+                ->assertQueryStringHas('viaResourceId', $user->id)
+                ->assertQueryStringHas('viaRelationship', 'profile')
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->type('@github_url', 'https://github.com/adamwathan')
+                        ->type('@twitter_url', 'https://twitter.com/adamwathan')
+                        ->select('select[dusk="timezone"]', 'UTC')
+                        ->select('select[dusk="interests"]', ['laravel', 'phpunit']);
+                })
+                ->create()
+                ->waitForText('The profile was created!')
+                ->on(new Detail('users', $user->id));
 
             $user->refresh()->load('profile');
 
@@ -56,39 +58,35 @@ class CreateTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function validation_errors_are_displayed()
+    public function test_validation_errors_are_displayed()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Create('users'))
-                    ->create()
-                    ->waitForText('There was a problem submitting the form.')
-                    ->assertSee('The Name field is required.')
-                    ->assertSee('The Email field is required.')
-                    ->assertSee('The Password field is required.')
-                    ->cancel();
+                ->visit(new Create('users'))
+                ->create()
+                ->waitForText('There was a problem submitting the form.')
+                ->assertSee('The Name field is required.')
+                ->assertSee('The Email field is required.')
+                ->assertSee('The Password field is required.')
+                ->cancel();
 
             $browser->blank();
         });
     }
 
-    /**
-     * @test
-     */
-    public function resource_can_be_created_and_another_resource_can_be_added()
+    public function test_resource_can_be_created_and_another_resource_can_be_added()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Create('users'))
-                    ->type('@name', 'Adam Wathan')
-                    ->type('@email', 'adam@laravel.com')
-                    ->type('@password', 'secret')
-                    ->createAndAddAnother()
-                    ->waitForText('The user was created!')
-                    ->on(new Create('users'));
+                ->visit(new Create('users'))
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->type('@name', 'Adam Wathan')
+                        ->type('@email', 'adam@laravel.com')
+                        ->type('@password', 'secret');
+                })
+                ->createAndAddAnother()
+                ->waitForText('The user was created!')
+                ->on(new Create('users'));
 
             $user = User::orderBy('id', 'desc')->first();
 

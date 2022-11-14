@@ -9,10 +9,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class DashboardTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function show_default_dashboard()
+    public function test_show_default_dashboard()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -23,10 +20,7 @@ class DashboardTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function invalid_dashboard_shows_404()
+    public function test_invalid_dashboard_shows_404()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -37,10 +31,7 @@ class DashboardTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function it_can_focus_global_search_using_shortcut()
+    public function test_it_can_focus_global_search_using_shortcut()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)

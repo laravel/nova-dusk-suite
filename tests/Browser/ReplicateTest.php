@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Page;
 use Laravel\Nova\Testing\Browser\Pages\Replicate;
@@ -23,9 +24,10 @@ class ReplicateTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
                     ->visit(new Replicate('posts', $post->id))
-                    ->on(new Replicate('posts', $post->id))
-                    ->whenAvailable('@title', function ($browser) {
-                        $browser->type('', 'Replicated Post');
+                    ->within(new FormComponent(), function ($browser) {
+                        $browser->whenAvailable('@title', function ($browser) {
+                            $browser->type('', 'Replicated Post');
+                        });
                     })
                     ->create()
                     ->waitForText('The user post was created');
@@ -52,7 +54,9 @@ class ReplicateTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
                     ->visit(new Replicate('posts', $post->id))
-                    ->type('@title', 'Replicated Post 2')
+                    ->within(new FormComponent(), function ($browser) {
+                        $browser->type('@title', 'Replicated Post 2');
+                    })
                     ->create()
                     ->waitForText('The user post was created');
 
@@ -77,10 +81,12 @@ class ReplicateTest extends DuskTestCase
                     })
                     ->waitForText('Create User')
                     ->assertSeeIn('h1', 'Create User')
-                    ->assertInputValue('@name', 'Mohamed Said')
-                    ->assertInputValue('@email', 'mohamed@laravel.com')
-                    ->assertSee('Create & Add Another')
-                    ->assertSee('Create User');
+                    ->within(new FormComponent(), function ($browser) {
+                        $browser->assertInputValue('@name', 'Mohamed Said')
+                            ->assertInputValue('@email', 'mohamed@laravel.com')
+                            ->assertSee('Create & Add Another')
+                            ->assertSee('Create User');
+                    });
 
             $browser->blank();
         });

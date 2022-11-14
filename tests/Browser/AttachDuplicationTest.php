@@ -6,6 +6,7 @@ use Database\Factories\RoleFactory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
@@ -13,30 +14,29 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class AttachDuplicationTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function it_cant_attach_different_unique_relation()
+    public function test_it_cant_attach_different_unique_relation()
     {
-        $role = RoleFactory::new()->create();
+        $this->browse(function (Browser $browser) {
+            $role = RoleFactory::new()->create();
 
-        $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(1)
-                    ->visit(new Attach('users', 1, 'roles'))
-                    ->whenAvailable('@via-resource-field', function ($browser) {
+                ->visit(new Attach('users', 1, 'roles'))
+                ->within(new FormComponent(), function ($browser) use ($role) {
+                    $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })
                     ->assertSelectHasOptions('@attachable-select', [$role->id])
-                    ->selectAttachable($role->id)
-                    ->create()
-                    ->waitForText('The resource was attached!')
-                    ->on(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details: 1')
-                    ->visit(new Attach('users', 1, 'roles'))
-                    ->whenAvailable('@via-resource-field', function ($browser) {
-                        $browser->assertSee('User')->assertSee('1');
-                    })
-                    ->assertSelectMissingOptions('@attachable-select', [$role->id]);
+                    ->selectAttachable($role->id);
+                })
+                ->create()
+                ->waitForText('The resource was attached!')
+                ->on(new Detail('users', 1))
+                ->waitForTextIn('h1', 'User Details: 1')
+                ->visit(new Attach('users', 1, 'roles'))
+                ->whenAvailable('@via-resource-field', function ($browser) {
+                    $browser->assertSee('User')->assertSee('1');
+                })
+                ->assertSelectMissingOptions('@attachable-select', [$role->id]);
 
             $this->assertDatabaseHas('role_user', [
                 'user_id' => '1',
@@ -49,31 +49,32 @@ class AttachDuplicationTest extends DuskTestCase
     }
 
     /**
-     * @test
      * @group local-time
      */
-    public function it_can_attach_different_relation_groups()
+    public function test_it_can_attach_different_relation_groups()
     {
         Carbon::setTestNow($now = Carbon::now());
 
         $this->browse(function (Browser $browser) use ($now) {
             $browser->loginAs(1)
-                    ->visit(new Attach('users', 1, 'books', 'giftBooks'))
-                    ->assertSeeIn('h1', 'Attach Book')
-                    ->selectAttachable(4)
-                    ->type('@price', '39')
-                    ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now)
-                    ->create()
-                    ->waitForText('The resource was attached!')
-                    ->on(new Detail('users', 1))
-                    ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
-                        $browser->waitForTable()
-                            ->assertSeeResource(4);
-                    })
-                    ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
-                        $browser->waitForEmptyDialog()
-                                ->assertSee('No Book matched the given criteria.');
-                    });
+                ->visit(new Attach('users', 1, 'books', 'giftBooks'))
+                ->assertSeeIn('h1', 'Attach Book')
+                ->within(new FormComponent(), function ($browser) use ($now) {
+                    $browser->selectAttachable(4)
+                        ->type('@price', '39')
+                        ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now);
+                })
+                ->create()
+                ->waitForText('The resource was attached!')
+                ->on(new Detail('users', 1))
+                ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertSeeResource(4);
+                })
+                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
+                    $browser->waitForEmptyDialog()
+                            ->assertSee('No Book matched the given criteria.');
+                });
 
             $browser->blank();
         });
@@ -87,10 +88,9 @@ class AttachDuplicationTest extends DuskTestCase
     }
 
     /**
-     * @test
      * @group local-time
      */
-    public function it_can_attach_duplicate_relations_with_different_pivot()
+    public function test_it_can_attach_duplicate_relations_with_different_pivot()
     {
         Carbon::setTestNow($now = Carbon::now());
 
@@ -100,31 +100,32 @@ class AttachDuplicationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($now) {
             $browser->loginAs(1)
-                    ->visit(new Attach('users', 1, 'books', 'personalBooks'))
-                    ->assertSeeIn('h1', 'Attach Book')
-                    ->selectAttachable(4)
-                    ->type('@price', '34')
-                    ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now)
-                    ->create()
-                    ->waitForText('The resource was attached!')
-                    ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
-                        $browser->waitForTable()
-                            ->assertSeeResource(4);
-                    })
-                    ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
-                        $browser->waitForTable()
-                            ->assertSeeResource(4);
-                    });
+                ->visit(new Attach('users', 1, 'books', 'personalBooks'))
+                ->assertSeeIn('h1', 'Attach Book')
+                ->within(new FormComponent(), function ($browser) use ($now) {
+                    $browser->selectAttachable(4)
+                        ->type('@price', '34')
+                        ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now);
+                })
+                ->create()
+                ->waitForText('The resource was attached!')
+                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertSeeResource(4);
+                })
+                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertSeeResource(4);
+                });
 
             $browser->blank();
         });
     }
 
     /**
-     * @test
      * @group local-time
      */
-    public function it_cannot_attach_duplicate_relations_with_same_pivot()
+    public function test_it_cannot_attach_duplicate_relations_with_same_pivot()
     {
         Carbon::setTestNow($now = Carbon::parse('2021-02-16 12:55:00'));
 

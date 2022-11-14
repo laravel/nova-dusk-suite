@@ -7,6 +7,7 @@ use Database\Factories\PostFactory;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Nova;
+use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Page;
 use Laravel\Nova\Testing\Browser\Pages\Update;
@@ -44,10 +45,12 @@ class UpdateTest extends DuskTestCase
             $browser->loginAs(2)
                     ->visit(new Update('users', 1))
                     ->waitForTextIn('h1', 'Update User: 1')
-                    ->assertSee('E-mail address should be unique')
-                    ->assertSelected('@settings->pagination', 'simple')
-                    ->type('@name', 'Taylor Otwell upDATED')
-                    ->type('@password', 'secret')
+                    ->within(new FormComponent(), function ($browser) {
+                        $browser->assertSee('E-mail address should be unique')
+                            ->assertSelected('@settings->pagination', 'simple')
+                            ->type('@name', 'Taylor Otwell upDATED')
+                            ->type('@password', 'secret');
+                    })
                     ->update()
                     ->waitForText('The user was updated!')
                     ->on(new Detail('users', 1));
@@ -72,10 +75,12 @@ class UpdateTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Update('users', 1))
                     ->waitForTextIn('h1', 'Update User: 1')
-                    ->assertSee('E-mail address should be unique')
-                    ->assertSelected('@settings->pagination', 'simple')
-                    ->type('@name', 'Taylor Otwell upDATED')
-                    ->type('@password', 'secret')
+                    ->within(new FormComponent(), function ($browser) {
+                        $browser->assertSee('E-mail address should be unique')
+                            ->assertSelected('@settings->pagination', 'simple')
+                            ->type('@name', 'Taylor Otwell upDATED')
+                            ->type('@password', 'secret');
+                    })
                     ->update()
                     ->waitForText('The user was updated!')
                     ->on(new Detail('users', 1));
@@ -95,7 +100,9 @@ class UpdateTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Update('users', 1))
                     ->waitForTextIn('h1', 'Update User: 1')
-                    ->type('@name', ' ')
+                    ->within(new FormComponent(), function ($browser) {
+                        $browser->type('@name', ' ');
+                    })
                     ->update()
                     ->waitForText('There was a problem submitting the form.')
                     ->assertSee('E-mail address should be unique')
@@ -112,9 +119,11 @@ class UpdateTest extends DuskTestCase
             $browser->loginAs(2)
                     ->visit(new Update('users', 1))
                     ->waitForTextIn('h1', 'Update User: 1')
-                    ->type('@name', 'Taylor Otwell Updated')
-                    ->type('@password', 'secret')
-                    ->assertSee('E-mail address should be unique')
+                    ->within(new FormComponent(), function ($browser) {
+                        $browser->type('@name', 'Taylor Otwell Updated')
+                            ->type('@password', 'secret')
+                            ->assertSee('E-mail address should be unique');
+                    })
                     ->updateAndContinueEditing()
                     ->waitForText('The user was updated!')
                     ->on(new Update('users', 1));
@@ -134,9 +143,11 @@ class UpdateTest extends DuskTestCase
             $browser->loginAs(2)
                     ->visit(new Update('users', 1))
                     ->waitForTextIn('h1', 'Update User: 1')
-                    ->type('@password', 'secret')
-                    ->type('@name', 'Taylor Otwell Updated')
-                    ->keys('@name', '{enter}')
+                    ->within(new FormComponent(), function ($browser) {
+                        $browser->type('@password', 'secret')
+                            ->type('@name', 'Taylor Otwell Updated')
+                            ->keys('@name', '{enter}');
+                    })
                     ->waitForText('The user was updated!')
                     ->on(new Detail('users', 1));
 

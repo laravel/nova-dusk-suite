@@ -11,9 +11,6 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class ToolAuthorizationTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
     public function test_tool_can_be_seen_if_authorized_to_view_it()
     {
         $this->browse(function (Browser $browser) {
@@ -26,9 +23,6 @@ class ToolAuthorizationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function test_tool_can_call_its_own_backend_routes()
     {
         $this->browse(function (Browser $browser) {
@@ -43,9 +37,6 @@ class ToolAuthorizationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function test_tool_cant_be_seen_if_not_authorized_to_view_it()
     {
         User::find(1)->shouldBlockFrom('sidebarTool');
@@ -60,9 +51,6 @@ class ToolAuthorizationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function test_tool_cant_be_navigated_to_if_not_authorized_to_view_it()
     {
         User::find(1)->shouldBlockFrom('sidebarTool');
@@ -78,9 +66,6 @@ class ToolAuthorizationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function test_resource_tool_can_be_seen_if_authorized_to_view_it()
     {
         $this->browse(function (Browser $browser) {
@@ -93,9 +78,6 @@ class ToolAuthorizationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
     public function test_resource_tool_cant_be_seen_if_not_authorized_to_view_it()
     {
         User::find(1)->shouldBlockFrom('resourceTool');

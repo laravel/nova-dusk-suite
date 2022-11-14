@@ -5,15 +5,13 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\Post;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateWithBelongsToTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function resource_can_be_updated_to_new_parent()
+    public function test_resource_can_be_updated_to_new_parent()
     {
         $post = PostFactory::new()->create(['user_id' => 1]);
 
@@ -21,7 +19,9 @@ class UpdateWithBelongsToTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Update('posts', $post->id))
                     ->waitForTextIn('h1', 'Update User Post: '.$post->id)
-                    ->selectRelation('user', 2)
+                    ->within(new FormComponent(), function ($browser) {
+                        $browser->selectRelation('user', 2);
+                    })
                     ->update()
                     ->waitForText('The user post was updated');
 
@@ -34,10 +34,7 @@ class UpdateWithBelongsToTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function belongs_to_field_should_ignore_query_parameters_when_editing()
+    public function test_belongs_to_field_should_ignore_query_parameters_when_editing()
     {
         $post = PostFactory::new()->create(['user_id' => 1]);
 
@@ -49,9 +46,11 @@ class UpdateWithBelongsToTest extends DuskTestCase
                     'viaRelationship' => 'posts',
                 ]))
                 ->waitForTextIn('h1', 'Update User Post: '.$post->id)
-                ->whenAvailable('select[dusk="user"]', function ($browser) {
-                    $browser->assertDisabled('')
-                            ->assertSelected('', 1); // not 2
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->whenAvailable('select[dusk="user"]', function ($browser) {
+                        $browser->assertDisabled('')
+                                ->assertSelected('', 1); // not 2
+                    });
                 });
 
             $browser->blank();
