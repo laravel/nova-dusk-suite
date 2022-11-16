@@ -55,10 +55,19 @@ class IndexAuthorizationTest extends DuskTestCase
                     ->within(new IndexComponent('posts'), function ($browser) use ($posts) {
                         $browser->waitForTable()
                                 ->assertDontSeeLink($posts[0]->id)
+                                ->openControlSelectorById($posts[0]->id, function ($browser) use ($posts) {
+                                    $browser->assertMissing("{$posts[0]->id}-preview-button");
+                                })
                                 ->assertSeeLink($posts[0]->user->name)
                                 ->assertSeeLink($posts[1]->id)
+                                ->openControlSelectorById($posts[1]->id, function ($browser) use ($posts) {
+                                    $browser->assertVisible("{$posts[1]->id}-preview-button");
+                                })
                                 ->assertDontSeeLink($posts[1]->user->name)
                                 ->assertSeeLink($posts[2]->id)
+                                ->openControlSelectorById($posts[2]->id, function ($browser) use ($posts) {
+                                    $browser->assertVisible("{$posts[2]->id}-preview-button");
+                                })
                                 ->assertSeeLink($posts[2]->user->name);
                     });
 

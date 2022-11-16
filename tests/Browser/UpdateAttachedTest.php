@@ -7,6 +7,7 @@ use Database\Factories\RoleFactory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
@@ -28,6 +29,11 @@ class UpdateAttachedTest extends DuskTestCase
                                 ->click('@1-edit-attached-button');
                     })
                     ->on(new UpdateAttached('users', 1, 'roles', 1))
+                    ->within(new BreadcrumbComponent(), function ($browser) {
+                        $browser->assertSeeLink('Users')
+                            ->assertSeeLink('User Details: 1')
+                            ->assertCurrentPageTitle('Update attached Role: 1');
+                    })
                     ->within(new FormComponent(), function ($browser) {
                         $browser->whenAvailable('@via-resource-field', function ($browser) {
                             $browser->assertSee('User')->assertSee('1');
@@ -62,6 +68,11 @@ class UpdateAttachedTest extends DuskTestCase
                                 ->click('@1-edit-attached-button');
                     })
                     ->on(new UpdateAttached('users', 1, 'roles', 1))
+                    ->within(new BreadcrumbComponent(), function ($browser) {
+                        $browser->assertSeeLink('Users')
+                            ->assertSeeLink('User Details: 1')
+                            ->assertCurrentPageTitle('Update attached Role: 1');
+                    })
                     ->within(new FormComponent(), function ($browser) {
                         $browser->whenAvailable('@via-resource-field', function ($browser) {
                             $browser->assertSee('User')->assertSee('1');
@@ -99,6 +110,11 @@ class UpdateAttachedTest extends DuskTestCase
                                 ->click('@1-edit-attached-button');
                     })
                     ->on(new UpdateAttached('users', 1, 'roles', 1))
+                    ->within(new BreadcrumbComponent(), function ($browser) {
+                        $browser->assertSeeLink('Users')
+                            ->assertSeeLink('User Details: 1')
+                            ->assertCurrentPageTitle('Update attached Role: 1');
+                    })
                     ->within(new FormComponent(), function ($browser) {
                         $browser->whenAvailable('@via-resource-field', function ($browser) {
                             $browser->assertSee('User')->assertSee('1');
@@ -140,6 +156,11 @@ class UpdateAttachedTest extends DuskTestCase
                             });
                     })
                     ->on(new UpdateAttached('users', 1, 'books', 4))
+                    ->within(new BreadcrumbComponent(), function ($browser) {
+                        $browser->assertSeeLink('Users')
+                            ->assertSeeLink('User Details: 1')
+                            ->assertCurrentPageTitle('Update attached Book: laravel-testing-decoded');
+                    })
                     ->within(new FormComponent(), function ($browser) {
                         $browser->whenAvailable('@via-resource-field', function ($browser) {
                             $browser->assertSee('User')->assertSee('1');

@@ -7,6 +7,7 @@ use Database\Factories\PostFactory;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Nova;
+use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Page;
@@ -45,6 +46,11 @@ class UpdateTest extends DuskTestCase
             $browser->loginAs(2)
                     ->visit(new Update('users', 1))
                     ->waitForTextIn('h1', 'Update User: 1')
+                    ->within(new BreadcrumbComponent(), function ($browser) {
+                        $browser->assertSeeLink('Users')
+                            ->assertSeeLink('User Details: 1')
+                            ->assertCurrentPageTitle('Update User');
+                    })
                     ->within(new FormComponent(), function ($browser) {
                         $browser->assertSee('E-mail address should be unique')
                             ->assertSelected('@settings->pagination', 'simple')

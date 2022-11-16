@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\DockFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
@@ -119,6 +120,11 @@ class CreateWithBelongsToTest extends DuskTestCase
                     'viaRelationship' => 'posts',
                 ]))
                 ->waitForTextIn('@nova-form', 'Taylor Otwell')
+                ->within(new BreadcrumbComponent(), function ($browser) {
+                    $browser->assertSeeLink('Users')
+                        ->assertSeeLink('User Details: 1')
+                        ->assertCurrentPageTitle('Create User Post');
+                })
                 ->within(new FormComponent(), function ($browser) {
                     $browser->whenAvailable('select[dusk="user"]', function ($browser) {
                         $browser->assertDisabled('')

@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use Database\Factories\CaptainFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
@@ -22,6 +23,11 @@ class AttachSoftDeletingTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Attach('captains', $captain->id, 'ships'))
+                ->within(new BreadcrumbComponent(), function ($browser) use ($captain) {
+                    $browser->assertSeeLink('Captains')
+                        ->assertSeeLink('Captain Details: '.$captain->id)
+                        ->assertCurrentPageTitle('Attach Ship');
+                })
                 ->within(new FormComponent(), function ($browser) use ($ship) {
                     $browser->searchFirstRelation('ships', $ship->id);
                 })
@@ -45,6 +51,11 @@ class AttachSoftDeletingTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Attach('captains', $captain->id, 'ships'))
+                ->within(new BreadcrumbComponent(), function ($browser) use ($captain) {
+                    $browser->assertSeeLink('Captains')
+                        ->assertSeeLink('Captain Details: '.$captain->id)
+                        ->assertCurrentPageTitle('Attach Ship');
+                })
                 ->within(new FormComponent(), function ($browser) use ($ship) {
                     $browser->withTrashedRelation('ships')
                         ->searchFirstRelation('ships', $ship->id);
@@ -72,6 +83,11 @@ class AttachSoftDeletingTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Attach('captains', $captain->id, 'ships'))
+                ->within(new BreadcrumbComponent(), function ($browser) use ($captain) {
+                    $browser->assertSeeLink('Captains')
+                        ->assertSeeLink('Captain Details: '.$captain->id)
+                        ->assertCurrentPageTitle('Attach Ship');
+                })
                 ->within(new FormComponent(), function ($browser) use ($ship) {
                     $browser->searchFirstRelation('ships', $ship->id);
                 })
@@ -95,6 +111,11 @@ class AttachSoftDeletingTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Attach('captains', $captain->id, 'ships'))
+                ->within(new BreadcrumbComponent(), function ($browser) use ($captain) {
+                    $browser->assertSeeLink('Captains')
+                        ->assertSeeLink('Captain Details: '.$captain->id)
+                        ->assertCurrentPageTitle('Attach Ship');
+                })
                 ->within(new FormComponent(), function ($browser) use ($ship) {
                     $browser->withTrashedRelation('ships')
                         ->searchFirstRelation('ships', $ship->id);
