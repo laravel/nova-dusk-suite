@@ -73,7 +73,8 @@ class Post extends Resource
                 ->reorderAssociatables(uses_with_reordering())
                 ->searchable(uses_searchable())
                 ->showCreateRelationButton(uses_inline_create())
-                ->filterable(),
+                ->filterable()
+                ->showOnPreview(),
 
             Text::make('Title', 'title')->rules('required')->sortable(),
 
