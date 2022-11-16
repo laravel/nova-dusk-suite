@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
 use Laravel\Nova\Testing\Browser\Pages\Dashboard;
 use Laravel\Nova\Testing\Browser\Pages\Page;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -13,8 +14,12 @@ class DashboardTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Dashboard())
-                    ->assertSee('Get Started');
+                ->visit(new Dashboard())
+                ->within(new BreadcrumbComponent(), function ($browser) {
+                    $browser->assertSee('Dashboard')
+                        ->assertCurrentPageTitle('Main');
+                })
+                ->assertSee('Get Started');
 
             $browser->blank();
         });
@@ -24,8 +29,8 @@ class DashboardTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Page('/dashboards/foobar'))
-                    ->assertNotFound();
+                ->visit(new Page('/dashboards/foobar'))
+                ->assertNotFound();
 
             $browser->blank();
         });

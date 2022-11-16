@@ -7,6 +7,7 @@ use Database\Factories\RoleFactory;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Contracts\QueryBuilder;
+use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Dashboard;
@@ -24,6 +25,10 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
+                ->within(new BreadcrumbComponent(), function ($browser) {
+                    $browser->assertSee('Resources')
+                        ->assertCurrentPageTitle('Users');
+                })
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(1)

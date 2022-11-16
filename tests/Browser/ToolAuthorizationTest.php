@@ -29,6 +29,7 @@ class ToolAuthorizationTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Page('/sidebar-tool'))
                     ->assertOk()
+                    ->assertWithoutBreadcrumb()
                     ->waitForTextIn('@nova-content', "We're in a black hole.")
                     ->pause(1500)
                     ->assertSee('Hello World');

@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\Post;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -19,6 +20,11 @@ class UpdateWithBelongsToTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Update('posts', $post->id))
                     ->waitForTextIn('h1', 'Update User Post: '.$post->id)
+                    ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
+                        $browser->assertSeeLink('User Post')
+                            ->assertSeeLink('User Post Details: '.$post->id)
+                            ->assertCurrentPageTitle('Update User Post');
+                    })
                     ->within(new FormComponent(), function ($browser) {
                         $browser->selectRelation('user', 2);
                     })
@@ -46,6 +52,11 @@ class UpdateWithBelongsToTest extends DuskTestCase
                     'viaRelationship' => 'posts',
                 ]))
                 ->waitForTextIn('h1', 'Update User Post: '.$post->id)
+                ->within(new BreadcrumbComponent(), function ($browser) {
+                    $browser->assertSeeLink('Users')
+                        ->assertSeeLink('User Details: 2')
+                        ->assertCurrentPageTitle('Update User Post');
+                })
                 ->within(new FormComponent(), function ($browser) {
                     $browser->whenAvailable('select[dusk="user"]', function ($browser) {
                         $browser->assertDisabled('')

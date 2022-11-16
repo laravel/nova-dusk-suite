@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Page;
@@ -24,6 +25,10 @@ class ReplicateTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
                     ->visit(new Replicate('posts', $post->id))
+                    ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
+                        $browser->assertSee('User Post Details: '.$post->id)
+                            ->assertCurrentPageTitle('Replicate User Post');
+                    })
                     ->within(new FormComponent(), function ($browser) {
                         $browser->whenAvailable('@title', function ($browser) {
                             $browser->type('', 'Replicated Post');
@@ -54,6 +59,10 @@ class ReplicateTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
                     ->visit(new Replicate('posts', $post->id))
+                    ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
+                        $browser->assertSee('User Post Details: '.$post->id)
+                            ->assertCurrentPageTitle('Replicate User Post');
+                    })
                     ->within(new FormComponent(), function ($browser) {
                         $browser->type('@title', 'Replicated Post 2');
                     })
@@ -78,6 +87,10 @@ class ReplicateTest extends DuskTestCase
                     ->visit(new UserIndex)
                     ->within(new IndexComponent('users'), function ($browser) {
                         $browser->waitForTable()->replicateResourceById(2);
+                    })
+                    ->within(new BreadcrumbComponent(), function ($browser) {
+                        $browser->assertSee('User Details: 2')
+                            ->assertCurrentPageTitle('Replicate User');
                     })
                     ->waitForText('Create User')
                     ->assertSeeIn('h1', 'Create User')

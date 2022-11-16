@@ -6,6 +6,7 @@ use Database\Factories\RoleFactory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
@@ -49,6 +50,11 @@ class AttachTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Attach('users', 1, 'roles'))
+                ->within(new BreadcrumbComponent(), function ($browser) {
+                    $browser->assertSeeLink('Users')
+                        ->assertSeeLink('User Details: 1')
+                        ->assertCurrentPageTitle('Attach Role');
+                })
                 ->within(new FormComponent(), function ($browser) use ($role) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
@@ -77,6 +83,11 @@ class AttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Attach('users', 1, 'roles'))
+                ->within(new BreadcrumbComponent(), function ($browser) {
+                    $browser->assertSeeLink('Users')
+                        ->assertSeeLink('User Details: 1')
+                        ->assertCurrentPageTitle('Attach Role');
+                })
                 ->within(new FormComponent(), function ($browser) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');

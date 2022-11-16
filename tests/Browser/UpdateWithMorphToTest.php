@@ -7,6 +7,7 @@ use Database\Factories\CommentFactory;
 use Database\Factories\LinkFactory;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -23,6 +24,11 @@ class UpdateWithMorphToTest extends DuskTestCase
 
             $browser->loginAs(1)
                     ->visit(new Update('comments', $comment->id))
+                    ->within(new BreadcrumbComponent(), function ($browser) use ($comment) {
+                        $browser->assertSeeLink('Comments')
+                            ->assertSeeLink('Comment Details: '.$comment->id)
+                            ->assertCurrentPageTitle('Update Comment');
+                    })
                     ->within(new FormComponent(), function ($browser) {
                         $browser->searchFirstRelation('commentable', 2);
                     })
@@ -48,6 +54,11 @@ class UpdateWithMorphToTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Update('comments', $comment->id))
+                ->within(new BreadcrumbComponent(), function ($browser) use ($comment) {
+                    $browser->assertSeeLink('Comments')
+                        ->assertSeeLink('Comment Details: '.$comment->id)
+                        ->assertCurrentPageTitle('Update Comment');
+                })
                 ->within(new FormComponent(), function ($browser) {
                     $browser->assertEnabled('select[dusk="commentable-type"]')
                         ->within('select[dusk="commentable-type"]', function ($browser) {
@@ -75,6 +86,10 @@ class UpdateWithMorphToTest extends DuskTestCase
                     'viaResourceId' => 1,
                     'viaRelationship' => 'comments',
                 ]))
+                ->within(new BreadcrumbComponent(), function ($browser) {
+                    $browser->assertSeeLink('Link Details: 1')
+                        ->assertCurrentPageTitle('Update Comment');
+                })
                 ->within(new FormComponent(), function ($browser) use ($post) {
                     $browser->whenAvailable('select[dusk="commentable-type"]', function ($browser) {
                         $browser->assertEnabled('')

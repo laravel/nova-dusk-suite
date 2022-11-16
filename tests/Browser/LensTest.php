@@ -6,6 +6,7 @@ use Database\Factories\DockFactory;
 use Database\Factories\UserFactory;
 use Illuminate\Support\Str;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
 use Laravel\Nova\Testing\Browser\Components\LensComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Lens;
@@ -19,6 +20,11 @@ class LensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('users', 'passthrough-lens'))
+                ->within(new BreadcrumbComponent(), function ($browser) {
+                    $browser->assertSee('Resources')
+                        ->assertSeeLink('Users')
+                        ->assertCurrentPageTitle('Passthrough Lens');
+                })
                 ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(1)

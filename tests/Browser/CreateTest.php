@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
@@ -17,6 +18,10 @@ class CreateTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Create('users'))
+                ->within(new BreadcrumbComponent(), function ($browser) {
+                    $browser->assertSeeLink('Users')
+                        ->assertCurrentPageTitle('Create User');
+                })
                 ->within(new FormComponent(), function ($browser) {
                     $browser->type('@name', 'Adam Wathan')
                         ->type('@email', 'adam@laravel.com')
@@ -32,6 +37,11 @@ class CreateTest extends DuskTestCase
                 ->assertQueryStringHas('viaResource', 'users')
                 ->assertQueryStringHas('viaResourceId', $user->id)
                 ->assertQueryStringHas('viaRelationship', 'profile')
+                ->within(new BreadcrumbComponent(), function ($browser) use ($user) {
+                    $browser->assertSeeLink('Users')
+                        ->assertSeeLink('User Details: '.$user->id)
+                        ->assertCurrentPageTitle('Create Profile');
+                })
                 ->within(new FormComponent(), function ($browser) {
                     $browser->type('@github_url', 'https://github.com/adamwathan')
                         ->type('@twitter_url', 'https://twitter.com/adamwathan')
