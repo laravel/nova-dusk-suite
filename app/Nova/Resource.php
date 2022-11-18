@@ -70,12 +70,11 @@ abstract class Resource extends NovaResource
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Laravel\Nova\Fields\Field  $field
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function relatableQuery(NovaRequest $request, $query, $field)
+    public static function relatableQuery(NovaRequest $request, $query)
     {
-        return parent::relatableQuery($request, $query, $field);
+        return parent::relatableQuery($request, $query);
     }
 
     // /**
