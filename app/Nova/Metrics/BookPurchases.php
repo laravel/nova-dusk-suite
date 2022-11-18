@@ -12,7 +12,7 @@ class BookPurchases extends Value
      * Calculate the value of the metric.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return mixed
+     * @return \Laravel\Nova\Metrics\ValueResult
      */
     public function calculate(NovaRequest $request)
     {
@@ -25,7 +25,7 @@ class BookPurchases extends Value
     /**
      * Get the ranges available for the metric.
      *
-     * @return array
+     * @return array<int|string, string>
      */
     public function ranges()
     {

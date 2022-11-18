@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Method App\\\\Nova\\\\Dashboards\\\\Metrics\\\\NewPosts\\:\\:calculate\\(\\) should return array\\<int, Laravel\\\\Nova\\\\Metrics\\\\MetricTableRow\\> but returns array\\<int, App\\\\Models\\\\Post\\>\\.$#"
+			count: 1
+			path: app/Nova/Dashboards/Metrics/NewPosts.php
+
+		-
 			message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Support\\\\Collection\\<int,App\\\\Models\\\\Post\\>\\:\\:transform\\(\\) expects callable\\(App\\\\Models\\\\Post, int\\)\\: App\\\\Models\\\\Post, Closure\\(mixed\\)\\: Laravel\\\\Nova\\\\Metrics\\\\MetricTableRow given\\.$#"
 			count: 1
 			path: app/Nova/Dashboards/Metrics/NewPosts.php
@@ -14,6 +19,11 @@ parameters:
 			message: "#^Access to an undefined property object\\:\\:\\$type\\.$#"
 			count: 1
 			path: app/Nova/Fields/BookPurchase.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: app/Providers/AppServiceProvider.php
 
 		-
 			message: "#^Parameter \\#1 \\$seconds of static method Laravel\\\\Nova\\\\Nova\\:\\:notificationPollingInterval\\(\\) expects int, float given\\.$#"

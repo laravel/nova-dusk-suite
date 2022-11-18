@@ -12,17 +12,17 @@ class PostCount extends Value
      * Calculate the value of the metric.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return mixed
+     * @return \Laravel\Nova\Metrics\ValueResult
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, Post::class);
+        return $this->count($request, Post::class)->copyable();
     }
 
     /**
      * Get the ranges available for the metric.
      *
-     * @return array
+     * @return array<int|string, string>
      */
     public function ranges()
     {

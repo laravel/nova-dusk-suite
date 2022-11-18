@@ -12,7 +12,7 @@ class PostCountByUser extends Partition
      * Calculate the value of the metric.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return mixed
+     * @return \Laravel\Nova\Metrics\PartitionResult
      */
     public function calculate(NovaRequest $request)
     {

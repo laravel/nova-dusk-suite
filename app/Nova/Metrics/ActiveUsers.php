@@ -12,7 +12,7 @@ class ActiveUsers extends Progress
      * Calculate the value of the metric.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return mixed
+     * @return \Laravel\Nova\Metrics\ProgressResult
      */
     public function calculate(NovaRequest $request)
     {
