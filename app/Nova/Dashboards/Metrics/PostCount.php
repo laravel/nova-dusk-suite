@@ -16,7 +16,7 @@ class PostCount extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, Post::class);
+        return $this->count($request, Post::class)->copyable();
     }
 
     /**
