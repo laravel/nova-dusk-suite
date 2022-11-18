@@ -5,7 +5,6 @@ namespace App\Nova\Metrics;
 use App\Models\BookPurchase;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
-use Laravel\Nova\Metrics\ValueResult;
 
 class BookPurchases extends Value
 {
