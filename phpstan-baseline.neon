@@ -16,6 +16,16 @@ parameters:
 			path: app/Nova/Fields/BookPurchase.php
 
 		-
+			message: "#^Method App\\\\Nova\\\\Metrics\\\\BookPurchases\\:\\:ranges\\(\\) should return array\\<int\\|string, string\\> but returns array\\<int\\|string, array\\|string\\|null\\>\\.$#"
+			count: 1
+			path: app/Nova/Metrics/BookPurchases.php
+
+		-
+			message: "#^Method App\\\\Nova\\\\Metrics\\\\CommentCount\\:\\:ranges\\(\\) should return array\\<int, string\\> but returns array\\<int, array\\|string\\|null\\>\\.$#"
+			count: 1
+			path: app/Nova/Metrics/CommentCount.php
+
+		-
 			message: "#^Access to an undefined property App\\\\Nova\\\\Notification\\<TModel of Laravel\\\\Nova\\\\Notifications\\\\Notification\\>\\:\\:\\$read_at\\.$#"
 			count: 1
 			path: app/Nova/Notification.php

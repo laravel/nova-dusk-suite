@@ -19,7 +19,7 @@ class CommentCount extends Trend
      * Calculate the value of the metric.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return mixed
+     * @return \Laravel\Nova\Metrics\TrendResult
      */
     public function calculate(NovaRequest $request)
     {
@@ -31,7 +31,7 @@ class CommentCount extends Trend
     /**
      * Get the ranges available for the metric.
      *
-     * @return array
+     * @return array<int, string>
      */
     public function ranges()
     {
