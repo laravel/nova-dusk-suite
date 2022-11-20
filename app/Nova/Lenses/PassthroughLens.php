@@ -38,7 +38,7 @@ class PassthroughLens extends Lens
      * Get the fields available to the lens.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Fields\Field>
      */
     public function fields(NovaRequest $request)
     {
@@ -55,7 +55,7 @@ class PassthroughLens extends Lens
      * Get the filters available for the lens.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Filters\Filter>
      */
     public function filters(NovaRequest $request)
     {

@@ -33,7 +33,7 @@ class People extends Model
     /**
      * Get the indexable data array for the model.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function toSearchableArray()
     {

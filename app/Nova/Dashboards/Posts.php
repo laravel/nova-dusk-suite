@@ -12,7 +12,7 @@ class Posts extends Dashboard
     /**
      * Get the cards for the dashboard.
      *
-     * @return array
+     * @return array<int, \Laravel\Nova\Metrics\Metric>
      */
     public function cards()
     {
@@ -51,7 +51,7 @@ class Posts extends Dashboard
      * Build the menu that renders the navigation links for the tool.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return mixed
+     * @return \Laravel\Nova\Menu\MenuItem
      */
     public function menu(Request $request)
     {

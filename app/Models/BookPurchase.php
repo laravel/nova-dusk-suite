@@ -23,7 +23,7 @@ class BookPurchase extends Pivot
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'purchased_at' => 'datetime',

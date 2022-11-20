@@ -36,7 +36,7 @@ class Captain extends Resource
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Fields\Field|\Illuminate\Http\Resources\MergeValue>
      */
     public function fields(NovaRequest $request)
     {
@@ -108,7 +108,7 @@ class Captain extends Resource
      * Get the actions available for the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Actions\Action>
      */
     public function actions(NovaRequest $request)
     {
