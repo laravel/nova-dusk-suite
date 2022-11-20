@@ -26,7 +26,7 @@ class UserPost extends BooleanFilter
      * Get the filter's available options.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<string, string>
      */
     public function options(NovaRequest $request)
     {

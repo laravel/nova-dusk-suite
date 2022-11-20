@@ -25,7 +25,7 @@ class Dock extends Resource
     /**
      * The columns that should be searched.
      *
-     * @var array
+     * @var array<int, string>
      */
     public static $search = [
         'id', 'name',
@@ -35,7 +35,7 @@ class Dock extends Resource
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Fields\Field>
      */
     public function fields(NovaRequest $request)
     {
@@ -67,7 +67,7 @@ class Dock extends Resource
      * Get the lenses available for the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Lenses\Lens>
      */
     public function lenses(NovaRequest $request)
     {
@@ -81,7 +81,7 @@ class Dock extends Resource
      * Get the actions available for the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Actions\Action>
      */
     public function actions(NovaRequest $request)
     {

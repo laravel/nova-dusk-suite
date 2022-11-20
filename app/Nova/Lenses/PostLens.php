@@ -33,7 +33,7 @@ class PostLens extends Lens
      * Get the fields available to the lens.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Fields\Field>
      */
     public function fields(NovaRequest $request)
     {
@@ -73,7 +73,7 @@ class PostLens extends Lens
      * Get the actions available on the lens.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Actions\Action>
      */
     public function actions(NovaRequest $request)
     {

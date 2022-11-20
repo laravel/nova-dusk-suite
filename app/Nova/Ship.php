@@ -27,19 +27,24 @@ class Ship extends Resource
     /**
      * The columns that should be searched.
      *
-     * @var array
+     * @var array<int, string>
      */
     public static $search = [
         'id', 'name',
     ];
 
+    /**
+     * The number of results to display when searching relatable resource without Scout.
+     *
+     * @var int
+     */
     public static $relatableSearchResults = 5;
 
     /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Fields\Field>
      */
     public function fields(NovaRequest $request)
     {
