@@ -49,7 +49,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Node 16
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16.x'
 
@@ -119,21 +119,21 @@ jobs:
           DB_USERNAME: root
 
       - name: Upload Failed Screenshots
-        uses: actions/upload-artifact@v2-preview
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: "screenshots-php${{ matrix.php }}"
           path: tests/Browser/screenshots/*
 
       - name: Upload Console Errors
-        uses: actions/upload-artifact@v2-preview
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: "console-php${{ matrix.php }}"
           path: tests/Browser/console/*
 
       - name: Upload Laravel Logs
-        uses: actions/upload-artifact@v2-preview
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: "log-php${{ matrix.php }}"
