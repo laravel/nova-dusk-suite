@@ -3,7 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\File;
+use Laravel\Nova\Fields\Audio;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\MorphToMany;
@@ -52,7 +52,7 @@ class Podcast extends Resource
 
             Text::make('Title')->rules('required'),
 
-            File::make('File', 'filename')->nullable(),
+            Audio::make('File', 'filename')->nullable(),
 
             MorphMany::make('Comments', 'comments'),
 
