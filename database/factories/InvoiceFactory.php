@@ -5,19 +5,22 @@ namespace Database\Factories;
 use App\Models\Invoice;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @template TModel of \App\Models\Invoice
+ */
 class InvoiceFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var class-string<\App\Models\Invoice>
+     * @var class-string<TModel>
      */
     protected $model = Invoice::class;
 
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {

@@ -6,19 +6,22 @@ use App\Models\Subscriber;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+/**
+ * @template TModel of \App\Models\Subscriber
+ */
 class SubscriberFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var class-string<\App\Models\Subscriber>
+     * @var class-string<TModel>
      */
     protected $model = Subscriber::class;
 
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {

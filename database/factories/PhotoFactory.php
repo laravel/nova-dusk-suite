@@ -7,19 +7,22 @@ use App\Models\People;
 use App\Models\Photo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @template TModel of \App\Models\Photo
+ */
 class PhotoFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var class-string<\App\Models\Photo>
+     * @var class-string<TModel>
      */
     protected $model = Photo::class;
 
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {
