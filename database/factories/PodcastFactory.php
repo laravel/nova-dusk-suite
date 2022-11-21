@@ -2,20 +2,20 @@
 
 namespace Database\Factories;
 
-use App\Models\Flight;
+use App\Models\Podcast;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @template TModel of \App\Models\Flight
+ * @template TModel of \App\Models\Podcast
  */
-class FlightFactory extends Factory
+class PodcastFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var class-string<TModel>
      */
-    protected $model = Flight::class;
+    protected $model = Podcast::class;
 
     /**
      * Define the model's default state.
@@ -25,7 +25,7 @@ class FlightFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->word(),
+            'title' => $this->faker->word(),
         ];
     }
 }

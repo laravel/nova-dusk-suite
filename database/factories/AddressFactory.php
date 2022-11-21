@@ -5,19 +5,22 @@ namespace Database\Factories;
 use App\Models\Address;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @template TModel of \App\Models\Address
+ */
 class AddressFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var class-string<\App\Models\Address>
+     * @var class-string<TModel>
      */
     protected $model = Address::class;
 
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {
