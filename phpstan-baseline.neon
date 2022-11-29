@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$badgeCallback of method Laravel\\\\Nova\\\\Menu\\\\MenuItem\\:\\:withBadgeIf\\(\\) expects \\(callable\\(\\)\\: Laravel\\\\Nova\\\\Badge\\)\\|Laravel\\\\Nova\\\\Badge\\|string, Closure\\(\\)\\: numeric\\-string given\\.$#"
-			count: 1
-			path: app/Nova/Dashboards/Posts.php
-
-		-
 			message: "#^Access to an undefined property object\\:\\:\\$type\\.$#"
 			count: 1
 			path: app/Nova/Fields/BookPurchase.php

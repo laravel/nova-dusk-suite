@@ -104,7 +104,7 @@ class DateFieldTest extends DuskTestCase
         static::reloadServing();
     }
 
-    public function localiseDateDataProvider()
+    public static function localiseDateDataProvider()
     {
         yield ['Dec 13 1983', 'UTC', 'America/Chicago'];
         yield ['Dec 13 1983', 'UTC', 'Asia/Kuala_Lumpur'];

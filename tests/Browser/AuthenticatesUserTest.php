@@ -112,7 +112,7 @@ class AuthenticatesUserTest extends DuskTestCase
         });
     }
 
-    public function intendedUrlDataProvider()
+    public static function intendedUrlDataProvider()
     {
         yield ['/resources/users/3', '/resources/users/3'];
         yield ['/dashboards/posts-dashboard', '/dashboards/posts-dashboard'];
