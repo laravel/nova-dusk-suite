@@ -125,7 +125,7 @@ class DateTimeFieldTest extends DuskTestCase
         });
     }
 
-    public function localiseDatetimeDataProvider()
+    public static function localiseDatetimeDataProvider()
     {
         yield ['2021-10-14 02:48:15', 'America/Chicago'];
         yield ['2021-10-14 02:48:15', 'Asia/Kuala_Lumpur'];
