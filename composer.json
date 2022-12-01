@@ -17,7 +17,8 @@
         "laravel/vapor-core": "^2.22",
         "league/flysystem-aws-s3-v3": "^3.0",
         "nova-kit/nova-on-vapor": "^1.0",
-        "spatie/laravel-ray": "^1.17"
+        "spatie/laravel-ray": "^1.17",
+        "otwell/icons-viewer": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -91,6 +92,10 @@
         {
             "type": "path",
             "url": "./nova"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/IconsViewer"
         }
     ],
     "config": {

@@ -17,6 +17,7 @@ use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
+use Otwell\IconsViewer\IconsViewer;
 use Otwell\SidebarTool\SidebarTool;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -153,7 +154,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function tools()
     {
         return [
-            (new SidebarTool)->canSee(function (Request $request) {
+            new IconsViewer,
+            SidebarTool::make()->canSee(function (Request $request) {
                 return ! transform($request->user(), function ($user) {
                     return $user->isBlockedFrom('sidebarTool');
                 }, false);
