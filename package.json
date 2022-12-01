@@ -7,7 +7,9 @@
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "prod": "npm run production",
-        "production": "mix --production"
+        "production": "mix --production",
+        "build-icons-viewer": "cd nova-components/IconsViewer && npm run dev",
+        "build-icons-viewer-prod": "cd nova-components/IconsViewer && npm run prod"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.2.1",
