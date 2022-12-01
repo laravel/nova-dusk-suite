@@ -93,7 +93,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        return true;
+        return ! $user->is($model);
     }
 
     /**
