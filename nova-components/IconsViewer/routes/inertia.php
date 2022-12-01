@@ -241,6 +241,6 @@ Route::get('/', function (NovaRequest $request) {
             'x',
             'zoom-in',
             'zoom-out',
-          ],
+        ],
     ]);
 });
