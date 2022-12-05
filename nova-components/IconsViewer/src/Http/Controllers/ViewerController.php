@@ -2,7 +2,6 @@
 
 namespace Otwell\IconsViewer\Http\Controllers;
 
-use Illuminate\Foundation\PackageManifest;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Str;
@@ -13,12 +12,10 @@ class ViewerController extends Controller
 {
     public function __invoke(NovaRequest $request)
     {
-        $vendorPath = app(PackageManifest::class)->vendorPath;
-
         return inertia('IconsViewer', [
             'icons' => ray()->pass([
-                'solid' => $this->iconSet($vendorPath, 'solid'),
-                'outline' => $this->iconSet($vendorPath, 'outline'),
+                'solid' => $this->iconSet('solid'),
+                'outline' => $this->iconSet('outline'),
             ]),
         ]);
     }
@@ -26,13 +23,13 @@ class ViewerController extends Controller
     /**
      * Register all of the resource classes in the given directory.
      *
-     * @param  string  $vendorPath
      * @param  string  $set
      * @return array
      */
-    public static function iconSet($vendorPath, $set)
+    public static function iconSet($set)
     {
-        $directory = "{$vendorPath}/laravel/nova/resources/js/components/Heroicons/{$set}";
+        /** @phpstan-ignore-next-line */
+        $directory = NOVA_PATH.'/resources/js/components/Heroicons/'.$set;
 
         return LazyCollection::make(function () use ($directory) {
             yield from (new Finder())->in($directory)->files();
