@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Otwell\IconsViewer\Http\Controllers\ViewerController;
 
 /*
