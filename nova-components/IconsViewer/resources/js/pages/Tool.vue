@@ -1,15 +1,15 @@
 <template>
   <div>
     <Head title="Icons Viewer" />
-      <Heading class="mb-6">Heroicons ({{ props.icons.length }} icons)</Heading>
+      <Heading class="mb-6">Heroicons</Heading>
 
     <div class="icons-viewer-type-grid">
       <div>
-        <Heading :level="2" class="mb-6">Outline</Heading>
+        <Heading :level="2" class="mb-6">Outline ({{ props.icons.outline.length }} icons)</Heading>
 
         <div class="icons-viewer-set-grid">
           <Card
-            v-for="icon in props.icons"
+            v-for="icon in props.icons.outline"
             class="mx-2 p-2 flex items-center justify-center"
             v-tooltip="`${icon}`"
           >
@@ -23,11 +23,11 @@
       </div>
 
       <div>
-        <Heading :level="2" class="mb-6">Solid</Heading>
+        <Heading :level="2" class="mb-6">Solid ({{ props.icons.solid.length }} icons)</Heading>
 
         <div class="icons-viewer-set-grid">
           <Card
-            v-for="icon in props.icons"
+            v-for="icon in props.icons.solid"
             class="mx-2 p-2 flex items-center justify-center"
             v-tooltip="`${icon}`"
           >
@@ -46,7 +46,7 @@
 <script setup>
 
 const props = defineProps({
-  icons: { type: Array, default: [] },
+  icons: { type: Object, default: {solid: [], outline: []} },
 })
 </script>
 
