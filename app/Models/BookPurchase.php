@@ -28,4 +28,20 @@ class BookPurchase extends Pivot
     protected $casts = [
         'purchased_at' => 'datetime',
     ];
+
+    /**
+     * Perform any actions required after the model boots.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::created(function ($model) {
+            ray('created', $model);
+        });
+
+        static::deleted(function ($model) {
+            ray('deleted', $model);
+        });
+    }
 }
