@@ -8,6 +8,7 @@ use Carbon\CarbonInterval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Events\StartedImpersonating;
 use Laravel\Nova\Events\StoppedImpersonating;
@@ -17,6 +18,7 @@ use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
+use Laravel\Nova\Util;
 use Otwell\IconsViewer\IconsViewer;
 use Otwell\SidebarTool\SidebarTool;
 
@@ -38,10 +40,36 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             return $this->app->make('uses_breadcrumbs');
         });
 
+        $this->registerCustomUserCommand();
         $this->registerImpersonatingEvents();
         $this->registerMainMenu();
         $this->registerUserMenu();
         $this->registerFieldMacros();
+    }
+
+    protected function registerCustomUserCommand()
+    {
+        Nova::createUserUsing(
+            function ($command) {
+                /** @var \Illuminate\Console\Command $command */
+                return [
+                    $command->ask('Name'),
+                    $command->ask('Email Address'),
+                    $command->secret('Password'),
+                    $command->confirm('Active', false),
+                ];
+            },
+            function (string $name, string $email, string $password, bool $active) {
+                $model = Util::userModel();
+
+                return tap((new $model())->forceFill([
+                    'name' => $name,
+                    'email' => $email,
+                    'password' => Hash::make($password),
+                    'active' => $active
+                ]))->save();
+            }
+        );
     }
 
     /**
