@@ -66,7 +66,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     'name' => $name,
                     'email' => $email,
                     'password' => Hash::make($password),
-                    'active' => $active
+                    'active' => $active,
                 ]))->save();
             }
         );
