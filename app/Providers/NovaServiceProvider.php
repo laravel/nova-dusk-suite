@@ -38,6 +38,19 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             return $this->app->make('uses_breadcrumbs');
         });
 
+        $this->registerImpersonatingEvents();
+        $this->registerMainMenu();
+        $this->registerUserMenu();
+        $this->registerFieldMacros();
+    }
+
+    /**
+     * Register impersonating events.
+     *
+     * @return void
+     */
+    protected function registerImpersonatingEvents()
+    {
         Event::listen(StartedImpersonating::class, function ($event) {
             config([
                 'nova.impersonation.started' => '/?'.http_build_query([
@@ -58,7 +71,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ]),
             ]);
         });
+    }
 
+    /**
+     * Register main menu.
+     *
+     * @return void
+     */
+    protected function registerMainMenu()
+    {
         Nova::mainMenu(function (Request $request, Menu $menu) {
             if ($user = $request->user()) {
                 $menu->append(
@@ -77,7 +98,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             return $menu;
         });
+    }
 
+    /**
+     * Register user menu.
+     *
+     * @return void
+     */
+    protected function registerUserMenu()
+    {
         Nova::userMenu(function (Request $request, Menu $menu) {
             if ($user = $request->user()) {
                 $menu->append(
@@ -94,7 +123,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             return $menu;
         });
+    }
 
+    /**
+     * Register field macros.
+     *
+     * @return void
+     */
+    public function registerFieldMacros()
+    {
         Field::macro('showWhen', function (bool $condition) {
             /** @phpstan-ignore-next-line */
             return $condition === true ? $this->show() : $this->hide();
