@@ -8,6 +8,7 @@ use Carbon\CarbonInterval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Events\StartedImpersonating;
 use Laravel\Nova\Events\StoppedImpersonating;
@@ -17,6 +18,7 @@ use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
+use Laravel\Nova\Util;
 use Otwell\IconsViewer\IconsViewer;
 use Otwell\SidebarTool\SidebarTool;
 
@@ -38,6 +40,45 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             return $this->app->make('uses_breadcrumbs');
         });
 
+        $this->registerCustomUserCommand();
+        $this->registerImpersonatingEvents();
+        $this->registerMainMenu();
+        $this->registerUserMenu();
+        $this->registerFieldMacros();
+    }
+
+    protected function registerCustomUserCommand()
+    {
+        Nova::createUserUsing(
+            function ($command) {
+                /** @var \Illuminate\Console\Command $command */
+                return [
+                    $command->ask('Name'),
+                    $command->ask('Email Address'),
+                    $command->secret('Password'),
+                    $command->confirm('Active', false),
+                ];
+            },
+            function (string $name, string $email, string $password, bool $active) {
+                $model = Util::userModel();
+
+                return tap((new $model())->forceFill([
+                    'name' => $name,
+                    'email' => $email,
+                    'password' => Hash::make($password),
+                    'active' => $active,
+                ]))->save();
+            }
+        );
+    }
+
+    /**
+     * Register impersonating events.
+     *
+     * @return void
+     */
+    protected function registerImpersonatingEvents()
+    {
         Event::listen(StartedImpersonating::class, function ($event) {
             config([
                 'nova.impersonation.started' => '/?'.http_build_query([
@@ -58,7 +99,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ]),
             ]);
         });
+    }
 
+    /**
+     * Register main menu.
+     *
+     * @return void
+     */
+    protected function registerMainMenu()
+    {
         Nova::mainMenu(function (Request $request, Menu $menu) {
             transform($request->user(), function ($user) use ($menu) {
                 $menu->append(
@@ -77,7 +126,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             return $menu;
         });
+    }
 
+    /**
+     * Register user menu.
+     *
+     * @return void
+     */
+    protected function registerUserMenu()
+    {
         Nova::userMenu(function (Request $request, Menu $menu) {
             transform($request->user(), function ($user) use ($menu) {
                 $menu->append(
@@ -94,7 +151,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             return $menu;
         });
+    }
 
+    /**
+     * Register field macros.
+     *
+     * @return void
+     */
+    public function registerFieldMacros()
+    {
         Field::macro('showWhen', function (bool $condition) {
             /** @phpstan-ignore-next-line */
             return $condition === true ? $this->show() : $this->hide();
