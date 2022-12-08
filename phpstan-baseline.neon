@@ -31,6 +31,11 @@ parameters:
 			path: app/Providers/NovaServiceProvider.php
 
 		-
+			message: "#^Parameter \\#2 \\$createUserCallback of static method Laravel\\\\Nova\\\\Nova\\:\\:createUserUsing\\(\\) expects \\(Closure\\(string, string, string\\)\\: Illuminate\\\\Database\\\\Eloquent\\\\Model\\)\\|null, Closure\\(string, string, string, bool\\)\\: Illuminate\\\\Database\\\\Eloquent\\\\Model given\\.$#"
+			count: 1
+			path: app/Providers/NovaServiceProvider.php
+
+		-
 			message: "#^Right side of \\|\\| is always false\\.$#"
 			count: 1
 			path: app/Providers/NovaServiceProvider.php
