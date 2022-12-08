@@ -114,7 +114,7 @@ class Captain extends Resource
     {
         return [
             Actions\FieldsAction::make()->standalone()->canSee(function ($request) {
-                return ! ($request->allResourcesSelected() || $request->selectedResourceIds()->isNotEmpty());
+                return ! ($request->allResourcesSelected() || (optional($request->selectedResourceIds())->isNotEmpty() ?? false));
             }),
             tap(Actions\FieldsAction::make()->fullscreen(), function ($action) {
                 $action->name = 'Fields Action (fullscreen)';

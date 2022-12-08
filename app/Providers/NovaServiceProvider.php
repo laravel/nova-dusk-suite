@@ -47,6 +47,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         $this->registerFieldMacros();
     }
 
+    /**
+     * Register custom `nova:user` command.
+     *
+     * @return void
+     */
     protected function registerCustomUserCommand()
     {
         Nova::createUserUsing(
