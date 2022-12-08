@@ -56,6 +56,8 @@ class Book extends Resource
                 return $request->isUpdateOrUpdateAttachedRequest();
             })->creationRules('required')->showOnPreview(),
 
+            Trix::make('Description')->nullable(),
+
             Boolean::make('Active')->default(function ($request) {
                 return true;
             })->filterable()

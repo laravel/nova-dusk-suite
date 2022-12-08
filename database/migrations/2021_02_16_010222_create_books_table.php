@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('sku')->unique();
             $table->string('title');
+            $table->longText('description')->nullable();
             $table->boolean('active')->default(0);
             $table->timestamps();
         });
