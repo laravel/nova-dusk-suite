@@ -54,6 +54,8 @@ jobs:
         run: |
           npm --prefix "./nova-components/CustomField" ci
           npm --prefix "./nova-components/CustomField" run production
+          npm --prefix "./nova-components/IconsViewer" ci
+          npm --prefix "./nova-components/IconsViewer" run production
           npm --prefix "./nova-components/RememberTokenCopier" ci
           npm --prefix "./nova-components/RememberTokenCopier" run production
           npm --prefix "./nova-components/ResourceTool" ci
