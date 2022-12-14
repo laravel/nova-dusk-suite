@@ -51,7 +51,7 @@ class Photo extends Resource
             MorphTo::make('Imageable')->types([
                 Company::class,
                 People::class,
-            ]),
+            ])->nullable(),
 
             Image::make('URL'),
         ];
