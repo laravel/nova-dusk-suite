@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'deprecations' => env('LOG_DEPRECATIONS_CHANNEL', 'deprecations'),
+    'deprecations' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
 
     /*
     |--------------------------------------------------------------------------
