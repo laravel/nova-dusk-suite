@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'deprecations' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
+    'deprecations' => env('LOG_DEPRECATIONS_CHANNEL', 'deprecations'),
 
     /*
     |--------------------------------------------------------------------------
@@ -58,6 +58,12 @@ return [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
+        'deprecations' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/laravel.log'),
+            'level' => env('LOG_LEVEL', 'warning'),
         ],
 
         'daily' => [
