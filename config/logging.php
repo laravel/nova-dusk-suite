@@ -60,12 +60,6 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
-        'deprecations' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/deprecations.log'),
-            'level' => env('LOG_LEVEL', 'warning'),
-        ],
-
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
