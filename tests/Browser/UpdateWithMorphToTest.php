@@ -4,7 +4,9 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Post;
 use Database\Factories\CommentFactory;
+use Database\Factories\CompanyFactory;
 use Database\Factories\LinkFactory;
+use Database\Factories\PhotoFactory;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
@@ -97,6 +99,34 @@ class UpdateWithMorphToTest extends DuskTestCase
                     })
                     ->assertSelectedSearchResult('commentable', $post->title);
                 });
+
+            $browser->blank();
+        });
+    }
+
+    public function test_morph_to_fields_can_be_set_to_null()
+    {
+        $this->browse(function (Browser $browser) {
+            $company = CompanyFactory::new()->create();
+            $photo = PhotoFactory::new()->create([
+                'imageable_type' => $company->getMorphClass(),
+                'imageable_id' => $company->getKey(),
+                'url' => 'avatar.jpg',
+            ]);
+
+            $browser->loginAs(1)
+                ->visit(new Update('photos', $photo->id))
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->selectRelation('imageable-select', '');
+                })->update()
+                ->waitForText('The photo was updated!');
+
+            $this->assertDatabaseHas('photos', [
+                'id' => $photo->getKey(),
+                'imageable_type' => null,
+                'imageable_id' => null,
+                'url' => 'avatar.jpg',
+            ]);
 
             $browser->blank();
         });
