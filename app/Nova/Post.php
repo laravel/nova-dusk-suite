@@ -66,7 +66,9 @@ class Post extends Resource
                     return $request->user()->id > 1 ? $request->user()->id : null;
                 })
                 ->dependsOn('title', function (BelongsTo $field, NovaRequest $request, FormData $formData) {
-                    if (Str::startsWith($formData->title, 'Space Pilgrim:')) {
+                    $title = $formData->title ?? '';
+
+                    if (Str::startsWith($title, 'Space Pilgrim:')) {
                         $field->default(1);
                     }
                 })
@@ -103,11 +105,13 @@ class Post extends Resource
 
             KeyValue::make('Meta')
                 ->dependsOn('title', function (KeyValue $field, NovaRequest $request, FormData $formData) {
-                    if (Str::startsWith($formData->title, 'Space Pilgrim:')) {
+                    $title = $formData->title ?? '';
+
+                    if (Str::startsWith($title, 'Space Pilgrim:')) {
                         $field->default([
                             'Series' => 'Space Pilgrim',
                         ]);
-                    } elseif (Str::startsWith($formData->title, 'Nova:')) {
+                    } elseif (Str::startsWith($title, 'Nova:')) {
                         $field->default([
                             'Series' => 'Laravel Nova',
                         ]);
