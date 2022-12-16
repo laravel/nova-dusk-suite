@@ -104,10 +104,13 @@ jobs:
 
       - name: Upgrade Chrome Driver
         run: php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
+
       - name: Prepare Testbench
         run: php artisan package:discover
+
       - name: Clear Views
         run: php artisan view:clear
+
       - name: Start Chrome Driver
         run: vendor/laravel/dusk/bin/chromedriver-linux &
 
@@ -116,6 +119,7 @@ jobs:
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
+          LOG_DEPRECATIONS_CHANNEL: stderr
 
       - name: Upload Failed Screenshots
         uses: actions/upload-artifact@v3
