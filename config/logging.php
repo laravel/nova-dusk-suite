@@ -62,7 +62,7 @@ return [
 
         'deprecations' => [
             'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('logs/deprecations.log'),
             'level' => env('LOG_LEVEL', 'warning'),
         ],
 
