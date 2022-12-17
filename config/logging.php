@@ -30,7 +30,10 @@ return [
     |
     */
 
-    'deprecations' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
+    'deprecations' => [
+        'channel' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
+        'trace' => false,
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -57,12 +60,6 @@ return [
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
-        ],
-
-        'deprecations' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/deprecations.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
@@ -94,6 +91,7 @@ return [
 
         'stderr' => [
             'driver' => 'monolog',
+            'level' => env('LOG_LEVEL', 'debug'),
             'handler' => StreamHandler::class,
             'formatter' => env('LOG_STDERR_FORMATTER'),
             'with' => [

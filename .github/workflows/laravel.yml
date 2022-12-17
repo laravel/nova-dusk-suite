@@ -119,7 +119,7 @@ jobs:
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
-          LOG_DEPRECATIONS_CHANNEL: deprecations
+          LOG_DEPRECATIONS_CHANNEL: single
 
       - name: Upload Failed Screenshots
         uses: actions/upload-artifact@v3
