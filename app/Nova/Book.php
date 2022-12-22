@@ -71,7 +71,8 @@ class Book extends Resource
                 ->fields(new Fields\BookPurchase('personal')),
 
             BelongsToMany::make('Gift Purchasers', 'giftPurchasers', User::class)
-                ->fields(new Fields\BookPurchase('gift')),
+                ->fields(new Fields\BookPurchase('gift'))
+                ->allowDuplicateRelations(),
         ];
     }
 

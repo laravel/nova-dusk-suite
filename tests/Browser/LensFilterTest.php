@@ -10,10 +10,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class LensFilterTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function number_of_resources_displayed_per_page_can_be_changed()
+    public function test_number_of_resources_displayed_per_page_can_be_changed()
     {
         UserFactory::new()->times(50)->create();
 
@@ -33,10 +30,7 @@ class LensFilterTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function number_of_resources_displayed_per_page_is_saved_in_query_params()
+    public function test_number_of_resources_displayed_per_page_is_saved_in_query_params()
     {
         UserFactory::new()->times(50)->create();
 
@@ -63,10 +57,7 @@ class LensFilterTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function filters_can_be_applied_to_resources()
+    public function test_filters_can_be_applied_to_resources()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -88,10 +79,7 @@ class LensFilterTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function filters_can_be_deselected()
+    public function test_filters_can_be_deselected()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -115,7 +103,6 @@ class LensFilterTest extends DuskTestCase
     }
 
     /**
-     * @test
      * @dataProvider userResourceLenUrlWithFilterApplied
      */
     public function test_filters_can_be_applied_to_lenses_received_from_url($url)
