@@ -11,10 +11,9 @@ use Laravel\Nova\Tests\DuskTestCase;
 class CustomAuthenticatesUserTest extends DuskTestCase
 {
     /**
-     * @test
      * @dataProvider intendedUrlDataProvider
      */
-    public function it_redirect_to_intended_url_after_login($targetUrl, $expectedUrl)
+    public function test_it_redirect_to_intended_url_after_login($targetUrl, $expectedUrl)
     {
         $this->beforeServingApplication(function ($app, $config) {
             $config->set('nova.routes.login', '/login');
@@ -37,10 +36,7 @@ class CustomAuthenticatesUserTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function it_redirect_to_login_after_logout()
+    public function test_it_redirect_to_login_after_logout()
     {
         $this->beforeServingApplication(function ($app, $config) {
             $config->set('nova.routes.login', '/login');
@@ -63,10 +59,7 @@ class CustomAuthenticatesUserTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function it_clear_user_association_after_logout()
+    public function test_it_clear_user_association_after_logout()
     {
         $this->beforeServingApplication(function ($app, $config) {
             $config->set('nova.routes.login', '/login');
@@ -87,10 +80,7 @@ class CustomAuthenticatesUserTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function it_clear_user_association_after_session_timeout()
+    public function test_it_clear_user_association_after_session_timeout()
     {
         $this->beforeServingApplication(function ($app, $config) {
             $config->set('nova.routes.login', '/login');
@@ -113,10 +103,7 @@ class CustomAuthenticatesUserTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function it_can_relogin_after_session_timeout()
+    public function test_it_can_relogin_after_session_timeout()
     {
         $this->beforeServingApplication(function ($app, $config) {
             $config->set('nova.routes.login', '/login');

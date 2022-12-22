@@ -13,6 +13,7 @@ class AuthenticatesUserTest extends DuskTestCase
 {
     /**
      * @test
+     *
      * @dataProvider intendedUrlDataProvider
      */
     public function it_redirect_to_intended_url_after_login($targetUrl, $expectedUrl)

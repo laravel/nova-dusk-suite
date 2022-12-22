@@ -15,6 +15,7 @@ class DateTimeFieldTest extends DuskTestCase
 {
     /**
      * @group local-time
+     *
      * @dataProvider localiseDatetimeDataProvider
      */
     public function test_can_pick_date_using_datetime_input($datetime, $userTimezone)
@@ -66,6 +67,7 @@ class DateTimeFieldTest extends DuskTestCase
 
     /**
      * @group local-time
+     *
      * @dataProvider localiseDatetimeDataProvider
      */
     public function test_can_pick_date_using_datetime_input_and_maintain_current_value_on_validation_errors($datetime, $userTimezone)
