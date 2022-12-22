@@ -58,6 +58,7 @@ class Book extends Model
     public function giftPurchasers()
     {
         return $this->belongsToMany(User::class, 'book_purchases')
+                    ->as('purchase')
                     ->using(BookPurchase::class)
                     ->withPivot('id', 'price', 'type')
                     ->withPivotValue('type', 'gift')
