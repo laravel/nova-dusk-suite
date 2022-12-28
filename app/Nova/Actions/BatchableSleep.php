@@ -38,7 +38,6 @@ class BatchableSleep extends Action implements BatchableAction, ShouldQueue
                 $this->markAsFinished($model);
             }
         }
-
     }
 
     /**

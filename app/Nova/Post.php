@@ -18,6 +18,7 @@ use Laravel\Nova\Panel;
 
 /**
  * @template TModel of \App\Models\Post
+ *
  * @extends \App\Nova\Resource<TModel>
  */
 class Post extends Resource

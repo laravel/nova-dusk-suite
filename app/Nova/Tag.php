@@ -9,6 +9,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
  * @template TModel of \App\Models\Tag
+ *
  * @extends \App\Nova\Resource<TModel>
  */
 class Tag extends Resource

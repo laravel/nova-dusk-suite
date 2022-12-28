@@ -14,6 +14,7 @@ use Laravel\Nova\Nova;
 
 /**
  * @template TModel of \App\Models\Comment
+ *
  * @extends \App\Nova\Resource<TModel>
  */
 class Comment extends Resource

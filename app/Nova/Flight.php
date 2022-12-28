@@ -8,6 +8,7 @@ use Otwell\CustomField\CustomField;
 
 /**
  * @template TModel of \App\Models\Flight
+ *
  * @extends \App\Nova\Resource<TModel>
  */
 class Flight extends Resource

@@ -10,6 +10,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
  * @template TModel of \App\Models\Photo
+ *
  * @extends \App\Nova\Resource<TModel>
  */
 class Photo extends Resource

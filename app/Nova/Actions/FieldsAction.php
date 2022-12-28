@@ -25,7 +25,6 @@ class FieldsAction extends Action
     public function handle(ActionFields $fields, Collection $models): mixed
     {
         ray($fields);
-
     }
 
     /**

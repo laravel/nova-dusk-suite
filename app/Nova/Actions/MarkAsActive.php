@@ -25,6 +25,5 @@ class MarkAsActive extends Action
         foreach ($models as $model) {
             $model->forceFill(['active' => true])->save();
         }
-
     }
 }

@@ -11,6 +11,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
  * @template TModel of \App\Models\Dock
+ *
  * @extends \App\Nova\Resource<TModel>
  */
 class Dock extends Resource

@@ -15,6 +15,7 @@ use Laravel\Nova\Query\Search;
 
 /**
  * @template TModel of \App\Models\Subscriber
+ *
  * @extends \App\Nova\Resource<TModel>
  */
 class Subscriber extends Resource

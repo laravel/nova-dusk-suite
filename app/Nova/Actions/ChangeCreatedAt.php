@@ -27,7 +27,6 @@ class ChangeCreatedAt extends Action
             $model->created_at = $fields->created_at;
             $model->save();
         });
-
     }
 
     /**

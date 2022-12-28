@@ -30,7 +30,6 @@ class TouchCommentable extends Action
         if ($fields->commentable instanceof Model && $fields->commentable->exists) {
             $fields->commentable->touch();
         }
-
     }
 
     /**

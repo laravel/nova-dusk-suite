@@ -9,6 +9,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
  * @template TModel of \App\Models\Role
+ *
  * @extends \App\Nova\Resource<TModel>
  */
 class Role extends Resource
