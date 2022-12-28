@@ -27,7 +27,7 @@ class SendNotification extends Action
      * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      */
-    public function handle(ActionFields $fields, Collection $models)
+    public function handle(ActionFields $fields, Collection $models): mixed
     {
         $notification = NovaNotification::make()->message($fields->message)->type($fields->type);
 
@@ -40,15 +40,17 @@ class SendNotification extends Action
         }
 
         $models->each->notify($notification);
+
+        return null;
     }
 
     /**
      * Get the fields available on the action.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Fields\Field>
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             Select::make('Type')

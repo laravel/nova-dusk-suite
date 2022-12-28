@@ -40,7 +40,7 @@ class PassthroughLens extends Lens
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array<int, \Laravel\Nova\Fields\Field>
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             ID::make('ID', 'id')->sortable(),
@@ -57,7 +57,7 @@ class PassthroughLens extends Lens
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array<int, \Laravel\Nova\Filters\Filter>
      */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [
             new SelectFirst,
@@ -80,7 +80,7 @@ class PassthroughLens extends Lens
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [
             MarkAsActive::make(),

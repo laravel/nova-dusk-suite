@@ -5,6 +5,7 @@ namespace App\Nova\Dashboards\Metrics;
 use App\Models\Post;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
+use Laravel\Nova\Metrics\ValueResult;
 
 class PostCount extends Value
 {
@@ -14,7 +15,7 @@ class PostCount extends Value
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Metrics\ValueResult
      */
-    public function calculate(NovaRequest $request)
+    public function calculate(NovaRequest $request): ValueResult
     {
         return $this->count($request, Post::class)->copyable();
     }
@@ -24,7 +25,7 @@ class PostCount extends Value
      *
      * @return array<int|string, string>
      */
-    public function ranges()
+    public function ranges(): array
     {
         return [
             30 => '30 Days',
@@ -51,7 +52,7 @@ class PostCount extends Value
      *
      * @return string
      */
-    public function uriKey()
+    public function uriKey(): string
     {
         return 'post-count';
     }

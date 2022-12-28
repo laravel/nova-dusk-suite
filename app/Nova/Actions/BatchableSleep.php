@@ -28,7 +28,7 @@ class BatchableSleep extends Action implements BatchableAction, ShouldQueue
      * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      */
-    public function handle(ActionFields $fields, Collection $models)
+    public function handle(ActionFields $fields, Collection $models): mixed
     {
         if (! $this->isStandalone()) {
             foreach ($models as $model) {
@@ -38,15 +38,17 @@ class BatchableSleep extends Action implements BatchableAction, ShouldQueue
                 $this->markAsFinished($model);
             }
         }
+
+        return null;
     }
 
     /**
      * Get the fields available on the action.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Fields\Field>
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [];
     }
@@ -58,7 +60,7 @@ class BatchableSleep extends Action implements BatchableAction, ShouldQueue
      * @param  \Illuminate\Bus\PendingBatch  $batch
      * @return void
      */
-    public function withBatch(ActionFields $fields, PendingBatch $batch)
+    public function withBatch(ActionFields $fields, PendingBatch $batch): void
     {
         $batch->then(function (Batch $batch) {
             /** @phpstan-ignore-next-line */

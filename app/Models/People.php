@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Laravel\Scout\Searchable;
 
 class People extends Model
@@ -15,7 +17,7 @@ class People extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function employee()
+    public function employee(): HasOne
     {
         return $this->hasOne(Employee::class);
     }
@@ -25,7 +27,7 @@ class People extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function photo()
+    public function photo(): MorphOne
     {
         return $this->morphOne(Photo::class, 'imageable');
     }
@@ -35,7 +37,7 @@ class People extends Model
      *
      * @return array<string, mixed>
      */
-    public function toSearchableArray()
+    public function toSearchableArray(): array
     {
         return [
             'id' => $this->id,

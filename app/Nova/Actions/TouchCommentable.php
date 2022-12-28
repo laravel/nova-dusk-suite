@@ -25,20 +25,22 @@ class TouchCommentable extends Action
      * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      */
-    public function handle(ActionFields $fields, Collection $models)
+    public function handle(ActionFields $fields, Collection $models): mixed
     {
         if ($fields->commentable instanceof Model && $fields->commentable->exists) {
             $fields->commentable->touch();
         }
+
+        return null;
     }
 
     /**
      * Get the fields available on the action.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Fields\Field>
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             MorphTo::make('Commentable', 'commentable')

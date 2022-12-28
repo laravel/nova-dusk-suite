@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Tag extends Model
 {
@@ -11,7 +12,7 @@ class Tag extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function posts()
+    public function posts(): MorphToMany
     {
         return $this->morphedByMany(Post::class, 'taggable')->withPivot('notes')->using(Taggable::class);
     }
@@ -21,7 +22,7 @@ class Tag extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function videos()
+    public function videos(): MorphToMany
     {
         return $this->morphedByMany(Video::class, 'taggable');
     }

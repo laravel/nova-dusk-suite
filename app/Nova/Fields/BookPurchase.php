@@ -65,9 +65,9 @@ class BookPurchase
     /**
      * Get the pivot fields for the relationship.
      *
-     * @return array
+     * @return array<int, mixed>
      */
-    public function __invoke()
+    public function __invoke(): array
     {
         return [
             Currency::make('Price')

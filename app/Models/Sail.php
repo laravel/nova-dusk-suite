@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Sail extends Model
 {
@@ -11,7 +12,7 @@ class Sail extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function ship()
+    public function ship(): BelongsTo
     {
         return $this->belongsTo(Ship::class);
     }

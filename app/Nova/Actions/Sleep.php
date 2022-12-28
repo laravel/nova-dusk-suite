@@ -21,12 +21,14 @@ class Sleep extends Action implements ShouldQueue
      * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      */
-    public function handle(ActionFields $fields, Collection $models)
+    public function handle(ActionFields $fields, Collection $models): mixed
     {
         if (! $this->isStandalone()) {
             foreach ($models as $model) {
                 $this->markAsFinished($model);
             }
         }
+
+        return null;
     }
 }

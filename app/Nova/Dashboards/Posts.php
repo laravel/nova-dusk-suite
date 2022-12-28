@@ -14,7 +14,7 @@ class Posts extends Dashboard
      *
      * @return array<int, \Laravel\Nova\Metrics\Metric>
      */
-    public function cards()
+    public function cards(): array
     {
         return [
             Metrics\PostCountOverTime::make()
@@ -32,7 +32,7 @@ class Posts extends Dashboard
      *
      * @return string
      */
-    public function label()
+    public function label(): string
     {
         return 'Post Stats';
     }
@@ -42,7 +42,7 @@ class Posts extends Dashboard
      *
      * @return string
      */
-    public function uriKey()
+    public function uriKey(): string
     {
         return 'posts-dashboard';
     }
@@ -53,7 +53,7 @@ class Posts extends Dashboard
      * @param  \Illuminate\Http\Request  $request
      * @return \Laravel\Nova\Menu\MenuItem
      */
-    public function menu(Request $request)
+    public function menu(Request $request): MenuItem
     {
         $newPostsInLast24Hours = Post::whereBetween('created_at', [now()->subHours(24), now()])->count();
 

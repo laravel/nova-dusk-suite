@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Actions\Actionable;
 
@@ -15,7 +17,7 @@ class Dock extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function ships()
+    public function ships(): HasMany
     {
         return $this->hasMany(Ship::class);
     }
@@ -25,7 +27,7 @@ class Dock extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function sails()
+    public function sails(): HasManyThrough
     {
         return $this->hasManyThrough(Sail::class, Ship::class);
     }

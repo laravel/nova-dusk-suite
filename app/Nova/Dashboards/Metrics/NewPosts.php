@@ -17,7 +17,7 @@ class NewPosts extends Table
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array<int, \Laravel\Nova\Metrics\MetricTableRow>
      */
-    public function calculate(NovaRequest $request)
+    public function calculate(NovaRequest $request): array
     {
         return Post::latest()->take(5)->get()->transform(function ($post) {
             return MetricTableRow::make()

@@ -25,7 +25,7 @@ class AddComment extends Action
      * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      */
-    public function handle(ActionFields $fields, Collection $models)
+    public function handle(ActionFields $fields, Collection $models): mixed
     {
         $models->each(function ($model) use ($fields) {
             $comment = (new Comment)->forceFill([
@@ -35,15 +35,17 @@ class AddComment extends Action
 
             $model->comments()->save($comment);
         });
+
+        return null;
     }
 
     /**
      * Get the fields available on the action.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Fields\Field>
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             Boolean::make('Anonymous Comment', 'anonymous')
