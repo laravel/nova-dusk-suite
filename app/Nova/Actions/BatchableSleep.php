@@ -39,7 +39,6 @@ class BatchableSleep extends Action implements BatchableAction, ShouldQueue
             }
         }
 
-        return;
     }
 
     /**

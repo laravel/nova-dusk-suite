@@ -29,6 +29,5 @@ class Sleep extends Action implements ShouldQueue
             }
         }
 
-        return;
     }
 }

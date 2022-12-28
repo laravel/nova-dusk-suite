@@ -28,7 +28,6 @@ class ChangeCreatedAt extends Action
             $model->save();
         });
 
-        return;
     }
 
     /**

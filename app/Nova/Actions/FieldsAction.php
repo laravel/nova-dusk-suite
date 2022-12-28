@@ -26,7 +26,6 @@ class FieldsAction extends Action
     {
         ray($fields);
 
-        return;
     }
 
     /**

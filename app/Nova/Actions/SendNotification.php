@@ -41,7 +41,6 @@ class SendNotification extends Action
 
         $models->each->notify($notification);
 
-        return;
     }
 
     /**

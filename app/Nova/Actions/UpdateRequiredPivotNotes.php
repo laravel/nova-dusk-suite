@@ -35,7 +35,6 @@ class UpdateRequiredPivotNotes extends Action
             $model->forceFill(['notes' => $fields->notes ?? 'Pivot Action Notes'])->save();
         }
 
-        return;
     }
 
     /**

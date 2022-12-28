@@ -31,7 +31,6 @@ class TouchCommentable extends Action
             $fields->commentable->touch();
         }
 
-        return;
     }
 
     /**
