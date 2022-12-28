@@ -38,7 +38,7 @@ class ToolServiceProvider extends ServiceProvider
             return;
         }
 
-        Nova::router(['nova', Authenticate::class, Authorize::class], 'icons-viewer')
+        Nova::router(['nova'], 'icons-viewer')
             ->group(__DIR__.'/../routes/inertia.php');
 
         Route::middleware(['nova', Authorize::class])
