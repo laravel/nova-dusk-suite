@@ -20,7 +20,7 @@ class MarkAsActive extends Action
      * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      */
-    public function handle(ActionFields $fields, Collection $models)
+    public function handle(ActionFields $fields, Collection $models): mixed
     {
         foreach ($models as $model) {
             $model->forceFill(['active' => true])->save();

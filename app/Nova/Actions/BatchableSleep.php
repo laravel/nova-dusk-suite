@@ -44,7 +44,7 @@ class BatchableSleep extends Action implements BatchableAction, ShouldQueue
      * Get the fields available on the action.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Fields\Field>
      */
     public function fields(NovaRequest $request): array
     {

@@ -21,7 +21,7 @@ class StandaloneTask extends Action
      * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      */
-    public function handle(ActionFields $fields, Collection $models)
+    public function handle(ActionFields $fields, Collection $models): mixed
     {
         if (! empty($fields->notes)) {
             return Action::message('Action executed with ['.$fields->notes.']');
@@ -34,9 +34,9 @@ class StandaloneTask extends Action
      * Get the fields available on the action.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array
+     * @return array<int, \Laravel\Nova\Fields\Field>
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             Text::make('Notes', 'notes')
