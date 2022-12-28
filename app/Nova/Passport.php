@@ -11,6 +11,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
  * @template TModel of \App\Models\Passport
+ *
  * @extends \App\Nova\Resource<TModel>
  */
 class Passport extends Resource

@@ -9,6 +9,7 @@ use Laravel\Nova\Panel;
 
 /**
  * @template TModel of \App\Models\Address
+ *
  * @extends \App\Nova\Resource<TModel>
  */
 class Address extends Resource

@@ -12,6 +12,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
  * @template TModel of \Laravel\Nova\Notifications\Notification
+ *
  * @extends \App\Nova\Resource<TModel>
  *
  * @property \Carbon\CarbonInterface|null $read_at
