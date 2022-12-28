@@ -35,7 +35,6 @@ class AddComment extends Action
 
             $model->comments()->save($comment);
         });
-
     }
 
     /**
