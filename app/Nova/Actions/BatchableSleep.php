@@ -58,7 +58,7 @@ class BatchableSleep extends Action implements BatchableAction, ShouldQueue
      * @param  \Illuminate\Bus\PendingBatch  $batch
      * @return void
      */
-    public function withBatch(ActionFields $fields, PendingBatch $batch): mixed
+    public function withBatch(ActionFields $fields, PendingBatch $batch): void
     {
         $batch->then(function (Batch $batch) {
             /** @phpstan-ignore-next-line */
