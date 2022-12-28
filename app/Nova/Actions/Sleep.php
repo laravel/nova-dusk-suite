@@ -28,5 +28,7 @@ class Sleep extends Action implements ShouldQueue
                 $this->markAsFinished($model);
             }
         }
+
+        return;
     }
 }

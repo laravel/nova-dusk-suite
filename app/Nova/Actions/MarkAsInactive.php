@@ -25,5 +25,7 @@ class MarkAsInactive extends DestructiveAction
         foreach ($models as $model) {
             $model->forceFill(['active' => false])->save();
         }
+
+        return;
     }
 }

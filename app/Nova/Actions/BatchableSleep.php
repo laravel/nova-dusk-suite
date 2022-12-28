@@ -28,7 +28,7 @@ class BatchableSleep extends Action implements BatchableAction, ShouldQueue
      * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      */
-    public function handle(ActionFields $fields, Collection $models): void
+    public function handle(ActionFields $fields, Collection $models): mixed
     {
         if (! $this->isStandalone()) {
             foreach ($models as $model) {
@@ -38,6 +38,8 @@ class BatchableSleep extends Action implements BatchableAction, ShouldQueue
                 $this->markAsFinished($model);
             }
         }
+
+        return;
     }
 
     /**
