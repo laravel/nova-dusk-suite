@@ -5,9 +5,7 @@ namespace Otwell\IconsViewer;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
-use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Nova;
-use Otwell\IconsViewer\Http\Middleware\Authorize;
 
 class ToolServiceProvider extends ServiceProvider
 {
@@ -38,7 +36,7 @@ class ToolServiceProvider extends ServiceProvider
             return;
         }
 
-        Nova::router(['nova', Authenticate::class, Authorize::class], 'icons-viewer')
+        Nova::router(['nova'], 'icons-viewer')
             ->group(__DIR__.'/../routes/inertia.php');
 
         Route::middleware(['nova', Authorize::class])

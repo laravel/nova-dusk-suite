@@ -14,10 +14,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexActionTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function can_run_actions_on_selected_resources()
+    public function test_can_run_actions_on_selected_resources()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -40,10 +37,7 @@ class IndexActionTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function cannot_run_actions_on_deleted_resources()
+    public function test_cannot_run_actions_on_deleted_resources()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -62,10 +56,7 @@ class IndexActionTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function cannot_run_standalone_actions_on_deleted_resource()
+    public function test_cannot_run_standalone_actions_on_deleted_resource()
     {
         PostFactory::new()->times(5)->create(['user_id' => 2]);
 
@@ -85,10 +76,7 @@ class IndexActionTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_run_actions_on_all_matching_resources()
+    public function test_can_run_actions_on_all_matching_resources()
     {
         UserFactory::new()->times(300)->create();
 
@@ -109,10 +97,7 @@ class IndexActionTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_run_table_row_actions_on_selected_resources()
+    public function test_can_run_table_row_actions_on_selected_resources()
     {
         User::whereIn('id', [2, 3, 4])->update(['active' => true]);
 
@@ -131,7 +116,7 @@ class IndexActionTest extends DuskTestCase
                                 $browser->assertSee('Mark As Inactive');
                             })
                             ->runInlineAction(2, 'mark-as-inactive');
-                    });
+                    })->waitForText('The action was executed successfully.');
 
             $this->assertEquals([
                 1 => false,
