@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property \App\Models\User|null $user
@@ -28,7 +30,7 @@ class Profile extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -38,7 +40,7 @@ class Profile extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function company()
+    public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
     }
@@ -48,7 +50,7 @@ class Profile extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function passport()
+    public function passport(): HasOne
     {
         return $this->hasOne(Passport::class);
     }
@@ -58,7 +60,7 @@ class Profile extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function latestPost()
+    public function latestPost(): HasOne
     {
         return $this->hasOne(Post::class, 'user_id')->latestOfMany();
     }

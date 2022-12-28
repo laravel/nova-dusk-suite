@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Company extends Model
@@ -14,7 +16,7 @@ class Company extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function photo()
+    public function photo(): MorphOne
     {
         return $this->morphOne(Photo::class, 'imageable');
     }
@@ -24,7 +26,7 @@ class Company extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function profiles()
+    public function profiles(): HasMany
     {
         return $this->hasMany(Profile::class);
     }

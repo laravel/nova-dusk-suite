@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Nova\Actions\Actionable;
@@ -55,7 +59,7 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function profile()
+    public function profile(): HasOne
     {
         return $this->hasOne(Profile::class);
     }
@@ -65,7 +69,7 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
      */
-    public function passport()
+    public function passport(): HasOneThrough
     {
         return $this->hasOneThrough(Passport::class, Profile::class);
     }
@@ -75,7 +79,7 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function posts()
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
@@ -85,7 +89,7 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles()
+    public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class)->withPivot('notes');
     }
@@ -95,7 +99,7 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function projects()
+    public function projects(): BelongsToMany
     {
         return $this->belongsToMany(Project::class)->withTimestamps();
     }
@@ -105,7 +109,7 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function personalBooks()
+    public function personalBooks(): BelongsToMany
     {
         return $this->belongsToMany(Book::class, 'book_purchases')
                     ->using(BookPurchase::class)
@@ -119,7 +123,7 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function giftBooks()
+    public function giftBooks(): BelongsToMany
     {
         return $this->belongsToMany(Book::class, 'book_purchases')
                     ->using(BookPurchase::class)
@@ -133,7 +137,7 @@ class User extends Authenticatable
      * @param  string  ...$block
      * @return void
      */
-    public function shouldBlockFrom(...$block)
+    public function shouldBlockFrom(...$block): void
     {
         $this->forceFill([
             'blocked_from' => collect($block)->mapWithKeys(function ($block) {
@@ -148,7 +152,7 @@ class User extends Authenticatable
      * @param  string  $action
      * @return bool
      */
-    public function isBlockedFrom($action)
+    public function isBlockedFrom($action): bool
     {
         return ! empty($this->blocked_from) &&
                array_key_exists($action, $this->blocked_from);
@@ -159,7 +163,7 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function canImpersonate()
+    public function canImpersonate(): bool
     {
         return in_array($this->email, ['taylor@laravel.com', 'mohamed@laravel.com', 'david@laravel.com', 'nova@laravel.com']);
     }
@@ -169,7 +173,7 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function canBeImpersonated()
+    public function canBeImpersonated(): bool
     {
         return $this->getKey() !== 1;
     }

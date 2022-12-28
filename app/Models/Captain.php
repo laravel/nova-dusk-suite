@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Captain extends Model
 {
@@ -11,7 +12,7 @@ class Captain extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function ships()
+    public function ships(): BelongsToMany
     {
         return $this->belongsToMany(Ship::class)->withPivot('notes', 'contract');
     }

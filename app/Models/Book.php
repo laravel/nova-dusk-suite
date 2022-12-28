@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Book extends Model
 {
@@ -15,7 +16,7 @@ class Book extends Model
      *
      * @return void
      */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope('active', function (Builder $builder) {
             $builder->where('active', '=', 1);
@@ -27,7 +28,7 @@ class Book extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function purchasers()
+    public function purchasers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'book_purchases')
                     ->using(BookPurchase::class)
@@ -40,7 +41,7 @@ class Book extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function personalPurchasers()
+    public function personalPurchasers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'book_purchases')
                     ->as('purchase')
@@ -55,7 +56,7 @@ class Book extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function giftPurchasers()
+    public function giftPurchasers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'book_purchases')
                     ->as('purchase')

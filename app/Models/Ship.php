@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ship extends Model
@@ -23,7 +26,7 @@ class Ship extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function dock()
+    public function dock(): BelongsTo
     {
         return $this->belongsTo(Dock::class);
     }
@@ -33,7 +36,7 @@ class Ship extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function captains()
+    public function captains(): BelongsToMany
     {
         return $this->belongsToMany(Captain::class)->withPivot('notes', 'contract');
     }
@@ -43,7 +46,7 @@ class Ship extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function sails()
+    public function sails(): HasMany
     {
         return $this->hasMany(Sail::class);
     }

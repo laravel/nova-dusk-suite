@@ -36,7 +36,7 @@ class Subscriber extends Authenticatable
      *
      * @return bool
      */
-    public function canImpersonate()
+    public function canImpersonate(): bool
     {
         return false;
     }
