@@ -5,6 +5,7 @@ namespace App\Nova\Dashboards\Metrics;
 use App\Models\Post;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Partition;
+use Laravel\Nova\Metrics\PartitionResult;
 
 class PostCountByUser extends Partition
 {
@@ -14,7 +15,7 @@ class PostCountByUser extends Partition
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Metrics\PartitionResult
      */
-    public function calculate(NovaRequest $request)
+    public function calculate(NovaRequest $request): PartitionResult
     {
         return $this->count($request, Post::class, 'user_id');
     }
@@ -34,7 +35,7 @@ class PostCountByUser extends Partition
      *
      * @return string
      */
-    public function uriKey()
+    public function uriKey(): string
     {
         return 'post-by-user';
     }

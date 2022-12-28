@@ -5,6 +5,7 @@ namespace App\Nova\Dashboards\Metrics;
 use App\Models\Post;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
+use Laravel\Nova\Metrics\TrendResult;
 
 class PostCountOverTime extends Trend
 {
@@ -14,7 +15,7 @@ class PostCountOverTime extends Trend
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return \Laravel\Nova\Metrics\TrendResult
      */
-    public function calculate(NovaRequest $request)
+    public function calculate(NovaRequest $request): TrendResult
     {
         return $this->countByDays($request, Post::class);
     }
@@ -24,7 +25,7 @@ class PostCountOverTime extends Trend
      *
      * @return array<int, string>
      */
-    public function ranges()
+    public function ranges(): array
     {
         return [
             30 => '30 Days',
@@ -48,7 +49,7 @@ class PostCountOverTime extends Trend
      *
      * @return string
      */
-    public function uriKey()
+    public function uriKey(): string
     {
         return 'post-count-over-time';
     }
