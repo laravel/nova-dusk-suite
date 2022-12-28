@@ -28,7 +28,7 @@ class UserPost extends BooleanFilter
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array<string, string>
      */
-    public function options(NovaRequest $request)
+    public function options(NovaRequest $request): array
     {
         return [
             'Has Attachment' => 'has-attachment',

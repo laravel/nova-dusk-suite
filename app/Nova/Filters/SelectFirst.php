@@ -19,7 +19,7 @@ class SelectFirst extends Filter
      *
      * @param  string  $keyName
      */
-    public function __construct($keyName = 'id')
+    public function __construct(string $keyName = 'id')
     {
         $this->keyName = $keyName;
     }
@@ -43,7 +43,7 @@ class SelectFirst extends Filter
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array<string, string>
      */
-    public function options(NovaRequest $request)
+    public function options(NovaRequest $request): array
     {
         return [
             'First User' => '1',
