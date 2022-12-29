@@ -6,7 +6,9 @@ on:
       - "8.*"
       - "9.*"
       - "master"
-      - "feat/*"
+      - "pr-*"
+      - "feat-*"
+      - "fixes-*"
   pull_request:
 
 jobs:
