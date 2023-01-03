@@ -1,5 +1,6 @@
 #!/bin/bash
 
+rm -Rf ./lang/vendor/nova
 rm -Rf ./public/vendor/nova
 rm -Rf ./resources/lang/vendor/nova
 rm -Rf ./resources/views/vendor/nova
