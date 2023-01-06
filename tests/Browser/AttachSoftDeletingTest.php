@@ -22,7 +22,7 @@ class AttachSoftDeletingTest extends DuskTestCase
             $ship = ShipFactory::new()->create();
 
             $browser->loginAs(1)
-                ->visit(new Attach('captains', $captain->id, 'ships'))
+                ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
                 ->within(new BreadcrumbComponent(), function ($browser) use ($captain) {
                     $browser->assertSeeLink('Captains')
                         ->assertSeeLink('Captain Details: '.$captain->id)
@@ -50,7 +50,7 @@ class AttachSoftDeletingTest extends DuskTestCase
             $ship = ShipFactory::new()->create(['deleted_at' => now()]);
 
             $browser->loginAs(1)
-                ->visit(new Attach('captains', $captain->id, 'ships'))
+                ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
                 ->within(new BreadcrumbComponent(), function ($browser) use ($captain) {
                     $browser->assertSeeLink('Captains')
                         ->assertSeeLink('Captain Details: '.$captain->id)
@@ -82,7 +82,7 @@ class AttachSoftDeletingTest extends DuskTestCase
             $ship = ShipFactory::new()->create();
 
             $browser->loginAs(1)
-                ->visit(new Attach('captains', $captain->id, 'ships'))
+                ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
                 ->within(new BreadcrumbComponent(), function ($browser) use ($captain) {
                     $browser->assertSeeLink('Captains')
                         ->assertSeeLink('Captain Details: '.$captain->id)
@@ -110,7 +110,7 @@ class AttachSoftDeletingTest extends DuskTestCase
             $ship = ShipFactory::new()->create(['deleted_at' => now()]);
 
             $browser->loginAs(1)
-                ->visit(new Attach('captains', $captain->id, 'ships'))
+                ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
                 ->within(new BreadcrumbComponent(), function ($browser) use ($captain) {
                     $browser->assertSeeLink('Captains')
                         ->assertSeeLink('Captain Details: '.$captain->id)

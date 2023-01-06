@@ -29,7 +29,7 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
                                 ->waitFor('@1-edit-attached-button')
                                 ->click('@1-edit-attached-button');
                     })
-                    ->on(new UpdateAttached('captains', 1, 'ships', 1))
+                    ->on(UpdateAttached::belongsToMany('captains', 1, 'ships', 1))
                     ->whenAvailable('select[dusk="attachable-select"]', function ($browser) {
                         $browser->assertDisabled('');
                     })
@@ -63,7 +63,7 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
                                 ->waitFor('@1-edit-attached-button')
                                 ->click('@1-edit-attached-button');
                     })
-                    ->on(new UpdateAttached('captains', 1, 'ships', 1))
+                    ->on(UpdateAttached::belongsToMany('captains', 1, 'ships', 1))
                     ->assertDisabled('select[dusk="attachable-select"]')
                     ->whenAvailable('@notes', function ($browser) {
                         $browser->type('', 'Test Notes');
@@ -71,7 +71,7 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
                     ->updateAndContinueEditing()
                     ->waitForText('The resource was updated!');
 
-            $browser->on(new UpdateAttached('captains', 1, 'ships', 1));
+            $browser->on(UpdateAttached::belongsToMany('captains', 1, 'ships', 1));
 
             $this->assertEquals(
                 'Test Notes',

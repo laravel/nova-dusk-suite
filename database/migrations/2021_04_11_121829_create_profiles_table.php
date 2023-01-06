@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->unique();
-            $table->foreignId('company_id')->nullable();
+            $table->foreignId('company_id')->index()->nullable();
 
             $table->string('github_url')->nullable();
             $table->string('twitter_url')->nullable();

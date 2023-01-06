@@ -27,7 +27,7 @@ class PivotFileAttachTest extends DuskTestCase
             $ship = ShipFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Attach('captains', $captain->id, 'ships'))
+                    ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
                     ->searchFirstRelation('ships', $ship->id)
                     ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
                     ->create();
@@ -39,7 +39,7 @@ class PivotFileAttachTest extends DuskTestCase
             Storage::disk('public')->assertExists($path);
 
             // Ensure file is not removed on blank update...
-            $browser->visit(new UpdateAttached('captains', $captain->id, 'ships', $ship->id))
+            $browser->visit(UpdateAttached::belongsToMany('captains', $captain->id, 'ships', $ship->id))
                     ->update();
 
             $captain = Captain::orderBy('id', 'desc')->first();
@@ -75,7 +75,7 @@ class PivotFileAttachTest extends DuskTestCase
             $ship = ShipFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Attach('captains', $captain->id, 'ships'))
+                    ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
                     ->searchFirstRelation('ships', $ship->id)
                     ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
                     ->create();
@@ -87,7 +87,7 @@ class PivotFileAttachTest extends DuskTestCase
             Storage::disk('public')->assertExists($path);
 
             // Delete the file...
-            $browser->visit(new UpdateAttached('captains', $captain->id, 'ships', $ship->id))
+            $browser->visit(UpdateAttached::belongsToMany('captains', $captain->id, 'ships', $ship->id))
                     ->whenAvailable('button[dusk="contract-delete-link"]', function ($browser) {
                         $browser->click('');
                     })

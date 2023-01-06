@@ -29,7 +29,7 @@ class AttachPolymorphicTest extends DuskTestCase
                     $browser->waitFor('@attach-button')
                             ->click('@attach-button');
                 })
-                ->on(new Attach('posts', 1, 'tags'))
+                ->on(Attach::morphToMany('posts', 1, 'tags'))
                 ->within(new BreadcrumbComponent(), function ($browser) {
                     $browser->assertSeeLink('User Post')
                         ->assertSeeLink('User Post Details: 1')
@@ -63,7 +63,7 @@ class AttachPolymorphicTest extends DuskTestCase
                     $browser->waitFor('@attach-button')
                             ->click('@attach-button');
                 })
-                ->on(new Attach('posts', 1, 'tags'))
+                ->on(Attach::morphToMany('posts', 1, 'tags'))
                 ->within(new BreadcrumbComponent(), function ($browser) {
                     $browser->assertSeeLink('User Post')
                         ->assertSeeLink('User Post Details: 1')
@@ -92,7 +92,7 @@ class AttachPolymorphicTest extends DuskTestCase
             $tag = TagFactory::new()->create();
 
             $browser->loginAs(1)
-                ->visit(new Attach('posts', 1, 'tags', null, true))
+                ->visit(Attach::morphToMany('posts', 1, 'tags'))
                 ->within(new BreadcrumbComponent(), function ($browser) {
                     $browser->assertSeeLink('User Post')
                         ->assertSeeLink('User Post Details: 1')
@@ -121,7 +121,7 @@ class AttachPolymorphicTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new Attach('posts', 1, 'tags', null, true))
+                ->visit(Attach::morphToMany('posts', 1, 'tags'))
                 ->within(new BreadcrumbComponent(), function ($browser) {
                     $browser->assertSeeLink('User Post')
                         ->assertSeeLink('User Post Details: 1')
@@ -154,7 +154,7 @@ class AttachPolymorphicTest extends DuskTestCase
             $tag = TagFactory::new()->create();
 
             $browser->loginAs(1)
-                ->visit(new Attach('posts', 1, 'tags', null, true))
+                ->visit(Attach::morphToMany('posts', 1, 'tags'))
                 ->within(new BreadcrumbComponent(), function ($browser) {
                     $browser->assertSeeLink('User Post')
                         ->assertSeeLink('User Post Details: 1')
