@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\MorphTo;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
@@ -54,7 +55,10 @@ class Photo extends Resource
                 People::class,
             ])->nullable(),
 
-            Image::make('URL'),
+            Image::make('URL')
+                ->storeOriginalName('filename'),
+
+            Text::make('Filename')->onlyOnDetail(),
         ];
     }
 
