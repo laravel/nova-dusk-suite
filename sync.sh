@@ -1,6 +1,6 @@
 #!/bin/bash
 
-composer create-project "laravel/laravel:9.x-dev" skeleton --no-scripts --no-plugins --quiet
+composer create-project "laravel/laravel:10.x-dev" skeleton --no-scripts --no-plugins --quiet
 
 cp -f ./skeleton/app/Console/Kernel.php ./app/Console
 cp -f ./skeleton/app/Exceptions/Handler.php ./app/Exceptions
