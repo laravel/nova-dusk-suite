@@ -20,7 +20,7 @@ class DependentPivotFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($now) {
             $browser->loginAs(1)
-                    ->visit(new Attach('books', 2, 'users', 'purchasers'))
+                    ->visit(Attach::belongsToMany('books', 2, 'users', 'purchasers'))
                     ->assertSeeIn('h1', 'Attach User')
                     ->selectAttachable(4)
                     ->assertEnabled('select[dusk="type"]')

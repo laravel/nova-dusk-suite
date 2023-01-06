@@ -17,7 +17,7 @@ class InlineCreateResourceModalAbandonmentTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new Attach('users', 1, 'roles'))
+                ->visit(Attach::belongsToMany('users', 1, 'roles'))
                 ->showInlineCreate('roles', function ($browser) {
                     $browser->waitForText('Create Role')
                         ->keys('@name', 'Manager', '{tab}')
@@ -27,7 +27,7 @@ class InlineCreateResourceModalAbandonmentTest extends DuskTestCase
                 ->acceptDialog()
                 ->pause(100)
                 ->assertMissing('.modal[data-modal-open=true]')
-                ->on(new Attach('users', 1, 'roles'));
+                ->on(Attach::belongsToMany('users', 1, 'roles'));
 
             $browser->blank();
         });
@@ -42,7 +42,7 @@ class InlineCreateResourceModalAbandonmentTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new Attach('users', 1, 'roles'))
+                ->visit(Attach::belongsToMany('users', 1, 'roles'))
                 ->showInlineCreate('roles', function ($browser) {
                     $browser->waitForText('Create Role')
                         ->keys('@name', 'Manager', '{tab}')
@@ -50,7 +50,7 @@ class InlineCreateResourceModalAbandonmentTest extends DuskTestCase
                 })
                 ->pause(100)
                 ->assertMissing('.modal[data-modal-open=true]')
-                ->on(new Attach('users', 1, 'roles'));
+                ->on(Attach::belongsToMany('users', 1, 'roles'));
 
             $browser->blank();
         });

@@ -20,7 +20,7 @@ class AttachDuplicationTest extends DuskTestCase
             $role = RoleFactory::new()->create();
 
             $browser->loginAs(1)
-                ->visit(new Attach('users', 1, 'roles'))
+                ->visit(Attach::belongsToMany('users', 1, 'roles'))
                 ->within(new FormComponent(), function ($browser) use ($role) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
@@ -32,7 +32,7 @@ class AttachDuplicationTest extends DuskTestCase
                 ->waitForText('The resource was attached!')
                 ->on(new Detail('users', 1))
                 ->waitForTextIn('h1', 'User Details: 1')
-                ->visit(new Attach('users', 1, 'roles'))
+                ->visit(Attach::belongsToMany('users', 1, 'roles'))
                 ->whenAvailable('@via-resource-field', function ($browser) {
                     $browser->assertSee('User')->assertSee('1');
                 })
@@ -57,7 +57,7 @@ class AttachDuplicationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($now) {
             $browser->loginAs(1)
-                ->visit(new Attach('users', 1, 'books', 'giftBooks'))
+                ->visit(Attach::belongsToMany('users', 1, 'books', 'giftBooks'))
                 ->assertSeeIn('h1', 'Attach Book')
                 ->within(new FormComponent(), function ($browser) use ($now) {
                     $browser->selectAttachable(4)
@@ -100,7 +100,7 @@ class AttachDuplicationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($now) {
             $browser->loginAs(1)
-                ->visit(new Attach('users', 1, 'books', 'personalBooks'))
+                ->visit(Attach::belongsToMany('users', 1, 'books', 'personalBooks'))
                 ->assertSeeIn('h1', 'Attach Book')
                 ->within(new FormComponent(), function ($browser) use ($now) {
                     $browser->selectAttachable(4)
@@ -135,7 +135,7 @@ class AttachDuplicationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($now) {
             $browser->loginAs(1)
-                    ->visit(new Attach('users', 1, 'books', 'giftBooks'))
+                    ->visit(Attach::belongsToMany('users', 1, 'books', 'giftBooks'))
                     ->assertSeeIn('h1', 'Attach Book')
                     ->selectAttachable(4)
                     ->type('@price', '34.00')

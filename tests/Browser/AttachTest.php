@@ -21,7 +21,7 @@ class AttachTest extends DuskTestCase
             $role = RoleFactory::new()->create();
 
             $browser->loginAs(1)
-                ->visit(new Attach('users', 1, 'roles'))
+                ->visit(Attach::belongsToMany('users', 1, 'roles'))
                 ->within(new FormComponent(), function ($browser) use ($role) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
@@ -49,7 +49,7 @@ class AttachTest extends DuskTestCase
             $role = RoleFactory::new()->create();
 
             $browser->loginAs(1)
-                ->visit(new Attach('users', 1, 'roles'))
+                ->visit(Attach::belongsToMany('users', 1, 'roles'))
                 ->within(new BreadcrumbComponent(), function ($browser) {
                     $browser->assertSeeLink('Users')
                         ->assertSeeLink('User Details: 1')
@@ -82,7 +82,7 @@ class AttachTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new Attach('users', 1, 'roles'))
+                ->visit(Attach::belongsToMany('users', 1, 'roles'))
                 ->within(new BreadcrumbComponent(), function ($browser) {
                     $browser->assertSeeLink('Users')
                         ->assertSeeLink('User Details: 1')
