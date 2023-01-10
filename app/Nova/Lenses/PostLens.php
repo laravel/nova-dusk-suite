@@ -16,6 +16,16 @@ use Laravel\Nova\Lenses\Lens;
 class PostLens extends Lens
 {
     /**
+     * The columns that should be searched.
+     *
+     * @var array
+     */
+    public static $search = [
+        'id',
+        'user.name',
+    ];
+
+    /**
      * Get the query builder / paginator for the lens.
      *
      * @param  \Laravel\Nova\Http\Requests\LensRequest  $request
