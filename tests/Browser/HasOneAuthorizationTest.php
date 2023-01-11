@@ -3,15 +3,16 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
+use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
+use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class HasOneAuthorizationTest extends DuskTestCase
 {
-    /** @test */
-    public function it_can_create_users_without_authorization_to_profile()
+    public function test_it_can_create_users_without_authorization_to_profile()
     {
         User::find(1)->shouldBlockFrom('profile.create');
 
@@ -34,8 +35,7 @@ class HasOneAuthorizationTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function it_can_view_user_detail_without_authorization_to_profile()
+    public function test_it_can_view_user_detail_without_authorization_to_profile()
     {
         User::find(1)->shouldBlockFrom('profile.view.2');
 
@@ -45,6 +45,20 @@ class HasOneAuthorizationTest extends DuskTestCase
                     ->assertMissing('@profiles-detail-component')
                     ->visit(new Detail('users', 1))
                     ->waitFor('@profiles-detail-component')
+                    ->assertSee('Profile');
+
+            $browser->blank();
+        });
+    }
+
+    public function test_it_cannot_add_has_many_on_profile_without_being_authorized_to_add()
+    {
+        $this->browse(function (Browser $browser) {
+            $user = UserFactory::new()->create();
+
+            $browser->loginAs($user)
+                    ->visit(new Update('profiles', 2))
+                    ->assertMissing('@passports-detail-component')
                     ->assertSee('Profile');
 
             $browser->blank();
