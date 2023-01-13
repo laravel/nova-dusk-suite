@@ -2,7 +2,7 @@
   <div>
     <Heading :level="2" class="mb-6">{{ props.name }} ({{ props.icons.length }} icons)</Heading>
 
-    <div :class="$attrs.class">
+    <div class="icons-viewer-set-grid">
       <Card
         v-for="icon in props.icons"
         class="mx-2 p-2 flex items-center justify-center"
@@ -30,3 +30,9 @@ export default {
   inheritAttrs: false,
 }
 </script>
+
+<style lang="postcss" scoped>
+.icons-viewer-set-grid {
+  @apply grid grid-cols-10 gap-x-2 gap-y-8;
+}
+</style>
