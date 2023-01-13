@@ -18,7 +18,7 @@ class UserPost extends BooleanFilter
     public function apply(NovaRequest $request, $query, $value)
     {
         return $query->when($value['has-attachment'] === true, function ($query) {
-            $query->whereNotNull('attachment');
+            $query->whereNotNull($query->qualifyColumn('attachment'));
         });
     }
 

@@ -34,7 +34,7 @@ class SelectFirst extends Filter
      */
     public function apply(NovaRequest $request, $query, $value)
     {
-        return $query->where($this->keyName, $value);
+        return $query->where($query->qualifyColumn($this->keyName), $value);
     }
 
     /**
