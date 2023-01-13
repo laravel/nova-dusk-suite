@@ -20,6 +20,6 @@ class Created extends DateFilter
     {
         $value = CarbonImmutable::parse($value);
 
-        return $query->whereBetween('created_at', [$value->startOfDay(), $value->endOfDay()]);
+        return $query->whereBetween($query->qualifyColumn('created_at'), [$value->startOfDay(), $value->endOfDay()]);
     }
 }
