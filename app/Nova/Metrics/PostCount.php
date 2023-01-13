@@ -9,6 +9,13 @@ use Laravel\Nova\Metrics\Value;
 class PostCount extends Value
 {
     /**
+     * The element's icon.
+     *
+     * @var string
+     */
+    public $icon = 'document-text';
+
+    /**
      * Calculate the value of the metric.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
