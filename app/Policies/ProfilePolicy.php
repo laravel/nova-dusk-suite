@@ -6,6 +6,7 @@ use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Str;
 
 class ProfilePolicy
 {
@@ -99,5 +100,17 @@ class ProfilePolicy
     public function forceDelete(User $user, Profile $profile)
     {
         return true;
+    }
+
+    /**
+     * Determine whether the user can add a comment to the podcast.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Profile  $profile
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function addPassport(User $user, Profile $profile)
+    {
+        return Str::endsWith($user->email, '@laravel.com');
     }
 }

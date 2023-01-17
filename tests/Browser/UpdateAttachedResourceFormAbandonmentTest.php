@@ -26,7 +26,7 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
                         $browser->waitForTable()
                                 ->click('@1-edit-attached-button');
                     })
-                    ->on(new UpdateAttached('users', 1, 'roles', 1))
+                    ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
                     ->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })
@@ -56,7 +56,7 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
                         $browser->waitForTable()
                                 ->click('@1-edit-attached-button');
                     })
-                    ->on(new UpdateAttached('users', 1, 'roles', 1))
+                    ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
                     ->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })
@@ -84,7 +84,7 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
                         $browser->waitForTable()
                                 ->click('@1-edit-attached-button');
                     })
-                    ->on(new UpdateAttached('users', 1, 'roles', 1))
+                    ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
                     ->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })

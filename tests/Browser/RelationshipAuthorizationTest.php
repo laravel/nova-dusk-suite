@@ -133,7 +133,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(1)
-                    ->visit(new Attach('posts', 1, 'tags'))
+                    ->visit(Attach::morphToMany('posts', 1, 'tags'))
                     ->assertSelectMissingOption('@attachable-select', $tag->name)
                     ->assertSelectMissingOption('@attachable-select', $tag->id);
 

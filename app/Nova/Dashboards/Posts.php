@@ -22,6 +22,7 @@ class Posts extends Dashboard
             Metrics\PostCountByUser::make()
                 ->help('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id tortor justo. Nullam eget lorem nec velit congue accumsan in at magna. Cras lobortis quam mollis, eleifend massa at, lobortis diam.'),
             Metrics\PostCount::make()
+                ->icon('document-text')
                 ->help('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id tortor justo. Nullam eget lorem nec velit congue accumsan in at magna. Cras lobortis quam mollis, eleifend massa at, lobortis diam.'),
             Metrics\NewPosts::make(),
         ];

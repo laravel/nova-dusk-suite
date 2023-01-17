@@ -120,7 +120,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new Attach('users', 1, 'roles'))
+                ->visit(Attach::belongsToMany('users', 1, 'roles'))
                 ->runInlineCreate('roles', function ($browser) {
                     $browser->waitForText('Create Role')
                         ->type('@name', 'Manager');

@@ -32,7 +32,7 @@ class DateTimeFieldTest extends DuskTestCase
             $local = $now->setTimezone($userTimezone);
 
             $browser->loginAs($user)
-                    ->visit(new Attach('users', $user->id, 'books', 'personalBooks'))
+                    ->visit(Attach::belongsToMany('users', $user->id, 'books', 'personalBooks'))
                     ->assertSeeIn('h1', 'Attach Book')
                     ->selectAttachable(4)
                     ->type('@price', '34')
@@ -47,7 +47,7 @@ class DateTimeFieldTest extends DuskTestCase
                 $book->pivot->purchased_at->toDateTimeString()
             );
 
-            $browser->visit(new UpdateAttached('users', $user->id, 'books', 4, 'personalBooks', 1))
+            $browser->visit(UpdateAttached::belongsToMany('users', $user->id, 'books', 4, 'personalBooks', 1))
                     ->assertSeeIn('h1', 'Update attached Book: 1')
                     ->type('@price', '44')
                     ->update();
@@ -84,7 +84,7 @@ class DateTimeFieldTest extends DuskTestCase
             $local = $now->setTimezone($userTimezone);
 
             $browser->loginAs($user)
-                    ->visit(new Attach('users', $user->id, 'books', 'personalBooks'))
+                    ->visit(Attach::belongsToMany('users', $user->id, 'books', 'personalBooks'))
                     ->assertSeeIn('h1', 'Attach Book')
                     ->typeOnDateTimeLocal('@purchased_at', $local)
                     ->create()

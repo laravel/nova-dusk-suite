@@ -28,7 +28,7 @@ class UpdateAttachedTest extends DuskTestCase
                         $browser->waitForTable()
                                 ->click('@1-edit-attached-button');
                     })
-                    ->on(new UpdateAttached('users', 1, 'roles', 1))
+                    ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
                     ->within(new BreadcrumbComponent(), function ($browser) {
                         $browser->assertSeeLink('Users')
                             ->assertSeeLink('User Details: 1')
@@ -67,7 +67,7 @@ class UpdateAttachedTest extends DuskTestCase
                         $browser->waitForTable()
                                 ->click('@1-edit-attached-button');
                     })
-                    ->on(new UpdateAttached('users', 1, 'roles', 1))
+                    ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
                     ->within(new BreadcrumbComponent(), function ($browser) {
                         $browser->assertSeeLink('Users')
                             ->assertSeeLink('User Details: 1')
@@ -85,7 +85,7 @@ class UpdateAttachedTest extends DuskTestCase
                     })
                     ->updateAndContinueEditing()
                     ->waitForText('The resource was updated!')
-                    ->on(new UpdateAttached('users', 1, 'roles', 1))
+                    ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
                     ->whenAvailable('select[dusk="attachable-select"]', function ($browser) {
                         $browser->assertDisabled('')
                                 ->assertSelected('', '1');
@@ -109,7 +109,7 @@ class UpdateAttachedTest extends DuskTestCase
                         $browser->waitForTable()
                                 ->click('@1-edit-attached-button');
                     })
-                    ->on(new UpdateAttached('users', 1, 'roles', 1))
+                    ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
                     ->within(new BreadcrumbComponent(), function ($browser) {
                         $browser->assertSeeLink('Users')
                             ->assertSeeLink('User Details: 1')
@@ -155,7 +155,7 @@ class UpdateAttachedTest extends DuskTestCase
                                         ->click('@4-edit-attached-button');
                             });
                     })
-                    ->on(new UpdateAttached('users', 1, 'books', 4))
+                    ->on(UpdateAttached::belongsToMany('users', 1, 'books', 4))
                     ->within(new BreadcrumbComponent(), function ($browser) {
                         $browser->assertSeeLink('Users')
                             ->assertSeeLink('User Details: 1')
