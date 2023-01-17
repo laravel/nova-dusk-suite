@@ -9,7 +9,6 @@
     "type": "project",
     "require": {
         "php": "^8.0",
-        "fruitcake/laravel-cors": "^2.0.5|^3.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.0",
         "laravel/scout": "^9.4.3",
