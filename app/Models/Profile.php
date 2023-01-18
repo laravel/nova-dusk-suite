@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Laravel\Nova\Actions\Actionable;
 
 /**
  * @property \App\Models\User|null $user
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Profile extends Model
 {
-    use HasFactory;
+    use HasFactory, Actionable;
 
     /**
      * The attributes that should be cast to native types.
