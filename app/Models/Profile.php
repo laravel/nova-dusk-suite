@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Nova\Actions\Actionable;
 
 /**
  * @property \App\Models\User|null $user
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Profile extends Model
 {
-    use HasFactory;
+    use HasFactory, Actionable;
 
     /**
      * The attributes that should be cast to native types.

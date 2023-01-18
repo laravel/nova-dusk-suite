@@ -95,7 +95,6 @@ class Profile extends Resource
             HasOne::make('Passport'),
 
             HasOne::ofMany('Latest Post', 'latestPost', Post::class),
-
         ];
     }
 
