@@ -25,7 +25,8 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                     ->runCreateRelation('ships')
                     ->assertDisabled('select[dusk="dock"]')
                     ->type('@name', 'Test Ship')
-                    ->create();
+                    ->create()
+                    ->waitForText('The ship was created!');
 
             $this->assertSame(1, $dock->loadCount('ships')->ships_count);
 

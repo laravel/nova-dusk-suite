@@ -35,7 +35,7 @@ class ReplicateTest extends DuskTestCase
                         });
                     })
                     ->create()
-                    ->waitForText('The user post was created');
+                    ->waitForText('The user post was created!');
 
             $browser->blank();
         });
@@ -67,7 +67,7 @@ class ReplicateTest extends DuskTestCase
                         $browser->type('@title', 'Replicated Post 2');
                     })
                     ->create()
-                    ->waitForText('The user post was created');
+                    ->waitForText('The user post was created!');
 
             $browser->blank();
         });
