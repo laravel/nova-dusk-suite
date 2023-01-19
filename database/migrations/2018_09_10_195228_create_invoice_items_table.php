@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('invoice_id');
             $table->unsignedInteger('quantity')->nullable();
             $table->string('description')->nullable();
-            $table->unsignedInteger('price');
+            $table->unsignedInteger('price')->nullable();
             $table->timestamps();
         });
     }
