@@ -2,8 +2,12 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Repeater;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
@@ -56,6 +60,13 @@ class Invoice extends Resource
     {
         return [
             ID::make()->sortable(),
+
+            Repeater::make('Invoice Items', 'items')
+                ->fields([
+                    Number::make('Quantity')->rules('numeric'),
+                    Text::make('Description')->rules('string'),
+                    Currency::make('Price')->rules('numeric')->asMinorUnits(),
+                ])->onlyOnForms(),
 
             HasMany::make('InvoiceItem', 'items'),
         ];
