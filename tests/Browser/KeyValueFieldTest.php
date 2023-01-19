@@ -66,7 +66,8 @@ class KeyValueFieldTest extends DuskTestCase
                     ->click('@meta-add-key-value')
                     ->type('@key-value-key-3', 3)
                     ->type('@key-value-value-3', 'Laravel Framework v8')
-                    ->update();
+                    ->update()
+                    ->waitForText('The user post was updated!');
 
             $post->refresh();
 
@@ -89,7 +90,8 @@ class KeyValueFieldTest extends DuskTestCase
                     ->click('@meta-add-key-value')
                     ->type('@key-value-key-3', 'framework')
                     ->type('@key-value-value-3', 'Laravel Framework v8')
-                    ->update();
+                    ->update()
+                    ->waitForText('The user post was updated!');
 
             $post->refresh();
 
@@ -118,7 +120,8 @@ class KeyValueFieldTest extends DuskTestCase
                     ->click('@meta-add-key-value')
                     ->type('@key-value-key-2', '2021')
                     ->type('@key-value-value-2', 'Releasing Laravel Nova v4')
-                    ->update();
+                    ->update()
+                    ->waitForText('The user post was updated!');
 
             $post->refresh();
 

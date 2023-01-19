@@ -16,6 +16,9 @@ return new class extends Migration
         Schema::create('invoice_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('invoice_id');
+            $table->unsignedInteger('quantity')->nullable();
+            $table->string('description')->nullable();
+            $table->unsignedInteger('price')->nullable();
             $table->timestamps();
         });
     }

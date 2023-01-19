@@ -22,7 +22,8 @@ class SearchableSelectTest extends DuskTestCase
             $browser->loginAs($user)
                 ->visit(new Update('profiles', $user->id))
                 ->searchAndSelectFirstResult('timezone', 'America/Chicago')
-                ->update();
+                ->update()
+                ->waitForText('The profile was updated!');
 
             $browser->blank();
 

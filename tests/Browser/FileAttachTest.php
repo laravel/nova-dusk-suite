@@ -42,7 +42,8 @@ class FileAttachTest extends DuskTestCase
 
             // Ensure file is not removed on blank update...
             $browser->visit(new Update('captains', $captain->id))
-                    ->update();
+                    ->update()
+                    ->waitForText('The captain was updated!');
 
             $captain = $captain->fresh();
             $this->assertNotNull($captain->photo);

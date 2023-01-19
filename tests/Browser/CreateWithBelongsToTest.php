@@ -24,7 +24,8 @@ class CreateWithBelongsToTest extends DuskTestCase
                         ->type('@body', 'Test Post Body')
                         ->selectRelation('user', 1);
                 })
-                ->create();
+                ->create()
+                ->waitForText('The user post was created!');
 
             $user = User::with('posts')->find(1);
             $post = $user->posts->first();
@@ -46,7 +47,8 @@ class CreateWithBelongsToTest extends DuskTestCase
                         ->type('@title', 'Test Post')
                         ->type('@body', 'Test Post Body');
                 })
-                ->create();
+                ->create()
+                ->waitForText('The user post was created!');
 
             $user = User::with('posts')->find(1);
             $post = $user->posts->first();
@@ -68,7 +70,8 @@ class CreateWithBelongsToTest extends DuskTestCase
                     $browser->searchFirstRelation('docks', '1')
                         ->type('@name', 'Test Ship');
                 })
-                ->create();
+                ->create()
+                ->waitForText('The ship was created!');
 
             $this->assertCount(1, $dock->fresh()->ships);
 
@@ -91,7 +94,8 @@ class CreateWithBelongsToTest extends DuskTestCase
                     })
                     ->type('@name', 'Test Ship');
                 })
-                ->create();
+                ->create()
+                ->waitForText('The ship was created!');
 
             $this->assertCount(1, $dock->fresh()->ships);
 

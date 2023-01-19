@@ -50,7 +50,8 @@ class DateTimeFieldTest extends DuskTestCase
             $browser->visit(UpdateAttached::belongsToMany('users', $user->id, 'books', 4, 'personalBooks', 1))
                     ->assertSeeIn('h1', 'Update attached Book: 1')
                     ->type('@price', '44')
-                    ->update();
+                    ->update()
+                    ->waitForText('The resource was updated!');
 
             $book = $user->personalBooks()->first();
 
