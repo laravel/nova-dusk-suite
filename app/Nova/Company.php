@@ -68,6 +68,7 @@ class Company extends Resource
                             : ''
                     );
                 })
+                ->withFiles()
                 ->hide()
                 ->nullable(),
 
