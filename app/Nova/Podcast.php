@@ -13,6 +13,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
  * @template TModel of \App\Models\Podcast
+ *
  * @extends \App\Nova\Resource<TModel>
  */
 class Podcast extends Resource

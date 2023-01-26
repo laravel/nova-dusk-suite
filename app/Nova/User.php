@@ -29,6 +29,7 @@ use Otwell\ResourceTool\ResourceTool;
 
 /**
  * @template TModel of \App\Models\User
+ *
  * @extends \App\Nova\Resource<TModel>
  */
 class User extends Resource

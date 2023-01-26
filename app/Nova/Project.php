@@ -16,6 +16,7 @@ use Laravel\Nova\Nova;
 
 /**
  * @template TModel of \App\Models\Project
+ *
  * @extends \App\Nova\Resource<TModel>
  */
 class Project extends Resource

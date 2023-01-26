@@ -10,6 +10,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
  * @template TModel of \App\Models\Link
+ *
  * @extends \App\Nova\Resource<TModel>
  */
 class Link extends Resource

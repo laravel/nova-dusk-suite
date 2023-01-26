@@ -12,6 +12,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
  * @template TModel of \App\Models\Captain
+ *
  * @extends \App\Nova\Resource<TModel>
  */
 class Captain extends Resource
