@@ -22,7 +22,8 @@ class CustomFieldTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Create('flights'))
                     ->type('@name', 'Test Flight')
-                    ->create();
+                    ->create()
+                    ->waitForText('The flight was created!');
 
             $flight = Flight::latest()->first();
 

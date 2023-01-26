@@ -80,7 +80,8 @@ class User extends Resource
                     $model->{$attribute} = Str::title($request->input($requestAttribute));
                 })->filterable(function ($request, $query, $value, $attribute) {
                     (new Search($query, $value))->handle(__CLASS__, [$attribute, 'email']);
-                })->showOnPreview(),
+                })->showOnPreview()
+                ->showWhenPeeking(),
 
             // Gravatar::make(),
 
@@ -90,6 +91,7 @@ class User extends Resource
                 ->updateRules('unique:users,email,{{resourceId}}')
                 ->sortable()
                 ->showOnPreview()
+                ->showWhenPeeking()
                 ->copyable(),
 
             Password::make('Password', 'password')
@@ -153,6 +155,7 @@ class User extends Resource
                         'detail' => 'View',
                         'edit' => 'Update',
                         'select' => 'Select',
+                        'preview' => 'Preview',
                         'ignore' => 'Ignore',
                     ])
                     ->displayUsingLabels()

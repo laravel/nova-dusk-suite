@@ -45,7 +45,7 @@ class Comment extends Resource
     {
         return [
             ID::make('ID', 'id')->sortable(),
-            BelongsTo::make('User')->nullable(),
+            BelongsTo::make('User')->nullable()->peekable(),
 
             $commentable = $this->commentable(),
 

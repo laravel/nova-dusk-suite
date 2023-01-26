@@ -80,7 +80,8 @@ class PivotFileAttachTest extends DuskTestCase
                     ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
                     ->searchFirstRelation('ships', $ship->id)
                     ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
-                    ->create();
+                    ->create()
+                    ->waitForText('The resource was attached!');
 
             // Verify the photo in the information in the database...
             $captain = Captain::orderBy('id', 'desc')->first();

@@ -8,6 +8,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\VaporAudio;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
@@ -53,7 +54,19 @@ class Podcast extends Resource
 
             Text::make('Title')->rules('required'),
 
-            Audio::make('File', 'filename')->nullable(),
+            $this->merge(function () use ($request) {
+                $storage = $request->user()->settings['storage'] ?? 'local' === 'local';
+
+                if ($storage === 's3') {
+                    return [
+                        VaporAudio::make('File', 'filename')->nullable(),
+                    ];
+                }
+
+                return [
+                    Audio::make('File', 'filename')->nullable(),
+                ];
+            }),
 
             MorphMany::make('Comments', 'comments'),
 
