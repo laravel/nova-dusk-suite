@@ -152,6 +152,7 @@ class User extends Resource
                         'detail' => 'View',
                         'edit' => 'Update',
                         'select' => 'Select',
+                        'preview' => 'Preview',
                         'ignore' => 'Ignore',
                     ])
                     ->displayUsingLabels()
