@@ -57,14 +57,16 @@ class Podcast extends Resource
             $this->merge(function () use ($request) {
                 $storage = $request->user()->settings['storage'] ?? 'local' === 'local';
 
-                if ($storage === 's3') {
+                if ($storage === 'vapor') {
                     return [
                         VaporAudio::make('File', 'filename')->nullable(),
                     ];
                 }
 
                 return [
-                    Audio::make('File', 'filename')->nullable(),
+                    Audio::make('File', 'filename')
+                        ->disk($storage === 's3' ? 's3' : config('nova.storage_disk'))
+                        ->nullable(),
                 ];
             }),
 
