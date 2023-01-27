@@ -163,6 +163,7 @@ class User extends Resource
                     ->options([
                         'local' => 'Local',
                         's3' => 'Cloud',
+                        'vapor' => 'Vapor',
                     ])
                     ->displayUsingLabels()
                     ->hideFromIndex(),

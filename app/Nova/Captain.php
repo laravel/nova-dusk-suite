@@ -51,7 +51,7 @@ class Captain extends Resource
             $this->merge(function () use ($request) {
                 $storage = $request->user()->settings['storage'] ?? 'local' === 'local';
 
-                if ($storage === 's3') {
+                if ($storage === 'vapor') {
                     return [
                         VaporImage::make('Photo', 'photo')
                             ->prunable()
@@ -61,6 +61,7 @@ class Captain extends Resource
 
                 return [
                     Image::make('Photo', 'photo')
+                        ->disk($storage === 's3' ? 's3' : config('nova.storage_disk'))
                         ->prunable()
                         ->help('Using local storage'),
                 ];
