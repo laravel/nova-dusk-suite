@@ -94,7 +94,7 @@ class AttachTest extends DuskTestCase
                     });
                 })
                 ->create()
-                ->waitForText('There was a problem submitting the form.', 15)
+                ->waitForText('There was a problem submitting the form.')
                 ->assertSee('The role field is required.')
                 ->cancel();
 

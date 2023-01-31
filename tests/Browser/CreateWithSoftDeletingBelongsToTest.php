@@ -25,7 +25,8 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                     ->runCreateRelation('ships')
                     ->assertDisabled('select[dusk="dock"]')
                     ->type('@name', 'Test Ship')
-                    ->create();
+                    ->create()
+                    ->waitForText('The ship was created!');
 
             $this->assertSame(1, $dock->loadCount('ships')->ships_count);
 
@@ -53,7 +54,8 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                     ->assertSelectHasOption('select[dusk="ship"]', $ship2->id)
                     ->selectRelation('ship', $ship->id)
                     ->type('@inches', 25)
-                    ->create();
+                    ->create()
+                    ->waitForText('The sail was created!');
 
             $this->assertSame(1, $ship->loadCount('sails')->sails_count);
 
@@ -77,7 +79,8 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                     // Ideally would use assertChecked here but RemoteWebDriver
                     // returns unchecked when it clearly is checked?
                     ->type('@inches', 25)
-                    ->create();
+                    ->create()
+                    ->waitForText('The sail was created!');
 
             $this->assertSame(1, Sail::whereBelongsTo($ship)->count());
 
@@ -103,7 +106,8 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                     ->withTrashedRelation('docks')
                     ->searchFirstRelation('docks', '1')
                     ->type('@name', 'Test Ship')
-                    ->create();
+                    ->create()
+                    ->waitForText('The ship was created!');
 
             $this->assertSame(1, $dock->loadCount('ships')->ships_count);
 

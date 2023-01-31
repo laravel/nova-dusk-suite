@@ -18,6 +18,7 @@ class CreateWithHasOneTest extends DuskTestCase
                 ->type('@name', 'Adam Wathan')
                 ->typeOnDate('@created_at', Carbon::createFromDate(2022, 4, 3))
                 ->create()
+                ->waitForText('The person was created!')
                 ->visit(new Detail('people', 1))
                 ->runCreateRelation('employees')
                 ->cancel();

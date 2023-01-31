@@ -52,7 +52,8 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 ->assertSelected('@user', 1)
                 ->assertInputValue('@key-value-key-0', 'Series')
                 ->assertInputValue('@key-value-value-0', 'Space Pilgrim')
-                ->create();
+                ->create()
+                ->waitForText('The user post was created!');
 
             $browser->blank();
 

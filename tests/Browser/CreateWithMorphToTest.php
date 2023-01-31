@@ -93,6 +93,7 @@ class CreateWithMorphToTest extends DuskTestCase
                     ->assertDisabled('select[dusk="commentable-select"]')
                     ->type('@body', 'Test Comment')
                     ->create()
+                    ->waitForText('The comment was created!')
                     ->on(new Detail('comments', 1));
 
             $this->assertSame(1, $post->loadCount('comments')->comments_count);

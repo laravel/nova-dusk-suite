@@ -39,7 +39,8 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
                     ->assertDisabled('select[dusk="commentable-type"]')
                     ->assertDisabled('select[dusk="commentable-select"]')
                     ->type('@body', 'Test Comment')
-                    ->create();
+                    ->create()
+                    ->waitForText('The comment was created!');
 
             $this->assertSame(1, $video->loadCount('comments')->comments_count);
 
@@ -77,7 +78,8 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
                     ->searchFirstRelation('commentable', $video->id)
                     ->assertSelectedSearchResult('commentable', $video->title)
                     ->type('@body', 'Test Comment')
-                    ->create();
+                    ->create()
+                    ->waitForText('The comment was created!');
 
             $this->assertSame(1, $video->loadCount('comments')->comments_count);
 
@@ -141,7 +143,8 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
                     ->withTrashedRelation('commentable')
                     ->searchFirstRelation('commentable', '1')
                     ->type('@body', 'Test Comments')
-                    ->create();
+                    ->create()
+                    ->waitForText('The comment was created!');
 
             $this->assertSame(1, $video->loadCount('comments')->comments_count);
 
