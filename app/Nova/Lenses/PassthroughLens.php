@@ -89,7 +89,6 @@ class PassthroughLens extends Lens
             }),
             CreateUserProfile::make()
                 ->showInline()
-                ->showOnDetail()
                 ->canSee(function (NovaRequest $request) {
                     return $request->resource() === UserResource::class;
                 })
