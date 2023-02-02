@@ -37,7 +37,7 @@ class ViewerController extends Controller
         ->collect()
         ->transform(function ($file) use ($directory, $set) {
             return str_replace(
-                "heroicons-{$set}-",
+                "heroicons-",
                 '',
                 Str::snake(str_replace(
                     ['/', '.vue'],
