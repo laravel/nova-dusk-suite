@@ -35,9 +35,9 @@ class ViewerController extends Controller
             yield from (new Finder())->in($directory)->files();
         })
         ->collect()
-        ->transform(function ($file) use ($directory, $set) {
+        ->transform(function ($file) use ($directory) {
             return str_replace(
-                "heroicons-{$set}-",
+                'heroicons-',
                 '',
                 Str::snake(str_replace(
                     ['/', '.vue'],

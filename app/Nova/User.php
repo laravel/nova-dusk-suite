@@ -22,7 +22,6 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Http\Requests\ResourceIndexRequest;
 use Laravel\Nova\Panel;
 use Laravel\Nova\Query\Search;
 use Otwell\ResourceTool\ResourceTool;
@@ -273,13 +272,10 @@ class User extends Resource
                 ->showInline()
                 ->showOnDetail()
                 ->canSee(function (NovaRequest $request) {
-                    return $request instanceof ResourceIndexRequest || with($request->selectedResources(), function ($resources) {
-                        if (is_null($resources)) {
-                            return false;
-                        }
-
-                        /** @var \Illuminate\Support\Collection $resources */
-                        return $resources->count() === 1;
+                    return with($request->selectedResourceIds(), function ($resources) {
+                        return ! is_null($resources)
+                            ? $resources->count() === 1
+                            : false;
                     });
                 })
                 ->canRun(function ($request, $model) {
