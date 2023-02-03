@@ -9,7 +9,7 @@
         v-tooltip="`${icon}`"
       >
         <component
-          :is="`heroicons-solid-${icon}`"
+          :is="`heroicons-${icon}`"
           height="48"
           width="48"
         />

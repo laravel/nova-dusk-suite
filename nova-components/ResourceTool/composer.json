@@ -9,6 +9,9 @@
     "require": {
         "php": "^7.3|^8.0"
     },
+    "require-dev": {
+        "laravel/nova": "*"
+    },
     "autoload": {
         "psr-4": {
             "Otwell\\ResourceTool\\": "src/"
@@ -24,6 +27,9 @@
     "config": {
         "sort-packages": true
     },
+    "repositories": [
+        { "type": "path", "url": "../../nova" }
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true
 }
