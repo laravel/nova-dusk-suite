@@ -9,8 +9,8 @@ cp -f ./skeleton/app/Http/Controllers/*.php ./app/Http/Controllers
 cp -f ./skeleton/app/Http/Middleware/*.php ./app/Http/Middleware
 cp -f ./skeleton/config/*.php ./config
 rm ./config/sanctum.php
-cp -f ./skeleton/database/migrations/*.php ./database/migrations/
-cp -f ./skeleton/lang/en/*.php ./lang/en/
+# cp -f ./skeleton/database/migrations/*.php ./database/migrations/
+# cp -f ./skeleton/lang/en/*.php ./lang/en/
 
 rm -Rf ./skeleton
 
