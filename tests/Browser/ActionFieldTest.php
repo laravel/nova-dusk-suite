@@ -98,7 +98,7 @@ class ActionFieldTest extends DuskTestCase
                             ->clickCheckboxForId(1)
                             ->runAction('update-required-pivot-notes')
                             ->elsewhere('.modal[data-modal-open=true]', function ($browser) {
-                                $browser->assertSee('The Notes field is required.');
+                                $browser->assertSee(__('validation.required', ['attribute' => 'Notes']));
                             });
                     });
 

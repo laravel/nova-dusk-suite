@@ -134,7 +134,7 @@ class AttachPolymorphicTest extends DuskTestCase
                 })
                 ->create()
                 ->waitForText('There was a problem submitting the form.')
-                ->assertSee('The tag field is required.')
+                ->assertSee(__('validation.required', ['attribute' => 'tag']))
                 ->cancel();
 
             $post = Post::with('tags')->find(1);
@@ -166,7 +166,7 @@ class AttachPolymorphicTest extends DuskTestCase
                 })
                 ->create()
                 ->waitForText('There was a problem submitting the form.')
-                ->assertSee('The notes must not be greater than 20 characters.')
+                ->assertSee(__('validation.max.string', ['attribute' => 'notes', 'max' => 20]))
                 ->cancel();
 
             $post = Post::with('tags')->find(1);
