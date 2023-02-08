@@ -132,7 +132,7 @@ class HasOneRelationTest extends DuskTestCase
                     ->type('@twitter_url', 'https://github.com/laravel')
                     ->update()
                     ->waitForText('There was a problem submitting the form.')
-                    ->assertSee('The Twitter URL and GitHub URL must be different.')
+                    ->assertSee(__('validation.different', ['attribute' => 'Twitter URL', 'other' => 'GitHub URL']))
                     ->cancel();
 
             $browser->loginAs(1)
@@ -142,7 +142,7 @@ class HasOneRelationTest extends DuskTestCase
                     ->type('@twitter_url', 'https://github.com/laravel')
                     ->update()
                     ->waitForText('There was a problem submitting the form.')
-                    ->assertSee('The Twitter URL and GitHub URL must be different.')
+                    ->assertSee(__('validation.different', ['attribute' => 'Twitter URL', 'other' => 'GitHub URL']))
                     ->cancel();
 
             $browser->blank();
