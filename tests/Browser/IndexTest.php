@@ -144,7 +144,7 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    public function test_test_correct_select_all_matching_count_is_displayed()
+    public function test_correct_select_all_matching_count_is_displayed()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)

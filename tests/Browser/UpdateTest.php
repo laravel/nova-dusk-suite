@@ -112,7 +112,7 @@ class UpdateTest extends DuskTestCase
                     ->update()
                     ->waitForText('There was a problem submitting the form.')
                     ->assertSee('E-mail address should be unique')
-                    ->assertSee('The Name field is required.')
+                    ->assertSee(__('validation.required', ['attribute' => 'Name']))
                     ->cancel();
 
             $browser->blank();
