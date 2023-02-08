@@ -112,7 +112,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                     })
                     ->update()
                     ->waitForText('There was a problem submitting the form.')
-                    ->assertSee('The notes must not be greater than 20 characters.')
+                    ->assertSee(__('validation.max.string', ['attribute' => 'notes', 'max' => 20]))
                     ->cancel();
 
             $this->assertEquals('Test Notes', Post::with('tags')->find(1)->tags->first()->pivot->notes);

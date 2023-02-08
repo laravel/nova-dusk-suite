@@ -127,7 +127,7 @@ class UpdateAttachedTest extends DuskTestCase
                     })
                     ->update()
                     ->waitForText('There was a problem submitting the form.')
-                    ->assertSee('The notes must not be greater than 20 characters.')
+                    ->assertSee(__('validation.max.string', ['attribute' => 'notes', 'max' => 20]))
                     ->cancel();
 
             $this->assertEquals('Test Notes', User::with('roles')->find(1)->roles->first()->pivot->notes);

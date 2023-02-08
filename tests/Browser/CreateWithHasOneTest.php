@@ -34,9 +34,9 @@ class CreateWithHasOneTest extends DuskTestCase
                 ->visit(new Create('users'))
                 ->keys('@name', ['{enter}'])
                 ->waitForText('There was a problem submitting the form.')
-                ->assertSee('The Name field is required.')
-                ->assertSee('The Email field is required.')
-                ->assertSee('The Password field is required.')
+                ->assertSee(__('validation.required', ['attribute' => 'Name']))
+                ->assertSee(__('validation.required', ['attribute' => 'Email']))
+                ->assertSee(__('validation.required', ['attribute' => 'Password']))
                 ->assertVisible('@create-profile-relation-button')
                 ->cancel();
 

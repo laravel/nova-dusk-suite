@@ -31,7 +31,7 @@ class ResourceTableSelectionTest extends DuskTestCase
                                 $browser->assertCheckboxIsIndeterminate()
                                     ->assertSelectAllOnCurrentPageChecked()
                                     ->assertSelectAllMatchingNotChecked()
-                                    ->assertSelectAllMatchingCount(4);
+                                    ->assertSelectedCount(4);
                             });
                     });
 
@@ -43,7 +43,7 @@ class ResourceTableSelectionTest extends DuskTestCase
                                     ->assertCheckboxIsIndeterminate()
                                     ->assertSelectAllOnCurrentPageChecked()
                                     ->assertSelectAllMatchingNotChecked()
-                                    ->assertSelectAllMatchingCount(4);
+                                    ->assertSelectedCount(4);
                             })->closeCurrentDropdown();
                     });
 
@@ -65,7 +65,7 @@ class ResourceTableSelectionTest extends DuskTestCase
                                     ->assertCheckboxIsIndeterminate()
                                     ->assertSelectAllOnCurrentPageChecked()
                                     ->assertSelectAllMatchingNotChecked()
-                                    ->assertSelectAllMatchingCount(4);
+                                    ->assertSelectedCount(25);
                             });
                     });
 
@@ -115,15 +115,12 @@ class ResourceTableSelectionTest extends DuskTestCase
                             ->assertChecked('[dusk="3-row"] input.checkbox')
                             ->assertChecked('[dusk="4-row"] input.checkbox')
                             ->unselectAllMatching()
-                            ->assertChecked('[dusk="1-row"] input.checkbox')
-                            ->assertChecked('[dusk="2-row"] input.checkbox')
-                            ->assertChecked('[dusk="3-row"] input.checkbox')
-                            ->assertChecked('[dusk="4-row"] input.checkbox')
+                            ->assertNotChecked('[dusk="1-row"] input.checkbox')
+                            ->assertNotChecked('[dusk="2-row"] input.checkbox')
+                            ->assertNotChecked('[dusk="3-row"] input.checkbox')
+                            ->assertNotChecked('[dusk="4-row"] input.checkbox')
                             ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
-                                $browser->assertCheckboxIsIndeterminate()
-                                    ->assertSelectAllOnCurrentPageChecked()
-                                    ->assertSelectAllMatchingNotChecked()
-                                    ->assertSelectAllMatchingCount(4);
+                                $browser->assertCheckboxIsNotChecked();
                             });
                     });
 
