@@ -9,6 +9,8 @@ use Orchestra\Testbench\Dusk\Foundation\PackageManifest;
 
 abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
 {
+    use Concerns\DatabaseTruncation;
+
     /**
      * The base serve host URL to use while testing the application.
      *
@@ -170,18 +172,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     protected function resolveApplicationExceptionHandler($app)
     {
         $app->singleton('Illuminate\Contracts\Debug\ExceptionHandler', 'App\Exceptions\Handler');
-    }
-
-    /**
-     * Define database migrations.
-     *
-     * @return void
-     */
-    protected function defineDatabaseMigrations()
-    {
-        $this->artisan('migrate:fresh', [
-            '--seed' => true,
-        ]);
     }
 
     /**
