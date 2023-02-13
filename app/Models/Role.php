@@ -18,4 +18,17 @@ class Role extends Model
     {
         return $this->belongsToMany(User::class)->withPivot('notes');
     }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+        ];
+    }
 }
