@@ -14,22 +14,19 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class SoftDeletingIndexTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function can_soft_delete_a_resource_via_resource_table_row_delete_icon()
+    public function test_can_soft_delete_a_resource_via_resource_table_row_delete_icon()
     {
-        DockFactory::new()->create();
-
         $this->browse(function (Browser $browser) {
+            $dock = DockFactory::new()->create();
+
             $browser->loginAs(1)
                     ->visit(new Index('docks'))
-                    ->within(new IndexComponent('docks'), function ($browser) {
+                    ->within(new IndexComponent('docks'), function ($browser) use ($dock) {
                         $browser->waitForTable()
-                                ->deleteResourceById(1)
+                                ->deleteResourceById($dock->id)
                                 ->waitForEmptyDialog()
                                 ->assertSee('No Dock matched the given criteria.')
-                                ->assertDontSeeResource(1);
+                                ->assertDontSeeResource($dock->id);
                     });
 
             $this->assertEquals(1, Dock::withTrashed()->count());
@@ -38,113 +35,101 @@ class SoftDeletingIndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_soft_delete_resources_using_checkboxes()
+    public function test_can_soft_delete_resources_using_checkboxes()
     {
-        DockFactory::new()->times(3)->create();
-
         $this->browse(function (Browser $browser) {
+            [$dock, $dock1, $dock2] = DockFactory::new()->times(3)->create();
+
             $browser->loginAs(1)
                     ->visit(new Index('docks'))
-                    ->within(new IndexComponent('docks'), function ($browser) {
+                    ->within(new IndexComponent('docks'), function ($browser) use ($dock, $dock1, $dock2) {
                         $browser->waitForTable()
-                            ->clickCheckboxForId(3)
-                            ->clickCheckboxForId(2)
+                            ->clickCheckboxForId($dock2->id)
+                            ->clickCheckboxForId($dock1->id)
                             ->deleteSelected()
                             ->waitForTable()
-                            ->assertSeeResource(1)
-                            ->assertDontSeeResource(2)
-                            ->assertDontSeeResource(3);
+                            ->assertSeeResource($dock->id)
+                            ->assertDontSeeResource($dock1->id)
+                            ->assertDontSeeResource($dock2->id);
                     });
 
             $browser->blank();
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_restore_resources_using_checkboxes()
+    public function test_can_restore_resources_using_checkboxes()
     {
-        DockFactory::new()->create();
-        DockFactory::new()->times(2)->create(['deleted_at' => now()]);
-
         $this->browse(function (Browser $browser) {
+            $dock = DockFactory::new()->create();
+            [$dock1, $dock2] = DockFactory::new()->times(2)->create(['deleted_at' => now()]);
+
             $browser->loginAs(1)
                     ->visit(new Index('docks'))
-                    ->within(new IndexComponent('docks'), function ($browser) {
+                    ->within(new IndexComponent('docks'), function ($browser) use ($dock, $dock1, $dock2) {
                         $browser->withTrashed();
 
                         $browser->waitForTable()
-                            ->clickCheckboxForId(3)
-                            ->clickCheckboxForId(2)
+                            ->clickCheckboxForId($dock2->id)
+                            ->clickCheckboxForId($dock1->id)
                             ->restoreSelected()
                             ->waitForTable()
                             ->withoutTrashed()
                             ->waitForTable()
-                            ->assertSeeResource(1)
-                            ->assertSeeResource(2)
-                            ->assertSeeResource(3);
+                            ->assertSeeResource($dock->id)
+                            ->assertSeeResource($dock1->id)
+                            ->assertSeeResource($dock2->id);
                     });
 
             $browser->blank();
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_force_delete_resources_using_checkboxes()
+    public function test_can_force_delete_resources_using_checkboxes()
     {
-        DockFactory::new()->times(3)->create();
-
         $this->browse(function (Browser $browser) {
+            [$dock, $dock1, $dock2] = DockFactory::new()->times(3)->create();
+
             $browser->loginAs(1)
                     ->visit(new Index('docks'))
-                    ->within(new IndexComponent('docks'), function ($browser) {
+                    ->within(new IndexComponent('docks'), function ($browser) use ($dock, $dock1, $dock2) {
                         $browser->withTrashed();
 
                         $browser->waitForTable()
-                            ->clickCheckboxForId(3)
-                            ->clickCheckboxForId(2)
+                            ->clickCheckboxForId($dock2->id)
+                            ->clickCheckboxForId($dock1->id)
                             ->forceDeleteSelected()
                             ->waitForTable()
-                            ->assertSeeResource(1)
-                            ->assertDontSeeResource(2)
-                            ->assertDontSeeResource(3);
+                            ->assertSeeResource($dock->id)
+                            ->assertDontSeeResource($dock1->id)
+                            ->assertDontSeeResource($dock2->id);
                     });
 
             $browser->blank();
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_soft_delete_all_matching_resources()
+    public function test_can_soft_delete_all_matching_resources()
     {
-        ShipFactory::new()->times(3)->create(['dock_id' => DockFactory::new()->create()]);
+        $this->browse(function (Browser $browser) {
+            [$ship, $ship1, $ship2] = ShipFactory::new()->times(3)->create(['dock_id' => DockFactory::new()->create()]);
 
-        $separateShip = ShipFactory::new()->create();
+            $separateShip = ShipFactory::new()->create();
 
-        $this->browse(function (Browser $browser) use ($separateShip) {
             $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
+                    ->within(new IndexComponent('ships'), function ($browser) use ($ship, $ship1, $ship2) {
                         $browser->waitForTable()
                             ->selectAllMatching()
                             ->deleteSelected()
                             ->waitForEmptyDialog()
-                            ->assertDontSeeResource(1)
-                            ->assertDontSeeResource(2)
-                            ->assertDontSeeResource(3)
+                            ->assertDontSeeResource($ship->id)
+                            ->assertDontSeeResource($ship1->id)
+                            ->assertDontSeeResource($ship2->id)
                             ->withTrashed()
                             ->waitForTable()
-                            ->assertSeeResource(1)
-                            ->assertSeeResource(2)
-                            ->assertSeeResource(3);
+                            ->assertSeeResource($ship->id)
+                            ->assertSeeResource($ship1->id)
+                            ->assertSeeResource($ship2->id);
                     });
 
             $this->assertNull($separateShip->fresh()->deleted_at);
@@ -153,10 +138,7 @@ class SoftDeletingIndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_restore_all_matching_resources()
+    public function test_can_restore_all_matching_resources()
     {
         ShipFactory::new()->times(3)->create([
             'dock_id' => DockFactory::new()->create(),
@@ -187,31 +169,28 @@ class SoftDeletingIndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_force_delete_all_matching_resources()
+    public function test_can_force_delete_all_matching_resources()
     {
-        ShipFactory::new()->times(3)->create([
-            'dock_id' => DockFactory::new()->create(),
-            'deleted_at' => now(),
-        ]);
+        $this->browse(function (Browser $browser) {
+            [$ship, $ship1, $ship2] = ShipFactory::new()->times(3)->create([
+                'dock_id' => DockFactory::new()->create(),
+                'deleted_at' => now(),
+            ]);
 
-        $separateShip = ShipFactory::new()->create();
+            $separateShip = ShipFactory::new()->create();
 
-        $this->browse(function (Browser $browser) use ($separateShip) {
             $browser->loginAs(1)
                     ->visit(new Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
+                    ->within(new IndexComponent('ships'), function ($browser) use ($ship, $ship1, $ship2) {
                         $browser->withTrashed();
 
                         $browser->waitForTable()
                             ->selectAllMatching()
                             ->forceDeleteSelected()
                             ->waitForEmptyDialog()
-                            ->assertDontSeeResource(1)
-                            ->assertDontSeeResource(2)
-                            ->assertDontSeeResource(3);
+                            ->assertDontSeeResource($ship->id)
+                            ->assertDontSeeResource($ship1->id)
+                            ->assertDontSeeResource($ship2->id);
                     });
 
             $this->assertNotNull($separateShip->fresh());
@@ -222,22 +201,19 @@ class SoftDeletingIndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function soft_deleted_resource_is_still_viewable_with_proper_trash_state()
+    public function test_soft_deleted_resource_is_still_viewable_with_proper_trash_state()
     {
-        $dock = DockFactory::new()->create();
-
         $this->browse(function (Browser $browser) {
+            $dock = DockFactory::new()->create();
+
             $browser->loginAs(1)
                     ->visit(new Index('docks'))
-                    ->within(new IndexComponent('docks'), function ($browser) {
+                    ->within(new IndexComponent('docks'), function ($browser) use ($dock) {
                         $browser->withTrashed()
                                 ->waitForTable()
-                                ->deleteResourceById(1)
+                                ->deleteResourceById($dock->id)
                                 ->waitForTable()
-                                ->assertSeeResource(1);
+                                ->assertSeeResource($dock->id);
                     });
 
             $this->assertEquals(1, Dock::withTrashed()->count());
@@ -246,50 +222,44 @@ class SoftDeletingIndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function only_soft_deleted_resources_may_be_listed()
+    public function test_only_soft_deleted_resources_may_be_listed()
     {
-        DockFactory::new()->create();
-        DockFactory::new()->create(['deleted_at' => now()]);
-
         $this->browse(function (Browser $browser) {
+            $ship = DockFactory::new()->create();
+            $ship1 = DockFactory::new()->create(['deleted_at' => now()]);
+
             $browser->loginAs(1)
                     ->visit(new Index('docks'))
-                    ->within(new IndexComponent('docks'), function ($browser) {
+                    ->within(new IndexComponent('docks'), function ($browser) use ($ship, $ship1) {
                         $browser->waitForTable()
-                                ->assertSeeResource(1)
-                                ->assertDontSeeResource(2);
+                                ->assertSeeResource($ship->id)
+                                ->assertDontSeeResource($ship1->id);
 
                         $browser->onlyTrashed()
                                 ->waitForTable()
-                                ->assertDontSeeResource(1)
-                                ->assertSeeResource(2);
+                                ->assertDontSeeResource($ship->id)
+                                ->assertSeeResource($ship1->id);
                     });
 
             $browser->blank();
         });
     }
 
-    /**
-     * @test
-     */
-    public function soft_deleted_resources_may_be_restored_via_row_icon()
+    public function test_soft_deleted_resources_may_be_restored_via_row_icon()
     {
-        DockFactory::new()->create();
-
         $this->browse(function (Browser $browser) {
+            $dock = DockFactory::new()->create();
+
             $browser->loginAs(1)
                     ->visit(new Index('docks'))
-                    ->within(new IndexComponent('docks'), function ($browser) {
+                    ->within(new IndexComponent('docks'), function ($browser) use ($dock) {
                         $browser->withTrashed()
                                 ->waitForTable()
-                                ->deleteResourceById(1)
+                                ->deleteResourceById($dock->id)
                                 ->waitForTable()
-                                ->restoreResourceById(1)
+                                ->restoreResourceById($dock->id)
                                 ->waitForTable()
-                                ->assertSeeResource(1);
+                                ->assertSeeResource($dock->id);
                     });
 
             $this->assertEquals(1, Dock::count());
