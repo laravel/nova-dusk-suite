@@ -91,10 +91,6 @@
         {
             "type": "path",
             "url": "./nova"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/IconsViewer"
         }
     ],
     "config": {
