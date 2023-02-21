@@ -2,7 +2,6 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use App\Models\Post;
 use Database\Factories\PostFactory;
 use Database\Factories\TagFactory;
 use Laravel\Dusk\Browser;
@@ -20,19 +19,19 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->defineApplicationStates('searchable');
 
         $this->browse(function (Browser $browser) {
-            PostFactory::new()->create(['user_id' => 1]);
+            $post = PostFactory::new()->create(['user_id' => 1]);
             $tag = TagFactory::new()->create();
 
             $browser->loginAs(1)
-                ->visit(new Detail('posts', 1))
+                ->visit(new Detail('posts', $post->id))
                 ->within(new IndexComponent('tags'), function ($browser) {
                     $browser->waitFor('@attach-button')
                             ->click('@attach-button');
                 })
-                ->on(Attach::morphToMany('posts', 1, 'tags'))
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->on(Attach::morphToMany('posts', $post->id, 'tags'))
+                ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
                     $browser->assertSeeLink('User Post')
-                        ->assertSeeLink('User Post Details: 1')
+                        ->assertSeeLink("User Post Details: {$post->id}")
                         ->assertCurrentPageTitle('Attach Tag');
                 })
                 ->within(new FormComponent(), function ($browser) use ($tag) {
@@ -41,7 +40,7 @@ class AttachPolymorphicTest extends DuskTestCase
                 ->create()
                 ->waitForText('The resource was attached!');
 
-            $post = Post::with('tags')->find(1);
+            $post->refresh()->loadMissing('tags');
 
             $this->assertEquals($tag->id, $post->tags->first()->id);
 
@@ -54,19 +53,19 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->defineApplicationStates('searchable');
 
         $this->browse(function (Browser $browser) {
-            PostFactory::new()->create(['user_id' => 1]);
+            $post = PostFactory::new()->create(['user_id' => 1]);
             $tag = TagFactory::new()->create();
 
             $browser->loginAs(1)
-                ->visit(new Detail('posts', 1))
+                ->visit(new Detail('posts', $post->id))
                 ->within(new IndexComponent('tags'), function ($browser) {
                     $browser->waitFor('@attach-button')
                             ->click('@attach-button');
                 })
-                ->on(Attach::morphToMany('posts', 1, 'tags'))
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->on(Attach::morphToMany('posts', $post->id, 'tags'))
+                ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
                     $browser->assertSeeLink('User Post')
-                        ->assertSeeLink('User Post Details: 1')
+                        ->assertSeeLink("User Post Details: {$post->id}")
                         ->assertCurrentPageTitle('Attach Tag');
                 })
                 ->within(new FormComponent(), function ($browser) use ($tag) {
@@ -75,7 +74,7 @@ class AttachPolymorphicTest extends DuskTestCase
                 ->create()
                 ->waitForText('The resource was attached!');
 
-            $post = Post::with('tags')->find(1);
+            $post->refresh()->loadMissing('tags');
 
             $this->assertEquals($tag->id, $post->tags->first()->id);
 
@@ -88,14 +87,14 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->defineApplicationStates('searchable');
 
         $this->browse(function (Browser $browser) {
-            PostFactory::new()->create(['user_id' => 1]);
+            $post = PostFactory::new()->create(['user_id' => 1]);
             $tag = TagFactory::new()->create();
 
             $browser->loginAs(1)
-                ->visit(Attach::morphToMany('posts', 1, 'tags'))
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->visit(Attach::morphToMany('posts', $post->id, 'tags'))
+                ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
                     $browser->assertSeeLink('User Post')
-                        ->assertSeeLink('User Post Details: 1')
+                        ->assertSeeLink("User Post Details: {$post->id}")
                         ->assertCurrentPageTitle('Attach Tag');
                 })
                 ->within(new FormComponent(), function ($browser) use ($tag) {
@@ -105,7 +104,7 @@ class AttachPolymorphicTest extends DuskTestCase
                 ->create()
                 ->waitForText('The resource was attached!');
 
-            $post = Post::with('tags')->find(1);
+            $post->refresh()->loadMissing('tags');
 
             $this->assertEquals($tag->id, $post->tags->first()->id);
             $this->assertEquals('Test Notes', $post->tags->first()->pivot->notes);
@@ -116,15 +115,15 @@ class AttachPolymorphicTest extends DuskTestCase
 
     public function test_validation_errors_are_displayed()
     {
-        PostFactory::new()->create(['user_id' => 1]);
-        TagFactory::new()->create();
-
         $this->browse(function (Browser $browser) {
+            $post = PostFactory::new()->create(['user_id' => 1]);
+            TagFactory::new()->create();
+
             $browser->loginAs(1)
-                ->visit(Attach::morphToMany('posts', 1, 'tags'))
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->visit(Attach::morphToMany('posts', $post->id, 'tags'))
+                ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
                     $browser->assertSeeLink('User Post')
-                        ->assertSeeLink('User Post Details: 1')
+                        ->assertSeeLink("User Post Details: {$post->id}")
                         ->assertCurrentPageTitle('Attach Tag');
                 })
                 ->within(new FormComponent(), function ($browser) {
@@ -137,7 +136,7 @@ class AttachPolymorphicTest extends DuskTestCase
                 ->assertSee(__('validation.required', ['attribute' => 'tag']))
                 ->cancel();
 
-            $post = Post::with('tags')->find(1);
+            $post->refresh()->loadMissing('tags');
 
             $this->assertNull($post->tags->first());
 
@@ -150,14 +149,14 @@ class AttachPolymorphicTest extends DuskTestCase
         $this->defineApplicationStates('searchable');
 
         $this->browse(function (Browser $browser) {
-            PostFactory::new()->create(['user_id' => 1]);
+            $post = PostFactory::new()->create(['user_id' => 1]);
             $tag = TagFactory::new()->create();
 
             $browser->loginAs(1)
-                ->visit(Attach::morphToMany('posts', 1, 'tags'))
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->visit(Attach::morphToMany('posts', $post->id, 'tags'))
+                ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
                     $browser->assertSeeLink('User Post')
-                        ->assertSeeLink('User Post Details: 1')
+                        ->assertSeeLink("User Post Details: {$post->id}")
                         ->assertCurrentPageTitle('Attach Tag');
                 })
                 ->within(new FormComponent(), function ($browser) use ($tag) {
@@ -169,7 +168,7 @@ class AttachPolymorphicTest extends DuskTestCase
                 ->assertSee(__('validation.max.string', ['attribute' => 'notes', 'max' => 20]))
                 ->cancel();
 
-            $post = Post::with('tags')->find(1);
+            $post->refresh()->loadMissing('tags');
 
             $this->assertNull($post->tags->first());
 

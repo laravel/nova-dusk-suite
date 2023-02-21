@@ -50,7 +50,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "10.4.x-dev"
+            "dev-master": "10.5.x-dev"
         },
         "laravel": {
             "dont-discover": []
@@ -91,10 +91,6 @@
         {
             "type": "path",
             "url": "./nova"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/IconsViewer"
         }
     ],
     "config": {
