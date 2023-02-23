@@ -36,7 +36,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Detail('videos', $video->id))
                     ->runCreateRelation('comments')
-                    ->assertDisabled('select[dusk="commentable-type"]')
+                    ->assertDisabled('@commentable-type')
                     ->assertDisabled('select[dusk="commentable-select"]')
                     ->type('@body', 'Test Comment')
                     ->create()
@@ -61,18 +61,18 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
 
             $browser->loginAs(1)
                     ->visit(new Create('comments'))
-                    ->selectRelation('commentable-type', 'videos')
+                    ->select('@commentable-type', 'videos')
                     ->searchRelation('commentable', $video->id)
                     ->pause(1500)
                     ->assertMissing('@commentable-search-input-result-0')
                     ->searchRelation('commentable', $video2->id)
                     ->pause(1500)
                     ->assertSeeIn('@commentable-search-input-result-0', $video2->title)
-                    ->closeSearchableResult('commentable')
+                    ->cancelSelectingSearchResult('commentable')
                     ->cancel();
 
             $browser->visit(new Create('comments'))
-                    ->selectRelation('commentable-type', 'videos')
+                    ->select('@commentable-type', 'videos')
                     ->pause(750)
                     ->withTrashedRelation('commentable')
                     ->searchFirstRelation('commentable', $video->id)
@@ -100,7 +100,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
 
             $browser->loginAs(1)
                     ->visit(new Create('comments'))
-                    ->selectRelation('commentable-type', 'videos')
+                    ->select('@commentable-type', 'videos')
                     ->pause(175)
                     ->withTrashedRelation('commentable')
                     ->searchFirstRelation('commentable', $video->id)
@@ -130,15 +130,15 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
 
             $browser->loginAs(1)
                     ->visit(new Create('comments'))
-                    ->selectRelation('commentable-type', 'videos')
+                    ->select('@commentable-type', 'videos')
                     ->searchRelation('commentable', '1')
                     ->pause(1500)
                     ->assertNoRelationSearchResults('commentable')
-                    ->closeSearchableResult('commentable')
+                    ->cancelSelectingSearchResult('commentable')
                     ->cancel();
 
             $browser->visit(new Create('comments'))
-                    ->selectRelation('commentable-type', 'videos')
+                    ->select('@commentable-type', 'videos')
                     ->pause(175)
                     ->withTrashedRelation('commentable')
                     ->searchFirstRelation('commentable', '1')
