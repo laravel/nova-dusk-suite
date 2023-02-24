@@ -13,22 +13,16 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'SidebarTool',
+<script setup>
+import { ref, onMounted } from 'vue'
 
-  data() {
-    return {
-      sidebarResponse: null
-    }
-  },
+const sidebarResponse = ref(null)
 
-  mounted() {
-    Nova.request().get('/nova-vendor/custom-sidebar-tool').then(response => {
-      this.sidebarResponse = response.data
-    })
-  },
-}
+onMounted(() => {
+  Nova.request().get('/nova-vendor/custom-sidebar-tool').then(response => {
+    sidebarResponse.value = response.data
+  })
+})
 </script>
 
 <style>
