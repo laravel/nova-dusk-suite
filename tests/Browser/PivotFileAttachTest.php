@@ -8,6 +8,7 @@ use Database\Factories\ShipFactory;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\Modals\ConfirmUploadRemovalModalComponent;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\UpdateAttached;
@@ -94,8 +95,8 @@ class PivotFileAttachTest extends DuskTestCase
                     ->whenAvailable('button[dusk="contract-delete-link"]', function ($browser) {
                         $browser->click('');
                     })
-                    ->whenAvailable('.modal[data-modal-open="true"]', function ($browser) {
-                        $browser->click('@confirm-upload-delete-button');
+                    ->whenAvailable(new ConfirmUploadRemovalModalComponent(), function ($browser) {
+                        $browser->confirm();
                     })
                     ->waitForText('The file was deleted!');
 
