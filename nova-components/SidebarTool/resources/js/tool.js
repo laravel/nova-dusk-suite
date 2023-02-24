@@ -1,4 +1,7 @@
+import SidebarTool from './pages/Tool'
+import SidebarToolLogo from './components/Logo'
+
 Nova.booting((app, store) => {
-  Nova.inertia('SidebarTool', require('./pages/Tool').default)
-  app.component('SidebarToolLogo', require('./components/Logo').default)
+  Nova.inertia('SidebarTool', SidebarTool)
+  app.component('SidebarToolLogo', SidebarToolLogo)
 })
