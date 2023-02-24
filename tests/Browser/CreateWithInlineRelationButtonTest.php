@@ -55,7 +55,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
 
             $browser->loginAs(1)
                     ->visit(new Create('comments'))
-                    ->selectRelation('commentable-type', 'posts')
+                    ->select('@commentable-type', 'posts')
                     ->pause(500)
                     ->runInlineCreate('commentable', function ($browser) {
                         $browser->waitForText('Create User Post')
@@ -89,7 +89,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
 
             $browser->loginAs(1)
                     ->visit(new Create('comments'))
-                    ->selectRelation('commentable-type', 'posts')
+                    ->select('@commentable-type', 'posts')
                     ->pause(500)
                     ->runInlineCreate('commentable', function ($browser) {
                         $browser->waitForText('Create User Post')

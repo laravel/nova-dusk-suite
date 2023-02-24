@@ -6,6 +6,7 @@ use App\Models\Captain;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\Modals\ConfirmUploadRemovalModalComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Update;
@@ -55,8 +56,8 @@ class FileAttachTest extends DuskTestCase
                     ->whenAvailable('button[dusk="photo-delete-link"]', function ($browser) {
                         $browser->click('');
                     })
-                    ->whenAvailable('.modal[data-modal-open="true"]', function ($browser) {
-                        $browser->click('@confirm-upload-delete-button')->pause(250);
+                    ->whenAvailable(new ConfirmUploadRemovalModalComponent(), function ($browser) {
+                        $browser->confirm();
                     })
                     ->waitForText('The file was deleted!');
 
