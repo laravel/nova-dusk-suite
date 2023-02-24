@@ -39,10 +39,10 @@ class DateFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($person, $now, $user) {
             $browser->loginAs($user)
-                    ->visit(new Update('people', $person->getKey()))
-                    ->typeOnDate('@created_at', $now)
-                    ->update()
-                    ->waitForText('The person was updated!');
+                ->visit(new Update('people', $person->getKey()))
+                ->typeOnDate('@created_at', $now)
+                ->update()
+                ->waitForText('The person was updated!');
 
             $person->refresh();
 
@@ -52,10 +52,10 @@ class DateFieldTest extends DuskTestCase
             );
 
             $browser->visit(new Update('people', $person->getKey()))
-                    ->type('@name', 'Tess')
-                    ->assertValue('@created_at', $now->toDateString())
-                    ->update()
-                    ->waitForText('The person was updated!');
+                ->type('@name', 'Tess')
+                ->assertValue('@created_at', $now->toDateString())
+                ->update()
+                ->waitForText('The person was updated!');
 
             $person->refresh();
 
@@ -93,12 +93,12 @@ class DateFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($now, $user) {
             $browser->loginAs($user)
-                    ->visit(new Create('people'))
-                    ->typeOnDate('@created_at', $now)
-                    ->create()
-                    ->waitForText('There was a problem submitting the form.')
-                    ->assertValue('@created_at', $now->toDateString())
-                    ->cancel();
+                ->visit(new Create('people'))
+                ->typeOnDate('@created_at', $now)
+                ->create()
+                ->waitForText('There was a problem submitting the form.')
+                ->assertValue('@created_at', $now->toDateString())
+                ->cancel();
 
             $browser->blank();
         });

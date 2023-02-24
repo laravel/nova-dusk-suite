@@ -99,7 +99,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
                     ->visit(new Create('comments'))
-                    ->selectRelation('commentable-type', 'posts')
+                    ->select('@commentable-type', 'posts')
                     ->pause(500)
                     ->assertSelectMissingOption('@commentable-select', $post->title)
                     ->assertSelectMissingOption('@commentable-select', $post->id)

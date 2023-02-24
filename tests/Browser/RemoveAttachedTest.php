@@ -6,6 +6,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\Modals\DeleteResourceModalComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -30,8 +31,8 @@ class RemoveAttachedTest extends DuskTestCase
                         $browser->waitForTable()
                             ->within('tr[data-pivot-id="2"]', function ($browser) {
                                 $browser->click('@4-delete-button')
-                                    ->elsewhereWhenAvailable('.modal[data-modal-open="true"]', function ($browser) {
-                                        $browser->click('@confirm-delete-button');
+                                    ->elsewhereWhenAvailable(new DeleteResourceModalComponent(), function ($browser) {
+                                        $browser->confirm();
                                     })->pause(500);
                             });
                     });
