@@ -1,5 +1,9 @@
-Nova.booting((Vue, store) => {
-  Vue.component('index-custom-field', require('./components/IndexField').default);
-  Vue.component('detail-custom-field', require('./components/DetailField').default);
-  Vue.component('form-custom-field', require('./components/FormField').default);
+import IndexField from './components/IndexField'
+import DetailField from './components/DetailField'
+import FormField from './components/FormField'
+
+Nova.booting((app, store) => {
+  app.component('index-custom-field', IndexField);
+  app.component('detail-custom-field', DetailField);
+  app.component('form-custom-field', FormField);
 })
