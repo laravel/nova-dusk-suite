@@ -8,6 +8,7 @@ use Database\Factories\PostFactory;
 use Database\Factories\RoleFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\Modals\ConfirmActionModalComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
@@ -70,14 +71,14 @@ class ActionFieldTest extends DuskTestCase
                             ->clickCheckboxForId(1)
                             ->selectAction('update-pivot-notes', function ($browser) {
                                 $browser->elsewhere('', function ($browser) {
-                                    $browser->whenAvailable('.modal[data-modal-open=true]', function ($browser) {
+                                    $browser->whenAvailable(new ConfirmActionModalComponent(), function ($browser) {
                                         $browser->assertScript('Nova.useShortcuts', false)
                                                 ->assertSee('Provide a description for notes.');
                                     })->keys('', ['e']);
                                 });
                             });
                     })
-                    ->assertPresent('.modal[data-modal-open=true]');
+                    ->assertPresentModal();
 
             $browser->blank();
         });
@@ -97,7 +98,7 @@ class ActionFieldTest extends DuskTestCase
                         $browser->waitForTable()
                             ->clickCheckboxForId(1)
                             ->runAction('update-required-pivot-notes')
-                            ->elsewhere('.modal[data-modal-open=true]', function ($browser) {
+                            ->elsewhere(new ConfirmActionModalComponent(), function ($browser) {
                                 $browser->assertSee(__('validation.required', ['attribute' => 'Notes']));
                             });
                     });

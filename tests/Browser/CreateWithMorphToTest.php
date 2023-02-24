@@ -21,7 +21,7 @@ class CreateWithMorphToTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Create('comments'))
                     ->waitForTextIn('@nova-form', 'Commentable')
-                    ->selectRelation('commentable-type', 'posts')
+                    ->select('@commentable-type', 'posts')
                     ->pause(500)
                     ->selectRelation('commentable-select', 1)
                     ->type('@body', 'Test Comment')
@@ -48,7 +48,7 @@ class CreateWithMorphToTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Create('comments'))
                     ->waitForTextIn('@nova-form', 'Commentable')
-                    ->selectRelation('commentable-type', 'posts')
+                    ->select('@commentable-type', 'posts')
                     ->pause(500)
                     ->searchFirstRelation('commentable', 1)
                     ->type('@body', 'Test Comment')
@@ -89,7 +89,7 @@ class CreateWithMorphToTest extends DuskTestCase
                     ->visit(new Detail('posts', $post->id))
                     ->runCreateRelation('comments')
                     ->waitForTextIn('@nova-form', 'Commentable')
-                    ->assertDisabled('select[dusk="commentable-type"]')
+                    ->assertDisabled('@commentable-type')
                     ->assertDisabled('select[dusk="commentable-select"]')
                     ->type('@body', 'Test Comment')
                     ->create()
@@ -133,7 +133,7 @@ class CreateWithMorphToTest extends DuskTestCase
                     'viaRelationship' => 'comments',
                 ]))
                 ->waitForTextIn('@nova-form', 'Commentable')
-                ->whenAvailable('select[dusk="commentable-type"]', function ($browser) {
+                ->whenAvailable('@commentable-type', function ($browser) {
                     $browser->assertDisabled('')
                         ->assertSelected('', 'posts');
                 })

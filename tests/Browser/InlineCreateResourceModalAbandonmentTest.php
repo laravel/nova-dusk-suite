@@ -26,7 +26,7 @@ class InlineCreateResourceModalAbandonmentTest extends DuskTestCase
                 ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                 ->acceptDialog()
                 ->pause(100)
-                ->assertMissing('.modal[data-modal-open=true]')
+                ->assertMissingModal()
                 ->on(Attach::belongsToMany('users', 1, 'roles'));
 
             $browser->blank();
@@ -49,7 +49,7 @@ class InlineCreateResourceModalAbandonmentTest extends DuskTestCase
                         ->click('@cancel-create-button');
                 })
                 ->pause(100)
-                ->assertMissing('.modal[data-modal-open=true]')
+                ->assertMissingModal()
                 ->on(Attach::belongsToMany('users', 1, 'roles'));
 
             $browser->blank();
