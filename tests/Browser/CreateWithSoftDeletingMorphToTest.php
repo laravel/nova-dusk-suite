@@ -76,7 +76,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
                     ->pause(750)
                     ->withTrashedRelation('commentable')
                     ->searchFirstRelation('commentable', $video->id)
-                    ->assertSelectedSearchResult('commentable', $video->title)
+                    ->assertSelectedFirstSearchResult('commentable', $video->title)
                     ->type('@body', 'Test Comment')
                     ->create()
                     ->waitForText('The comment was created!');
