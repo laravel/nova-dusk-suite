@@ -67,7 +67,7 @@ class UpdateWithMorphToTest extends DuskTestCase
                             $browser->assertSee('Link');
                         });
                 })
-                ->assertSelectedSearchResult('commentable', $link->title);
+                ->assertSelectedFirstSearchResult('commentable', $link->title);
 
             $browser->blank();
         });
@@ -97,7 +97,7 @@ class UpdateWithMorphToTest extends DuskTestCase
                         $browser->assertEnabled('')
                                 ->assertSelected('', 'posts');
                     })
-                    ->assertSelectedSearchResult('commentable', $post->title);
+                    ->assertSelectedFirstSearchResult('commentable', $post->title);
                 });
 
             $browser->blank();
