@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\File;
@@ -131,8 +132,9 @@ class Post extends Resource
     {
         return [
             ID::make('ID', 'id'),
-            BelongsTo::make('User', 'user')->display('name')->canSee(function ($request) {
+            BelongsTo::make('User', 'user')->display('name')->canSee(function (Request $request) {
                 return transform($request->user(), function ($user) {
+                    /** @var \App\Models\User $user */
                     return $user->getKey() != $this->user_id;
                 });
             }),
