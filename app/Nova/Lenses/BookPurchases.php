@@ -91,6 +91,6 @@ class BookPurchases extends Lens
      */
     public function uriKey()
     {
-        return 'total-book-purchases';
+        return 'book-purchases';
     }
 }
