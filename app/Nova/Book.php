@@ -112,7 +112,9 @@ class Book extends Resource
      */
     public function lenses(NovaRequest $request): array
     {
-        return [];
+        return [
+            new Lenses\BookPurchases,
+        ];
     }
 
     /**
