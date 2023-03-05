@@ -24,13 +24,8 @@
         "laravel/nova": "*",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
-<<<<<<< HEAD
-        "nunomaduro/larastan": "^2.0",
-        "orchestra/testbench-dusk": "^8.0",
-=======
         "nunomaduro/larastan": "^2.5.1",
-        "orchestra/testbench-dusk": "^7.16",
->>>>>>> 9.5
+        "orchestra/testbench-dusk": "^8.0",
         "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
