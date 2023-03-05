@@ -11,7 +11,11 @@
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.0",
+<<<<<<< HEAD
         "laravel/scout": "^10.0",
+=======
+        "laravel/scout": "^9.8|^10.0",
+>>>>>>> 10.4
         "laravel/tinker": "^2.7",
         "laravel/vapor-core": "^2.22",
         "league/flysystem-aws-s3-v3": "^3.0",
@@ -26,7 +30,7 @@
         "nunomaduro/collision": "^6.1",
         "nunomaduro/larastan": "^2.5.1",
         "orchestra/testbench-dusk": "^8.0",
-        "phpunit/phpunit": "^9.5.10"
+        "phpunit/phpunit": "^9.6"
     },
     "autoload": {
         "psr-4": {
