@@ -16,14 +16,14 @@ parameters:
 			path: app/Nova/Fields/BookPurchase.php
 
 		-
+			message: "#^Parameter \\#1 \\$callback of method Laravel\\\\Nova\\\\Element\\:\\:canSee\\(\\) expects Closure\\(Illuminate\\\\Http\\\\Request\\)\\: bool, Closure\\(Illuminate\\\\Http\\\\Request\\)\\: bool\\|null given\\.$#"
+			count: 1
+			path: app/Nova/Post.php
+
+		-
 			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: app/Providers/AppServiceProvider.php
-
-		-
-			message: "#^Parameter \\#1 \\$seconds of static method Laravel\\\\Nova\\\\Nova\\:\\:notificationPollingInterval\\(\\) expects int, float given\\.$#"
-			count: 1
-			path: app/Providers/NovaServiceProvider.php
 
 		-
 			message: "#^Parameter \\#2 \\$createUserCallback of static method Laravel\\\\Nova\\\\Nova\\:\\:createUserUsing\\(\\) expects \\(Closure\\(string, string, string\\)\\: Illuminate\\\\Database\\\\Eloquent\\\\Model\\)\\|null, Closure\\(string, string, string, bool\\)\\: Illuminate\\\\Database\\\\Eloquent\\\\Model given\\.$#"
