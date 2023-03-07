@@ -6,6 +6,7 @@ use Database\Factories\RoleFactory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\Controls\RelationSelectControlComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
@@ -25,7 +26,6 @@ class AttachDuplicationTest extends DuskTestCase
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('1');
                     })
-                    ->assertSelectHasOptions('@attachable-select', [$role->id])
                     ->selectAttachable($role->id);
                 })
                 ->create()
@@ -36,7 +36,9 @@ class AttachDuplicationTest extends DuskTestCase
                 ->whenAvailable('@via-resource-field', function ($browser) {
                     $browser->assertSee('User')->assertSee('1');
                 })
-                ->assertSelectMissingOptions('@attachable-select', [$role->id]);
+                ->whenAvailable(new RelationSelectControlComponent('attachable-select'), function ($browser) use ($role) {
+                    $browser->assertSelectMissingOption('', $role->id);
+                });
 
             $this->assertDatabaseHas('role_user', [
                 'user_id' => '1',

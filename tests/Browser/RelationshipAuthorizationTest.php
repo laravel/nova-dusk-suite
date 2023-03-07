@@ -6,6 +6,7 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Database\Factories\TagFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\Controls\RelationSelectControlComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Testing\Browser\Pages\Create;
@@ -44,9 +45,9 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
             $browser->loginAs(2)
                     ->visit(new Create('posts'))
-                    ->pause(500)
-                    ->assertSelectMissingOption('@user', $user->id)
-                    ->assertSelectMissingOption('@user', $user->name);
+                    ->whenAvailable(new RelationSelectControlComponent('user'), function ($browser) use ($user) {
+                        $browser->assertSelectMissingOptions('', [$user->id, $user->name]);
+                    });
 
             $browser->visit((new Create('posts', [
                 'viaResource' => 'users',
@@ -100,9 +101,9 @@ class RelationshipAuthorizationTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Create('comments'))
                     ->select('@commentable-type', 'posts')
-                    ->pause(500)
-                    ->assertSelectMissingOption('@commentable-select', $post->title)
-                    ->assertSelectMissingOption('@commentable-select', $post->id)
+                    ->whenAvailable(new RelationSelectControlComponent('commentable-select'), function ($browser) use ($post) {
+                        $browser->assertSelectMissingOptions('', [$post->id, $post->title]);
+                    })
                     ->cancel();
 
             $browser->blank();
