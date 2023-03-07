@@ -45,7 +45,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
             $browser->loginAs(2)
                     ->visit(new Create('posts'))
-                    ->within(new RelationSelectControlComponent('user'), function ($browser) use ($user) {
+                    ->whenAvailable(new RelationSelectControlComponent('user'), function ($browser) use ($user) {
                         $browser->assertSelectMissingOptions('', [$user->id, $user->name]);
                     });
 
