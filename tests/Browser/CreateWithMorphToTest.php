@@ -10,10 +10,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateWithMorphToTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function resource_can_be_created()
+    public function test_resource_can_be_created()
     {
         $this->browse(function (Browser $browser) {
             $post = PostFactory::new()->create();
@@ -35,10 +32,7 @@ class CreateWithMorphToTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function searchable_resource_can_be_created()
+    public function test_searchable_resource_can_be_created()
     {
         $this->defineApplicationStates('searchable');
 
@@ -62,18 +56,12 @@ class CreateWithMorphToTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function non_searchable_resource_can_be_created_via_parent_resource()
+    public function test_non_searchable_resource_can_be_created_via_parent_resource()
     {
         $this->resource_can_be_created_via_parent_resource();
     }
 
-    /**
-     * @test
-     */
-    public function searchable_resource_can_be_created_via_parent_resource()
+    public function test_searchable_resource_can_be_created_via_parent_resource()
     {
         $this->defineApplicationStates('searchable');
 
@@ -102,10 +90,7 @@ class CreateWithMorphToTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function morph_to_field_should_honor_custom_labels()
+    public function test_morph_to_field_should_honor_custom_labels()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -118,10 +103,7 @@ class CreateWithMorphToTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function morph_to_field_should_honor_query_parameters_on_create()
+    public function test_morph_to_field_should_honor_query_parameters_on_create()
     {
         $post = PostFactory::new()->create();
 
