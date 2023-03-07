@@ -115,6 +115,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         Nova::mainMenu(function (Request $request, Menu $menu) {
             transform($request->user(), function ($user) use ($menu) {
+                /** @var \App\Models\User $user */
                 $menu->append(
                     MenuSection::make('Account Verification', [
                         MenuItem::externalLink('Verify Using Inertia', "/tests/verify-user/{$user->id}")->method('POST', ['_token' => csrf_token()], []),
@@ -142,6 +143,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         Nova::userMenu(function (Request $request, Menu $menu) {
             transform($request->user(), function ($user) use ($menu) {
+                /** @var \App\Models\User $user */
                 $menu->append(
                     MenuItem::make('My Account')->path('/resources/users/'.$user->id)
                 )->append(
@@ -227,6 +229,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             new IconsViewer,
             SidebarTool::make()->canSee(function (Request $request) {
                 return ! transform($request->user(), function ($user) {
+                    /** @var \App\Models\User $user */
                     return $user->isBlockedFrom('sidebarTool');
                 }, false);
             }),
@@ -240,7 +243,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
-        Nova::notificationPollingInterval(CarbonInterval::days(1)->totalSeconds);
+        Nova::notificationPollingInterval((int) CarbonInterval::days(1)->totalSeconds);
 
         Nova::serving(function (ServingNova $event) {
             if (! is_null($pagination = data_get($event->request->user(), 'settings.pagination'))) {

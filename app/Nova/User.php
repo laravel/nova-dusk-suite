@@ -127,6 +127,7 @@ class User extends Resource
 
             ResourceTool::make()->canSee(function ($request) {
                 return ! transform($request->user(), function ($user) {
+                    /** @var \App\Models\User $user */
                     return $user->isBlockedFrom('resourceTool');
                 });
             }),

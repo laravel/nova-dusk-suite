@@ -50,8 +50,8 @@ class HasOneRelationTest extends DuskTestCase
                     ->waitForText('GitHub URL')
                     ->type('@github_url', 'https://github.com/adamwathan')
                     ->type('@twitter_url', 'https://twitter.com/adamwathan')
-                    ->select('select[dusk="timezone"]', 'UTC')
-                    ->select('select[dusk="interests"]', ['laravel', 'phpunit'])
+                    ->select('@timezone', 'UTC')
+                    ->select('@interests', ['laravel', 'phpunit'])
                     ->create()
                     ->waitForText('The user was created!');
 
@@ -80,8 +80,8 @@ class HasOneRelationTest extends DuskTestCase
                     ->click('@create-profile-relation-button')
                     ->waitForText('GitHub URL')
                     ->type('@github_url', 'https://github.com/laravel/nova')
-                    ->select('select[dusk="timezone"]', 'UTC')
-                    ->select('select[dusk="interests"]', ['laravel', 'phpunit', 'vue'])
+                    ->select('@timezone', 'UTC')
+                    ->select('@interests', ['laravel', 'phpunit', 'vue'])
                     ->update()
                     ->waitForText('The user was updated!')
                     ->on(new Detail('users', 4));
@@ -105,8 +105,8 @@ class HasOneRelationTest extends DuskTestCase
                     ->waitForText('Profile')
                     ->type('@github_url', 'https://github.com/laravel')
                     ->type('@twitter_url', 'https://twitter.com/laravelphp')
-                    ->select('select[dusk="timezone"]', 'UTC')
-                    ->select('select[dusk="interests"]', ['laravel', 'phpunit', 'vue'])
+                    ->select('@timezone', 'UTC')
+                    ->select('@interests', ['laravel', 'phpunit', 'vue'])
                     ->update()
                     ->waitForText('The user was updated!')
                     ->on(new Detail('users', 1));

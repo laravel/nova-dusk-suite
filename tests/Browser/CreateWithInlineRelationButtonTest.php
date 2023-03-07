@@ -14,10 +14,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateWithInlineRelationButtonTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function belongs_to_resource_should_fetch_the_related_resource_id_info()
+    public function test_belongs_to_resource_should_fetch_the_related_resource_id_info()
     {
         $this->defineApplicationStates(['index-query-asc-order', 'inline-create', 'searchable']);
 
@@ -43,10 +40,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function morph_to_resource_can_be_created_with_attaching_file_to_parent()
+    public function test_morph_to_resource_can_be_created_with_attaching_file_to_parent()
     {
         $this->defineApplicationStates('inline-create');
 
@@ -55,7 +49,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
 
             $browser->loginAs(1)
                     ->visit(new Create('comments'))
-                    ->selectRelation('commentable-type', 'posts')
+                    ->select('@commentable-type', 'posts')
                     ->pause(500)
                     ->runInlineCreate('commentable', function ($browser) {
                         $browser->waitForText('Create User Post')
@@ -77,10 +71,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function morph_to_resource_can_be_created_with_attaching_file_to_child()
+    public function test_morph_to_resource_can_be_created_with_attaching_file_to_child()
     {
         $this->defineApplicationStates('inline-create');
 
@@ -89,7 +80,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
 
             $browser->loginAs(1)
                     ->visit(new Create('comments'))
-                    ->selectRelation('commentable-type', 'posts')
+                    ->select('@commentable-type', 'posts')
                     ->pause(500)
                     ->runInlineCreate('commentable', function ($browser) {
                         $browser->waitForText('Create User Post')
@@ -111,10 +102,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function belongs_to_many_resource_should_fetch_the_related_resource_id_info()
+    public function test_belongs_to_many_resource_should_fetch_the_related_resource_id_info()
     {
         $this->defineApplicationStates(['index-query-asc-order', 'inline-create']);
 
@@ -135,10 +123,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function slug_not_affected_by_create_relation_modal()
+    public function test_slug_not_affected_by_create_relation_modal()
     {
         $this->defineApplicationStates('inline-create');
 

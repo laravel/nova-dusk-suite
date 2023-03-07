@@ -23,5 +23,6 @@
         <env name="MAIL_DRIVER" value="log"/>
         <env name="TELESCOPE_ENABLED" value="(false)"/>
         <env name="SEND_QUERIES_TO_RAY" value="(false)"/>
+        <env name="DUSK_HEADLESS_MODE" value="(null)"/>
     </php>
 </phpunit>
