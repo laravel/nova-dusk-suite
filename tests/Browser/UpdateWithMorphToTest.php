@@ -85,7 +85,7 @@ class UpdateWithMorphToTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Update('comments', $comment->id, [
                     'viaResource' => 'links',
-                    'viaResourceId' => 1,
+                    'viaResourceId' => $post->id,
                     'viaRelationship' => 'comments',
                 ]))
                 ->within(new BreadcrumbComponent(), function ($browser) {
@@ -97,7 +97,7 @@ class UpdateWithMorphToTest extends DuskTestCase
                         $browser->assertEnabled('')
                                 ->assertSelected('', 'posts');
                     })
-                    ->assertSelectedFirstSearchResult('commentable', $post->title);
+                    ->assertSelectedSearchResult('commentable', $post->title);
                 });
 
             $browser->blank();

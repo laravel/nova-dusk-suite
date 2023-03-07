@@ -6,15 +6,13 @@ use App\Models\Sail;
 use Database\Factories\DockFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\Controls\RelationSelectControlComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
     public function test_parent_select_is_locked_when_creating_child_of_soft_deleted_resource()
     {
         $dock = DockFactory::new()->create(['deleted_at' => now()]);
@@ -34,10 +32,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function select_belongs_to_respects_with_trashed_checkbox_state()
+    public function test_select_belongs_to_respects_with_trashed_checkbox_state()
     {
         $ship = ShipFactory::new()->create(['deleted_at' => now()]);
         $ship2 = ShipFactory::new()->create();
@@ -45,14 +40,15 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
             $browser->loginAs(1)
                     ->visit(new Create('sails'))
-                    ->whenAvailable('select[dusk="ship"]', function ($browser) use ($ship, $ship2) {
+                    ->whenAvailable(new RelationSelectControlComponent('ship'), function ($browser) use ($ship, $ship2) {
                         $browser->assertSelectMissingOption('', $ship->id)
-                                ->assertSelectHasOption('', $ship2->id);
+                            ->assertSelectHasOption('', $ship2->id);
                     })
                     ->withTrashedRelation('ships')
-                    ->assertSelectHasOption('select[dusk="ship"]', $ship->id)
-                    ->assertSelectHasOption('select[dusk="ship"]', $ship2->id)
-                    ->selectRelation('ship', $ship->id)
+                    ->whenAvailable(new RelationSelectControlComponent('ship'), function ($browser) use ($ship, $ship2) {
+                        $browser->assertSelectHasOptions('', [$ship->id, $ship2->id])
+                            ->select('', $ship->id);
+                    })
                     ->type('@inches', 25)
                     ->create()
                     ->waitForText('The sail was created!');
@@ -63,10 +59,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function unable_to_uncheck_with_trashed_if_currently_selected_non_searchable_parent_is_trashed()
+    public function test_unable_to_uncheck_with_trashed_if_currently_selected_non_searchable_parent_is_trashed()
     {
         $ship = ShipFactory::new()->create(['deleted_at' => now()]);
 
@@ -88,10 +81,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function searchable_belongs_to_respects_with_trashed_checkbox_state()
+    public function test_searchable_belongs_to_respects_with_trashed_checkbox_state()
     {
         $this->defineApplicationStates('searchable');
 
