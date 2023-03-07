@@ -26,10 +26,14 @@
         "nunomaduro/collision": "^6.1",
         "nunomaduro/larastan": "^2.5.1",
 <<<<<<< HEAD
+<<<<<<< HEAD
         "orchestra/testbench-dusk": "^8.0",
 =======
         "orchestra/testbench-dusk": "^7.16",
 >>>>>>> 9.5
+=======
+        "orchestra/testbench-dusk": "^8.0",
+>>>>>>> 10.4
         "phpunit/phpunit": "^9.6"
     },
     "autoload": {
