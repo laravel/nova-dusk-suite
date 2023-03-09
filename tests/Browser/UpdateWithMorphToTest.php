@@ -25,17 +25,17 @@ class UpdateWithMorphToTest extends DuskTestCase
             PostFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Update('comments', $comment->id))
-                    ->within(new BreadcrumbComponent(), function ($browser) use ($comment) {
-                        $browser->assertSeeLink('Comments')
-                            ->assertSeeLink('Comment Details: '.$comment->id)
-                            ->assertCurrentPageTitle('Update Comment');
-                    })
-                    ->within(new FormComponent(), function ($browser) {
-                        $browser->searchFirstRelation('commentable', 2);
-                    })
-                    ->update()
-                    ->waitForText('The comment was updated');
+                ->visit(new Update('comments', $comment->id))
+                ->within(new BreadcrumbComponent(), function ($browser) use ($comment) {
+                    $browser->assertSeeLink('Comments')
+                        ->assertSeeLink('Comment Details: '.$comment->id)
+                        ->assertCurrentPageTitle('Update Comment');
+                })
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->searchFirstRelation('commentable', 2);
+                })
+                ->update()
+                ->waitForText('The comment was updated');
 
             $posts = Post::withCount('comments')->findMany([1, 2], ['id']);
 
@@ -95,7 +95,7 @@ class UpdateWithMorphToTest extends DuskTestCase
                 ->within(new FormComponent(), function ($browser) use ($post) {
                     $browser->whenAvailable('select[dusk="commentable-type"]', function ($browser) {
                         $browser->assertEnabled('')
-                                ->assertSelected('', 'posts');
+                            ->assertSelected('', 'posts');
                     })
                     ->assertSelectedSearchResult('commentable', $post->title);
                 });
