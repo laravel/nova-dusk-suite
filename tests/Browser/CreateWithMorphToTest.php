@@ -16,15 +16,15 @@ class CreateWithMorphToTest extends DuskTestCase
             $post = PostFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Create('comments'))
-                    ->waitForTextIn('@nova-form', 'Commentable')
-                    ->select('@commentable-type', 'posts')
-                    ->pause(500)
-                    ->selectRelation('commentable-select', 1)
-                    ->type('@body', 'Test Comment')
-                    ->create()
-                    ->waitForText('The comment was created!')
-                    ->on(new Detail('comments', 1));
+                ->visit(new Create('comments'))
+                ->waitForTextIn('@nova-form', 'Commentable')
+                ->select('@commentable-type', 'posts')
+                ->pause(500)
+                ->selectRelation('commentable-select', 1)
+                ->type('@body', 'Test Comment')
+                ->create()
+                ->waitForText('The comment was created!')
+                ->on(new Detail('comments', 1));
 
             $this->assertSame(1, $post->loadCount('comments')->comments_count);
 
@@ -40,15 +40,15 @@ class CreateWithMorphToTest extends DuskTestCase
             $post = PostFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Create('comments'))
-                    ->waitForTextIn('@nova-form', 'Commentable')
-                    ->select('@commentable-type', 'posts')
-                    ->pause(500)
-                    ->searchFirstRelation('commentable', 1)
-                    ->type('@body', 'Test Comment')
-                    ->create()
-                    ->waitForText('The comment was created!')
-                    ->on(new Detail('comments', 1));
+                ->visit(new Create('comments'))
+                ->waitForTextIn('@nova-form', 'Commentable')
+                ->select('@commentable-type', 'posts')
+                ->pause(500)
+                ->searchFirstRelation('commentable', 1)
+                ->type('@body', 'Test Comment')
+                ->create()
+                ->waitForText('The comment was created!')
+                ->on(new Detail('comments', 1));
 
             $this->assertSame(1, $post->loadCount('comments')->comments_count);
 
@@ -74,15 +74,15 @@ class CreateWithMorphToTest extends DuskTestCase
             $post = PostFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Detail('posts', $post->id))
-                    ->runCreateRelation('comments')
-                    ->waitForTextIn('@nova-form', 'Commentable')
-                    ->assertDisabled('@commentable-type')
-                    ->assertDisabled('select[dusk="commentable-select"]')
-                    ->type('@body', 'Test Comment')
-                    ->create()
-                    ->waitForText('The comment was created!')
-                    ->on(new Detail('comments', 1));
+                ->visit(new Detail('posts', $post->id))
+                ->runCreateRelation('comments')
+                ->waitForTextIn('@nova-form', 'Commentable')
+                ->assertDisabled('@commentable-type')
+                ->assertDisabled('select[dusk="commentable-select"]')
+                ->type('@body', 'Test Comment')
+                ->create()
+                ->waitForText('The comment was created!')
+                ->on(new Detail('comments', 1));
 
             $this->assertSame(1, $post->loadCount('comments')->comments_count);
 
@@ -94,10 +94,10 @@ class CreateWithMorphToTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Create('comments'))
-                    ->waitForTextIn('@nova-form', 'Commentable')
-                    ->assertSee('User Post')
-                    ->assertSee('User Video');
+                ->visit(new Create('comments'))
+                ->waitForTextIn('@nova-form', 'Commentable')
+                ->assertSee('User Post')
+                ->assertSee('User Video');
 
             $browser->blank();
         });

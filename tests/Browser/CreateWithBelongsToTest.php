@@ -107,8 +107,8 @@ class CreateWithBelongsToTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Create('invoice-items'))
-                    ->assertSeeIn('@nova-form', 'Create Invoice Item');
+                ->visit(new Create('invoice-items'))
+                ->assertSeeIn('@nova-form', 'Create Invoice Item');
 
             $browser->blank();
         });
@@ -132,7 +132,7 @@ class CreateWithBelongsToTest extends DuskTestCase
                 ->within(new FormComponent(), function ($browser) {
                     $browser->whenAvailable('select[dusk="user"]', function ($browser) {
                         $browser->assertDisabled('')
-                                ->assertSelected('', 1);
+                            ->assertSelected('', 1);
                     });
                 });
 
@@ -150,8 +150,8 @@ class CreateWithBelongsToTest extends DuskTestCase
             ]);
 
             $browser->loginAs(1)
-                    ->visit($page->url())
-                    ->on(new NotFound);
+                ->visit($page->url())
+                ->on(new NotFound);
 
             $browser->blank();
         });
