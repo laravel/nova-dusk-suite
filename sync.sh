@@ -1,16 +1,16 @@
 #!/bin/bash
 
-composer create-project "laravel/laravel:8.x-dev" skeleton --no-scripts --no-plugins --quiet
+# composer create-project "laravel/laravel:8.x-dev" skeleton --no-scripts --no-plugins --quiet
 
-cp -f ./skeleton/app/Console/Kernel.php ./app/Console
-cp -f ./skeleton/app/Exceptions/Handler.php ./app/Exceptions
-cp -f ./skeleton/app/Http/Kernel.php ./app/Http
-cp -f ./skeleton/app/Http/Controllers/*.php ./app/Http/Controllers
-cp -f ./skeleton/app/Http/Middleware/*.php ./app/Http/Middleware
-cp -f ./skeleton/config/*.php ./config
-cp -f ./skeleton/resources/lang/en/*.php ./resources/lang/en/
+# cp -f ./skeleton/app/Console/Kernel.php ./app/Console
+# cp -f ./skeleton/app/Exceptions/Handler.php ./app/Exceptions
+# cp -f ./skeleton/app/Http/Kernel.php ./app/Http
+# cp -f ./skeleton/app/Http/Controllers/*.php ./app/Http/Controllers
+# cp -f ./skeleton/app/Http/Middleware/*.php ./app/Http/Middleware
+# cp -f ./skeleton/config/*.php ./config
+# cp -f ./skeleton/resources/lang/en/*.php ./resources/lang/en/
 
-rm -Rf ./skeleton
+# rm -Rf ./skeleton
 
 rm -Rf ./lang/vendor/nova
 rm -Rf ./public/vendor/nova

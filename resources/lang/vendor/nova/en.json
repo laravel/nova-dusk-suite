@@ -434,6 +434,7 @@
   ":resource Details: :title": ":resource Details: :title",
   "The HasOne relationship has already been filled.": "The HasOne relationship has already been filled.",
   "An error occurred while uploading the file.": "An error occurred while uploading the file.",
+  "An error occurred while uploading the file: :error": "An error occurred while uploading the file: :error",
   "Previewing": "Previewing",
   "Replicate": "Replicate",
   "Are you sure you want to log out?": "Are you sure you want to log out?",
