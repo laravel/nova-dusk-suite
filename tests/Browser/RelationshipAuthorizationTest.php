@@ -43,6 +43,12 @@ class RelationshipAuthorizationTest extends DuskTestCase
                     $browser->assertMissing('@create-button');
                 });
 
+            $browser->blank();
+        });
+
+        $this->reloadServing();
+
+        $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(2)
                     ->visit(new Create('posts'))
                     ->whenAvailable(new RelationSelectControlComponent('user'), function ($browser) use ($user) {
@@ -73,6 +79,12 @@ class RelationshipAuthorizationTest extends DuskTestCase
                     $browser->assertVisible('@create-button');
                 });
 
+            $browser->blank();
+        });
+
+        $this->reloadServing();
+
+        $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(1)
                 ->visit(new Index('posts'))
                 ->within(new IndexComponent('posts'), function (Browser $browser) {
