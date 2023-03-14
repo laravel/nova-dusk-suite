@@ -16,12 +16,13 @@
         "laravel/vapor-core": "^2.22",
         "league/flysystem-aws-s3-v3": "^3.0",
         "nova-kit/nova-on-vapor": "^1.0",
+        "otwell/remember-token-copier": "@dev",
         "spatie/laravel-ray": "^1.17"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
         "laravel/breeze": "^1.1",
-        "laravel/nova": "*",
+        "laravel/nova": "@dev",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "nunomaduro/larastan": "^2.5.1",
@@ -35,7 +36,6 @@
             "Database\\Seeders\\": "database/seeders/",
             "Otwell\\CustomField\\": "nova-components/CustomField/src/",
             "Otwell\\IconsViewer\\": "nova-components/IconsViewer/src/",
-            "Otwell\\RememberTokenCopier\\": "nova-components/RememberTokenCopier/src/",
             "Otwell\\ResourceTool\\": "nova-components/ResourceTool/src/",
             "Otwell\\SidebarTool\\": "nova-components/SidebarTool/src/"
         },
@@ -91,6 +91,10 @@
         {
             "type": "path",
             "url": "./nova"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/RememberTokenCopier"
         }
     ],
     "config": {
@@ -101,6 +105,5 @@
         "preferred-install": "dist",
         "sort-packages": true
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "minimum-stability": "stable"
 }
