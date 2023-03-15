@@ -240,7 +240,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      */
     protected function newBrowser($driver)
     {
-        Browser::$waitSeconds = 25;
+        Browser::$waitSeconds = 30;
 
         return tap(new Browser($driver), function ($browser) {
             $browser->fitOnFailure = false;

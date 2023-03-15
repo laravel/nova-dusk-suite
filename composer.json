@@ -16,7 +16,6 @@
         "laravel/vapor-core": "^2.22",
         "league/flysystem-aws-s3-v3": "^3.0",
         "nova-kit/nova-on-vapor": "^1.0",
-        "otwell/remember-token-copier": "@dev",
         "spatie/laravel-ray": "^1.17"
     },
     "require-dev": {
@@ -36,6 +35,7 @@
             "Database\\Seeders\\": "database/seeders/",
             "Otwell\\CustomField\\": "nova-components/CustomField/src/",
             "Otwell\\IconsViewer\\": "nova-components/IconsViewer/src/",
+            "Otwell\\RememberTokenCopier\\": "nova-components/RememberTokenCopier/src/",
             "Otwell\\ResourceTool\\": "nova-components/ResourceTool/src/",
             "Otwell\\SidebarTool\\": "nova-components/SidebarTool/src/"
         },
