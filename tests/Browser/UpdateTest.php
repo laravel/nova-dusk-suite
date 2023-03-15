@@ -96,7 +96,7 @@ class UpdateTest extends DuskTestCase
             $this->assertEquals('Taylor Otwell Updated', $user->name);
             $this->assertTrue(Hash::check('secret', $user->password));
 
-            $browser->logout()->blank();
+            $browser->blank();
         });
     }
 
