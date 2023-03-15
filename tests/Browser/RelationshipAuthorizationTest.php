@@ -46,8 +46,6 @@ class RelationshipAuthorizationTest extends DuskTestCase
             $browser->blank();
         });
 
-        $this->reloadServing();
-
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(2)
                     ->visit(new Create('posts'))
@@ -81,8 +79,6 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
             $browser->blank();
         });
-
-        $this->reloadServing();
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
