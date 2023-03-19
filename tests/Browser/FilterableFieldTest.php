@@ -313,4 +313,32 @@ class FilterableFieldTest extends DuskTestCase
             $browser->blank();
         });
     }
+
+    public function test_it_can_filter_date_field()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new UserIndex())
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->runFilter(function ($browser) {
+                            $browser->whenAvailable('input[dusk="created_at-default-date-time-field-range-start"]', function ($browser) {
+                                $browser->typeOnDate('', now()->startOfMonth());
+                            });
+                        })->waitForTable()
+                        ->assertFilterCount(1)
+                        ->resetFilter()
+                        ->waitForTable()
+                        ->assertFilterCount(0)
+                        ->runFilter(function ($browser) {
+                            $browser->whenAvailable('input[dusk="created_at-default-date-time-field-range-start"]', function ($browser) {
+                                $browser->typeOnDate('', now()->startOfMonth());
+                            });
+                        })->waitForTable()
+                        ->assertFilterCount(1);
+                });
+
+            $browser->blank();
+        });
+    }
 }
