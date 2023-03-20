@@ -2,6 +2,7 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
+use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Components\SidebarComponent;
@@ -123,6 +124,33 @@ class CustomAuthenticatesUserTest extends DuskTestCase
                 ->type('password', 'password')
                 ->clickAndWaitForReload('button[type="submit"]')
                 ->on(new Dashboard);
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @group external-network
+     */
+    public function test_it_redirect_to_login_after_password_reset()
+    {
+        $this->beforeServingApplication(function ($app, $config) {
+            $config->set('nova.routes.login', '/login');
+            $config->set('nova.routes.logout', '/logout');
+
+            Nova::$withAuthentication = false;
+        });
+
+        $this->browse(function (Browser $browser) {
+            $user = UserFactory::new()->create();
+
+            $browser->logout()
+                    ->assertGuest()
+                    ->visit(Nova::url('password/reset'))
+                    ->waitForText('Forgot your password?')
+                    ->type('input[id="email"]', $user->email)
+                    ->clickAndWaitForReload('button[type="submit"]', 40)
+                    ->assertPathIs('/login');
 
             $browser->blank();
         });
