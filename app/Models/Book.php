@@ -65,4 +65,14 @@ class Book extends Model
                     ->withPivotValue('type', 'gift')
                     ->withTimestamps();
     }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'sku';
+    }
 }
