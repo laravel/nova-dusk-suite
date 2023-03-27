@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
@@ -60,7 +61,18 @@ class Book extends Resource
 
             Trix::make('Description')
                 ->withFiles()
-                ->nullable(),
+                ->nullable()
+                ->dependsOn(['title', 'active'], function (Trix $field, NovaRequest $request, FormData $formData) {
+                    if ($request->isCreateOrAttachRequest()) {
+                        $field->default($formData->title);
+                    }
+
+                    if ($formData->boolean('active') === true) {
+                        $field->show();
+                    } else {
+                        $field->hide();
+                    }
+                }),
 
             Boolean::make('Active')->default(function ($request) {
                 return true;
