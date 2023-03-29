@@ -61,6 +61,8 @@ class Book extends Resource
 
             Trix::make('Description')
                 ->withFiles()
+                ->stacked()
+                ->fullWidth()
                 ->nullable()
                 ->dependsOn(['title', 'active'], function (Trix $field, NovaRequest $request, FormData $formData) {
                     if ($request->isCreateOrAttachRequest()) {
