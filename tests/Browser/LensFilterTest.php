@@ -122,7 +122,7 @@ class LensFilterTest extends DuskTestCase
         });
     }
 
-    public function userResourceLenUrlWithFilterApplied()
+    public static function userResourceLenUrlWithFilterApplied()
     {
         yield ['nova/resources/users/lens/passthrough-lens?users_page=1&users_filter=W3siQXBwXFxOb3ZhXFxGaWx0ZXJzXFxTZWxlY3RGaXJzdCI6IjMifV0'];
         yield ['nova/resources/users/lens/passthrough-lens?users_page=1&users_filter=W3siY2xhc3MiOiJBcHBcXE5vdmFcXEZpbHRlcnNcXFNlbGVjdEZpcnN0IiwidmFsdWUiOiIzIn1d'];
