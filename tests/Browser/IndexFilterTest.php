@@ -222,7 +222,7 @@ class IndexFilterTest extends DuskTestCase
         });
     }
 
-    public function userResourceUrlWithFilterApplied()
+    public static function userResourceUrlWithFilterApplied()
     {
         yield ['nova/resources/users?users_page=1&users_filter=W3siQXBwXFxOb3ZhXFxGaWx0ZXJzXFxTZWxlY3RGaXJzdCI6IjMifSx7IkFwcFxcTm92YVxcRmlsdGVyc1xcQ3JlYXRlZCI6IiJ9XQ'];
         yield ['nova/resources/users?users_page=1&users_filter=W3siY2xhc3MiOiJBcHBcXE5vdmFcXEZpbHRlcnNcXFNlbGVjdEZpcnN0IiwidmFsdWUiOiIzIn0seyJjbGFzcyI6IkFwcFxcTm92YVxcRmlsdGVyc1xcQ3JlYXRlZCIsInZhbHVlIjoiIn1d'];
