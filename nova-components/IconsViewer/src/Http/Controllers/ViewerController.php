@@ -35,6 +35,7 @@ class ViewerController extends Controller
      */
     public static function iconSet(string $set)
     {
+        /** @var string $directory */
         $directory = NOVA_PATH.'/resources/js/components/Heroicons/'.$set;
 
         return LazyCollection::make(function () use ($directory) {
@@ -42,6 +43,7 @@ class ViewerController extends Controller
         })
         ->collect()
         ->transform(function ($file) use ($directory) {
+            /** @var string $file */
             return str_replace(
                 'heroicons-',
                 '',
