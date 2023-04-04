@@ -19,10 +19,10 @@ jobs:
         os:
           - "ubuntu-latest"
         php:
-          - "7.3"
-          - "7.4"
-          - "8.0"
-          - "8.1"
+          - 7.3
+          - 7.4
+          - '8.0'
+          - 8.1
         dependencies:
           - "highest"
         experimental:
