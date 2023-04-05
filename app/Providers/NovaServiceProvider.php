@@ -230,7 +230,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             new IconsViewer,
             SidebarTool::make()->canSee(function (Request $request) {
                 return ! transform($request->user(), function ($user) {
-                    /** @var \App\Models\User $user */
+                    /** @var \App\Models\User|\App\Models\Subscriber $user */
                     return $user instanceof User && $user->isBlockedFrom('sidebarTool');
                 }, false);
             }),
