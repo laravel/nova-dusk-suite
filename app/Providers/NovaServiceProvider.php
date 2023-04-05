@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Nova\Dashboards\Main;
 use App\Nova\Dashboards\Posts;
 use Carbon\CarbonInterval;
@@ -229,8 +230,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             new IconsViewer,
             SidebarTool::make()->canSee(function (Request $request) {
                 return ! transform($request->user(), function ($user) {
-                    /** @var \App\Models\User $user */
-                    return $user->isBlockedFrom('sidebarTool');
+                    /** @var \App\Models\User|\App\Models\Subscriber $user */
+                    return $user instanceof User && $user->isBlockedFrom('sidebarTool');
                 }, false);
             }),
         ];
