@@ -35,8 +35,3 @@ parameters:
 			count: 1
 			path: app/Providers/NovaServiceProvider.php
 
-		-
-			message: "#^Right side of \\|\\| is always false\\.$#"
-			count: 1
-			path: app/Providers/NovaServiceProvider.php
-
