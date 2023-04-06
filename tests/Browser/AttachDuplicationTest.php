@@ -36,7 +36,7 @@ class AttachDuplicationTest extends DuskTestCase
                 ->whenAvailable('@via-resource-field', function ($browser) {
                     $browser->assertSee('User')->assertSee('1');
                 })
-                ->whenAvailable(new RelationSelectControlComponent('attachable-select'), function ($browser) use ($role) {
+                ->whenAvailable(new RelationSelectControlComponent('attachable'), function ($browser) use ($role) {
                     $browser->assertSelectMissingOption('', $role->id);
                 });
 
