@@ -127,7 +127,7 @@ class SoftDeletingRelationIndexTest extends DuskTestCase
                         $browser->waitForTable()
                                 ->selectAllMatching()
                                 ->runAction('mark-as-active');
-                    });
+                    })->waitForText('The action was executed successfully.');
 
             $this->assertEquals(1, $ship->fresh()->active);
             $this->assertEquals(0, $ship2->fresh()->active);

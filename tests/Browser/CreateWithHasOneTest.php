@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use Illuminate\Support\Carbon;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\SearchInputComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -21,6 +22,9 @@ class CreateWithHasOneTest extends DuskTestCase
                 ->waitForText('The person was created!')
                 ->visit(new Detail('people', 1))
                 ->runCreateRelation('employees')
+                ->whenAvailable(new SearchInputComponent('people'), function ($browser) {
+                    $browser->assertSelectedSearchResult('Adam Wathan');
+                })
                 ->cancel();
 
             $browser->blank();
