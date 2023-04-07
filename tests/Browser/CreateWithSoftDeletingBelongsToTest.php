@@ -21,7 +21,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Detail('docks', $dock->id))
                     ->runCreateRelation('ships')
-                    ->assertDisabled('select[dusk="dock"]')
+                    ->assertSelectedSearchResult('docks', $dock->name)
                     ->type('@name', 'Test Ship')
                     ->create()
                     ->waitForText('The ship was created!');
@@ -40,12 +40,12 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
             $browser->loginAs(1)
                     ->visit(new Create('sails'))
-                    ->whenAvailable(new RelationSelectControlComponent('ship'), function ($browser) use ($ship, $ship2) {
+                    ->whenAvailable(new RelationSelectControlComponent('ships'), function ($browser) use ($ship, $ship2) {
                         $browser->assertSelectMissingOption('', $ship->id)
                             ->assertSelectHasOption('', $ship2->id);
                     })
                     ->withTrashedRelation('ships')
-                    ->whenAvailable(new RelationSelectControlComponent('ship'), function ($browser) use ($ship, $ship2) {
+                    ->whenAvailable(new RelationSelectControlComponent('ships'), function ($browser) use ($ship, $ship2) {
                         $browser->assertSelectHasOptions('', [$ship->id, $ship2->id])
                             ->select('', $ship->id);
                     })
@@ -59,7 +59,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         });
     }
 
-    public function test_unable_to_uncheck_with_trashed_if_currently_selected_non_searchable_parent_is_trashed()
+    public function test_uncheck_with_trashed_can_be_saved_when_parent_is_trashed()
     {
         $ship = ShipFactory::new()->create(['deleted_at' => now()]);
 
@@ -67,10 +67,11 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
             $browser->loginAs(1)
                     ->visit(new Create('sails'))
                     ->withTrashedRelation('ships')
-                    ->selectRelation('ship', $ship->id)
+                    ->selectRelation('ships', $ship->id)
                     ->withoutTrashedRelation('ships')
                     // Ideally would use assertChecked here but RemoteWebDriver
                     // returns unchecked when it clearly is checked?
+                    ->type('@name', 'Sail name')
                     ->type('@inches', 25)
                     ->create()
                     ->waitForText('The sail was created!');

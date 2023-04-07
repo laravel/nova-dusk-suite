@@ -6,6 +6,7 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Notifications\NovaNotification;
+use Laravel\Nova\Testing\Browser\Components\Controls\RelationSelectControlComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
@@ -124,8 +125,7 @@ class DependentActionFieldTest extends DuskTestCase
                                 ->assertMissing('@user')
                                 ->whenAvailable('#anonymous-default-boolean-field', function ($browser) {
                                     $browser->assertChecked('')->uncheck('');
-                                })
-                                ->whenAvailable('@user', function ($browser) {
+                                })->whenAvailable(new RelationSelectControlComponent('users'), function ($browser) {
                                     $browser->select('', 4);
                                 });
                         });
