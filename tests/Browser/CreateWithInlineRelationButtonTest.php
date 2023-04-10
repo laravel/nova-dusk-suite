@@ -8,6 +8,7 @@ use Database\Factories\DockFactory;
 use Database\Factories\PostFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\SearchInputComponent;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -40,6 +41,39 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
         });
     }
 
+    public function test_searchable_belongs_to_resource_can_be_cancelled_and_use_different_resource()
+    {
+        $this->defineApplicationStates(['inline-create', 'searchable']);
+
+        $dock = DockFactory::new()->create();
+        $ships = ShipFactory::new()->count(4)->create();
+
+        $this->browse(function (Browser $browser) use ($dock) {
+            $browser->loginAs(1)
+                ->visit(new Create('sails'))
+                ->runInlineCreate('ship', function ($browser) use ($dock) {
+                    $browser->waitForText('Create Ship')
+                        ->searchFirstRelation('docks', $dock->id)
+                        ->type('@name', 'Ship name');
+                })
+                ->waitForText('The ship was created!')
+                ->pause(500)
+                ->within(new SearchInputComponent('ships'), function ($browser) {
+                    $browser->assertSelectedFirstSearchResult('Ship name')
+                        ->resetSearchResult()
+                        ->assertSearchResult(function ($browser, $attribute) {
+                            $browser->assertSeeIn("{$attribute}-results", 'Ship name')
+                                ->assertPresent("{$attribute}-result-1")
+                                ->assertPresent("{$attribute}-result-2")
+                                ->assertPresent("{$attribute}-result-3")
+                                ->assertPresent("{$attribute}-result-4");
+                        });
+                });
+
+            $browser->blank();
+        });
+    }
+
     public function test_morph_to_resource_can_be_created_with_attaching_file_to_parent()
     {
         $this->defineApplicationStates('inline-create');
@@ -53,7 +87,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                 ->pause(500)
                 ->runInlineCreate('commentable', function ($browser) {
                     $browser->waitForText('Create User Post')
-                        ->selectRelation('user', 1)
+                        ->selectRelation('users', 1)
                         ->type('@title', 'Test Post')
                         ->type('@body', 'Test Post Body')
                         ->attach('@attachment', __DIR__.'/Fixtures/Document.pdf');
@@ -84,7 +118,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                 ->pause(500)
                 ->runInlineCreate('commentable', function ($browser) {
                     $browser->waitForText('Create User Post')
-                        ->selectRelation('user', 1)
+                        ->selectRelation('users', 1)
                         ->type('@title', 'Test Post')
                         ->type('@body', 'Test Post Body');
                 })
@@ -99,6 +133,35 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
             $comment = Comment::with('commentable')->latest()->first();
             $this->assertNotNull($comment->attachment);
             $this->assertNull($comment->commentable->attachment);
+        });
+    }
+
+    public function test_searchable_morph_to_resource_can_be_cancelled_and_use_different_resource()
+    {
+        $this->defineApplicationStates(['inline-create', 'searchable']);
+
+        $this->browse(function (Browser $browser) {
+            $post = PostFactory::new()->create();
+
+            $browser->loginAs(1)
+                ->visit(new Create('comments'))
+                ->select('@commentable-type', 'posts')
+                ->pause(500)
+                ->runInlineCreate('commentable', function ($browser) {
+                    $browser->waitForText('Create User Post')
+                        ->type('@title', 'Test Post')
+                        ->type('@body', 'Test Post Body')
+                        ->searchFirstRelation('users', 1);
+                })
+                ->waitForText('The user post was created!')
+                ->assertSelectedFirstSearchResult('commentable', 'Test Post')
+                ->within(new SearchInputComponent('commentable'), function ($browser) use ($post) {
+                    $browser->resetSearchResult()
+                        ->assertSearchResultContains(['Test Post', $post->title]);
+                })
+                ->click('@cancel-create-button');
+
+            $browser->blank();
         });
     }
 
@@ -132,7 +195,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Create('sails'))
-                ->keys('@name', 'Test Sail', '{tab}')
+                ->type('@name', 'Test Sail')
                 ->type('@inches', 350)
                 ->runInlineCreate('ship', function ($browser) use ($dock) {
                     $browser->waitForText('Create Ship')

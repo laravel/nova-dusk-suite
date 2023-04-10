@@ -7,6 +7,7 @@ use Database\Factories\DockFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
+use Laravel\Nova\Testing\Browser\Components\SearchInputComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\NotFound;
@@ -22,7 +23,7 @@ class CreateWithBelongsToTest extends DuskTestCase
                 ->within(new FormComponent(), function ($browser) {
                     $browser->type('@title', 'Test Post')
                         ->type('@body', 'Test Post Body')
-                        ->selectRelation('user', 1);
+                        ->selectRelation('users', 1);
                 })
                 ->create()
                 ->waitForText('The user post was created!');
@@ -36,19 +37,21 @@ class CreateWithBelongsToTest extends DuskTestCase
         });
     }
 
-    public function test_parent_resource_should_be_locked_when_creating_via_parents_detail_page()
+    public function test_parent_resource_should_be_limited_when_creating_via_parents_detail_page()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
                 ->runCreateRelation('posts')
                 ->within(new FormComponent(), function ($browser) {
-                    $browser->assertDisabled('select[dusk="user"]')
-                        ->type('@title', 'Test Post')
-                        ->type('@body', 'Test Post Body');
+                    $browser->within(new SearchInputComponent('users'), function ($browser) {
+                        $browser->assertSelectedSearchResult('Taylor Otwell');
+                    })
+                    ->type('@title', 'Test Post')
+                    ->type('@body', 'Test Post Body');
                 })
                 ->create()
-                ->waitForText('The user post was created!');
+                ->waitForText('The user post was created');
 
             $user = User::with('posts')->find(1);
             $post = $user->posts->first();
@@ -79,7 +82,7 @@ class CreateWithBelongsToTest extends DuskTestCase
         });
     }
 
-    public function test_searchable_parent_resource_should_be_locked_when_creating_via_parents_detail_page()
+    public function test_searchable_parent_resource_should_be_limited_when_creating_via_parents_detail_page()
     {
         $dock = DockFactory::new()->create();
 
@@ -87,12 +90,9 @@ class CreateWithBelongsToTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('docks', 1))
                 ->runCreateRelation('ships')
-                ->within(new FormComponent(), function ($browser) {
-                    $browser->whenAvailable('select[dusk="dock"]', function ($browser) {
-                        $browser->assertDisabled('')
-                                ->assertSelected('', 1);
-                    })
-                    ->type('@name', 'Test Ship');
+                ->within(new FormComponent(), function ($browser) use ($dock) {
+                    $browser->assertSelectedSearchResult('docks', $dock->name)
+                        ->type('@name', 'Test Ship');
                 })
                 ->create()
                 ->waitForText('The ship was created!');
@@ -130,11 +130,20 @@ class CreateWithBelongsToTest extends DuskTestCase
                         ->assertCurrentPageTitle('Create User Post');
                 })
                 ->within(new FormComponent(), function ($browser) {
-                    $browser->whenAvailable('select[dusk="user"]', function ($browser) {
-                        $browser->assertDisabled('')
-                            ->assertSelected('', 1);
-                    });
+                    $browser->assertSelectedSearchResult('users', 'Taylor Otwell');
                 });
+
+            // It can reset the value.
+            $browser->assertQueryStringHas('viaResource', 'users')
+                ->assertQueryStringHas('viaResourceId', 1)
+                ->assertQueryStringHas('viaRelationship', 'posts')
+                ->within(new SearchInputComponent('users'), function ($browser) {
+                    $browser->assertSelectedSearchResult('Taylor Otwell')
+                        ->resetSearchResult();
+                })
+                ->assertQueryStringMissing('viaResource')
+                ->assertQueryStringMissing('viaResourceId')
+                ->assertQueryStringMissing('viaRelationship');
 
             $browser->blank();
         });
