@@ -29,3 +29,13 @@ parameters:
 			message: "#^Parameter \\#2 \\$createUserCallback of static method Laravel\\\\Nova\\\\Nova\\:\\:createUserUsing\\(\\) expects \\(Closure\\(string, string, string\\)\\: Illuminate\\\\Database\\\\Eloquent\\\\Model\\)\\|null, Closure\\(string, string, string, bool\\)\\: Illuminate\\\\Database\\\\Eloquent\\\\Model given\\.$#"
 			count: 1
 			path: app/Providers/NovaServiceProvider.php
+
+		-
+			message: "#^Parameter \\#1 \\$callback of method Illuminate\\\\Support\\\\Collection\\<string,Symfony\\\\Component\\\\Finder\\\\SplFileInfo\\>\\:\\:transform\\(\\) expects callable\\(Symfony\\\\Component\\\\Finder\\\\SplFileInfo, string\\)\\: Symfony\\\\Component\\\\Finder\\\\SplFileInfo, Closure\\(mixed\\)\\: string given\\.$#"
+			count: 1
+			path: nova-components/IconsViewer/src/Http/Controllers/ViewerController.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between Symfony\\\\Component\\\\Finder\\\\SplFileInfo and 'index\\.js' will always evaluate to false\\.$#"
+			count: 1
+			path: nova-components/IconsViewer/src/Http/Controllers/ViewerController.php

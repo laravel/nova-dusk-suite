@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\Controls\RelationSelectControlComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -20,7 +21,9 @@ class CreateWithMorphToTest extends DuskTestCase
                 ->waitForTextIn('@nova-form', 'Commentable')
                 ->select('@commentable-type', 'posts')
                 ->pause(500)
-                ->selectRelation('commentable-select', 1)
+                ->whenAvailable(new RelationSelectControlComponent('commentable'), function ($browser) {
+                    $browser->select('', 1);
+                })
                 ->type('@body', 'Test Comment')
                 ->create()
                 ->waitForText('The comment was created!')
@@ -78,7 +81,7 @@ class CreateWithMorphToTest extends DuskTestCase
                 ->runCreateRelation('comments')
                 ->waitForTextIn('@nova-form', 'Commentable')
                 ->assertDisabled('@commentable-type')
-                ->assertDisabled('select[dusk="commentable-select"]')
+                ->assertSelectedSearchResult('commentable', $post->title)
                 ->type('@body', 'Test Comment')
                 ->create()
                 ->waitForText('The comment was created!')
@@ -119,10 +122,23 @@ class CreateWithMorphToTest extends DuskTestCase
                     $browser->assertDisabled('')
                         ->assertSelected('', 'posts');
                 })
-                ->whenAvailable('select[dusk="commentable-select"]', function ($browser) use ($post) {
-                    $browser->assertDisabled('')
-                        ->assertSelected('', $post->id);
-                });
+                ->assertSelectedSearchResult('commentable', $post->title);
+
+            // It can reset the value.
+            $browser->assertQueryStringHas('viaResource', 'posts')
+                ->assertQueryStringHas('viaResourceId', $post->id)
+                ->assertQueryStringHas('viaRelationship', 'comments')
+                ->resetSearchRelation('commentable')
+                ->whenAvailable('@commentable-type', function ($browser) {
+                    $browser->assertEnabled('')
+                        ->assertSelected('', 'posts');
+                })
+                ->whenAvailable(new RelationSelectControlComponent('commentable'), function ($browser) {
+                    $browser->assertSelectHasOption('', '');
+                })
+                ->assertQueryStringMissing('viaResource')
+                ->assertQueryStringMissing('viaResourceId')
+                ->assertQueryStringMissing('viaRelationship');
 
             $browser->blank();
         });

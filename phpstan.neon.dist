@@ -1,6 +1,5 @@
 includes:
   - ./vendor/nunomaduro/larastan/extension.neon
-  - ./vendor/laravel/nova/extension.neon
   - ./phpstan-baseline.neon
 
 parameters:
@@ -8,6 +7,11 @@ parameters:
   paths:
     - app
     - database
+    - nova-components/CustomField/src
+    - nova-components/IconsViewer/src
+    - nova-components/RememberTokenCopier/src
+    - nova-components/ResourceTool/src
+    - nova-components/SidebarTool/src
 
   # The level 9 is the highest level
   level: 8
