@@ -7,6 +7,7 @@ use Database\Factories\CaptainFactory;
 use Database\Factories\ShipFactory;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Components\Modals\ConfirmUploadRemovalModalComponent;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
@@ -29,8 +30,10 @@ class PivotFileAttachTest extends DuskTestCase
 
             $browser->loginAs(1)
                     ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
-                    ->searchFirstRelation('ships', $ship->id)
-                    ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
+                    ->within(new FormComponent(), function ($browser) use ($ship) {
+                        $browser->searchFirstRelation('ships', $ship->id)
+                            ->attach('@contract', __DIR__.'/Fixtures/Document.pdf');
+                    })
                     ->create()
                     ->waitForText('The resource was attached!');
 
