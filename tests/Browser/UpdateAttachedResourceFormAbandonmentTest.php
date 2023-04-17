@@ -28,7 +28,7 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
                     })
                     ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
                     ->whenAvailable('@via-resource-field', function ($browser) {
-                        $browser->assertSee('User')->assertSee('1');
+                        $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
                     ->keys('@notes', 'Test Notes Updated', '{tab}')
                     ->within(new SidebarComponent(), function ($browser) {
@@ -58,7 +58,7 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
                     })
                     ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
                     ->whenAvailable('@via-resource-field', function ($browser) {
-                        $browser->assertSee('User')->assertSee('1');
+                        $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
                     ->keys('@notes', 'Test Notes Updated', '{tab}')
                     ->back()
@@ -86,7 +86,7 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
                     })
                     ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
                     ->whenAvailable('@via-resource-field', function ($browser) {
-                        $browser->assertSee('User')->assertSee('1');
+                        $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
                     ->keys('@notes', 'Test Notes Updated', '{tab}')
                     ->cancel()

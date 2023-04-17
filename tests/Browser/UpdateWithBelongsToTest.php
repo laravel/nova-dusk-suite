@@ -55,7 +55,7 @@ class UpdateWithBelongsToTest extends DuskTestCase
                 ->waitForTextIn('h1', 'Update User Post: '.$post->id)
                 ->waitFor('@users-search-input')
                 ->assertMissing('@users-unlock-relation')
-                ->searchFirstRelation('users', 'Said')
+                ->searchFirstRelation('users', 'Brooks')
                 ->assertMissing('@users-unlock-relation')
                 ->update()
                 ->waitForText('The user post was updated');
@@ -83,7 +83,7 @@ class UpdateWithBelongsToTest extends DuskTestCase
                 ->waitForTextIn('h1', 'Update User Post: '.$post->id)
                 ->within(new BreadcrumbComponent(), function ($browser) {
                     $browser->assertSeeLink('Users')
-                        ->assertSeeLink('User Details: 2')
+                        ->assertSeeLink('User Details: James Brooks')
                         ->assertCurrentPageTitle('Update User Post');
                 })
                 ->within(new FormComponent(), function ($browser) {

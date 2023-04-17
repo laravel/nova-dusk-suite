@@ -20,7 +20,7 @@ class DetailActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details: 1')
+                    ->waitForTextIn('h1', 'User Details: Taylor Otwell')
                     ->runAction('mark-as-active')
                     ->waitForText('The action was executed successfully.');
 
@@ -41,7 +41,7 @@ class DetailActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 4))
-                    ->waitForTextIn('h1', 'User Details: 4');
+                    ->waitForTextIn('h1', 'User Details: Laravel Nova');
 
             $browser->within(new IndexComponent('roles'), function ($browser) use ($role) {
                 $browser->waitForTable()
@@ -68,7 +68,7 @@ class DetailActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 4))
-                    ->waitForTextIn('h1', 'User Details: 4');
+                    ->waitForTextIn('h1', 'User Details: Laravel Nova');
 
             User::where('id', '=', 4)->delete();
 
@@ -89,7 +89,7 @@ class DetailActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details: 1')
+                    ->waitForTextIn('h1', 'User Details: Taylor Otwell')
                     ->cancelAction('mark-as-active');
 
             $this->assertEquals(0, User::find(1)->active);
@@ -114,7 +114,7 @@ class DetailActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details: 1')
+                    ->waitForTextIn('h1', 'User Details: Taylor Otwell')
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable()
                                 ->selectAllMatching()

@@ -89,14 +89,14 @@ class ReplicateTest extends DuskTestCase
                         $browser->waitForTable()->replicateResourceById(2);
                     })
                     ->within(new BreadcrumbComponent(), function ($browser) {
-                        $browser->assertSee('User Details: 2')
+                        $browser->assertSee('User Details: James Brooks')
                             ->assertCurrentPageTitle('Replicate User');
                     })
                     ->waitForText('Create User')
                     ->assertSeeIn('h1', 'Create User')
                     ->within(new FormComponent(), function ($browser) {
-                        $browser->assertInputValue('@name', 'Mohamed Said')
-                            ->assertInputValue('@email', 'mohamed@laravel.com')
+                        $browser->assertInputValue('@name', 'James Brooks')
+                            ->assertInputValue('@email', 'james@laravel.com')
                             ->assertSee('Create & Add Another')
                             ->assertSee('Create User');
                     });
