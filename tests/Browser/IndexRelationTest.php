@@ -22,7 +22,7 @@ class IndexRelationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details: 1')
+                    ->waitForTextIn('h1', 'User Details: Taylor Otwell')
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable()
                                 ->assertSeeResource(1)
@@ -47,7 +47,7 @@ class IndexRelationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details: 1')
+                    ->waitForTextIn('h1', 'User Details: Taylor Otwell')
                     ->runCreateRelation('posts')
                     ->assertQueryStringHas('viaResource', 'users')
                     ->assertQueryStringHas('viaResourceId', '1')
@@ -68,7 +68,7 @@ class IndexRelationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details: 1')
+                    ->waitForTextIn('h1', 'User Details: Taylor Otwell')
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable()
                                 ->assertSeeResource(10)
@@ -96,7 +96,7 @@ class IndexRelationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details: 1')
+                    ->waitForTextIn('h1', 'User Details: Taylor Otwell')
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable()
                                 ->assertSeeResource(10)
@@ -124,7 +124,7 @@ class IndexRelationTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details: 1')
+                    ->waitForTextIn('h1', 'User Details: Taylor Otwell')
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable()
                                 ->selectAllMatching()
@@ -148,7 +148,7 @@ class IndexRelationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details: 1')
+                    ->waitForTextIn('h1', 'User Details: Taylor Otwell')
                     ->within(new IndexComponent('posts'), function ($browser) {
                         $browser->waitForTable()
                                 ->assertQueryStringMissing('posts_filter')
