@@ -126,7 +126,7 @@ class CreateWithBelongsToTest extends DuskTestCase
                 ->waitForTextIn('@nova-form', 'Taylor Otwell')
                 ->within(new BreadcrumbComponent(), function ($browser) {
                     $browser->assertSeeLink('Users')
-                        ->assertSeeLink('User Details: 1')
+                        ->assertSeeLink('User Details: Taylor Otwell')
                         ->assertCurrentPageTitle('Create User Post');
                 })
                 ->within(new FormComponent(), function ($browser) {

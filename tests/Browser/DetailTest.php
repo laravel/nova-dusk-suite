@@ -25,9 +25,9 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details: 1')
+                    ->waitForTextIn('h1', 'User Details: Taylor Otwell')
                     ->within('@users-detail-component', function ($browser) {
-                        $browser->assertSee('User Details: 1')
+                        $browser->assertSee('User Details: Taylor Otwell')
                             ->assertSeeIn('@name', 'Taylor Otwell')
                             ->assertSeeIn('@email', 'taylor@laravel.com')
                             ->assertSeeIn('@settings->pagination', 'Simple');
@@ -49,9 +49,9 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', $user->id))
-                    ->waitForTextIn('h1', 'User Details: '.$user->id)
+                    ->waitForTextIn('h1', 'User Details: '.$user->name)
                     ->within('@users-detail-component', function ($browser) use ($user) {
-                        $browser->assertSee('User Details: '.$user->id)
+                        $browser->assertSee('User Details: '.$user->name)
                             ->assertSeeIn('@id', $user->id)
                             ->assertSeeIn('@email', $user->email);
                     });
@@ -95,8 +95,8 @@ class DetailTest extends DuskTestCase
                     ->replicate()
                     ->on(new Replicate('users', 2))
                     ->assertSeeIn('h1', 'Create User')
-                    ->assertInputValue('@name', 'Mohamed Said')
-                    ->assertInputValue('@email', 'mohamed@laravel.com')
+                    ->assertInputValue('@name', 'James Brooks')
+                    ->assertInputValue('@email', 'james@laravel.com')
                     ->assertSee('Create & Add Another')
                     ->assertSee('Create User');
 
@@ -120,15 +120,15 @@ class DetailTest extends DuskTestCase
 
             // To different Detail screen
             $browser->visit(new Detail('users', 2))
-                    ->waitForTextIn('h1', 'User Details: 2')
-                    ->assertSeeIn('@users-detail-component', 'Mohamed Said');
+                    ->waitForTextIn('h1', 'User Details: James Brooks')
+                    ->assertSeeIn('@users-detail-component', 'James Brooks');
 
             $browser->script([
                 'Nova.visit("/resources/users/3");',
             ]);
 
             $browser->on(new Detail('users', 3))
-                    ->waitForTextIn('h1', 'User Details: 3')
+                    ->waitForTextIn('h1', 'User Details: David Hemphill')
                     ->assertSeeIn('@users-detail-component', 'David Hemphill');
 
             $browser->blank();
@@ -143,7 +143,7 @@ class DetailTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                     ->visit(new Detail('users', 3))
-                    ->waitForTextIn('h1', 'User Details: 3')
+                    ->waitForTextIn('h1', 'User Details: David Hemphill')
                     ->delete()
                     ->waitForText('The user was deleted')
                     ->on(new UserIndex);
