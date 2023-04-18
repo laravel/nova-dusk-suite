@@ -10,7 +10,7 @@
     "require": {
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^10.0",
+        "laravel/framework": "^10.8",
         "laravel/scout": "^9.8|^10.0.1",
         "laravel/tinker": "^2.7",
         "laravel/vapor-core": "^2.22",
@@ -105,5 +105,6 @@
         "preferred-install": "dist",
         "sort-packages": true
     },
-    "minimum-stability": "stable"
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }
