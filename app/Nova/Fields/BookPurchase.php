@@ -126,8 +126,8 @@ class BookPurchase
                                 $model->type = $value;
                             }
                         })->dependsOn(['price', 'type'], function (Hidden $field, NovaRequest $request, FormData $formData) {
-                        $field->default($formData->type);
-                    });
+                            $field->default($formData->type);
+                        });
                 })
                 ->onlyOnForms(),
 

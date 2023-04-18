@@ -52,7 +52,7 @@ class ViewerController extends Controller
                     ), '-'),
                 );
             })->reject(function ($file) {
-            return $file === 'index.js';
-        })->sort()->values()->all();
+                return $file === 'index.js';
+            })->sort()->values()->all();
     }
 }
