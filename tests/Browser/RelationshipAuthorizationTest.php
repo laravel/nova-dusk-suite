@@ -49,7 +49,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(2)
                     ->visit(new Create('posts'))
-                    ->whenAvailable(new RelationSelectControlComponent('user'), function ($browser) use ($user) {
+                    ->whenAvailable(new RelationSelectControlComponent('users'), function ($browser) use ($user) {
                         $browser->assertSelectMissingOptions('', [$user->id, $user->name]);
                     });
 
@@ -107,12 +107,32 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
-                    ->visit(new Create('comments'))
-                    ->select('@commentable-type', 'posts')
-                    ->whenAvailable(new RelationSelectControlComponent('commentable-select'), function ($browser) use ($post) {
-                        $browser->assertSelectMissingOptions('', [$post->id, $post->title]);
-                    })
-                    ->cancel();
+                ->visit(new Create('comments'))
+                ->select('@commentable-type', 'posts')
+                ->pause(500)
+                ->whenAvailable(new RelationSelectControlComponent('commentable'), function ($browser) use ($post) {
+                    $browser->assertSelectMissingOptions('', [$post->id, $post->title]);
+                })
+                ->cancel();
+
+            $browser->blank();
+        });
+    }
+
+    public function test_searchable_morphable_resource_cant_be_added_to_parent_if_not_authorized()
+    {
+        $this->defineApplicationStates('searchable');
+
+        $post = PostFactory::new()->create();
+        User::find(1)->shouldBlockFrom('post.addComment.'.$post->id);
+
+        $this->browse(function (Browser $browser) use ($post) {
+            $browser->loginAs(1)
+                ->visit(new Create('comments'))
+                ->select('@commentable-type', 'posts')
+                ->pause(500)
+                ->assertSearchResultDoesNotContains('commentable', $post->title)
+                ->cancel();
 
             $browser->blank();
         });
@@ -125,10 +145,10 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('posts', 1))
-                    ->within(new IndexComponent('comments'), function ($browser) {
-                        $browser->assertMissing('@create-button');
-                    });
+                ->visit(new Detail('posts', 1))
+                ->within(new IndexComponent('comments'), function ($browser) {
+                    $browser->assertMissing('@create-button');
+                });
 
             $browser->blank();
         });
@@ -142,9 +162,10 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(1)
-                    ->visit(Attach::morphToMany('posts', 1, 'tags'))
-                    ->assertSelectMissingOption('@attachable-select', $tag->name)
-                    ->assertSelectMissingOption('@attachable-select', $tag->id);
+                ->visit(Attach::morphToMany('posts', 1, 'tags'))
+                ->whenAvailable(new RelationSelectControlComponent('attachable'), function ($browser) use ($tag) {
+                    $browser->assertSelectMissingOption('', $tag->name);
+                });
 
             $browser->blank();
         });
@@ -157,10 +178,10 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('posts', 1))
-                    ->within(new IndexComponent('tags'), function ($browser) {
-                        $browser->assertMissing('@attach-button');
-                    });
+                ->visit(new Detail('posts', 1))
+                ->within(new IndexComponent('tags'), function ($browser) {
+                    $browser->assertMissing('@attach-button');
+                });
 
             $browser->blank();
         });

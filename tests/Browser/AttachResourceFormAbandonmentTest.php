@@ -21,7 +21,7 @@ class AttachResourceFormAbandonmentTest extends DuskTestCase
                     ->visit(new Detail('users', 1))
                     ->runAttachRelation('roles')
                     ->whenAvailable('@via-resource-field', function ($browser) {
-                        $browser->assertSee('User')->assertSee('1');
+                        $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
                     ->keys('@notes', 'Test Notes', '{tab}')
                     ->within(new SidebarComponent(), function ($browser) {
@@ -46,7 +46,7 @@ class AttachResourceFormAbandonmentTest extends DuskTestCase
                     ->visit(new Detail('users', 1))
                     ->runAttachRelation('roles')
                     ->whenAvailable('@via-resource-field', function ($browser) {
-                        $browser->assertSee('User')->assertSee('1');
+                        $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
                     ->keys('@notes', 'Test Notes', '{tab}')
                     ->back()
@@ -69,7 +69,7 @@ class AttachResourceFormAbandonmentTest extends DuskTestCase
                     ->visit(new Detail('users', 1))
                     ->runAttachRelation('roles')
                     ->whenAvailable('@via-resource-field', function ($browser) {
-                        $browser->assertSee('User')->assertSee('1');
+                        $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
                     ->keys('@notes', 'Test Notes', '{tab}')
                     ->cancel()

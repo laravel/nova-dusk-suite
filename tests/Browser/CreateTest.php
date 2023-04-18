@@ -39,7 +39,7 @@ class CreateTest extends DuskTestCase
                 ->assertQueryStringHas('viaRelationship', 'profile')
                 ->within(new BreadcrumbComponent(), function ($browser) use ($user) {
                     $browser->assertSeeLink('Users')
-                        ->assertSeeLink('User Details: '.$user->id)
+                        ->assertSeeLink('User Details: '.$user->name)
                         ->assertCurrentPageTitle('Create Profile');
                 })
                 ->within(new FormComponent(), function ($browser) {

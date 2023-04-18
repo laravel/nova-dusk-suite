@@ -31,12 +31,12 @@ class UpdateAttachedTest extends DuskTestCase
                     ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
                     ->within(new BreadcrumbComponent(), function ($browser) {
                         $browser->assertSeeLink('Users')
-                            ->assertSeeLink('User Details: 1')
+                            ->assertSeeLink('User Details: Taylor Otwell')
                             ->assertCurrentPageTitle('Update attached Role: 1');
                     })
                     ->within(new FormComponent(), function ($browser) {
                         $browser->whenAvailable('@via-resource-field', function ($browser) {
-                            $browser->assertSee('User')->assertSee('1');
+                            $browser->assertSee('User')->assertSee('Taylor Otwell');
                         })
                         ->whenAvailable('@attachable-select', function ($browser) {
                             $browser->assertDisabled('')
@@ -70,12 +70,12 @@ class UpdateAttachedTest extends DuskTestCase
                     ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
                     ->within(new BreadcrumbComponent(), function ($browser) {
                         $browser->assertSeeLink('Users')
-                            ->assertSeeLink('User Details: 1')
+                            ->assertSeeLink('User Details: Taylor Otwell')
                             ->assertCurrentPageTitle('Update attached Role: 1');
                     })
                     ->within(new FormComponent(), function ($browser) {
                         $browser->whenAvailable('@via-resource-field', function ($browser) {
-                            $browser->assertSee('User')->assertSee('1');
+                            $browser->assertSee('User')->assertSee('Taylor Otwell');
                         })
                         ->whenAvailable('@attachable-select', function ($browser) {
                             $browser->assertDisabled('')
@@ -112,12 +112,12 @@ class UpdateAttachedTest extends DuskTestCase
                     ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
                     ->within(new BreadcrumbComponent(), function ($browser) {
                         $browser->assertSeeLink('Users')
-                            ->assertSeeLink('User Details: 1')
+                            ->assertSeeLink('User Details: Taylor Otwell')
                             ->assertCurrentPageTitle('Update attached Role: 1');
                     })
                     ->within(new FormComponent(), function ($browser) {
                         $browser->whenAvailable('@via-resource-field', function ($browser) {
-                            $browser->assertSee('User')->assertSee('1');
+                            $browser->assertSee('User')->assertSee('Taylor Otwell');
                         })
                         ->whenAvailable('@attachable-select', function ($browser) {
                             $browser->assertDisabled('')
@@ -158,12 +158,12 @@ class UpdateAttachedTest extends DuskTestCase
                     ->on(UpdateAttached::belongsToMany('users', 1, 'books', 4))
                     ->within(new BreadcrumbComponent(), function ($browser) {
                         $browser->assertSeeLink('Users')
-                            ->assertSeeLink('User Details: 1')
+                            ->assertSeeLink('User Details: Taylor Otwell')
                             ->assertCurrentPageTitle('Update attached Book: laravel-testing-decoded');
                     })
                     ->within(new FormComponent(), function ($browser) {
                         $browser->whenAvailable('@via-resource-field', function ($browser) {
-                            $browser->assertSee('User')->assertSee('1');
+                            $browser->assertSee('User')->assertSee('Taylor Otwell');
                         })
                         ->whenAvailable('@price', function ($browser) {
                             $browser->assertValue('', 32.60)

@@ -24,19 +24,19 @@ class AttachDuplicationTest extends DuskTestCase
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
                 ->within(new FormComponent(), function ($browser) use ($role) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
-                        $browser->assertSee('User')->assertSee('1');
+                        $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
                     ->selectAttachable($role->id);
                 })
                 ->create()
                 ->waitForText('The resource was attached!')
                 ->on(new Detail('users', 1))
-                ->waitForTextIn('h1', 'User Details: 1')
+                ->waitForTextIn('h1', 'User Details: Taylor Otwell')
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
                 ->whenAvailable('@via-resource-field', function ($browser) {
-                    $browser->assertSee('User')->assertSee('1');
+                    $browser->assertSee('User')->assertSee('Taylor Otwell');
                 })
-                ->whenAvailable(new RelationSelectControlComponent('attachable-select'), function ($browser) use ($role) {
+                ->whenAvailable(new RelationSelectControlComponent('attachable'), function ($browser) use ($role) {
                     $browser->assertSelectMissingOption('', $role->id);
                 });
 

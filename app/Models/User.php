@@ -165,7 +165,7 @@ class User extends Authenticatable
      */
     public function canImpersonate(): bool
     {
-        return in_array($this->email, ['taylor@laravel.com', 'mohamed@laravel.com', 'david@laravel.com', 'nova@laravel.com']);
+        return in_array($this->email, ['taylor@laravel.com', 'james@laravel.com', 'david@laravel.com', 'nova@laravel.com']);
     }
 
     /**

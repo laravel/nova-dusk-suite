@@ -67,7 +67,7 @@ class DetailBelongsToFieldTest extends DuskTestCase
                         $browser->clickLink($user->name);
                     })
                     ->on(new Detail('users', $user->id))
-                    ->assertSeeIn('h1', 'User Details: '.$user->id);
+                    ->assertSeeIn('h1', 'User Details: '.$user->name);
 
             $browser->blank();
         });
