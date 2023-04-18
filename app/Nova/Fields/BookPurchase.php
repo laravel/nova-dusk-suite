@@ -109,8 +109,8 @@ class BookPurchase
                         'personal' => 'Personal',
                         'gift' => 'Gift',
                     ])
-                    ->readonly()
-                    ->default($this->type),
+                        ->readonly()
+                        ->default($this->type),
                 ];
             }),
 
@@ -119,13 +119,13 @@ class BookPurchase
                     $field->resolveUsing(function ($value, $resource) {
                         return $resource->type;
                     })
-                    ->fillUsing(function (NovaRequest $request, $model, $attribute, $requestAttribute) use ($field) {
-                        $value = $request->input($attribute);
+                        ->fillUsing(function (NovaRequest $request, $model, $attribute, $requestAttribute) use ($field) {
+                            $value = $request->input($attribute);
 
-                        if (! $field->isValidNullValue($value)) {
-                            $model->type = $value;
-                        }
-                    })->dependsOn(['price', 'type'], function (Hidden $field, NovaRequest $request, FormData $formData) {
+                            if (! $field->isValidNullValue($value)) {
+                                $model->type = $value;
+                            }
+                        })->dependsOn(['price', 'type'], function (Hidden $field, NovaRequest $request, FormData $formData) {
                         $field->default($formData->type);
                     });
                 })
@@ -145,8 +145,8 @@ class BookPurchase
 
                     return $purchasedAt->lessThan(now()) ? 'completed' : 'waiting';
                 })->loadingWhen(['waiting'])
-            ->failedWhen(['n/a'])
-            ->textAlign(Status::CENTER_ALIGN),
+                ->failedWhen(['n/a'])
+                ->textAlign(Status::CENTER_ALIGN),
 
             $this->merge($this->appends),
 

@@ -59,20 +59,20 @@ class Profile extends Resource
             URL::make('GitHub URL')->filterable(function ($request, $query, $value, $attribute) {
                 $query->where($attribute, '=', 'https://github.com/'.$value);
             })->nullable()
-            ->updateRules(['nullable', 'unique:profiles,github_url,{{resourceId}}']),
+                ->updateRules(['nullable', 'unique:profiles,github_url,{{resourceId}}']),
 
             URL::make('Twitter URL')->displayUsing(function ($value) {
                 return str_replace('https://twitter.com/', '@', $value);
             })->nullable()
-            ->rules(['nullable', 'different:github_url'])
-            ->updateRules(['nullable', 'unique:profiles,twitter_url,{{resourceId}}']),
+                ->rules(['nullable', 'different:github_url'])
+                ->updateRules(['nullable', 'unique:profiles,twitter_url,{{resourceId}}']),
 
             Timezone::make('Timezone')
-                    ->nullable()
-                    ->rules(['nullable', Rule::in(timezone_identifiers_list())])
-                    ->filterable()
-                    ->searchable(uses_searchable())
-                    ->hideFromDetail(),
+                ->nullable()
+                ->rules(['nullable', Rule::in(timezone_identifiers_list())])
+                ->filterable()
+                ->searchable(uses_searchable())
+                ->hideFromDetail(),
 
             Text::make('Time (Timezone)', function () {
                 $timezone = $this->timezone ?? config('app.timezone');

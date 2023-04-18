@@ -59,9 +59,9 @@ class Posts extends Dashboard
         $newPostsInLast24Hours = Post::whereBetween('created_at', [now()->subHours(24), now()])->count();
 
         return MenuItem::dashboard(static::class)
-                    ->withBadgeIf(function () use ($newPostsInLast24Hours) {
-                        /** @return string */
-                        return (string) $newPostsInLast24Hours;
-                    }, 'info', $newPostsInLast24Hours > 0);
+            ->withBadgeIf(function () use ($newPostsInLast24Hours) {
+                /** @return string */
+                return (string) $newPostsInLast24Hours;
+            }, 'info', $newPostsInLast24Hours > 0);
     }
 }

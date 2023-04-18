@@ -17,9 +17,9 @@ class BookPurchases extends Value
     public function calculate(NovaRequest $request)
     {
         return $this->sum($request, BookPurchase::where('book_id', '=', $request->resourceId), 'price', 'purchased_at')
-                    ->transform(function ($value) {
-                        return $value / 100;
-                    })->currency();
+            ->transform(function ($value) {
+                return $value / 100;
+            })->currency();
     }
 
     /**

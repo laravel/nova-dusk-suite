@@ -30,9 +30,9 @@ class Book extends Model
     public function purchasers()
     {
         return $this->belongsToMany(User::class, 'book_purchases')
-                    ->using(BookPurchase::class)
-                    ->withPivot('id', 'price', 'type', 'purchased_at')
-                    ->withTimestamps();
+            ->using(BookPurchase::class)
+            ->withPivot('id', 'price', 'type', 'purchased_at')
+            ->withTimestamps();
     }
 
     /**
@@ -43,11 +43,11 @@ class Book extends Model
     public function personalPurchasers()
     {
         return $this->belongsToMany(User::class, 'book_purchases')
-                    ->as('purchase')
-                    ->using(BookPurchase::class)
-                    ->withPivot('id', 'price', 'type', 'purchased_at')
-                    ->withPivotValue('type', 'personal')
-                    ->withTimestamps();
+            ->as('purchase')
+            ->using(BookPurchase::class)
+            ->withPivot('id', 'price', 'type', 'purchased_at')
+            ->withPivotValue('type', 'personal')
+            ->withTimestamps();
     }
 
     /**
@@ -58,11 +58,11 @@ class Book extends Model
     public function giftPurchasers()
     {
         return $this->belongsToMany(User::class, 'book_purchases')
-                    ->as('purchase')
-                    ->using(BookPurchase::class)
-                    ->withPivot('id', 'price', 'type')
-                    ->withPivotValue('type', 'gift')
-                    ->withTimestamps();
+            ->as('purchase')
+            ->using(BookPurchase::class)
+            ->withPivot('id', 'price', 'type')
+            ->withPivotValue('type', 'gift')
+            ->withTimestamps();
     }
 
     /**

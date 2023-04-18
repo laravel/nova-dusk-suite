@@ -108,10 +108,10 @@ class User extends Authenticatable
     public function personalBooks()
     {
         return $this->belongsToMany(Book::class, 'book_purchases')
-                    ->using(BookPurchase::class)
-                    ->withPivot('id', 'price', 'type', 'purchased_at')
-                    ->wherePivotIn('type', ['personal'])
-                    ->withTimestamps();
+            ->using(BookPurchase::class)
+            ->withPivot('id', 'price', 'type', 'purchased_at')
+            ->wherePivotIn('type', ['personal'])
+            ->withTimestamps();
     }
 
     /**
@@ -122,9 +122,9 @@ class User extends Authenticatable
     public function giftBooks()
     {
         return $this->belongsToMany(Book::class, 'book_purchases')
-                    ->using(BookPurchase::class)
-                    ->withPivot('id', 'price', 'type', 'purchased_at')
-                    ->wherePivotIn('type', ['gift']);
+            ->using(BookPurchase::class)
+            ->withPivot('id', 'price', 'type', 'purchased_at')
+            ->wherePivotIn('type', ['gift']);
     }
 
     /**

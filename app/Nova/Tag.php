@@ -44,12 +44,12 @@ class Tag extends Resource
             Text::make('Name', 'name')->rules('required')->sortable(),
 
             MorphedByMany::make('Posts', 'posts')
-                        ->display('title')
-                        ->fields(function () {
-                            return [
-                                Text::make('Notes', 'notes')->rules('max:20'),
-                            ];
-                        }),
+                ->display('title')
+                ->fields(function () {
+                    return [
+                        Text::make('Notes', 'notes')->rules('max:20'),
+                    ];
+                }),
         ];
     }
 

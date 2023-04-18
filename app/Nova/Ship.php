@@ -57,19 +57,19 @@ class Ship extends Resource
             DateTime::make('Departed At', 'departed_at')->showWhenPeeking(),
 
             BelongsToMany::make('Captains', 'captains')
-                        ->display('name')
-                        ->fields(function ($request) {
-                            return [
-                                Text::make('Notes', 'notes')->rules('max:20'),
-                                File::make('Contract', 'contract')->prunable()->store(function ($request) {
-                                    if ($request->contract) {
-                                        return $request->contract->storeAs('/', 'Contract.pdf', 'public');
-                                    }
-                                }),
-                            ];
-                        })
-                        ->prunable()
-                        ->searchable(uses_searchable()),
+                ->display('name')
+                ->fields(function ($request) {
+                    return [
+                        Text::make('Notes', 'notes')->rules('max:20'),
+                        File::make('Contract', 'contract')->prunable()->store(function ($request) {
+                            if ($request->contract) {
+                                return $request->contract->storeAs('/', 'Contract.pdf', 'public');
+                            }
+                        }),
+                    ];
+                })
+                ->prunable()
+                ->searchable(uses_searchable()),
 
             HasMany::make('Sails', 'sails', Sail::class),
         ];
