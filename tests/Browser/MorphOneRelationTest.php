@@ -20,10 +20,10 @@ class MorphOneRelationTest extends DuskTestCase
             $photo = PhotoFactory::new()->forPerson()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Detail('people', $photo->imageable_id))
-                    ->within(new IndexComponent('photos'), function ($browser) {
-                        $browser->assertMissing('@create-button');
-                    });
+                ->visit(new Detail('people', $photo->imageable_id))
+                ->within(new IndexComponent('photos'), function ($browser) {
+                    $browser->assertMissing('@create-button');
+                });
 
             $browser->blank();
         });
@@ -35,9 +35,9 @@ class MorphOneRelationTest extends DuskTestCase
             $people = PeopleFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Detail('people', $people->id))
-                    ->runCreateRelation('photos')
-                    ->assertMissing('@create-and-add-another-button');
+                ->visit(new Detail('people', $people->id))
+                ->runCreateRelation('photos')
+                ->assertMissing('@create-and-add-another-button');
 
             $browser->blank();
         });
@@ -47,12 +47,12 @@ class MorphOneRelationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Create('people'))
-                    ->type('@name', 'Adam Wathan')
-                    ->click('@create-photo-relation-button')
-                    ->attach('@url', __DIR__.'/Fixtures/StardewTaylor.png')
-                    ->create()
-                    ->waitForText('The person was created!');
+                ->visit(new Create('people'))
+                ->type('@name', 'Adam Wathan')
+                ->click('@create-photo-relation-button')
+                ->attach('@url', __DIR__.'/Fixtures/StardewTaylor.png')
+                ->create()
+                ->waitForText('The person was created!');
 
             $people = People::with('photo')->orderBy('id', 'desc')->first();
 
@@ -71,13 +71,13 @@ class MorphOneRelationTest extends DuskTestCase
             $people = PeopleFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Update('people', $people->id))
-                    ->type('@name', 'Adam Wathan')
-                    ->click('@create-photo-relation-button')
-                    ->attach('@url', __DIR__.'/Fixtures/StardewTaylor.png')
-                    ->update()
-                    ->waitForText('The person was updated!')
-                    ->on(new Detail('people', $people->id));
+                ->visit(new Update('people', $people->id))
+                ->type('@name', 'Adam Wathan')
+                ->click('@create-photo-relation-button')
+                ->attach('@url', __DIR__.'/Fixtures/StardewTaylor.png')
+                ->update()
+                ->waitForText('The person was updated!')
+                ->on(new Detail('people', $people->id));
 
             $people->refresh()->loadMissing('photo');
 
@@ -95,13 +95,13 @@ class MorphOneRelationTest extends DuskTestCase
             $people = $photo->imageable;
 
             $browser->loginAs(1)
-                    ->visit(new Update('people', $people->id))
-                    ->waitForText('Person')
-                    ->type('@name', 'Adam Wathan')
-                    ->attach('@url', __DIR__.'/Fixtures/StardewTaylor.png')
-                    ->update()
-                    ->waitForText('The person was updated!')
-                    ->on(new Detail('people', 1));
+                ->visit(new Update('people', $people->id))
+                ->waitForText('Person')
+                ->type('@name', 'Adam Wathan')
+                ->attach('@url', __DIR__.'/Fixtures/StardewTaylor.png')
+                ->update()
+                ->waitForText('The person was updated!')
+                ->on(new Detail('people', 1));
 
             $people->refresh()->loadMissing('photo');
 

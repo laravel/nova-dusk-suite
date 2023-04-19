@@ -23,19 +23,19 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($captain) {
             $browser->loginAs(1)
-                    ->visit(new Detail('captains', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->withTrashed()
-                                ->waitFor('@1-edit-attached-button')
-                                ->click('@1-edit-attached-button');
-                    })
-                    ->on(UpdateAttached::belongsToMany('captains', 1, 'ships', 1))
-                    ->whenAvailable('select[dusk="attachable-select"]', function ($browser) {
-                        $browser->assertDisabled('');
-                    })
-                    ->type('@notes', 'Test Notes')
-                    ->update()
-                    ->waitForText('The resource was updated!');
+                ->visit(new Detail('captains', 1))
+                ->within(new IndexComponent('ships'), function ($browser) {
+                    $browser->withTrashed()
+                        ->waitFor('@1-edit-attached-button')
+                        ->click('@1-edit-attached-button');
+                })
+                ->on(UpdateAttached::belongsToMany('captains', 1, 'ships', 1))
+                ->whenAvailable('select[dusk="attachable-select"]', function ($browser) {
+                    $browser->assertDisabled('');
+                })
+                ->type('@notes', 'Test Notes')
+                ->update()
+                ->waitForText('The resource was updated!');
 
             $this->assertEquals(
                 'Test Notes',
@@ -57,19 +57,19 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($captain) {
             $browser->loginAs(1)
-                    ->visit(new Detail('captains', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->withTrashed()
-                                ->waitFor('@1-edit-attached-button')
-                                ->click('@1-edit-attached-button');
-                    })
-                    ->on(UpdateAttached::belongsToMany('captains', 1, 'ships', 1))
-                    ->assertDisabled('select[dusk="attachable-select"]')
-                    ->whenAvailable('@notes', function ($browser) {
-                        $browser->type('', 'Test Notes');
-                    })
-                    ->updateAndContinueEditing()
-                    ->waitForText('The resource was updated!');
+                ->visit(new Detail('captains', 1))
+                ->within(new IndexComponent('ships'), function ($browser) {
+                    $browser->withTrashed()
+                        ->waitFor('@1-edit-attached-button')
+                        ->click('@1-edit-attached-button');
+                })
+                ->on(UpdateAttached::belongsToMany('captains', 1, 'ships', 1))
+                ->assertDisabled('select[dusk="attachable-select"]')
+                ->whenAvailable('@notes', function ($browser) {
+                    $browser->type('', 'Test Notes');
+                })
+                ->updateAndContinueEditing()
+                ->waitForText('The resource was updated!');
 
             $browser->on(UpdateAttached::belongsToMany('captains', 1, 'ships', 1));
 

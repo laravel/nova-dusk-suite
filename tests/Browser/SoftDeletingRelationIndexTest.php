@@ -17,14 +17,14 @@ class SoftDeletingRelationIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->waitForTable()
-                                ->assertSeeResource(1)
-                                ->searchFor('No Matching Ships')
-                                ->waitForEmptyDialog()
-                                ->assertDontSeeResource(1);
-                    });
+                ->visit(new Detail('docks', 1))
+                ->within(new IndexComponent('ships'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertSeeResource(1)
+                        ->searchFor('No Matching Ships')
+                        ->waitForEmptyDialog()
+                        ->assertDontSeeResource(1);
+                });
 
             $browser->blank();
         });
@@ -36,18 +36,18 @@ class SoftDeletingRelationIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->withTrashed();
+                ->visit(new Detail('docks', 1))
+                ->within(new IndexComponent('ships'), function ($browser) {
+                    $browser->withTrashed();
 
-                        $browser->waitForTable()
-                                ->assertSeeResource(1)
-                                ->deleteResourceById(1)
-                                ->waitForTable()
-                                ->restoreResourceById(1)
-                                ->waitForTable()
-                                ->assertSeeResource(1);
-                    });
+                    $browser->waitForTable()
+                        ->assertSeeResource(1)
+                        ->deleteResourceById(1)
+                        ->waitForTable()
+                        ->restoreResourceById(1)
+                        ->waitForTable()
+                        ->assertSeeResource(1);
+                });
 
             $browser->blank();
         });
@@ -59,11 +59,11 @@ class SoftDeletingRelationIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('docks', 1))
-                    ->runCreateRelation('ships')
-                    ->assertQueryStringHas('viaResource', 'docks')
-                    ->assertQueryStringHas('viaResourceId', '1')
-                    ->assertQueryStringHas('viaRelationship', 'ships');
+                ->visit(new Detail('docks', 1))
+                ->runCreateRelation('ships')
+                ->assertQueryStringHas('viaResource', 'docks')
+                ->assertQueryStringHas('viaResourceId', '1')
+                ->assertQueryStringHas('viaRelationship', 'ships');
 
             $browser->blank();
         });
@@ -75,18 +75,18 @@ class SoftDeletingRelationIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->waitForTable()
-                                ->assertSeeResource(10)
-                                ->assertDontSeeResource(1)
-                                ->nextPage()
-                                ->assertDontSeeResource(10)
-                                ->assertSeeResource(1)
-                                ->previousPage()
-                                ->assertSeeResource(10)
-                                ->assertDontSeeResource(1);
-                    });
+                ->visit(new Detail('docks', 1))
+                ->within(new IndexComponent('ships'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertSeeResource(10)
+                        ->assertDontSeeResource(1)
+                        ->nextPage()
+                        ->assertDontSeeResource(10)
+                        ->assertSeeResource(1)
+                        ->previousPage()
+                        ->assertSeeResource(10)
+                        ->assertDontSeeResource(1);
+                });
 
             $browser->blank();
         });
@@ -98,18 +98,18 @@ class SoftDeletingRelationIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->waitForTable()
-                                ->assertSeeResource(10)
-                                ->assertSeeResource(6)
-                                ->assertDontSeeResource(1)
-                                ->sortBy('id')
-                                ->assertDontSeeResource(10)
-                                ->assertDontSeeResource(6)
-                                ->assertSeeResource(5)
-                                ->assertSeeResource(1);
-                    });
+                ->visit(new Detail('docks', 1))
+                ->within(new IndexComponent('ships'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertSeeResource(10)
+                        ->assertSeeResource(6)
+                        ->assertDontSeeResource(1)
+                        ->sortBy('id')
+                        ->assertDontSeeResource(10)
+                        ->assertDontSeeResource(6)
+                        ->assertSeeResource(5)
+                        ->assertSeeResource(1);
+                });
 
             $browser->blank();
         });
@@ -122,12 +122,12 @@ class SoftDeletingRelationIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
             $browser->loginAs(1)
-                    ->visit(new Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->waitForTable()
-                                ->selectAllMatching()
-                                ->runAction('mark-as-active');
-                    })->waitForText('The action was executed successfully.');
+                ->visit(new Detail('docks', 1))
+                ->within(new IndexComponent('ships'), function ($browser) {
+                    $browser->waitForTable()
+                        ->selectAllMatching()
+                        ->runAction('mark-as-active');
+                })->waitForText('The action was executed successfully.');
 
             $this->assertEquals(1, $ship->fresh()->active);
             $this->assertEquals(0, $ship2->fresh()->active);
@@ -143,12 +143,12 @@ class SoftDeletingRelationIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
             $browser->loginAs(1)
-                    ->visit(new Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->waitForTable()
-                                ->selectAllMatching()
-                                ->deleteSelected();
-                    });
+                ->visit(new Detail('docks', 1))
+                ->within(new IndexComponent('ships'), function ($browser) {
+                    $browser->waitForTable()
+                        ->selectAllMatching()
+                        ->deleteSelected();
+                });
 
             $this->assertNotNull($ship->fresh()->deleted_at);
             $this->assertNull($ship2->fresh()->deleted_at);

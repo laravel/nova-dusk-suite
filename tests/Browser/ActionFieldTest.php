@@ -23,8 +23,8 @@ class ActionFieldTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->visit('/')->assertMissing('Nova');
+                ->visit(new Detail('users', 1))
+                ->visit('/')->assertMissing('Nova');
 
             $browser->blank();
         });
@@ -39,15 +39,15 @@ class ActionFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitForTable()
-                            ->clickCheckboxForId(1)
-                            ->runAction('update-pivot-notes', function ($browser) {
-                                $browser->assertSee('Provide a description for notes.')
-                                        ->type('@notes', 'Custom Notes');
-                            });
-                    })->waitForText('The action was executed successfully.');
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('roles'), function ($browser) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId(1)
+                        ->runAction('update-pivot-notes', function ($browser) {
+                            $browser->assertSee('Provide a description for notes.')
+                                ->type('@notes', 'Custom Notes');
+                        });
+                })->waitForText('The action was executed successfully.');
 
             $this->assertEquals('Custom Notes', User::with('roles')->find(1)->roles->first()->pivot->notes);
 
@@ -64,21 +64,21 @@ class ActionFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitForTable()
-                            ->assertScript('Nova.useShortcuts', true)
-                            ->clickCheckboxForId(1)
-                            ->selectAction('update-pivot-notes', function ($browser) {
-                                $browser->elsewhere('', function ($browser) {
-                                    $browser->whenAvailable(new ConfirmActionModalComponent(), function ($browser) {
-                                        $browser->assertScript('Nova.useShortcuts', false)
-                                                ->assertSee('Provide a description for notes.');
-                                    })->keys('', ['e']);
-                                });
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('roles'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertScript('Nova.useShortcuts', true)
+                        ->clickCheckboxForId(1)
+                        ->selectAction('update-pivot-notes', function ($browser) {
+                            $browser->elsewhere('', function ($browser) {
+                                $browser->whenAvailable(new ConfirmActionModalComponent(), function ($browser) {
+                                    $browser->assertScript('Nova.useShortcuts', false)
+                                        ->assertSee('Provide a description for notes.');
+                                })->keys('', ['e']);
                             });
-                    })
-                    ->assertPresentModal();
+                        });
+                })
+                ->assertPresentModal();
 
             $browser->blank();
         });
@@ -93,15 +93,15 @@ class ActionFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitForTable()
-                            ->clickCheckboxForId(1)
-                            ->runAction('update-required-pivot-notes')
-                            ->elsewhere(new ConfirmActionModalComponent(), function ($browser) {
-                                $browser->assertSee(__('validation.required', ['attribute' => 'Notes']));
-                            });
-                    });
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('roles'), function ($browser) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId(1)
+                        ->runAction('update-required-pivot-notes')
+                        ->elsewhere(new ConfirmActionModalComponent(), function ($browser) {
+                            $browser->assertSee(__('validation.required', ['attribute' => 'Notes']));
+                        });
+                });
 
             $browser->blank();
         });
@@ -116,20 +116,20 @@ class ActionFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitForTable()
-                            ->clickCheckboxForId(1)
-                            ->selectAction('update-pivot-notes', function ($browser) {
-                                $browser->assertSee('Provide a description for notes.')
-                                    ->type('@notes', 'Custom Notes')
-                                    ->click('[dusk="cancel-action-button"]')
-                                    ->pause(250);
-                            })
-                            ->runAction('update-required-pivot-notes', function ($browser) {
-                                $browser->type('@notes', 'Custom Notes Updated');
-                            });
-                    })->waitForText('The action was executed successfully.');
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('roles'), function ($browser) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId(1)
+                        ->selectAction('update-pivot-notes', function ($browser) {
+                            $browser->assertSee('Provide a description for notes.')
+                                ->type('@notes', 'Custom Notes')
+                                ->click('[dusk="cancel-action-button"]')
+                                ->pause(250);
+                        })
+                        ->runAction('update-required-pivot-notes', function ($browser) {
+                            $browser->type('@notes', 'Custom Notes Updated');
+                        });
+                })->waitForText('The action was executed successfully.');
 
             $this->assertEquals('Custom Notes Updated', User::with('roles')->find(1)->roles->first()->pivot->notes);
 
@@ -146,19 +146,19 @@ class ActionFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(2)
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
-                            ->openControlSelectorById(1)
-                            ->elsewhere('', function ($browser) {
-                                $browser->waitFor('@1-preview-button')
-                                        ->assertMissing('@1-inline-actions');
-                            })
-                            ->openControlSelectorById(2)
-                            ->elsewhereWhenAvailable('@2-inline-actions', function ($browser) {
-                                $browser->assertSee('Mark As Inactive');
-                            });
-                    });
+                ->visit(new UserIndex)
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->openControlSelectorById(1)
+                        ->elsewhere('', function ($browser) {
+                            $browser->waitFor('@1-preview-button')
+                                ->assertMissing('@1-inline-actions');
+                        })
+                        ->openControlSelectorById(2)
+                        ->elsewhereWhenAvailable('@2-inline-actions', function ($browser) {
+                            $browser->assertSee('Mark As Inactive');
+                        });
+                });
 
             $this->assertEquals(1, User::find(2)->active);
 
@@ -175,18 +175,18 @@ class ActionFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Index('posts'))
-                    ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable();
+                ->visit(new Index('posts'))
+                ->within(new IndexComponent('posts'), function ($browser) {
+                    $browser->waitForTable();
 
-                        Post::query()->delete();
+                    Post::query()->delete();
 
-                        $browser->runAction('standalone-task', function ($browser) {
-                            $browser->assertSee('Provide a description for notes.')
-                                    ->type('@notes', 'Custom Notes');
-                        });
-                    })->waitForText('Action executed with [Custom Notes]')
-                    ->assertSee('Action executed with [Custom Notes]');
+                    $browser->runAction('standalone-task', function ($browser) {
+                        $browser->assertSee('Provide a description for notes.')
+                            ->type('@notes', 'Custom Notes');
+                    });
+                })->waitForText('Action executed with [Custom Notes]')
+                ->assertSee('Action executed with [Custom Notes]');
 
             $browser->blank();
         });

@@ -23,11 +23,11 @@ class FileAttachTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Create('captains'))
-                    ->type('@name', 'Taylor Otwell')
-                    ->attach('@photo', __DIR__.'/Fixtures/StardewTaylor.png')
-                    ->create()
-                    ->waitForText('The captain was created!');
+                ->visit(new Create('captains'))
+                ->type('@name', 'Taylor Otwell')
+                ->attach('@photo', __DIR__.'/Fixtures/StardewTaylor.png')
+                ->create()
+                ->waitForText('The captain was created!');
 
             // Verify the photo in the information in the database...
             $captain = Captain::orderBy('id', 'desc')->first();
@@ -37,14 +37,14 @@ class FileAttachTest extends DuskTestCase
 
             // Download the file...
             $browser->on(new Detail('captains', $captain->id))
-                    ->waitFor('@photo-download-link')
-                    ->click('@photo-download-link')
-                    ->pause(250);
+                ->waitFor('@photo-download-link')
+                ->click('@photo-download-link')
+                ->pause(250);
 
             // Ensure file is not removed on blank update...
             $browser->visit(new Update('captains', $captain->id))
-                    ->update()
-                    ->waitForText('The captain was updated!');
+                ->update()
+                ->waitForText('The captain was updated!');
 
             $captain = $captain->fresh();
             $this->assertNotNull($captain->photo);
@@ -53,13 +53,13 @@ class FileAttachTest extends DuskTestCase
 
             // Delete the file...
             $browser->visit(new Update('captains', $captain->id))
-                    ->whenAvailable('button[dusk="photo-delete-link"]', function ($browser) {
-                        $browser->click('');
-                    })
-                    ->whenAvailable(new ConfirmUploadRemovalModalComponent(), function ($browser) {
-                        $browser->confirm();
-                    })
-                    ->waitForText('The file was deleted!');
+                ->whenAvailable('button[dusk="photo-delete-link"]', function ($browser) {
+                    $browser->click('');
+                })
+                ->whenAvailable(new ConfirmUploadRemovalModalComponent(), function ($browser) {
+                    $browser->confirm();
+                })
+                ->waitForText('The file was deleted!');
 
             $browser->blank();
 

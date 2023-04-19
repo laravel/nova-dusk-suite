@@ -39,19 +39,19 @@ class DependentFieldTest extends DuskTestCase
                 ->waitForTextIn('h1', 'Create Project')
                 ->within(new FormComponent, function ($browser) {
                     $browser->assertSelectMissingOptions('@type', ['product', 'service'])
-                            ->assertSelected('@type', '')
-                            ->select('@name', 'Secret')
-                            ->pause(1500)
-                            ->assertSelectHasOptions('@type', ['product', 'service'])
-                            ->assertSelected('@type', '')
-                            ->select('@name', 'Nova')
-                            ->pause(1500)
-                            ->assertSelectMissingOption('@type', 'service')
-                            ->assertSelected('@type', 'product')
-                            ->select('@name', 'Forge')
-                            ->pause(1500)
-                            ->assertSelectMissingOption('@type', 'product')
-                            ->assertSelected('@type', 'service');
+                        ->assertSelected('@type', '')
+                        ->select('@name', 'Secret')
+                        ->pause(1500)
+                        ->assertSelectHasOptions('@type', ['product', 'service'])
+                        ->assertSelected('@type', '')
+                        ->select('@name', 'Nova')
+                        ->pause(1500)
+                        ->assertSelectMissingOption('@type', 'service')
+                        ->assertSelected('@type', 'product')
+                        ->select('@name', 'Forge')
+                        ->pause(1500)
+                        ->assertSelectMissingOption('@type', 'product')
+                        ->assertSelected('@type', 'service');
                 })
                 ->create()
                 ->waitForText('The project was created!');
@@ -125,7 +125,7 @@ class DependentFieldTest extends DuskTestCase
                         'description',
                         'Creators of Tailwind CSS, Tailwind UI, and Refactoring UI.'
                     )->type('@name', 'Tailwind Labs Inc')
-                    ->select('@country', 'US');
+                        ->select('@country', 'US');
                 })
                 ->create()
                 ->waitForText('The company was created!');
@@ -148,12 +148,12 @@ class DependentFieldTest extends DuskTestCase
                 ->waitForTextIn('h1', 'Create Project')
                 ->within(new FormComponent, function ($browser) {
                     $browser->assertSelectMissingOptions('@type', ['product', 'service'])
-                            ->assertSelected('@type', '')
-                            ->select('@name', 'Secret')
-                            ->pause(1500)
-                            ->assertSelectHasOptions('@type', ['product', 'service'])
-                            ->select('@type', 'product')
-                            ->fieldValue('description', 'Laravel Beep!');
+                        ->assertSelected('@type', '')
+                        ->select('@name', 'Secret')
+                        ->pause(1500)
+                        ->assertSelectHasOptions('@type', ['product', 'service'])
+                        ->select('@type', 'product')
+                        ->fieldValue('description', 'Laravel Beep!');
                 })
                 ->create()
                 ->waitForText('The project was created!');
