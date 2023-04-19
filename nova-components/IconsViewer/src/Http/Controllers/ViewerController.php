@@ -41,20 +41,20 @@ class ViewerController extends Controller
         return LazyCollection::make(function () use ($directory) {
             yield from (new Finder())->in($directory)->files();
         })
-        ->collect()
-        ->transform(function ($file) use ($directory) {
-            /** @var string $file */
-            return str_replace(
-                'heroicons-',
-                '',
-                Str::snake(str_replace(
-                    ['/', '.vue'],
-                    ['', ''],
-                    Str::after($file, $directory)
-                ), '-'),
-            );
-        })->reject(function ($file) {
-            return $file === 'index.js';
-        })->sort()->values()->all();
+            ->collect()
+            ->transform(function ($file) use ($directory) {
+                /** @var string $file */
+                return str_replace(
+                    'heroicons-',
+                    '',
+                    Str::snake(str_replace(
+                        ['/', '.vue'],
+                        ['', ''],
+                        Str::after($file, $directory)
+                    ), '-'),
+                );
+            })->reject(function ($file) {
+                return $file === 'index.js';
+            })->sort()->values()->all();
     }
 }

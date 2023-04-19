@@ -68,19 +68,19 @@ class Captain extends Resource
             }),
 
             BelongsToMany::make('Ships', 'ships')
-                        ->display('name')
-                        ->fields(function ($request) {
-                            return [
-                                Text::make('Notes', 'notes')->rules('max:20'),
-                                File::make('Contract', 'contract')->prunable()->store(function ($request) {
-                                    if ($request->contract) {
-                                        return $request->contract->storeAs('/', 'Contract.pdf', 'public');
-                                    }
-                                }),
-                            ];
-                        })
-                        ->prunable()
-                        ->searchable(uses_searchable()),
+                ->display('name')
+                ->fields(function ($request) {
+                    return [
+                        Text::make('Notes', 'notes')->rules('max:20'),
+                        File::make('Contract', 'contract')->prunable()->store(function ($request) {
+                            if ($request->contract) {
+                                return $request->contract->storeAs('/', 'Contract.pdf', 'public');
+                            }
+                        }),
+                    ];
+                })
+                ->prunable()
+                ->searchable(uses_searchable()),
         ];
     }
 

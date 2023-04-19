@@ -110,14 +110,14 @@ class User extends Resource
                 'update' => 'Update',
                 'delete' => 'Delete',
             ])
-            ->noValueText('No permissions selected.')
-            ->dependsOn('email', function (BooleanGroup $field, NovaRequest $request, FormData $formData) {
-                if (! Str::endsWith($formData->email, 'laravel.com')) {
-                    $field->options(['read' => 'Read']);
-                }
-            })
-            ->filterable()
-            ->showOnPreview(),
+                ->noValueText('No permissions selected.')
+                ->dependsOn('email', function (BooleanGroup $field, NovaRequest $request, FormData $formData) {
+                    if (! Str::endsWith($formData->email, 'laravel.com')) {
+                        $field->options(['read' => 'Read']);
+                    }
+                })
+                ->filterable()
+                ->showOnPreview(),
 
             DateTime::make('Created At')->readonly()->filterable(),
 
@@ -172,22 +172,22 @@ class User extends Resource
             ]),
 
             BelongsToMany::make('Roles')
-                        ->display('name')
-                        ->fields(function ($request) {
-                            return [
-                                Text::make('Notes', 'notes')->rules('max:20'),
-                            ];
-                        })
-                        ->actions(function ($request) {
-                            return [
-                                new Actions\UpdatePivotNotes,
-                                Actions\StandaloneTask::make()->standalone(),
-                            ];
-                        })
-                        ->referToPivotAs('Role Assignment')
-                        ->prunable()
-                        ->showCreateRelationButton(uses_inline_create())
-                        ->filterable(),
+                ->display('name')
+                ->fields(function ($request) {
+                    return [
+                        Text::make('Notes', 'notes')->rules('max:20'),
+                    ];
+                })
+                ->actions(function ($request) {
+                    return [
+                        new Actions\UpdatePivotNotes,
+                        Actions\StandaloneTask::make()->standalone(),
+                    ];
+                })
+                ->referToPivotAs('Role Assignment')
+                ->prunable()
+                ->showCreateRelationButton(uses_inline_create())
+                ->filterable(),
 
             BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
                 ->fields(new Fields\BookPurchase('personal'))

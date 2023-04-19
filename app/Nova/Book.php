@@ -79,7 +79,7 @@ class Book extends Resource
             Boolean::make('Active')->default(function ($request) {
                 return true;
             })->filterable()
-            ->showOnPreview(),
+                ->showOnPreview(),
 
             BelongsToMany::make('Purchasers', 'purchasers', User::class)
                 ->fields(new Fields\BookPurchase(null, true)),

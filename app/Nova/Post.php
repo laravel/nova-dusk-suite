@@ -95,13 +95,13 @@ class Post extends Resource
             MorphMany::make('Comments', 'comments'),
 
             MorphToMany::make('Tags', 'tags')
-                    ->display('name')
-                    ->fields(function () {
-                        return [
-                            Text::make('Notes', 'notes')->rules('max:20'),
-                        ];
-                    })->searchable(uses_searchable())
-                    ->showCreateRelationButton(uses_inline_create()),
+                ->display('name')
+                ->fields(function () {
+                    return [
+                        Text::make('Notes', 'notes')->rules('max:20'),
+                    ];
+                })->searchable(uses_searchable())
+                ->showCreateRelationButton(uses_inline_create()),
 
             new Heading('Social Data'),
 

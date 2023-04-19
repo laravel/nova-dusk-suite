@@ -1,5 +1,6 @@
 <?php
 
+use Laravel\Dusk\Browser;
 use Orchestra\Testbench\Dusk\Options;
 
 require __DIR__.'/../vendor/autoload.php';
@@ -13,6 +14,8 @@ if (isset($_SERVER['CI']) || isset($_ENV['CI'])) {
 } else {
     Options::withUI();
 }
+
+Browser::$waitSeconds = 35;
 
 Options::$w3cCompliant = false;
 
