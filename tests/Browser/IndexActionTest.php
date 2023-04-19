@@ -18,13 +18,13 @@ class IndexActionTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
-                            ->clickCheckboxForId(3)
-                            ->clickCheckboxForId(2)
-                            ->runAction('mark-as-active');
-                    })->waitForText('The action was executed successfully.');
+                ->visit(new UserIndex)
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId(3)
+                        ->clickCheckboxForId(2)
+                        ->runAction('mark-as-active');
+                })->waitForText('The action was executed successfully.');
 
             $this->assertEquals([
                 1 => false,
@@ -41,16 +41,16 @@ class IndexActionTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
-                            ->clickCheckboxForId(3);
+                ->visit(new UserIndex)
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId(3);
 
-                        User::where('id', '=', 3)->delete();
+                    User::where('id', '=', 3)->delete();
 
-                        $browser->runAction('mark-as-active');
-                    })->waitForText('Sorry! You are not authorized to perform this action.')
-                    ->assertSee('Sorry! You are not authorized to perform this action.');
+                    $browser->runAction('mark-as-active');
+                })->waitForText('Sorry! You are not authorized to perform this action.')
+                ->assertSee('Sorry! You are not authorized to perform this action.');
 
             $browser->blank();
         });
@@ -62,15 +62,15 @@ class IndexActionTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Index('posts'))
-                    ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable();
+                ->visit(new Index('posts'))
+                ->within(new IndexComponent('posts'), function ($browser) {
+                    $browser->waitForTable();
 
-                        Post::query()->delete();
+                    Post::query()->delete();
 
-                        $browser->runAction('standalone-task');
-                    })->waitForText('Action executed!')
-                    ->assertSee('Action executed!');
+                    $browser->runAction('standalone-task');
+                })->waitForText('Action executed!')
+                ->assertSee('Action executed!');
 
             $browser->blank();
         });
@@ -84,12 +84,12 @@ class IndexActionTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
-                            ->selectAllMatching()
-                            ->runAction('mark-as-active');
-                    })->waitForText('The action was executed successfully.');
+                ->visit(new UserIndex)
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->selectAllMatching()
+                        ->runAction('mark-as-active');
+                })->waitForText('The action was executed successfully.');
 
             $this->assertEquals(0, User::where('active', '=', 0)->count());
 
@@ -103,20 +103,20 @@ class IndexActionTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
-                            ->openControlSelectorById(1)
-                            ->elsewhere('', function ($browser) {
-                                $browser->waitFor('@1-preview-button')
-                                        ->assertMissing('@1-inline-actions');
-                            })
-                            ->openControlSelectorById(2)
-                            ->elsewhereWhenAvailable('@2-inline-actions', function ($browser) {
-                                $browser->assertSee('Mark As Inactive');
-                            })
-                            ->runInlineAction(2, 'mark-as-inactive');
-                    })->waitForText('The action was executed successfully.');
+                ->visit(new UserIndex)
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->openControlSelectorById(1)
+                        ->elsewhere('', function ($browser) {
+                            $browser->waitFor('@1-preview-button')
+                                ->assertMissing('@1-inline-actions');
+                        })
+                        ->openControlSelectorById(2)
+                        ->elsewhereWhenAvailable('@2-inline-actions', function ($browser) {
+                            $browser->assertSee('Mark As Inactive');
+                        })
+                        ->runInlineAction(2, 'mark-as-inactive');
+                })->waitForText('The action was executed successfully.');
 
             $this->assertEquals([
                 1 => false,

@@ -26,7 +26,7 @@ class AttachTest extends DuskTestCase
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
-                    ->selectAttachable($role->id);
+                        ->selectAttachable($role->id);
                 })
                 ->create()
                 ->waitForText('The resource was attached!');
@@ -57,8 +57,8 @@ class AttachTest extends DuskTestCase
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
-                    ->selectAttachable($role->id)
-                    ->type('@notes', 'Test Notes');
+                        ->selectAttachable($role->id)
+                        ->type('@notes', 'Test Notes');
                 })
                 ->create()
                 ->waitForText('The resource was attached!')

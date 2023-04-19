@@ -101,14 +101,14 @@ class AuthenticatesUserTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->logout()
-                    ->assertGuest()
-                    ->visit('/dashboard')
-                    ->waitForLocation('/login')
-                    ->visit(new Login())
-                    ->type('email', 'nova@laravel.com')
-                    ->type('password', 'password')
-                    ->clickAndWaitForReload('button[type="submit"]')
-                    ->assertPathIs('/dashboard');
+                ->assertGuest()
+                ->visit('/dashboard')
+                ->waitForLocation('/login')
+                ->visit(new Login())
+                ->type('email', 'nova@laravel.com')
+                ->type('password', 'password')
+                ->clickAndWaitForReload('button[type="submit"]')
+                ->assertPathIs('/dashboard');
 
             $browser->pause(2000)->blank();
         });
@@ -123,14 +123,14 @@ class AuthenticatesUserTest extends DuskTestCase
             $user = UserFactory::new()->create();
 
             $browser->logout()
-                    ->assertGuest()
-                    ->visit(Nova::url('password/reset'))
-                    ->waitForText('Forgot your password?')
-                    ->type('input[id="email"]', $user->email)
-                    ->click('button[type="submit"]')
-                    ->waitForText(__('passwords.sent'))
-                    ->pause(5000)
-                    ->waitForLocation(Nova::url('login'));
+                ->assertGuest()
+                ->visit(Nova::url('password/reset'))
+                ->waitForText('Forgot your password?')
+                ->type('input[id="email"]', $user->email)
+                ->click('button[type="submit"]')
+                ->waitForText(__('passwords.sent'))
+                ->pause(5000)
+                ->waitForLocation(Nova::url('login'));
 
             $browser->blank();
         });

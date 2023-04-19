@@ -16,16 +16,16 @@ class IndexFilterTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
-                                ->setPerPage('50')
-                                ->waitForTable()
-                                ->assertSeeResource(50)
-                                ->assertSeeResource(25)
-                                ->assertDontSeeResource(1)
-                                ->assertSee('1-50 of 54');
-                    });
+                ->visit(new UserIndex)
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->setPerPage('50')
+                        ->waitForTable()
+                        ->assertSeeResource(50)
+                        ->assertSeeResource(25)
+                        ->assertDontSeeResource(1)
+                        ->assertSee('1-50 of 54');
+                });
 
             $browser->blank();
         });
@@ -37,24 +37,24 @@ class IndexFilterTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
-                                ->setPerPage('50')
-                                ->waitForTable()
-                                ->assertSeeResource(50)
-                                ->assertSeeResource(25)
-                                ->assertDontSeeResource(1)
-                                ->assertSee('1-50 of 54');
-                    })
-                    ->refresh()
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
-                                ->assertSeeResource(50)
-                                ->assertSeeResource(25)
-                                ->assertDontSeeResource(1)
-                                ->assertSee('1-50 of 54');
-                    });
+                ->visit(new UserIndex)
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->setPerPage('50')
+                        ->waitForTable()
+                        ->assertSeeResource(50)
+                        ->assertSeeResource(25)
+                        ->assertDontSeeResource(1)
+                        ->assertSee('1-50 of 54');
+                })
+                ->refresh()
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertSeeResource(50)
+                        ->assertSeeResource(25)
+                        ->assertDontSeeResource(1)
+                        ->assertSee('1-50 of 54');
+                });
 
             $browser->blank();
         });
@@ -187,13 +187,13 @@ class IndexFilterTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) use ($url) {
             $browser->loginAs(1)
-                    ->visit($url)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->assertDontSeeResource(1)
-                            ->assertDontSeeResource(2)
-                            ->assertSeeResource(3)
-                            ->assertDontSeeResource(4);
-                    });
+                ->visit($url)
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->assertDontSeeResource(1)
+                        ->assertDontSeeResource(2)
+                        ->assertSeeResource(3)
+                        ->assertDontSeeResource(4);
+                });
 
             $browser->blank();
         });
@@ -203,20 +203,20 @@ class IndexFilterTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
-                            ->assertMissing('@filter-per-page')
-                            ->click('@filter-selector')
-                            ->pause(500)
-                            ->elsewhere('', function ($browser) {
-                                $browser->assertVisible('@filter-per-page')
-                                    ->type('input[dusk="Created-date-filter"]', '')
-                                    ->assertVisible('@filter-per-page');
-                            })
-                            ->closeCurrentDropdown()
-                            ->assertMissing('@filter-per-page');
-                    });
+                ->visit(new UserIndex)
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertMissing('@filter-per-page')
+                        ->click('@filter-selector')
+                        ->pause(500)
+                        ->elsewhere('', function ($browser) {
+                            $browser->assertVisible('@filter-per-page')
+                                ->type('input[dusk="Created-date-filter"]', '')
+                                ->assertVisible('@filter-per-page');
+                        })
+                        ->closeCurrentDropdown()
+                        ->assertMissing('@filter-per-page');
+                });
 
             $browser->blank();
         });

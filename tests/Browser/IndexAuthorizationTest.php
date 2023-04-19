@@ -24,16 +24,16 @@ class IndexAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Dashboard())
-                    ->assertDontSeeIn('div[dusk="sidebar-menu"][role="navigation"]', 'User Posts')
-                    ->visit(new Page('/resources/posts'))
-                    ->assertForbidden();
+                ->visit(new Dashboard())
+                ->assertDontSeeIn('div[dusk="sidebar-menu"][role="navigation"]', 'User Posts')
+                ->visit(new Page('/resources/posts'))
+                ->assertForbidden();
 
             $browser->visit(new Dashboard())
-                    ->assertDontSeeIn('div[dusk="sidebar-menu"][role="navigation"]', 'Users')
-                    ->visit(new Page('/resources/users'))
-                    ->assertForbidden()
-                    ->visit(new Detail('users', 1));
+                ->assertDontSeeIn('div[dusk="sidebar-menu"][role="navigation"]', 'Users')
+                ->visit(new Page('/resources/users'))
+                ->assertForbidden()
+                ->visit(new Detail('users', 1));
 
             $browser->blank();
         });
@@ -51,25 +51,25 @@ class IndexAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($posts) {
             $browser->loginAs(1)
-                    ->visit(new Index('posts'))
-                    ->within(new IndexComponent('posts'), function ($browser) use ($posts) {
-                        $browser->waitForTable()
-                                ->assertDontSeeLink($posts[0]->id)
-                                ->openControlSelectorById($posts[0]->id, function ($browser) use ($posts) {
-                                    $browser->assertMissing("{$posts[0]->id}-preview-button");
-                                })
-                                ->assertSeeLink($posts[0]->user->name)
-                                ->assertSeeLink($posts[1]->id)
-                                ->openControlSelectorById($posts[1]->id, function ($browser) use ($posts) {
-                                    $browser->assertVisible("{$posts[1]->id}-preview-button");
-                                })
-                                ->assertDontSeeLink($posts[1]->user->name)
-                                ->assertSeeLink($posts[2]->id)
-                                ->openControlSelectorById($posts[2]->id, function ($browser) use ($posts) {
-                                    $browser->assertVisible("{$posts[2]->id}-preview-button");
-                                })
-                                ->assertSeeLink($posts[2]->user->name);
-                    });
+                ->visit(new Index('posts'))
+                ->within(new IndexComponent('posts'), function ($browser) use ($posts) {
+                    $browser->waitForTable()
+                        ->assertDontSeeLink($posts[0]->id)
+                        ->openControlSelectorById($posts[0]->id, function ($browser) use ($posts) {
+                            $browser->assertMissing("{$posts[0]->id}-preview-button");
+                        })
+                        ->assertSeeLink($posts[0]->user->name)
+                        ->assertSeeLink($posts[1]->id)
+                        ->openControlSelectorById($posts[1]->id, function ($browser) use ($posts) {
+                            $browser->assertVisible("{$posts[1]->id}-preview-button");
+                        })
+                        ->assertDontSeeLink($posts[1]->user->name)
+                        ->assertSeeLink($posts[2]->id)
+                        ->openControlSelectorById($posts[2]->id, function ($browser) use ($posts) {
+                            $browser->assertVisible("{$posts[2]->id}-preview-button");
+                        })
+                        ->assertSeeLink($posts[2]->user->name);
+                });
 
             $browser->blank();
         });
@@ -83,12 +83,12 @@ class IndexAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(1)
-                    ->visit(new Index('posts'))
-                    ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
-                        $browser->waitForTable()
-                                ->assertButtonDisabled('@'.$post->id.'-edit-button')
-                                ->assertButtonEnabled('@'.$post2->id.'-edit-button');
-                    });
+                ->visit(new Index('posts'))
+                ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
+                    $browser->waitForTable()
+                        ->assertButtonDisabled('@'.$post->id.'-edit-button')
+                        ->assertButtonEnabled('@'.$post2->id.'-edit-button');
+                });
 
             $browser->blank();
         });
@@ -102,12 +102,12 @@ class IndexAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(1)
-                    ->visit(new Index('posts'))
-                    ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
-                        $browser->waitForTable()
-                                ->assertButtonDisabled('@'.$post->id.'-delete-button')
-                                ->assertButtonEnabled('@'.$post2->id.'-delete-button');
-                    });
+                ->visit(new Index('posts'))
+                ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
+                    $browser->waitForTable()
+                        ->assertButtonDisabled('@'.$post->id.'-delete-button')
+                        ->assertButtonEnabled('@'.$post2->id.'-delete-button');
+                });
 
             $browser->blank();
         });
@@ -120,18 +120,18 @@ class IndexAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Index('posts'))
-                    ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable()
-                            ->clickCheckboxForId(3)
-                            ->clickCheckboxForId(2)
-                            ->clickCheckboxForId(1)
-                            ->deleteSelected()
-                            ->waitForTable()
-                            ->assertSeeResource(1)
-                            ->assertDontSeeResource(2)
-                            ->assertDontSeeResource(3);
-                    });
+                ->visit(new Index('posts'))
+                ->within(new IndexComponent('posts'), function ($browser) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId(3)
+                        ->clickCheckboxForId(2)
+                        ->clickCheckboxForId(1)
+                        ->deleteSelected()
+                        ->waitForTable()
+                        ->assertSeeResource(1)
+                        ->assertDontSeeResource(2)
+                        ->assertDontSeeResource(3);
+                });
 
             $browser->blank();
         });
@@ -144,16 +144,16 @@ class IndexAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Index('posts'))
-                    ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable()
-                            ->selectAllMatching()
-                            ->deleteSelected()
-                            ->waitForTable()
-                            ->assertSeeResource(1)
-                            ->assertDontSeeResource(2)
-                            ->assertDontSeeResource(3);
-                    });
+                ->visit(new Index('posts'))
+                ->within(new IndexComponent('posts'), function ($browser) {
+                    $browser->waitForTable()
+                        ->selectAllMatching()
+                        ->deleteSelected()
+                        ->waitForTable()
+                        ->assertSeeResource(1)
+                        ->assertDontSeeResource(2)
+                        ->assertDontSeeResource(3);
+                });
 
             $browser->blank();
         });

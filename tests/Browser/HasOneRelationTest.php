@@ -17,10 +17,10 @@ class HasOneRelationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('profiles'), function ($browser) {
-                        $browser->assertMissing('@create-button');
-                    });
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('profiles'), function ($browser) {
+                    $browser->assertMissing('@create-button');
+                });
 
             $browser->blank();
         });
@@ -30,9 +30,9 @@ class HasOneRelationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 4))
-                    ->runCreateRelation('profiles')
-                    ->assertMissing('@create-and-add-another-button');
+                ->visit(new Detail('users', 4))
+                ->runCreateRelation('profiles')
+                ->assertMissing('@create-and-add-another-button');
 
             $browser->blank();
         });
@@ -42,18 +42,18 @@ class HasOneRelationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Create('users'))
-                    ->type('@name', 'Adam Wathan')
-                    ->type('@email', 'adam@laravel.com')
-                    ->type('@password', 'secret')
-                    ->click('@create-profile-relation-button')
-                    ->waitForText('GitHub URL')
-                    ->type('@github_url', 'https://github.com/adamwathan')
-                    ->type('@twitter_url', 'https://twitter.com/adamwathan')
-                    ->select('@timezone', 'UTC')
-                    ->select('@interests', ['laravel', 'phpunit'])
-                    ->create()
-                    ->waitForText('The user was created!');
+                ->visit(new Create('users'))
+                ->type('@name', 'Adam Wathan')
+                ->type('@email', 'adam@laravel.com')
+                ->type('@password', 'secret')
+                ->click('@create-profile-relation-button')
+                ->waitForText('GitHub URL')
+                ->type('@github_url', 'https://github.com/adamwathan')
+                ->type('@twitter_url', 'https://twitter.com/adamwathan')
+                ->select('@timezone', 'UTC')
+                ->select('@interests', ['laravel', 'phpunit'])
+                ->create()
+                ->waitForText('The user was created!');
 
             $user = User::with('profile')->orderBy('id', 'desc')->first();
 
@@ -76,15 +76,15 @@ class HasOneRelationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(4)
-                    ->visit(new Update('users', 4))
-                    ->click('@create-profile-relation-button')
-                    ->waitForText('GitHub URL')
-                    ->type('@github_url', 'https://github.com/laravel/nova')
-                    ->select('@timezone', 'UTC')
-                    ->select('@interests', ['laravel', 'phpunit', 'vue'])
-                    ->update()
-                    ->waitForText('The user was updated!')
-                    ->on(new Detail('users', 4));
+                ->visit(new Update('users', 4))
+                ->click('@create-profile-relation-button')
+                ->waitForText('GitHub URL')
+                ->type('@github_url', 'https://github.com/laravel/nova')
+                ->select('@timezone', 'UTC')
+                ->select('@interests', ['laravel', 'phpunit', 'vue'])
+                ->update()
+                ->waitForText('The user was updated!')
+                ->on(new Detail('users', 4));
 
             $user = User::with('profile')->find(4);
 
@@ -101,15 +101,15 @@ class HasOneRelationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Update('users', 1))
-                    ->waitForText('Profile')
-                    ->type('@github_url', 'https://github.com/laravel')
-                    ->type('@twitter_url', 'https://twitter.com/laravelphp')
-                    ->select('@timezone', 'UTC')
-                    ->select('@interests', ['laravel', 'phpunit', 'vue'])
-                    ->update()
-                    ->waitForText('The user was updated!')
-                    ->on(new Detail('users', 1));
+                ->visit(new Update('users', 1))
+                ->waitForText('Profile')
+                ->type('@github_url', 'https://github.com/laravel')
+                ->type('@twitter_url', 'https://twitter.com/laravelphp')
+                ->select('@timezone', 'UTC')
+                ->select('@interests', ['laravel', 'phpunit', 'vue'])
+                ->update()
+                ->waitForText('The user was updated!')
+                ->on(new Detail('users', 1));
 
             $user = User::with('profile')->find(1);
 
@@ -126,24 +126,24 @@ class HasOneRelationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Update('users', 1))
-                    ->waitForText('Profile')
-                    ->type('@github_url', 'https://github.com/laravel')
-                    ->type('@twitter_url', 'https://github.com/laravel')
-                    ->update()
-                    ->waitForText('There was a problem submitting the form.')
-                    ->assertSee(__('validation.different', ['attribute' => 'Twitter URL', 'other' => 'GitHub URL']))
-                    ->cancel();
+                ->visit(new Update('users', 1))
+                ->waitForText('Profile')
+                ->type('@github_url', 'https://github.com/laravel')
+                ->type('@twitter_url', 'https://github.com/laravel')
+                ->update()
+                ->waitForText('There was a problem submitting the form.')
+                ->assertSee(__('validation.different', ['attribute' => 'Twitter URL', 'other' => 'GitHub URL']))
+                ->cancel();
 
             $browser->loginAs(1)
-                    ->visit(new Update('profiles', 1))
-                    ->waitForText('Profile')
-                    ->type('@github_url', 'https://github.com/laravel')
-                    ->type('@twitter_url', 'https://github.com/laravel')
-                    ->update()
-                    ->waitForText('There was a problem submitting the form.')
-                    ->assertSee(__('validation.different', ['attribute' => 'Twitter URL', 'other' => 'GitHub URL']))
-                    ->cancel();
+                ->visit(new Update('profiles', 1))
+                ->waitForText('Profile')
+                ->type('@github_url', 'https://github.com/laravel')
+                ->type('@twitter_url', 'https://github.com/laravel')
+                ->update()
+                ->waitForText('There was a problem submitting the form.')
+                ->assertSee(__('validation.different', ['attribute' => 'Twitter URL', 'other' => 'GitHub URL']))
+                ->cancel();
 
             $browser->blank();
         });

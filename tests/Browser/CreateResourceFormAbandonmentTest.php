@@ -15,16 +15,16 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Index('videos'))
-                    ->runCreate()
-                    ->keys('@title', 'Hello World', '{tab}')
-                    ->within(new SidebarComponent(), function ($browser) {
-                        $browser->clickLink('Users');
-                    })
-                    ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
-                    ->acceptDialog()
-                    ->on(new UserIndex)
-                    ->waitForTextIn('h1', 'Users');
+                ->visit(new Index('videos'))
+                ->runCreate()
+                ->keys('@title', 'Hello World', '{tab}')
+                ->within(new SidebarComponent(), function ($browser) {
+                    $browser->clickLink('Users');
+                })
+                ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
+                ->acceptDialog()
+                ->on(new UserIndex)
+                ->waitForTextIn('h1', 'Users');
 
             $this->assertDatabaseMissing('videos', [
                 'title' => 'Hello World',
@@ -39,14 +39,14 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Index('videos'))
-                    ->runCreate()
-                    ->keys('@title', 'Hello World', '{tab}')
-                    ->back()
-                    ->pause(500)
-                    ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
-                    ->acceptDialog()
-                    ->on(new Index('videos'));
+                ->visit(new Index('videos'))
+                ->runCreate()
+                ->keys('@title', 'Hello World', '{tab}')
+                ->back()
+                ->pause(500)
+                ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
+                ->acceptDialog()
+                ->on(new Index('videos'));
 
             $this->assertDatabaseMissing('videos', [
                 'title' => 'Hello World',
@@ -61,11 +61,11 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Index('videos'))
-                    ->runCreate()
-                    ->keys('@title', 'Hello World', '{tab}')
-                    ->cancel()
-                    ->on(new Index('videos'));
+                ->visit(new Index('videos'))
+                ->runCreate()
+                ->keys('@title', 'Hello World', '{tab}')
+                ->cancel()
+                ->on(new Index('videos'));
 
             $this->assertDatabaseMissing('videos', [
                 'title' => 'Hello World',
@@ -80,13 +80,13 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Index('videos'))
-                    ->runCreate()
-                    ->keys('@title', 'Hello World', '{tab}')
-                    ->click('@create-and-add-another-button')
-                    ->waitForText('The user video was created!')
-                    ->cancel()
-                    ->on(new Index('videos'));
+                ->visit(new Index('videos'))
+                ->runCreate()
+                ->keys('@title', 'Hello World', '{tab}')
+                ->click('@create-and-add-another-button')
+                ->waitForText('The user video was created!')
+                ->cancel()
+                ->on(new Index('videos'));
 
             $this->assertDatabaseHas('videos', [
                 'title' => 'Hello World',

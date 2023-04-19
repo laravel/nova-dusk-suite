@@ -40,9 +40,9 @@ class DashboardTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Dashboard())
-                    ->keys('', ['/'])
-                    ->assertFocused('@global-search');
+                ->visit(new Dashboard())
+                ->keys('', ['/'])
+                ->assertFocused('@global-search');
 
             $browser->blank();
         });
