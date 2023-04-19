@@ -29,13 +29,13 @@ class PivotFileAttachTest extends DuskTestCase
             $ship = ShipFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
-                    ->within(new FormComponent(), function ($browser) use ($ship) {
-                        $browser->searchFirstRelation('ships', $ship->id)
-                            ->attach('@contract', __DIR__.'/Fixtures/Document.pdf');
-                    })
-                    ->create()
-                    ->waitForText('The resource was attached!');
+                ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
+                ->within(new FormComponent(), function ($browser) use ($ship) {
+                    $browser->searchFirstRelation('ships', $ship->id)
+                        ->attach('@contract', __DIR__.'/Fixtures/Document.pdf');
+                })
+                ->create()
+                ->waitForText('The resource was attached!');
 
             // Verify the photo in the information in the database...
             $captain = Captain::orderBy('id', 'desc')->first();
@@ -45,8 +45,8 @@ class PivotFileAttachTest extends DuskTestCase
 
             // Ensure file is not removed on blank update...
             $browser->visit(UpdateAttached::belongsToMany('captains', $captain->id, 'ships', $ship->id))
-                    ->update()
-                    ->waitForText('The resource was updated!');
+                ->update()
+                ->waitForText('The resource was updated!');
 
             $captain = Captain::orderBy('id', 'desc')->first();
             $ship = $captain->ships()->get()->first();
@@ -55,12 +55,12 @@ class PivotFileAttachTest extends DuskTestCase
 
             // Detach the record...
             $browser->visit(new Detail('captains', $captain->id))
-                    ->within(new IndexComponent('ships'), function ($browser) use ($ship) {
-                        $browser->waitForTable()
-                                ->deleteResourceById($ship->id)
-                                ->waitForEmptyDialog()
-                                ->assertSee('No Ship matched the given criteria.');
-                    });
+                ->within(new IndexComponent('ships'), function ($browser) use ($ship) {
+                    $browser->waitForTable()
+                        ->deleteResourceById($ship->id)
+                        ->waitForEmptyDialog()
+                        ->assertSee('No Ship matched the given criteria.');
+                });
 
             $browser->blank();
 
@@ -81,11 +81,11 @@ class PivotFileAttachTest extends DuskTestCase
             $ship = ShipFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
-                    ->searchFirstRelation('ships', $ship->id)
-                    ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
-                    ->create()
-                    ->waitForText('The resource was attached!');
+                ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
+                ->searchFirstRelation('ships', $ship->id)
+                ->attach('@contract', __DIR__.'/Fixtures/Document.pdf')
+                ->create()
+                ->waitForText('The resource was attached!');
 
             // Verify the photo in the information in the database...
             $captain = Captain::orderBy('id', 'desc')->first();
@@ -95,13 +95,13 @@ class PivotFileAttachTest extends DuskTestCase
 
             // Delete the file...
             $browser->visit(UpdateAttached::belongsToMany('captains', $captain->id, 'ships', $ship->id))
-                    ->whenAvailable('button[dusk="contract-delete-link"]', function ($browser) {
-                        $browser->click('');
-                    })
-                    ->whenAvailable(new ConfirmUploadRemovalModalComponent(), function ($browser) {
-                        $browser->confirm();
-                    })
-                    ->waitForText('The file was deleted!');
+                ->whenAvailable('button[dusk="contract-delete-link"]', function ($browser) {
+                    $browser->click('');
+                })
+                ->whenAvailable(new ConfirmUploadRemovalModalComponent(), function ($browser) {
+                    $browser->confirm();
+                })
+                ->waitForText('The file was deleted!');
 
             $browser->blank();
 

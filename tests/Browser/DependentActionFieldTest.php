@@ -120,15 +120,15 @@ class DependentActionFieldTest extends DuskTestCase
 
             $browser->within(new IndexComponent('posts'), function (Browser $browser) use ($post) {
                 $browser->clickCheckboxForId($post->id)
-                        ->runAction('add-comment', function ($browser) {
-                            $browser->type('@body', 'Hello world with userId')
-                                ->assertMissing('@user')
-                                ->whenAvailable('#anonymous-default-boolean-field', function ($browser) {
-                                    $browser->assertChecked('')->uncheck('');
-                                })->whenAvailable(new RelationSelectControlComponent('users'), function ($browser) {
-                                    $browser->select('', 4);
-                                });
-                        });
+                    ->runAction('add-comment', function ($browser) {
+                        $browser->type('@body', 'Hello world with userId')
+                            ->assertMissing('@user')
+                            ->whenAvailable('#anonymous-default-boolean-field', function ($browser) {
+                                $browser->assertChecked('')->uncheck('');
+                            })->whenAvailable(new RelationSelectControlComponent('users'), function ($browser) {
+                                $browser->select('', 4);
+                            });
+                    });
             })->waitForText('The action was executed successfully.');
 
             $this->assertDatabaseHas('comments', [

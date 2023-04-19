@@ -15,9 +15,9 @@ class ToolAuthorizationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Dashboard())
-                    ->pause(250)
-                    ->assertSee('Sidebar Tool');
+                ->visit(new Dashboard())
+                ->pause(250)
+                ->assertSee('Sidebar Tool');
 
             $browser->blank();
         });
@@ -27,12 +27,12 @@ class ToolAuthorizationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Page('/sidebar-tool'))
-                    ->assertOk()
-                    ->assertWithoutBreadcrumb()
-                    ->waitForTextIn('@nova-content', "We're in a black hole.")
-                    ->pause(1500)
-                    ->assertSee('Hello World');
+                ->visit(new Page('/sidebar-tool'))
+                ->assertOk()
+                ->assertWithoutBreadcrumb()
+                ->waitForTextIn('@nova-content', "We're in a black hole.")
+                ->pause(1500)
+                ->assertSee('Hello World');
 
             $browser->blank();
         });
@@ -44,9 +44,9 @@ class ToolAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Dashboard())
-                    ->pause(250)
-                    ->assertDontSee('Sidebar Tool');
+                ->visit(new Dashboard())
+                ->pause(250)
+                ->assertDontSee('Sidebar Tool');
 
             $browser->blank();
         });
@@ -58,10 +58,10 @@ class ToolAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Page('/sidebar-tool'))
-                    ->waitForText('403')
-                    ->assertSee("The government won't let us show you what's behind these doors…")
-                    ->assertDontSee('Sidebar Tool');
+                ->visit(new Page('/sidebar-tool'))
+                ->waitForText('403')
+                ->assertSee("The government won't let us show you what's behind these doors…")
+                ->assertDontSee('Sidebar Tool');
 
             $browser->blank();
         });
@@ -71,9 +71,9 @@ class ToolAuthorizationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->waitForText('Resource Tool')
-                    ->assertSee('Resource Tool for Taylor Otwell');
+                ->visit(new Detail('users', 1))
+                ->waitForText('Resource Tool')
+                ->assertSee('Resource Tool for Taylor Otwell');
 
             $browser->blank();
         });
@@ -85,9 +85,9 @@ class ToolAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->pause(250)
-                    ->assertDontSee('Resource Tool');
+                ->visit(new Detail('users', 1))
+                ->pause(250)
+                ->assertDontSee('Resource Tool');
 
             $browser->blank();
         });

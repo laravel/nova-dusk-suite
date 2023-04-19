@@ -47,8 +47,8 @@ class CreateWithBelongsToTest extends DuskTestCase
                     $browser->within(new SearchInputComponent('users'), function ($browser) {
                         $browser->assertSelectedSearchResult('Taylor Otwell');
                     })
-                    ->type('@title', 'Test Post')
-                    ->type('@body', 'Test Post Body');
+                        ->type('@title', 'Test Post')
+                        ->type('@body', 'Test Post Body');
                 })
                 ->create()
                 ->waitForText('The user post was created');
