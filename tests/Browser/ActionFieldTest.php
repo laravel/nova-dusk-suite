@@ -7,6 +7,7 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Database\Factories\RoleFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\ActionDropdownComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Components\Modals\ConfirmActionModalComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
@@ -150,12 +151,12 @@ class ActionFieldTest extends DuskTestCase
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->openControlSelectorById(1)
-                        ->elsewhere('', function ($browser) {
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
                             $browser->waitFor('@1-preview-button')
                                 ->assertMissing('@1-inline-actions');
                         })
                         ->openControlSelectorById(2)
-                        ->elsewhereWhenAvailable('@2-inline-actions', function ($browser) {
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
                             $browser->assertSee('Mark As Inactive');
                         });
                 });
@@ -181,7 +182,7 @@ class ActionFieldTest extends DuskTestCase
 
                     Post::query()->delete();
 
-                    $browser->runAction('standalone-task', function ($browser) {
+                    $browser->runStandaloneAction('standalone-task', function ($browser) {
                         $browser->assertSee('Provide a description for notes.')
                             ->type('@notes', 'Custom Notes');
                     });
