@@ -14,7 +14,7 @@ class AddExcerptToPostsTable extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->text('excerpt')->after('title');
+            $table->text('excerpt')->after('title')->nullable();
         });
     }
 
