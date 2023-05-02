@@ -109,8 +109,8 @@ class BookPurchase
                         'personal' => 'Personal',
                         'gift' => 'Gift',
                     ])
-                    ->readonly()
-                    ->default($this->type),
+                        ->readonly()
+                        ->default($this->type),
                 ];
             }),
 

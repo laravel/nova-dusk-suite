@@ -112,10 +112,10 @@ class User extends Authenticatable
     public function personalBooks(): BelongsToMany
     {
         return $this->belongsToMany(Book::class, 'book_purchases')
-                    ->using(BookPurchase::class)
-                    ->withPivot('id', 'price', 'type', 'purchased_at')
-                    ->wherePivotIn('type', ['personal'])
-                    ->withTimestamps();
+            ->using(BookPurchase::class)
+            ->withPivot('id', 'price', 'type', 'purchased_at')
+            ->wherePivotIn('type', ['personal'])
+            ->withTimestamps();
     }
 
     /**
@@ -126,9 +126,9 @@ class User extends Authenticatable
     public function giftBooks(): BelongsToMany
     {
         return $this->belongsToMany(Book::class, 'book_purchases')
-                    ->using(BookPurchase::class)
-                    ->withPivot('id', 'price', 'type', 'purchased_at')
-                    ->wherePivotIn('type', ['gift']);
+            ->using(BookPurchase::class)
+            ->withPivot('id', 'price', 'type', 'purchased_at')
+            ->wherePivotIn('type', ['gift']);
     }
 
     /**
@@ -165,7 +165,7 @@ class User extends Authenticatable
      */
     public function canImpersonate(): bool
     {
-        return in_array($this->email, ['taylor@laravel.com', 'mohamed@laravel.com', 'david@laravel.com', 'nova@laravel.com']);
+        return in_array($this->email, ['taylor@laravel.com', 'james@laravel.com', 'david@laravel.com', 'nova@laravel.com']);
     }
 
     /**
