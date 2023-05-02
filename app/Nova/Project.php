@@ -69,8 +69,8 @@ class Project extends Resource
                 'Vapor' => 'Vapor',
                 'Secret' => 'Secret',
             ])->rules('required')
-            ->placeholder(Nova::__('Choose a project'))
-            ->displayUsingLabels(),
+                ->placeholder(Nova::__('Choose a project'))
+                ->displayUsingLabels(),
 
             UiAvatar::make(),
 

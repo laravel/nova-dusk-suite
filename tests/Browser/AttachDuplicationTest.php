@@ -24,17 +24,17 @@ class AttachDuplicationTest extends DuskTestCase
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
                 ->within(new FormComponent(), function ($browser) use ($role) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
-                        $browser->assertSee('User')->assertSee('1');
+                        $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
-                    ->selectAttachable($role->id);
+                        ->selectAttachable($role->id);
                 })
                 ->create()
                 ->waitForText('The resource was attached!')
                 ->on(new Detail('users', 1))
-                ->waitForTextIn('h1', 'User Details: 1')
+                ->waitForTextIn('h1', 'User Details: Taylor Otwell')
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
                 ->whenAvailable('@via-resource-field', function ($browser) {
-                    $browser->assertSee('User')->assertSee('1');
+                    $browser->assertSee('User')->assertSee('Taylor Otwell');
                 })
                 ->whenAvailable(new RelationSelectControlComponent('attachable'), function ($browser) use ($role) {
                     $browser->assertSelectMissingOption('', $role->id);
@@ -75,7 +75,7 @@ class AttachDuplicationTest extends DuskTestCase
                 })
                 ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
                     $browser->waitForEmptyDialog()
-                            ->assertSee('No Book matched the given criteria.');
+                        ->assertSee('No Book matched the given criteria.');
                 });
 
             $browser->blank();
@@ -137,15 +137,15 @@ class AttachDuplicationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($now) {
             $browser->loginAs(1)
-                    ->visit(Attach::belongsToMany('users', 1, 'books', 'giftBooks'))
-                    ->assertSeeIn('h1', 'Attach Book')
-                    ->selectAttachable(4)
-                    ->type('@price', '34.00')
-                    ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now)
-                    ->create()
-                    ->waitForText('There was a problem submitting the form.')
-                    ->assertSee('This books is already attached.')
-                    ->cancel();
+                ->visit(Attach::belongsToMany('users', 1, 'books', 'giftBooks'))
+                ->assertSeeIn('h1', 'Attach Book')
+                ->selectAttachable(4)
+                ->type('@price', '34.00')
+                ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now)
+                ->create()
+                ->waitForText('There was a problem submitting the form.')
+                ->assertSee('This books is already attached.')
+                ->cancel();
 
             $browser->blank();
         });

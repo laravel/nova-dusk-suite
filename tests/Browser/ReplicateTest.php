@@ -24,18 +24,18 @@ class ReplicateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
-                    ->visit(new Replicate('posts', $post->id))
-                    ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
-                        $browser->assertSee('User Post Details: '.$post->id)
-                            ->assertCurrentPageTitle('Replicate User Post');
-                    })
-                    ->within(new FormComponent(), function ($browser) {
-                        $browser->whenAvailable('@title', function ($browser) {
-                            $browser->type('', 'Replicated Post');
-                        });
-                    })
-                    ->create()
-                    ->waitForText('The user post was created!');
+                ->visit(new Replicate('posts', $post->id))
+                ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
+                    $browser->assertSee('User Post Details: '.$post->id)
+                        ->assertCurrentPageTitle('Replicate User Post');
+                })
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->whenAvailable('@title', function ($browser) {
+                        $browser->type('', 'Replicated Post');
+                    });
+                })
+                ->create()
+                ->waitForText('The user post was created!');
 
             $browser->blank();
         });
@@ -58,16 +58,16 @@ class ReplicateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
-                    ->visit(new Replicate('posts', $post->id))
-                    ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
-                        $browser->assertSee('User Post Details: '.$post->id)
-                            ->assertCurrentPageTitle('Replicate User Post');
-                    })
-                    ->within(new FormComponent(), function ($browser) {
-                        $browser->type('@title', 'Replicated Post 2');
-                    })
-                    ->create()
-                    ->waitForText('The user post was created!');
+                ->visit(new Replicate('posts', $post->id))
+                ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
+                    $browser->assertSee('User Post Details: '.$post->id)
+                        ->assertCurrentPageTitle('Replicate User Post');
+                })
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->type('@title', 'Replicated Post 2');
+                })
+                ->create()
+                ->waitForText('The user post was created!');
 
             $browser->blank();
         });
@@ -84,22 +84,22 @@ class ReplicateTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()->replicateResourceById(2);
-                    })
-                    ->within(new BreadcrumbComponent(), function ($browser) {
-                        $browser->assertSee('User Details: 2')
-                            ->assertCurrentPageTitle('Replicate User');
-                    })
-                    ->waitForText('Create User')
-                    ->assertSeeIn('h1', 'Create User')
-                    ->within(new FormComponent(), function ($browser) {
-                        $browser->assertInputValue('@name', 'Mohamed Said')
-                            ->assertInputValue('@email', 'mohamed@laravel.com')
-                            ->assertSee('Create & Add Another')
-                            ->assertSee('Create User');
-                    });
+                ->visit(new UserIndex)
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()->replicateResourceById(2);
+                })
+                ->within(new BreadcrumbComponent(), function ($browser) {
+                    $browser->assertSee('User Details: James Brooks')
+                        ->assertCurrentPageTitle('Replicate User');
+                })
+                ->waitForText('Create User')
+                ->assertSeeIn('h1', 'Create User')
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->assertInputValue('@name', 'James Brooks')
+                        ->assertInputValue('@email', 'james@laravel.com')
+                        ->assertSee('Create & Add Another')
+                        ->assertSee('Create User');
+                });
 
             $browser->blank();
         });
@@ -111,25 +111,25 @@ class ReplicateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Page('/resources/users/4/replicate'))
-                    ->assertForbidden();
+                ->visit(new Page('/resources/users/4/replicate'))
+                ->assertForbidden();
 
             $browser->visit(new UserIndex)
-                    ->within(new IndexComponent('users'), function ($browser) {
-                        $browser->waitForTable()
-                            ->openControlSelectorById(4)->elsewhere('', function ($browser) {
-                                $browser->assertNotPresent('@4-replicate-button');
-                            })
-                            ->openControlSelectorById(3)->elsewhere('', function ($browser) {
-                                $browser->assertPresent('@3-replicate-button');
-                            })
-                            ->openControlSelectorById(2)->elsewhere('', function ($browser) {
-                                $browser->assertPresent('@2-replicate-button');
-                            })
-                            ->openControlSelectorById(1)->elsewhere('', function ($browser) {
-                                $browser->assertPresent('@1-replicate-button');
-                            });
-                    });
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->openControlSelectorById(4)->elsewhere('', function ($browser) {
+                            $browser->assertNotPresent('@4-replicate-button');
+                        })
+                        ->openControlSelectorById(3)->elsewhere('', function ($browser) {
+                            $browser->assertPresent('@3-replicate-button');
+                        })
+                        ->openControlSelectorById(2)->elsewhere('', function ($browser) {
+                            $browser->assertPresent('@2-replicate-button');
+                        })
+                        ->openControlSelectorById(1)->elsewhere('', function ($browser) {
+                            $browser->assertPresent('@1-replicate-button');
+                        });
+                });
 
             $browser->blank();
         });
@@ -139,8 +139,8 @@ class ReplicateTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Page('/resources/users/1000/replicate'))
-                    ->assertNotFound();
+                ->visit(new Page('/resources/users/1000/replicate'))
+                ->assertNotFound();
 
             $browser->blank();
         });

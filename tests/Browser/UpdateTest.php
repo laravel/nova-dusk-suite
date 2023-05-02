@@ -26,11 +26,11 @@ class UpdateTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(1)
-                    ->visit(new Page("/resources/posts/{$post->id}/edit"))
-                    ->assertForbidden();
+                ->visit(new Page("/resources/posts/{$post->id}/edit"))
+                ->assertForbidden();
 
             $browser->visit(new Update('posts', $post2->id))
-                    ->assertPathIsNot(Nova::path().'/403');
+                ->assertPathIsNot(Nova::path().'/403');
 
             $browser->blank();
         });
@@ -40,16 +40,16 @@ class UpdateTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Update('users', 1))
-                    ->waitForTextIn('h1', 'Update User: 1')
-                    ->within(new FormComponent(), function ($browser) {
-                        $browser->type('@name', ' ');
-                    })
-                    ->update()
-                    ->waitForText('There was a problem submitting the form.')
-                    ->assertSee('E-mail address should be unique')
-                    ->assertSee(__('validation.required', ['attribute' => 'Name']))
-                    ->cancel();
+                ->visit(new Update('users', 1))
+                ->waitForTextIn('h1', 'Update User: Taylor Otwell')
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->type('@name', ' ');
+                })
+                ->update()
+                ->waitForText('There was a problem submitting the form.')
+                ->assertSee('E-mail address should be unique')
+                ->assertSee(__('validation.required', ['attribute' => 'Name']))
+                ->cancel();
 
             $browser->blank();
         });
@@ -65,10 +65,10 @@ class UpdateTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(2)
                 ->visit(new Update('users', 1))
-                ->waitForTextIn('h1', 'Update User: 1')
+                ->waitForTextIn('h1', 'Update User: Taylor')
                 ->within(new BreadcrumbComponent(), function ($browser) {
                     $browser->assertSeeLink('Users')
-                        ->assertSeeLink('User Details: 1')
+                        ->assertSeeLink('User Details: Taylor')
                         ->assertCurrentPageTitle('Update User');
                 })
                 ->within(new FormComponent(), function ($browser) {
@@ -97,7 +97,7 @@ class UpdateTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(2)
                 ->visit(new Update('users', 1))
-                ->waitForTextIn('h1', 'Update User: 1')
+                ->waitForTextIn('h1', 'Update User: Taylor Otwell')
                 ->within(new FormComponent(), function ($browser) {
                     $browser->type('@name', 'Taylor Otwell Updated')
                         ->type('@password', 'secret')
@@ -123,7 +123,7 @@ class UpdateTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(2)
                 ->visit(new Update('users', 1))
-                ->waitForTextIn('h1', 'Update User: 1')
+                ->waitForTextIn('h1', 'Update User: Taylor Otwell')
                 ->within(new FormComponent(), function ($browser) {
                     $browser->type('@password', 'secret')
                         ->type('@name', 'Taylor Otwell Updated')
@@ -153,7 +153,7 @@ class UpdateTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Update('users', 1))
-                ->waitForTextIn('h1', 'Update User: 1')
+                ->waitForTextIn('h1', 'Update User: Taylor')
                 ->within(new FormComponent(), function ($browser) {
                     $browser->assertSee('E-mail address should be unique')
                         ->assertSelected('@settings->pagination', 'simple')

@@ -19,10 +19,10 @@ class DetailActionTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details: 1')
-                    ->runAction('mark-as-active')
-                    ->waitForText('The action was executed successfully.');
+                ->visit(new Detail('users', 1))
+                ->waitForTextIn('h1', 'User Details: Taylor Otwell')
+                ->runAction('mark-as-active')
+                ->waitForText('The action was executed successfully.');
 
             $this->assertEquals(1, User::find(1)->active);
 
@@ -40,8 +40,8 @@ class DetailActionTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 4))
-                    ->waitForTextIn('h1', 'User Details: 4');
+                ->visit(new Detail('users', 4))
+                ->waitForTextIn('h1', 'User Details: Laravel Nova');
 
             $browser->within(new IndexComponent('roles'), function ($browser) use ($role) {
                 $browser->waitForTable()
@@ -51,10 +51,10 @@ class DetailActionTest extends DuskTestCase
 
                 $browser->runAction('update-pivot-notes', function ($browser) {
                     $browser->assertSee('Provide a description for notes.')
-                            ->type('@notes', 'Custom Notes');
+                        ->type('@notes', 'Custom Notes');
                 });
             })->waitForText('Sorry! You are not authorized to perform this action.')
-            ->assertSee('Sorry! You are not authorized to perform this action.');
+                ->assertSee('Sorry! You are not authorized to perform this action.');
 
             $browser->blank();
         });
@@ -67,8 +67,8 @@ class DetailActionTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 4))
-                    ->waitForTextIn('h1', 'User Details: 4');
+                ->visit(new Detail('users', 4))
+                ->waitForTextIn('h1', 'User Details: Laravel Nova');
 
             User::where('id', '=', 4)->delete();
 
@@ -88,9 +88,9 @@ class DetailActionTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details: 1')
-                    ->cancelAction('mark-as-active');
+                ->visit(new Detail('users', 1))
+                ->waitForTextIn('h1', 'User Details: Taylor Otwell')
+                ->cancelAction('mark-as-active');
 
             $this->assertEquals(0, User::find(1)->active);
 
@@ -113,13 +113,13 @@ class DetailActionTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details: 1')
-                    ->within(new IndexComponent('posts'), function ($browser) {
-                        $browser->waitForTable()
-                                ->selectAllMatching()
-                                ->runAction('mark-as-active');
-                    })->waitForText('The action was executed successfully.');
+                ->visit(new Detail('users', 1))
+                ->waitForTextIn('h1', 'User Details: Taylor Otwell')
+                ->within(new IndexComponent('posts'), function ($browser) {
+                    $browser->waitForTable()
+                        ->selectAllMatching()
+                        ->runAction('mark-as-active');
+                })->waitForText('The action was executed successfully.');
 
             $this->assertEquals(1, $post->fresh()->active);
             $this->assertEquals(0, $post2->fresh()->active);

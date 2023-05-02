@@ -24,9 +24,9 @@ class AttachTest extends DuskTestCase
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
                 ->within(new FormComponent(), function ($browser) use ($role) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
-                        $browser->assertSee('User')->assertSee('1');
+                        $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
-                    ->selectAttachable($role->id);
+                        ->selectAttachable($role->id);
                 })
                 ->create()
                 ->waitForText('The resource was attached!');
@@ -50,15 +50,15 @@ class AttachTest extends DuskTestCase
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
                 ->within(new BreadcrumbComponent(), function ($browser) {
                     $browser->assertSeeLink('Users')
-                        ->assertSeeLink('User Details: 1')
+                        ->assertSeeLink('User Details: Taylor Otwell')
                         ->assertCurrentPageTitle('Attach Role');
                 })
                 ->within(new FormComponent(), function ($browser) use ($role) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
-                        $browser->assertSee('User')->assertSee('1');
+                        $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
-                    ->selectAttachable($role->id)
-                    ->type('@notes', 'Test Notes');
+                        ->selectAttachable($role->id)
+                        ->type('@notes', 'Test Notes');
                 })
                 ->create()
                 ->waitForText('The resource was attached!')
@@ -83,12 +83,12 @@ class AttachTest extends DuskTestCase
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
                 ->within(new BreadcrumbComponent(), function ($browser) {
                     $browser->assertSeeLink('Users')
-                        ->assertSeeLink('User Details: 1')
+                        ->assertSeeLink('User Details: Taylor Otwell')
                         ->assertCurrentPageTitle('Attach Role');
                 })
                 ->within(new FormComponent(), function ($browser) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
-                        $browser->assertSee('User')->assertSee('1');
+                        $browser->assertSee('User')->assertSee('Taylor Otwell');
                     });
                 })
                 ->create()
@@ -141,16 +141,16 @@ class AttachTest extends DuskTestCase
                 ->visit(new Detail('users', 1))
                 ->runAttachRelation('roles')
                 ->whenAvailable('@via-resource-field', function ($browser) {
-                    $browser->assertSee('User')->assertSee('1');
+                    $browser->assertSee('User')->assertSee('Taylor Otwell');
                 })
                 ->selectAttachable($role->id)
                 ->create()
                 ->waitForText('The resource was attached!')
                 ->on(new Detail('users', 1))
-                ->waitForTextIn('h1', 'User Details: 1')
+                ->waitForTextIn('h1', 'User Details: Taylor Otwell')
                 ->visit(new Attach('users', 1, 'roles'))
                 ->whenAvailable('@via-resource-field', function ($browser) {
-                    $browser->assertSee('User')->assertSee('1');
+                    $browser->assertSee('User')->assertSee('Taylor Otwell');
                 });
 
             $this->assertDatabaseHas('role_user', [

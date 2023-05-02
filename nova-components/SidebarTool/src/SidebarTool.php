@@ -29,7 +29,7 @@ class SidebarTool extends Tool
     public function menu(Request $request)
     {
         return MenuSection::make('Sidebar Tool')
-                ->path('sidebar-tool')
-                ->icon('server');
+            ->path('sidebar-tool')
+            ->icon('server');
     }
 }

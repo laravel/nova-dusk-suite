@@ -54,33 +54,39 @@ class Podcast extends Resource
 
             Text::make('Title')->rules('required'),
 
-            $this->merge(function () use ($request) {
-                $storage = $request->user()->settings['storage'] ?? 'local' === 'local';
-
-                if ($storage === 'vapor') {
-                    return [
-                        VaporAudio::make('File', 'filename')->nullable(),
-                    ];
-                }
-
-                return [
-                    Audio::make('File', 'filename')
-                        ->disk($storage === 's3' ? 's3' : config('nova.storage_disk'))
-                        ->nullable(),
-                ];
-            }),
+            $this->audioField($request),
 
             MorphMany::make('Comments', 'comments'),
 
             MorphToMany::make('Tags', 'tags')
-                    ->display('name')
-                    ->fields(function () {
-                        return [
-                            Text::make('Notes', 'notes')->rules('max:20'),
-                        ];
-                    })->searchable(uses_searchable())
-                    ->showCreateRelationButton(uses_inline_create()),
+                ->display('name')
+                ->fields(function () {
+                    return [
+                        Text::make('Notes', 'notes')->rules('max:20'),
+                    ];
+                })->searchable(uses_searchable())
+                ->showCreateRelationButton(uses_inline_create()),
         ];
+    }
+
+    /**
+     * Get the audio field for the user.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return \Laravel\Nova\Fields\VaporAudio|\Laravel\Nova\Fields\Audio
+     */
+    protected function audioField(NovaRequest $request)
+    {
+        $storage = $request->user()->settings['storage'] ?? 'local';
+
+        if ($storage === 'vapor') {
+            return VaporAudio::make('File', 'filename')
+                ->nullable();
+        }
+
+        return Audio::make('File', 'filename')
+            ->disk($storage === 's3' ? 's3' : config('nova.storage_disk'))
+            ->nullable();
     }
 
     /**

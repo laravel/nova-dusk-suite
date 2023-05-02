@@ -48,40 +48,45 @@ class Captain extends Resource
                 ->rules('required')
                 ->sortable(),
 
-            $this->merge(function () use ($request) {
-                $storage = $request->user()->settings['storage'] ?? 'local' === 'local';
-
-                if ($storage === 'vapor') {
-                    return [
-                        VaporImage::make('Photo', 'photo')
-                            ->prunable()
-                            ->help('Using cloud storage'),
-                    ];
-                }
-
-                return [
-                    Image::make('Photo', 'photo')
-                        ->disk($storage === 's3' ? 's3' : config('nova.storage_disk'))
-                        ->prunable()
-                        ->help('Using local storage'),
-                ];
-            }),
+            $this->imageField($request),
 
             BelongsToMany::make('Ships', 'ships')
-                        ->display('name')
-                        ->fields(function ($request) {
-                            return [
-                                Text::make('Notes', 'notes')->rules('max:20'),
-                                File::make('Contract', 'contract')->prunable()->store(function ($request) {
-                                    if ($request->contract) {
-                                        return $request->contract->storeAs('/', 'Contract.pdf', 'public');
-                                    }
-                                }),
-                            ];
-                        })
-                        ->prunable()
-                        ->searchable(uses_searchable()),
+                ->display('name')
+                ->fields(function ($request) {
+                    return [
+                        Text::make('Notes', 'notes')->rules('max:20'),
+                        File::make('Contract', 'contract')->prunable()->store(function ($request) {
+                            if ($request->contract) {
+                                return $request->contract->storeAs('/', 'Contract.pdf', 'public');
+                            }
+                        }),
+                    ];
+                })
+                ->prunable()
+                ->searchable(uses_searchable()),
         ];
+    }
+
+    /**
+     * Get the image field for the user.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return \Laravel\Nova\Fields\VaporImage|\Laravel\Nova\Fields\Image
+     */
+    protected function imageField(NovaRequest $request)
+    {
+        $storage = $request->user()->settings['storage'] ?? 'local';
+
+        if ($storage === 'vapor') {
+            return VaporImage::make('Photo', 'photo')
+                ->prunable()
+                ->help('Using cloud storage');
+        }
+
+        return Image::make('Photo', 'photo')
+            ->disk($storage === 's3' ? 's3' : config('nova.storage_disk'))
+            ->prunable()
+            ->help('Using local storage');
     }
 
     /**

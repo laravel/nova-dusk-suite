@@ -23,11 +23,11 @@ class DetailBelongsToFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user, $post) {
             $browser->loginAs($user)
-                    ->visit(new Detail('posts', $post->id))
-                    ->within(new DetailComponent('posts', $post->id), function ($browser) use ($user) {
-                        $browser->clickLink($user->name);
-                    })
-                    ->on(new Detail('users', $user->id));
+                ->visit(new Detail('posts', $post->id))
+                ->within(new DetailComponent('posts', $post->id), function ($browser) use ($user) {
+                    $browser->clickLink($user->name);
+                })
+                ->on(new Detail('users', $user->id));
 
             $browser->blank();
         });
@@ -42,9 +42,9 @@ class DetailBelongsToFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('invoice-items', 1))
-                    ->waitForText('Invoice Item Details', 15)
-                    ->assertSeeIn('@nova-resource-detail', 'Invoice Item Details');
+                ->visit(new Detail('invoice-items', 1))
+                ->waitForText('Invoice Item Details', 15)
+                ->assertSeeIn('@nova-resource-detail', 'Invoice Item Details');
 
             $browser->blank();
         });
@@ -62,12 +62,12 @@ class DetailBelongsToFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user, $post) {
             $browser->loginAs(1)
-                    ->visit(new Detail('posts', $post->id))
-                    ->within(new DetailComponent('posts', $post->id), function ($browser) use ($user) {
-                        $browser->clickLink($user->name);
-                    })
-                    ->on(new Detail('users', $user->id))
-                    ->assertSeeIn('h1', 'User Details: '.$user->id);
+                ->visit(new Detail('posts', $post->id))
+                ->within(new DetailComponent('posts', $post->id), function ($browser) use ($user) {
+                    $browser->clickLink($user->name);
+                })
+                ->on(new Detail('users', $user->id))
+                ->assertSeeIn('h1', 'User Details: '.$user->name);
 
             $browser->blank();
         });
