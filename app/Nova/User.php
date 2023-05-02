@@ -169,6 +169,15 @@ class User extends Resource
                     ])
                     ->displayUsingLabels()
                     ->hideFromIndex(),
+
+                Select::make('Editor', 'settings->editor')
+                    ->options([
+                        'textarea' => 'Textarea',
+                        'markdown' => 'Markdown',
+                        'trix' => 'Trix',
+                    ])
+                    ->displayUsingLabels()
+                    ->hideFromIndex(),
             ]),
 
             BelongsToMany::make('Roles')

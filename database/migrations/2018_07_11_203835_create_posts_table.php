@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->index();
             $table->string('title');
-            $table->text('body');
+            $table->longText('body');
             $table->string('attachment')->nullable();
             $table->boolean('active')->default(false);
             $table->json('meta')->nullable();
