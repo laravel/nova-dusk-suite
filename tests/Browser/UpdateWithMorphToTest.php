@@ -131,7 +131,7 @@ class UpdateWithMorphToTest extends DuskTestCase
                 ]))
                 ->whenAvailable('@commentable-type', function ($browser) {
                     $browser->assertEnabled('')
-                            ->assertSelected('', 'posts');
+                        ->assertSelected('', 'posts');
                 })
                 ->whenAvailable(new RelationSelectControlComponent('commentable'), function ($browser) use ($post) {
                     $browser->assertSelected('', $post->id);
@@ -186,7 +186,7 @@ class UpdateWithMorphToTest extends DuskTestCase
                         $browser->assertEnabled('')
                             ->assertSelected('', 'posts');
                     })
-                    ->assertSelectedSearchResult('commentable', $post->title);
+                        ->assertSelectedSearchResult('commentable', $post->title);
                 });
 
             // It can reset the value.

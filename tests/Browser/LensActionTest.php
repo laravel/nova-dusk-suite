@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\ActionDropdownComponent;
 use Laravel\Nova\Testing\Browser\Components\LensComponent;
 use Laravel\Nova\Testing\Browser\Pages\Lens;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -17,13 +18,13 @@ class LensActionTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Lens('users', 'passthrough-lens'))
-                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->waitForTable()
-                            ->clickCheckboxForId(3)
-                            ->clickCheckboxForId(2)
-                            ->runAction('mark-as-active');
-                    })->waitForText('The action was executed successfully.');
+                ->visit(new Lens('users', 'passthrough-lens'))
+                ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId(3)
+                        ->clickCheckboxForId(2)
+                        ->runAction('mark-as-active');
+                })->waitForText('The action was executed successfully.');
 
             $this->assertEquals([
                 1 => false,
@@ -45,20 +46,20 @@ class LensActionTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Lens('users', 'passthrough-lens'))
-                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->waitForTable()
-                            ->openControlSelectorById(1)
-                            ->elsewhere('', function ($browser) {
-                                $browser->waitFor('@1-preview-button')
-                                        ->assertMissing('@1-inline-actions');
-                            })
-                            ->openControlSelectorById(2)
-                            ->elsewhereWhenAvailable('@2-inline-actions', function ($browser) {
-                                $browser->assertSee('Mark As Inactive');
-                            })
-                            ->runInlineAction(2, 'mark-as-inactive');
-                    })->waitForText('The action was executed successfully.');
+                ->visit(new Lens('users', 'passthrough-lens'))
+                ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                    $browser->waitForTable()
+                        ->openControlSelectorById(1)
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
+                            $browser->waitFor('@1-preview-button')
+                                ->assertMissing('@1-inline-actions');
+                        })
+                        ->openControlSelectorById(2)
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
+                            $browser->assertSee('Mark As Inactive');
+                        })
+                        ->runInlineAction(2, 'mark-as-inactive');
+                })->waitForText('The action was executed successfully.');
 
             $this->assertEquals([
                 1 => false,
@@ -78,14 +79,14 @@ class LensActionTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Lens('users', 'passthrough-lens'))
-                    ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                        $browser->waitForTable()
-                                ->selectFilter('Select First', '2');
+                ->visit(new Lens('users', 'passthrough-lens'))
+                ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                    $browser->waitForTable()
+                        ->selectFilter('Select First', '2');
 
-                        $browser->selectAllMatching()
-                                ->runAction('mark-as-active');
-                    })->waitForText('The action was executed successfully.');
+                    $browser->selectAllMatching()
+                        ->runAction('mark-as-active');
+                })->waitForText('The action was executed successfully.');
 
             $this->assertEquals([
                 1 => false,

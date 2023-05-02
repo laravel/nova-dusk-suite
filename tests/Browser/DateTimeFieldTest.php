@@ -32,13 +32,13 @@ class DateTimeFieldTest extends DuskTestCase
             $local = $now->setTimezone($userTimezone);
 
             $browser->loginAs($user)
-                    ->visit(Attach::belongsToMany('users', $user->id, 'books', 'personalBooks'))
-                    ->assertSeeIn('h1', 'Attach Book')
-                    ->selectAttachable(4)
-                    ->type('@price', '34')
-                    ->typeOnDateTimeLocal('@purchased_at', $local)
-                    ->create()
-                    ->waitForText('The resource was attached!');
+                ->visit(Attach::belongsToMany('users', $user->id, 'books', 'personalBooks'))
+                ->assertSeeIn('h1', 'Attach Book')
+                ->selectAttachable(4)
+                ->type('@price', '34')
+                ->typeOnDateTimeLocal('@purchased_at', $local)
+                ->create()
+                ->waitForText('The resource was attached!');
 
             $book = $user->personalBooks()->first();
 
@@ -48,10 +48,10 @@ class DateTimeFieldTest extends DuskTestCase
             );
 
             $browser->visit(UpdateAttached::belongsToMany('users', $user->id, 'books', 4, 'personalBooks', 1))
-                    ->assertSeeIn('h1', 'Update attached Book: 1')
-                    ->type('@price', '44')
-                    ->update()
-                    ->waitForText('The resource was updated!');
+                ->assertSeeIn('h1', 'Update attached Book: '.$user->name)
+                ->type('@price', '44')
+                ->update()
+                ->waitForText('The resource was updated!');
 
             $book = $user->personalBooks()->first();
 
@@ -85,13 +85,13 @@ class DateTimeFieldTest extends DuskTestCase
             $local = $now->setTimezone($userTimezone);
 
             $browser->loginAs($user)
-                    ->visit(Attach::belongsToMany('users', $user->id, 'books', 'personalBooks'))
-                    ->assertSeeIn('h1', 'Attach Book')
-                    ->typeOnDateTimeLocal('@purchased_at', $local)
-                    ->create()
-                    ->waitForText('There was a problem submitting the form.')
-                    ->assertValue('@purchased_at', $local->toDateTimeLocalString())
-                    ->cancel();
+                ->visit(Attach::belongsToMany('users', $user->id, 'books', 'personalBooks'))
+                ->assertSeeIn('h1', 'Attach Book')
+                ->typeOnDateTimeLocal('@purchased_at', $local)
+                ->create()
+                ->waitForText('There was a problem submitting the form.')
+                ->assertValue('@purchased_at', $local->toDateTimeLocalString())
+                ->cancel();
 
             $browser->blank();
         });
@@ -112,10 +112,10 @@ class DateTimeFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($now, $ship) {
             $browser->loginAs(1)
-                    ->visit(new Update('ships', $ship->id))
-                    ->type('@departed_at', '')
-                    ->update()
-                    ->waitForText('The ship was updated!');
+                ->visit(new Update('ships', $ship->id))
+                ->type('@departed_at', '')
+                ->update()
+                ->waitForText('The ship was updated!');
 
             $ship->fresh();
 

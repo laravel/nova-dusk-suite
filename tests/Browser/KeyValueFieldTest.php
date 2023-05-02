@@ -20,13 +20,13 @@ class KeyValueFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
-                    ->visit(new Detail('posts', $post->id))
-                    ->assertInputValue('@key-value-key-0', 0)
-                    ->assertInputValue('@key-value-value-0', 'laravel')
-                    ->assertInputValue('@key-value-key-1', 1)
-                    ->assertInputValue('@key-value-value-1', 'nova')
-                    ->assertInputValue('@key-value-key-2', 2)
-                    ->assertInputValue('@key-value-value-2', 'admin');
+                ->visit(new Detail('posts', $post->id))
+                ->assertInputValue('@key-value-key-0', 0)
+                ->assertInputValue('@key-value-value-0', 'laravel')
+                ->assertInputValue('@key-value-key-1', 1)
+                ->assertInputValue('@key-value-value-1', 'nova')
+                ->assertInputValue('@key-value-key-2', 2)
+                ->assertInputValue('@key-value-value-2', 'admin');
 
             $browser->blank();
         });
@@ -41,13 +41,13 @@ class KeyValueFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
-                    ->visit(new Detail('posts', $post->id))
-                    ->assertInputValue('@key-value-key-0', 'tool')
-                    ->assertInputValue('@key-value-value-0', 'nova')
-                    ->assertInputValue('@key-value-key-1', 'length')
-                    ->assertInputValue('@key-value-value-1', 20)
-                    ->assertInputValue('@key-value-key-2', 'project')
-                    ->assertInputValue('@key-value-value-2', 'laravel');
+                ->visit(new Detail('posts', $post->id))
+                ->assertInputValue('@key-value-key-0', 'tool')
+                ->assertInputValue('@key-value-value-0', 'nova')
+                ->assertInputValue('@key-value-key-1', 'length')
+                ->assertInputValue('@key-value-value-1', 20)
+                ->assertInputValue('@key-value-key-2', 'project')
+                ->assertInputValue('@key-value-value-2', 'laravel');
 
             $browser->blank();
         });
@@ -62,12 +62,12 @@ class KeyValueFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
-                    ->visit(new Update('posts', $post->id))
-                    ->click('@meta-add-key-value')
-                    ->type('@key-value-key-3', 3)
-                    ->type('@key-value-value-3', 'Laravel Framework v8')
-                    ->update()
-                    ->waitForText('The user post was updated!');
+                ->visit(new Update('posts', $post->id))
+                ->click('@meta-add-key-value')
+                ->type('@key-value-key-3', 3)
+                ->type('@key-value-value-3', 'Laravel Framework v8')
+                ->update()
+                ->waitForText('The user post was updated!');
 
             $post->refresh();
 
@@ -86,12 +86,12 @@ class KeyValueFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
-                    ->visit(new Update('posts', $post->id))
-                    ->click('@meta-add-key-value')
-                    ->type('@key-value-key-3', 'framework')
-                    ->type('@key-value-value-3', 'Laravel Framework v8')
-                    ->update()
-                    ->waitForText('The user post was updated!');
+                ->visit(new Update('posts', $post->id))
+                ->click('@meta-add-key-value')
+                ->type('@key-value-key-3', 'framework')
+                ->type('@key-value-value-3', 'Laravel Framework v8')
+                ->update()
+                ->waitForText('The user post was updated!');
 
             $post->refresh();
 
@@ -116,12 +116,12 @@ class KeyValueFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
-                    ->visit(new Update('posts', $post->id))
-                    ->click('@meta-add-key-value')
-                    ->type('@key-value-key-2', '2021')
-                    ->type('@key-value-value-2', 'Releasing Laravel Nova v4')
-                    ->update()
-                    ->waitForText('The user post was updated!');
+                ->visit(new Update('posts', $post->id))
+                ->click('@meta-add-key-value')
+                ->type('@key-value-key-2', '2021')
+                ->type('@key-value-value-2', 'Releasing Laravel Nova v4')
+                ->update()
+                ->waitForText('The user post was updated!');
 
             $post->refresh();
 

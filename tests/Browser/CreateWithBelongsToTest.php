@@ -47,8 +47,8 @@ class CreateWithBelongsToTest extends DuskTestCase
                     $browser->within(new SearchInputComponent('users'), function ($browser) {
                         $browser->assertSelectedSearchResult('Taylor Otwell');
                     })
-                    ->type('@title', 'Test Post')
-                    ->type('@body', 'Test Post Body');
+                        ->type('@title', 'Test Post')
+                        ->type('@body', 'Test Post Body');
                 })
                 ->create()
                 ->waitForText('The user post was created');
@@ -126,7 +126,7 @@ class CreateWithBelongsToTest extends DuskTestCase
                 ->waitForTextIn('@nova-form', 'Taylor Otwell')
                 ->within(new BreadcrumbComponent(), function ($browser) {
                     $browser->assertSeeLink('Users')
-                        ->assertSeeLink('User Details: 1')
+                        ->assertSeeLink('User Details: Taylor Otwell')
                         ->assertCurrentPageTitle('Create User Post');
                 })
                 ->within(new FormComponent(), function ($browser) {

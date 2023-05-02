@@ -24,17 +24,17 @@ class CreateWithHasManyThroughTest extends DuskTestCase
                 ->visit(new Detail('docks', $dock->id))
                 ->within(new IndexComponent('sails'), function ($browser) {
                     $browser->waitForEmptyDialog()
-                            ->assertSee('No Sail matched the given criteria.')
-                            ->assertDontSee('@create-button');
+                        ->assertSee('No Sail matched the given criteria.')
+                        ->assertDontSee('@create-button');
                 })
                 ->within(new IndexComponent('ships'), function ($browser) use ($ship) {
                     $browser->waitFor("@{$ship->id}-view-button")
-                            ->click("@{$ship->id}-view-button");
+                        ->click("@{$ship->id}-view-button");
                 })
                 ->on(new Detail('ships', $ship->id))
                 ->within(new IndexComponent('sails'), function ($browser) {
                     $browser->waitFor('@create-button')
-                            ->click('@create-button');
+                        ->click('@create-button');
                 })
                 ->on(new Create('sails'))
                 ->type('@inches', '25')

@@ -26,14 +26,14 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(UpdateAttached::morphToMany('posts', 1, 'tags', 1))
-                    ->assertDisabled('select[dusk="attachable-select"]')
-                    ->whenAvailable('@notes', function ($browser) {
-                        $browser->assertInputValue('', 'Test Notes');
-                    })
-                    ->type('@notes', 'Test Notes Updated')
-                    ->update()
-                    ->waitForText('The resource was updated!');
+                ->visit(UpdateAttached::morphToMany('posts', 1, 'tags', 1))
+                ->assertDisabled('select[dusk="attachable-select"]')
+                ->whenAvailable('@notes', function ($browser) {
+                    $browser->assertInputValue('', 'Test Notes');
+                })
+                ->type('@notes', 'Test Notes Updated')
+                ->update()
+                ->waitForText('The resource was updated!');
 
             $this->assertEquals('Test Notes Updated', Post::with('tags')->find(1)->tags->first()->pivot->notes);
 
@@ -54,14 +54,14 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
             $post->tags()->attach($tag, ['notes' => 'Test Notes']);
 
             $browser->loginAs(1)
-                    ->visit(UpdateAttached::morphToMany('posts', 1, 'tags', 1))
-                    ->assertDisabled('select[dusk="attachable-select"]')
-                    ->whenAvailable('@notes', function ($browser) {
-                        $browser->assertInputValue('', 'Test Notes')
-                                ->type('', 'Test Notes Updated');
-                    })
-                    ->update()
-                    ->waitForText('The resource was updated!');
+                ->visit(UpdateAttached::morphToMany('posts', 1, 'tags', 1))
+                ->assertDisabled('select[dusk="attachable-select"]')
+                ->whenAvailable('@notes', function ($browser) {
+                    $browser->assertInputValue('', 'Test Notes')
+                        ->type('', 'Test Notes Updated');
+                })
+                ->update()
+                ->waitForText('The resource was updated!');
 
             $this->assertEquals('Test Notes Updated', Post::with('tags')->find(1)->tags->first()->pivot->notes);
 
@@ -80,14 +80,14 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(UpdateAttached::morphToMany('posts', 1, 'tags', 1))
-                    ->whenAvailable('@notes', function ($browser) {
-                        $browser->assertInputValue('', 'Test Notes')
-                                ->type('', 'Test Notes Updated');
-                    })
-                    ->updateAndContinueEditing()
-                    ->waitForText('The resource was updated!')
-                    ->on(UpdateAttached::morphToMany('posts', 1, 'tags', 1));
+                ->visit(UpdateAttached::morphToMany('posts', 1, 'tags', 1))
+                ->whenAvailable('@notes', function ($browser) {
+                    $browser->assertInputValue('', 'Test Notes')
+                        ->type('', 'Test Notes Updated');
+                })
+                ->updateAndContinueEditing()
+                ->waitForText('The resource was updated!')
+                ->on(UpdateAttached::morphToMany('posts', 1, 'tags', 1));
 
             $this->assertEquals('Test Notes Updated', Post::with('tags')->find(1)->tags->first()->pivot->notes);
 
@@ -106,14 +106,14 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(UpdateAttached::morphToMany('posts', 1, 'tags', 1))
-                    ->whenAvailable('@notes', function ($browser) {
-                        $browser->type('', str_repeat('A', 30));
-                    })
-                    ->update()
-                    ->waitForText('There was a problem submitting the form.')
-                    ->assertSee(__('validation.max.string', ['attribute' => 'notes', 'max' => 20]))
-                    ->cancel();
+                ->visit(UpdateAttached::morphToMany('posts', 1, 'tags', 1))
+                ->whenAvailable('@notes', function ($browser) {
+                    $browser->type('', str_repeat('A', 30));
+                })
+                ->update()
+                ->waitForText('There was a problem submitting the form.')
+                ->assertSee(__('validation.max.string', ['attribute' => 'notes', 'max' => 20]))
+                ->cancel();
 
             $this->assertEquals('Test Notes', Post::with('tags')->find(1)->tags->first()->pivot->notes);
 
@@ -133,12 +133,12 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Index('comments'))
-                    ->within(new IndexComponent('comments'), function ($browser) {
-                        $browser->waitForTable()
-                            ->click('@1-edit-button');
-                    })
-                    ->on(new Forbidden);
+                ->visit(new Index('comments'))
+                ->within(new IndexComponent('comments'), function ($browser) {
+                    $browser->waitForTable()
+                        ->click('@1-edit-button');
+                })
+                ->on(new Forbidden);
 
             $browser->blank();
         });
