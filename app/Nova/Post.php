@@ -10,10 +10,12 @@ use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\KeyValue;
+use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
@@ -82,7 +84,8 @@ class Post extends Resource
 
             Text::make('Title', 'title')->rules('required')->sortable(),
 
-            Textarea::make('Body', 'body')->rules('required')->stacked(),
+            $this->editorField($request, 'Excerpt', 'excerpt')->nullable(),
+            $this->editorField($request, 'Body', 'body')->rules('required')->stacked(),
 
             File::make('Attachment')
                 ->nullable()
@@ -139,12 +142,34 @@ class Post extends Resource
                 });
             }),
             Text::make('Title', 'title'),
-            Textarea::make('Body', 'body')->alwaysShow(),
+            $this->editorField($request, 'Excerpt', 'excerpt')->alwaysShow(),
+            $this->editorField($request, 'Body', 'body')->alwaysShow(),
             File::make('Attachment')->nullable(),
             Panel::make('Social Data', [
                 KeyValue::make('Meta'),
             ]),
         ];
+    }
+
+    /**
+     * Get the editor field for the user.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  string  $name
+     * @param  string|null  $attribute
+     * @return \Laravel\Nova\Fields\Textarea|\Laravel\Nova\Fields\Markdown|\Laravel\Nova\Fields\Trix
+     */
+    protected function editorField(NovaRequest $request, string $name, $attribute = null)
+    {
+        $editor = $request->user()->settings['editor'] ?? 'textarea';
+
+        if ($editor === 'markdown') {
+            return Markdown::make($name, $attribute);
+        } elseif ($editor === 'trix') {
+            return Trix::make($name, $attribute);
+        }
+
+        return Textarea::make($name, $attribute);
     }
 
     /**
