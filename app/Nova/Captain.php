@@ -75,7 +75,7 @@ class Captain extends Resource
      */
     protected function imageField(NovaRequest $request)
     {
-        $storage = $request->user()->settings['storage'] ?? 'local' === 'local';
+        $storage = $request->user()->settings['storage'] ?? 'local';
 
         if ($storage === 'vapor') {
             return VaporImage::make('Photo', 'photo')

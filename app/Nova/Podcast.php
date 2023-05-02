@@ -77,7 +77,7 @@ class Podcast extends Resource
      */
     protected function audioField(NovaRequest $request)
     {
-        $storage = $request->user()->settings['storage'] ?? 'local' === 'local';
+        $storage = $request->user()->settings['storage'] ?? 'local';
 
         if ($storage === 'vapor') {
             return VaporAudio::make('File', 'filename')
