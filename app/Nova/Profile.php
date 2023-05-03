@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MultiSelect;
@@ -83,15 +84,18 @@ class Profile extends Resource
                 );
             })->hideFromIndex(),
 
-            MultiSelect::make('Interests')->options([
-                'laravel' => ['label' => 'Laravel', 'group' => 'PHP'],
-                'phpunit' => ['label' => 'PHPUnit', 'group' => 'PHP'],
-                'livewire' => ['label' => 'Livewire', 'group' => 'PHP'],
-                'swoole' => ['label' => 'Swoole', 'group' => 'PHP'],
-                'react' => ['label' => 'React', 'group' => 'JavaScript'],
-                'vue' => ['label' => 'Vue', 'group' => 'JavaScript'],
-                'hack' => ['label' => 'Hack'],
-            ])->filterable(),
+            MultiSelect::make('Interests')->options(function () {
+                return $this->interestsOptions()->all();
+            })->filterable()
+            ->dependsOn('github_url', function (MultiSelect $field, NovaRequest $request, FormData $formData) {
+                if ($formData->github_url === 'https://github.com/taylorotwell') {
+                    $field->options(function () {
+                        return $this->interestsOptions()->reject(function ($value, $key) {
+                            return $key === 'hack';
+                        })->all();
+                    });
+                }
+            }),
 
             HasOne::make('Passport'),
 
@@ -157,5 +161,23 @@ class Profile extends Resource
         }
 
         return parent::redirectAfterCreate($request, $resource);
+    }
+
+    /**
+     * Get the list of interests options collection.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected function interestsOptions()
+    {
+        return collect([
+            'laravel' => ['label' => 'Laravel', 'group' => 'PHP'],
+            'phpunit' => ['label' => 'PHPUnit', 'group' => 'PHP'],
+            'livewire' => ['label' => 'Livewire', 'group' => 'PHP'],
+            'swoole' => ['label' => 'Swoole', 'group' => 'PHP'],
+            'react' => ['label' => 'React', 'group' => 'JavaScript'],
+            'vue' => ['label' => 'Vue', 'group' => 'JavaScript'],
+            'hack' => ['label' => 'Hack'],
+        ]);
     }
 }

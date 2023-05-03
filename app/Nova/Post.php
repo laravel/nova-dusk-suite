@@ -73,7 +73,7 @@ class Post extends Resource
                     $title = $formData->title ?? '';
 
                     if (Str::startsWith($title, 'Space Pilgrim:')) {
-                        $field->default(1);
+                        $field->setValue(1);
                     }
                 })
                 ->reorderAssociatables(uses_with_reordering())
