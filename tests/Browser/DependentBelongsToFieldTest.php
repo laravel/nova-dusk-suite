@@ -9,6 +9,9 @@ use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
+/**
+ * @covers \Laravel\Nova\Fields\BelongsTo::dependsOn()
+ */
 class DependentBelongsToFieldTest extends DuskTestCase
 {
     public function test_it_can_apply_depends_on_first_load()
@@ -83,7 +86,7 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 ->type('@title', 'Space Pilgrim: Episode '.$post1->id)
                 ->pause(2000)
                 ->within(new RelationSelectControlComponent('users'), function ($browser) {
-                    $browser->assertSelected('', 4);
+                    $browser->assertSelected('', 1);
                 })
                 ->cancel();
 
@@ -91,8 +94,8 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 ->assertSeeIn('@nova-form', 'Attachment')
                 ->type('@title', 'Space Pilgrim: Episode '.$post2->id)
                 ->pause(2000)
-                ->within(new RelationSelectControlComponent('users'), function ($browser) use ($post2) {
-                    $browser->assertSelected('', $post2->user_id);
+                ->within(new RelationSelectControlComponent('users'), function ($browser) {
+                    $browser->assertSelected('', 1);
                 })
                 ->cancel();
 

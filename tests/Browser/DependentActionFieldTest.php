@@ -12,6 +12,10 @@ use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
 
+/**
+ * @covers \Laravel\Nova\Fields\Field::dependsOn()
+ * @covers \Laravel\Nova\Http\Controllers\ActionController::sync()
+ */
 class DependentActionFieldTest extends DuskTestCase
 {
     public function test_it_can_sync_dependent_fields()
