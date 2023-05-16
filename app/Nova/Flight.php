@@ -22,6 +22,13 @@ class Flight extends Resource
     public static $model = \App\Models\Flight::class;
 
     /**
+     * The single value that should be used to represent the resource when being displayed.
+     *
+     * @var string
+     */
+    public static $title = 'name';
+
+    /**
      * The columns that should be searched.
      *
      * @var array<int, string>
