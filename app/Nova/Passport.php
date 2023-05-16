@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -28,7 +29,7 @@ class Passport extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'value';
 
     /**
      * The columns that should be searched.
@@ -62,6 +63,8 @@ class Passport extends Resource
             Text::make('Serial Number', 'value')->rules('required'),
 
             Country::make('Country')->rules('required'),
+
+            Tag::make('Flights'),
         ];
     }
 
