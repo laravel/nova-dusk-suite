@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Otwell\CustomField\CustomField;
 
@@ -30,6 +31,13 @@ class Flight extends Resource
     ];
 
     /**
+     * The relationships that should be eager loaded when performing an index query.
+     *
+     * @var array
+     */
+    public static $with = ['passports'];
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -40,6 +48,7 @@ class Flight extends Resource
         return [
             ID::make('ID', 'id')->sortable(),
             CustomField::make('Name', 'name')->sortable()->rules('required'),
+            Tag::make('Passports'),
         ];
     }
 
