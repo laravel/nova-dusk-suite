@@ -4,17 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddExcerptToPostsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->text('excerpt')->after('title')->nullable()->default(null);
+        Schema::create('flight_passports', function (Blueprint $table) {
+            $table->foreignId('flight_id');
+            $table->foreignId('passport_id');
+            $table->timestamps();
+
+            $table->index(['flight_id', 'passport_id']);
         });
     }
 
@@ -25,8 +27,6 @@ class AddExcerptToPostsTable extends Migration
      */
     public function down()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->dropColumn('excerpt');
-        });
+        Schema::dropIfExists('flight_passports');
     }
-}
+};
