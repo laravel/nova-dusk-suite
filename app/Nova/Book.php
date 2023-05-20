@@ -64,16 +64,14 @@ class Book extends Resource
                 ->stacked()
                 ->fullWidth()
                 ->nullable()
-                ->dependsOn(['title', 'active'], function (Trix $field, NovaRequest $request, FormData $formData) {
-                    if ($request->isCreateOrAttachRequest()) {
-                        $field->default($formData->title);
-                    }
-
+                ->dependsOn('active', function (Trix $field, NovaRequest $request, FormData $formData) {
                     if ($formData->boolean('active') === true) {
                         $field->show();
                     } else {
                         $field->hide();
                     }
+                })->dependsOnCreating('title', function (Trix $field, NovaRequest $request, FormData $formData) {
+                    $field->default($formData->title);
                 }),
 
             Boolean::make('Active')->default(function ($request) {
