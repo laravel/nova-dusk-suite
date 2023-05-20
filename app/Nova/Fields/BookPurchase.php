@@ -118,8 +118,7 @@ class BookPurchase
                 ->onlyOnForms()
                 ->resolveUsing(function ($value, $resource) {
                     return $resource->type;
-                })
-                ->dependsOn(['price', 'type'], function (Hidden $field, NovaRequest $request, FormData $formData) {
+                })->dependsOnCreating('type', function (Hidden $field, NovaRequest $request, FormData $formData) {
                     $field->default($formData->type);
                 })
                 ->tap(function (Hidden $field) {
