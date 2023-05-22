@@ -73,7 +73,7 @@ class FieldsAction extends Action
 
             Fields\Select::make('Select 2')
                 ->options($toggleDisplaySelectOptions)
-                ->dependsOn('select_1', function (Select $field, NovaRequest $request, FormData $formData) {
+                ->dependsOn('select_1', function (Fields\Select $field, NovaRequest $request, FormData $formData) {
                     if ($formData->select_1 != 'show') {
                         $field->hide();
                     }
@@ -81,7 +81,7 @@ class FieldsAction extends Action
 
             Fields\Select::make('Select 3')
                 ->options($toggleDisplaySelectOptions)
-                ->dependsOn(['select_1', 'select_2'], function (Select $field, NovaRequest $request, FormData $formData) {
+                ->dependsOn(['select_1', 'select_2'], function (Fields\Select $field, NovaRequest $request, FormData $formData) {
                     if ($formData->select_1 != 'show' || $formData->select_2 != 'show') {
                         $field->hide();
                     }
