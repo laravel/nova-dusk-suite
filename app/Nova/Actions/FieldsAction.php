@@ -35,6 +35,10 @@ class FieldsAction extends Action
      */
     public function fields(NovaRequest $request)
     {
+        $toggleDisplaySelectOptions = function () {
+            return ['hide' => 'Hide', 'show' => 'Show'];
+        };
+
         $toggleReadonly = function ($field) {
             $field->dependsOn('use_readonly', function ($field, NovaRequest $request, FormData $formData) {
                 $field->readonly($formData->use_readonly);
@@ -61,6 +65,25 @@ class FieldsAction extends Action
             Fields\Text::make('Text')->tap($toggleReadonly),
             Fields\Text::make('Stacked_Field_Text')->stacked()->tap($toggleReadonly),
             Fields\Textarea::make('Textarea')->tap($toggleReadonly),
+
+            Fields\Select::make('Select 1')
+                ->options($toggleDisplaySelectOptions),
+
+            Fields\Select::make('Select 2')
+                ->options($toggleDisplaySelectOptions)
+                ->dependsOn('select_1', function (Select $field, NovaRequest $request, FormData $formData) {
+                    if ($formData->select_1 != 'show') {
+                        $field->hide();
+                    }
+                }),
+
+            Fields\Select::make('Select 3')
+                ->options($toggleDisplaySelectOptions)
+                ->dependsOn(['select_1', 'select_2'], function (Select $field, NovaRequest $request, FormData $formData) {
+                    if ($formData->select_1 != 'show' || $formData->select_2 != 'show') {
+                        $field->hide();
+                    }
+                }),
         ];
     }
 }
