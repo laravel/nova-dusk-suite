@@ -48,6 +48,18 @@ class FieldsAction extends Action
         };
 
         return [
+            Fields\Hidden::make('Selected Resources', 'resources')
+                ->dependsOn('use_readonly', function (Fields\Hidden $field, NovaRequest $request, FormData $formData) {
+                    if ($request->allResourcesSelected()) {
+                        $field->setValue('all');
+                    } else {
+                        tap($request->selectedResourceIds(), function ($selectedResourceIds) use ($field) {
+                            $field->setValue(
+                                $selectedResourceIds->isEmpty() ? 'null' : $selectedResourceIds->join(', ', ' and ')
+                            );
+                        });
+                    }
+                }),
             Fields\Boolean::make('Toggle Readonly', 'use_readonly')->default(false),
             Fields\Boolean::make('Boolean')->tap($toggleReadonly),
             Fields\Color::make('Color')->tap($toggleReadonly),

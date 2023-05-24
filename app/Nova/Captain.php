@@ -121,9 +121,12 @@ class Captain extends Resource
     public function actions(NovaRequest $request): array
     {
         return [
-            Actions\FieldsAction::make()->standalone()->canSee(function ($request) {
-                return ! ($request->allResourcesSelected() || (optional($request->selectedResourceIds())->isNotEmpty() ?? false));
+            tap(Actions\FieldsAction::make()->standalone(), function ($action) use ($request) {
+                $action->canSee(function ($request) {
+                    return ! ($request->allResourcesSelected() || (optional($request->selectedResourceIds())->isNotEmpty() ?? false));
+                });
             }),
+
             tap(Actions\FieldsAction::make()->fullscreen(), function ($action) {
                 $action->name = 'Fields Action (fullscreen)';
             }),
