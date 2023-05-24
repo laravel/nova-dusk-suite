@@ -48,14 +48,16 @@ class FieldsAction extends Action
         };
 
         return [
-            Fields\Hidden::make('Selected Resources', 'resources')
+            Fields\Hidden::make('Selected Resources', 'selected_resources')
                 ->dependsOn('use_readonly', function (Fields\Hidden $field, NovaRequest $request, FormData $formData) {
+                    $bool = $formData->use_readonly === true ? 'true' : 'false';
+
                     if ($request->allResourcesSelected()) {
-                        $field->setValue('all');
+                        $field->setValue("{$bool} - all");
                     } else {
-                        tap($request->selectedResourceIds(), function ($selectedResourceIds) use ($field) {
+                        tap($request->selectedResourceIds(), function ($selectedResourceIds) use ($field, $bool) {
                             $field->setValue(
-                                $selectedResourceIds->isEmpty() ? 'null' : $selectedResourceIds->join(', ', ' and ')
+                                sprintf('%s - %s', $bool, ($selectedResourceIds->isEmpty() ? 'null' : $selectedResourceIds->join(',')))
                             );
                         });
                     }
