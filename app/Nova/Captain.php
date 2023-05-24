@@ -139,4 +139,15 @@ class Captain extends Resource
     {
         return [];
     }
+
+    /**
+     * Determine if the current user can replicate the given resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    public function authorizedToReplicate(Request $request)
+    {
+        return false;
+    }
 }
