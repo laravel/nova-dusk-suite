@@ -57,7 +57,7 @@ class FieldsAction extends Action
                     } else {
                         tap($request->selectedResourceIds(), function ($selectedResourceIds) use ($field, $bool) {
                             $field->setValue(
-                                sprintf('%s - %s', $bool, ($selectedResourceIds->isEmpty() ? 'null' : $selectedResourceIds->join(',')))
+                                sprintf('%s - %s', $bool, $selectedResourceIds->isEmpty() ? 'null' : $selectedResourceIds->join(','))
                             );
                         });
                     }
