@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
-use Laravel\Nova\Fields\ActionFields;
+use Laravel\Nova\Fields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class TrackSelectedAction extends Action
@@ -20,7 +20,7 @@ class TrackSelectedAction extends Action
      * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      */
-    public function handle(ActionFields $fields, Collection $models)
+    public function handle(Fields\ActionFields $fields, Collection $models)
     {
         //
     }

@@ -172,6 +172,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function registerFieldMacros()
     {
         Hidden::macro('trackSelectedResources', function (string $from) {
+            /** @phpstan-ignore-next-line */
             $this->dependsOn($from, function (Hidden $field, NovaRequest $request, FormData $formData) use ($from) {
                 $bool = $formData->get($from, false) === true ? 'true' : 'false';
 
@@ -179,6 +180,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     $field->setValue("{$bool} - all");
                 } else {
                     tap($request->selectedResourceIds(), function ($selectedResourceIds) use ($field, $bool) {
+                        /** @var \Illuminate\Support\Collection<int, int|string> $selectedResourceIds */
                         $field->setValue(
                             sprintf('%s - %s', $bool, $selectedResourceIds->isEmpty() ? 'null' : $selectedResourceIds->join(','))
                         );
