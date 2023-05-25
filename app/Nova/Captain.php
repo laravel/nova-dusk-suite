@@ -128,6 +128,8 @@ class Captain extends Resource
             tap(Actions\FieldsAction::make()->fullscreen(), function ($action) {
                 $action->name = 'Fields Action (fullscreen)';
             }),
+
+            Actions\TrackSelectedAction::make(),
         ];
     }
 
