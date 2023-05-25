@@ -175,15 +175,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             $this->dependsOn($from, function (Hidden $field, NovaRequest $request, FormData $formData) use ($from) {
                 $bool = $formData->get($from, false) === true ? 'true' : 'false';
 
-                    if ($request->allResourcesSelected()) {
-                        $field->setValue("{$bool} - all");
-                    } else {
-                        tap($request->selectedResourceIds(), function ($selectedResourceIds) use ($field, $bool) {
-                            $field->setValue(
-                                sprintf('%s - %s', $bool, $selectedResourceIds->isEmpty() ? 'null' : $selectedResourceIds->join(','))
-                            );
-                        });
-                    }
+                if ($request->allResourcesSelected()) {
+                    $field->setValue("{$bool} - all");
+                } else {
+                    tap($request->selectedResourceIds(), function ($selectedResourceIds) use ($field, $bool) {
+                        $field->setValue(
+                            sprintf('%s - %s', $bool, $selectedResourceIds->isEmpty() ? 'null' : $selectedResourceIds->join(','))
+                        );
+                    });
+                }
             });
 
             return $this;
