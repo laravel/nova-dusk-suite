@@ -57,7 +57,7 @@ class Company extends Resource
                 ->suggestions(['Laravel LLC', 'Tailwind Labs Inc']),
 
             Markdown::make('Description')
-                ->dependsOn('name', new Dependents\CompanyDescription())
+                ->dependsOn('name', Dependents\CompanyDescription::class)
                 ->withFiles()
                 ->hide()
                 ->nullable(),
