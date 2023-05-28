@@ -52,9 +52,9 @@ class People extends Resource
 
             Text::make(__('Name'))->rules('required'),
 
-            Date::make('Created At')->filterable(),
+            Date::make('Created At')->withTimezone()->filterable(),
 
-            Date::make('Date of Birth')->filterable(),
+            Date::make('Date of Birth')->withoutTimezone()->filterable(),
 
             /** RELATION */
             HasOne::make(__('Employee'), 'employee', Employee::class)->exceptOnForms(),
