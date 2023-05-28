@@ -12,7 +12,6 @@ class People extends Model
 {
     use HasFactory, Searchable;
 
-
     /**
      * The attributes that should be cast to native types.
      *
