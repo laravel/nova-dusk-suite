@@ -12,6 +12,16 @@ class People extends Model
 {
     use HasFactory, Searchable;
 
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array<string, class-string|string>
+     */
+    protected $casts = [
+        'date_of_birth' => 'date',
+    ];
+
     /**
      * get employee from people.
      *
