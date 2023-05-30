@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\FormData;
@@ -139,6 +140,7 @@ class Book extends Resource
     {
         return [
             new Actions\MarkAsActive(),
+            ExportAsCsv::make(),
         ];
     }
 

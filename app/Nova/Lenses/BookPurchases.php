@@ -3,6 +3,8 @@
 namespace App\Nova\Lenses;
 
 use App\Models\BookPurchase;
+use Brick\Money\Money;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -81,7 +83,16 @@ class BookPurchases extends Lens
      */
     public function actions(NovaRequest $request)
     {
-        return parent::actions($request);
+        return [
+            ExportAsCsv::make()->withFormat(function ($model) {
+                return [
+                    'ID' => $model->id,
+                    'SKU' => $model->sku,
+                    'Title' => $model->title,
+                    'Total' => ! is_null($model->total) ? Money::ofMinor($model->total, config('nova.currency', 'USD'))->getAmount()->toFloat() : 0,
+                ];
+            }),
+        ];
     }
 
     /**
