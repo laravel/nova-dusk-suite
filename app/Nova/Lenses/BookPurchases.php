@@ -31,10 +31,12 @@ class BookPurchases extends Lens
     public static function query(LensRequest $request, $query)
     {
         return $request->withOrdering($request->withFilters(
-            $query->select(['id', 'sku', 'title'])
-                ->addSelect([
-                    'total' => DB::table('book_purchases')->selectRaw('sum(price) as total')->whereColumn('book_id', 'books.id'),
-                ])
+            $query->addSelect([
+                'id',
+                'sku',
+                'title',
+                'total' => DB::table('book_purchases')->selectRaw('sum(price) as total')->whereColumn('book_id', 'books.id'),
+            ])
         ));
     }
 
