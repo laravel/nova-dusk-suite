@@ -2,7 +2,9 @@
 
 namespace App\Nova\Lenses;
 
-use App\Models\BookPurchase;
+use Brick\Money\Money;
+use Illuminate\Support\Facades\DB;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -29,9 +31,10 @@ class BookPurchases extends Lens
     public static function query(LensRequest $request, $query)
     {
         return $request->withOrdering($request->withFilters(
-            $query->addSelect([
-                'total' => BookPurchase::selectRaw('sum(price) as total')->whereColumn('book_id', 'books.id'),
-            ])
+            $query->select(['id', 'sku', 'title'])
+                ->addSelect([
+                    'total' => DB::table('book_purchases')->selectRaw('sum(price) as total')->whereColumn('book_id', 'books.id'),
+                ])
         ));
     }
 
@@ -81,7 +84,16 @@ class BookPurchases extends Lens
      */
     public function actions(NovaRequest $request)
     {
-        return parent::actions($request);
+        return [
+            ExportAsCsv::make()->withFormat(function ($model) {
+                return [
+                    'ID' => $model->id,
+                    'SKU' => $model->sku,
+                    'Title' => $model->title,
+                    'Total' => ! is_null($model->total) ? Money::ofMinor($model->total, config('nova.currency', 'USD'))->getAmount()->toFloat() : 0,
+                ];
+            }),
+        ];
     }
 
     /**

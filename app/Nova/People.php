@@ -54,6 +54,8 @@ class People extends Resource
 
             Date::make('Created At')->filterable(),
 
+            Date::make('Date of Birth')->filterable(),
+
             /** RELATION */
             HasOne::make(__('Employee'), 'employee', Employee::class)->exceptOnForms(),
 
