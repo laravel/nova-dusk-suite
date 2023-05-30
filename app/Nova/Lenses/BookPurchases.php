@@ -89,7 +89,7 @@ class BookPurchases extends Lens
         return [
             ExportAsCsv::make()->withFormat(function ($model) {
                 return [
-                    'ID' => $model->id,
+                    'ID' => $model->getKey(),
                     'SKU' => $model->sku,
                     'Title' => $model->title,
                     'Total' => ! is_null($model->total) ? Money::ofMinor($model->total, config('nova.currency', 'USD'))->getAmount()->toFloat() : 0,
