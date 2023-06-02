@@ -7,6 +7,7 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\ActionDropdownComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
@@ -68,7 +69,7 @@ class IndexActionTest extends DuskTestCase
 
                     Post::query()->delete();
 
-                    $browser->runAction('standalone-task');
+                    $browser->runStandaloneAction('standalone-task');
                 })->waitForText('Action executed!')
                 ->assertSee('Action executed!');
 
@@ -112,7 +113,7 @@ class IndexActionTest extends DuskTestCase
                                 ->assertMissing('@1-inline-actions');
                         })
                         ->openControlSelectorById(2)
-                        ->elsewhereWhenAvailable('@2-inline-actions', function ($browser) {
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
                             $browser->assertSee('Mark As Inactive');
                         })
                         ->runInlineAction(2, 'mark-as-inactive');

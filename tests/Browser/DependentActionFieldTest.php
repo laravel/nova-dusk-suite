@@ -3,15 +3,24 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
+use Database\Factories\CaptainFactory;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Notifications\NovaNotification;
+use Laravel\Nova\Testing\Browser\Components\ActionDropdownComponent;
 use Laravel\Nova\Testing\Browser\Components\Controls\RelationSelectControlComponent;
+use Laravel\Nova\Testing\Browser\Components\DetailComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\Modals\ConfirmActionModalComponent;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
 
+/**
+ * @covers \Laravel\Nova\Fields\Field::dependsOn()
+ * @covers \Laravel\Nova\Http\Controllers\ActionController::sync()
+ */
 class DependentActionFieldTest extends DuskTestCase
 {
     public function test_it_can_sync_dependent_fields()
@@ -157,6 +166,50 @@ class DependentActionFieldTest extends DuskTestCase
                 })->waitForText('User Profile created');
 
             $browser->blank();
+        });
+    }
+
+    public function test_it_provides_selected_resources_information()
+    {
+        $this->browse(function (Browser $browser) {
+            $captains = CaptainFactory::new()->times(5)->create();
+
+            $browser->loginAs(1)
+                ->visit(new Index('captains'))
+                ->within(new IndexComponent('captains'), function ($browser) use ($captains) {
+                    $browser->waitForTable()
+                        ->selectAllOnCurrentPage()
+                        ->selectAction('track-selected-action', function ($browser) use ($captains) {
+                            $browser->assertValue('@selected_resources', 'false - '.$captains->pluck('id')->reverse()->join(','))
+                                ->click('input[type="checkbox"][id="toggle-default-boolean-field"]')
+                                ->pause(1000)
+                                ->assertValue('@selected_resources', 'true - '.$captains->pluck('id')->reverse()->join(','))
+                                ->cancel();
+                        })
+                        ->unselectAllOnCurrentPage()
+                        ->selectAllMatching()
+                        ->selectAction('track-selected-action', function ($browser) {
+                            $browser->assertValue('@selected_resources', 'false - all')
+                                ->click('input[type="checkbox"][id="toggle-default-boolean-field"]')
+                                ->pause(1000)
+                                ->assertValue('@selected_resources', 'true - all')
+                                ->cancel();
+                        });
+                })
+                ->visit(new Detail('captains', $captains[0]->getKey()))
+                ->within(new DetailComponent('captains', $captains[0]->getKey()), function ($browser) use ($captains) {
+                    $browser->openControlSelector()
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) use ($captains) {
+                            $browser->click("button[data-action-id='track-selected-action']")
+                                ->elsewhereWhenAvailable(new ConfirmActionModalComponent(), function ($browser) use ($captains) {
+                                    $browser->assertValue('@selected_resources', 'false - '.$captains[0]->getKey())
+                                        ->click('input[type="checkbox"][id="toggle-default-boolean-field"]')
+                                        ->pause(1000)
+                                        ->assertValue('@selected_resources', 'true - '.$captains[0]->getKey())
+                                        ->cancel();
+                                });
+                        });
+                });
         });
     }
 }

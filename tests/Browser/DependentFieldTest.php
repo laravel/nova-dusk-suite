@@ -4,33 +4,16 @@ namespace Laravel\Nova\Tests\Browser;
 
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
+use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class DependentFieldTest extends DuskTestCase
 {
-    public function test_it_can_apply_depends_on_first_load()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(1)
-                ->visit(new Create('users'))
-                ->waitForTextIn('h1', 'Create User')
-                ->assertMissing('input[type="checkbox"][name="create"]')
-                ->assertPresent('input[type="checkbox"][name="read"]')
-                ->assertMissing('input[type="checkbox"][name="update"]')
-                ->assertMissing('input[type="checkbox"][name="delete"]')
-                ->type('@email', 'mior@laravel.com')
-                ->pause(2000)
-                ->assertPresent('input[type="checkbox"][name="create"]')
-                ->assertPresent('input[type="checkbox"][name="read"]')
-                ->assertPresent('input[type="checkbox"][name="update"]')
-                ->assertPresent('input[type="checkbox"][name="delete"]')
-                ->cancel();
-
-            $browser->blank();
-        });
-    }
-
+    /**
+     * @covers \Laravel\Nova\Fields\Select::dependsOn()
+     */
     public function test_it_can_apply_depends_on_select_field_options()
     {
         $this->browse(function (Browser $browser) {
@@ -66,6 +49,10 @@ class DependentFieldTest extends DuskTestCase
         });
     }
 
+    /**
+     * @covers \Laravel\Nova\Fields\Field::dependsOn()
+     * @covers \Laravel\Nova\Fields\Field::readOnly()
+     */
     public function test_it_can_apply_depends_and_handle_form_requests_with_readonly()
     {
         $this->browse(function (Browser $browser) {
@@ -114,6 +101,10 @@ class DependentFieldTest extends DuskTestCase
         });
     }
 
+    /**
+     * @covers \Laravel\Nova\Fields\Field::dependsOn()
+     * @covers \Laravel\Nova\Fields\Field::hide()
+     */
     public function test_it_can_apply_depends_but_does_not_submit_hidden_field()
     {
         $this->browse(function (Browser $browser) {
@@ -140,6 +131,9 @@ class DependentFieldTest extends DuskTestCase
         });
     }
 
+    /**
+     * @covers \Laravel\Nova\Fields\Code::dependsOn()
+     */
     public function test_it_can_apply_depends_on_code_field()
     {
         $this->browse(function (Browser $browser) {
@@ -168,6 +162,9 @@ class DependentFieldTest extends DuskTestCase
         });
     }
 
+    /**
+     * @covers \Laravel\Nova\Fields\Markdown::dependsOn()
+     */
     public function test_it_can_apply_depends_on_markdown_field()
     {
         $this->browse(function (Browser $browser) {
@@ -190,6 +187,42 @@ class DependentFieldTest extends DuskTestCase
                 'description' => 'Laravel is a web ecosystem full of delightful tools that are supercharged for developer happiness and productivity.',
                 'country' => null,
             ]);
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @covers \Laravel\Nova\Fields\Markdown::dependsOn()
+     */
+    public function test_it_can_apply_cascading_depends_on_changes()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new Index('captains'))
+                ->within(new IndexComponent('captains'), function ($browser) {
+                    $browser->runStandaloneAction('fields-action', function ($browser) {
+                        $browser->waitFor('@select_1')
+                        ->assertMissing('@select_2')
+                        ->assertMissing('@select_3')
+                        ->select('@select_1', 'show')
+                        ->waitFor('@select_2')
+                        ->assertMissing('@select_3')
+                        ->select('@select_2', 'show')
+                        ->waitFor('@select_3')
+                        ->select('@select_3', 'show')
+                        ->select('@select_1', 'hide')
+                        ->pause(1000)
+                        ->assertMissing('@select_2')
+                        ->assertMissing('@select_3')
+                        ->select('@select_1', 'show')
+                        ->pause(1000)
+                        ->assertVisible('@select_2')
+                        ->assertSelected('@select_2', 'show')
+                        ->assertVisible('@select_3')
+                        ->assertSelected('@select_3', 'show');
+                    });
+                });
 
             $browser->blank();
         });

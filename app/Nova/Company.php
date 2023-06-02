@@ -57,17 +57,7 @@ class Company extends Resource
                 ->suggestions(['Laravel LLC', 'Tailwind Labs Inc']),
 
             Markdown::make('Description')
-                ->dependsOn('name', function (Markdown $field, NovaRequest $request, FormData $formData) {
-                    if (! empty($formData->name)) {
-                        $field->show();
-                    }
-
-                    $field->default(
-                        ! in_array($formData->name, ['Laravel LLC', 'Tailwind Labs Inc'])
-                            ? "{$formData->name}'s Description"
-                            : ''
-                    );
-                })
+                ->dependsOn('name', Dependents\CompanyDescription::class)
                 ->withFiles()
                 ->hide()
                 ->nullable(),

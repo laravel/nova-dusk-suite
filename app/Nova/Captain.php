@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
@@ -48,24 +49,7 @@ class Captain extends Resource
                 ->rules('required')
                 ->sortable(),
 
-            $this->merge(function () use ($request) {
-                $storage = $request->user()->settings['storage'] ?? 'local' === 'local';
-
-                if ($storage === 'vapor') {
-                    return [
-                        VaporImage::make('Photo', 'photo')
-                            ->prunable()
-                            ->help('Using cloud storage'),
-                    ];
-                }
-
-                return [
-                    Image::make('Photo', 'photo')
-                        ->disk($storage === 's3' ? 's3' : config('nova.storage_disk'))
-                        ->prunable()
-                        ->help('Using local storage'),
-                ];
-            }),
+            $this->imageField($request),
 
             BelongsToMany::make('Ships', 'ships')
                 ->display('name')
@@ -82,6 +66,28 @@ class Captain extends Resource
                 ->prunable()
                 ->searchable(uses_searchable()),
         ];
+    }
+
+    /**
+     * Get the image field for the user.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return \Laravel\Nova\Fields\VaporImage|\Laravel\Nova\Fields\Image
+     */
+    protected function imageField(NovaRequest $request)
+    {
+        $storage = $request->user()->settings['storage'] ?? 'local';
+
+        if ($storage === 'vapor') {
+            return VaporImage::make('Photo', 'photo')
+                ->prunable()
+                ->help('Using cloud storage');
+        }
+
+        return Image::make('Photo', 'photo')
+            ->disk($storage === 's3' ? 's3' : config('nova.storage_disk'))
+            ->prunable()
+            ->help('Using local storage');
     }
 
     /**
@@ -118,9 +124,12 @@ class Captain extends Resource
             Actions\FieldsAction::make()->standalone()->canSee(function ($request) {
                 return ! ($request->allResourcesSelected() || (optional($request->selectedResourceIds())->isNotEmpty() ?? false));
             }),
+
             tap(Actions\FieldsAction::make()->fullscreen(), function ($action) {
                 $action->name = 'Fields Action (fullscreen)';
             }),
+
+            Actions\TrackSelectedAction::make(),
         ];
     }
 
@@ -133,5 +142,16 @@ class Captain extends Resource
     public function filters(NovaRequest $request)
     {
         return [];
+    }
+
+    /**
+     * Determine if the current user can replicate the given resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    public function authorizedToReplicate(Request $request)
+    {
+        return false;
     }
 }

@@ -13,15 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->index();
-            $table->string('title');
-            $table->longText('body');
-            $table->string('attachment')->nullable();
-            $table->boolean('active')->default(false);
-            $table->json('meta')->nullable();
+        Schema::create('flight_passports', function (Blueprint $table) {
+            $table->foreignId('flight_id');
+            $table->foreignId('passport_id');
             $table->timestamps();
+
+            $table->index(['flight_id', 'passport_id']);
         });
     }
 
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('flight_passports');
     }
 };

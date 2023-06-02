@@ -18,4 +18,15 @@ class Passport extends Model
     {
         return $this->belongsTo(Profile::class);
     }
+
+    /**
+     * Get all of the flights that belong to the passport.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function flights()
+    {
+        return $this->belongsToMany(Flight::class, 'flight_passports')
+            ->withTimestamps();
+    }
 }
