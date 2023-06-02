@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -10,7 +9,7 @@ use Laravel\Scout\Searchable;
 
 class People extends Model
 {
-    use HasFactory, Searchable;
+    use Searchable;
 
     /**
      * The attributes that should be cast to native types.
