@@ -13,7 +13,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
         "laravel/framework": "^9.0",
-        "laravel/scout": "^9.8|^10.0.1",
+        "laravel/scout": "^10.0.1",
         "laravel/tinker": "^2.7",
         "laravel/vapor-core": "^2.22",
         "league/flysystem-aws-s3-v3": "^3.0",
