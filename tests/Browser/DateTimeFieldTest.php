@@ -18,19 +18,18 @@ class DateTimeFieldTest extends DuskTestCase
      *
      * @dataProvider localiseDatetimeDataProvider
      */
-    public function test_can_pick_date_using_datetime_input($datetime, $userTimezone)
+    public function test_can_pick_date_using_datetime_input($appDateTime, $localDateTime, $userTimezone)
     {
         $user = User::find(1);
-        $now = CarbonImmutable::parse($datetime, config('app.timezone'));
+        $now = CarbonImmutable::parse($appDateTime, config('app.timezone'));
+        $local = CarbonImmutable::parse($localDateTime, $userTimezone);
 
         tap($user->profile, function ($profile) use ($userTimezone) {
             $profile->timezone = $userTimezone;
             $profile->save();
         });
 
-        $this->browse(function (Browser $browser) use ($now, $user, $userTimezone) {
-            $local = $now->setTimezone($userTimezone);
-
+        $this->browse(function (Browser $browser) use ($user, $now, $local) {
             $browser->loginAs($user)
                 ->visit(Attach::belongsToMany('users', $user->id, 'books', 'personalBooks'))
                 ->assertSeeIn('h1', 'Attach Book')
@@ -71,26 +70,25 @@ class DateTimeFieldTest extends DuskTestCase
      *
      * @dataProvider localiseDatetimeDataProvider
      */
-    public function test_can_pick_date_using_datetime_input_and_maintain_current_value_on_validation_errors($datetime, $userTimezone)
+    public function test_can_pick_date_using_datetime_input_and_maintain_current_value_on_validation_errors($appDateTime, $localDateTime, $userTimezone)
     {
         $user = User::find(1);
-        $now = CarbonImmutable::parse($datetime, config('app.timezone'));
+        $now = CarbonImmutable::parse($appDateTime, config('app.timezone'));
+        $local = CarbonImmutable::parse($localDateTime, $userTimezone);
 
         tap($user->profile, function ($profile) use ($userTimezone) {
             $profile->timezone = $userTimezone;
             $profile->save();
         });
 
-        $this->browse(function (Browser $browser) use ($now, $user, $userTimezone) {
-            $local = $now->setTimezone($userTimezone);
-
+        $this->browse(function (Browser $browser) use ($user, $local) {
             $browser->loginAs($user)
                 ->visit(Attach::belongsToMany('users', $user->id, 'books', 'personalBooks'))
                 ->assertSeeIn('h1', 'Attach Book')
                 ->typeOnDateTimeLocal('@purchased_at', $local)
                 ->create()
                 ->waitForText('There was a problem submitting the form.')
-                ->assertValue('@purchased_at', $local->toDateTimeLocalString())
+                ->assertValue('@purchased_at', $local->toDateTimeLocalString($local->second === 0 ? 'minute' : 'second'))
                 ->cancel();
 
             $browser->blank();
@@ -130,8 +128,10 @@ class DateTimeFieldTest extends DuskTestCase
 
     public static function localiseDatetimeDataProvider()
     {
-        yield ['2021-10-14 02:48:15', 'America/Chicago'];
-        yield ['2021-10-14 02:48:15', 'Asia/Kuala_Lumpur'];
-        yield ['2021-10-14 02:48:15', 'UTC'];
+        yield 'UTC' => ['2021-10-14 02:48:15', '2021-10-14 02:48:15', 'UTC'];
+        yield 'UTC <> America/Chicago' => ['2021-10-14 02:48:15', '2021-10-13 21:48:15', 'America/Chicago'];
+        yield 'UTC <> America/Mexico_City' => ['2021-10-14 02:48:15', '2021-10-13 21:48:15', 'America/Mexico_City'];
+        yield 'UTC <> Asia/Kuala_Lumpur' => ['2021-10-14 02:48:15', '2021-10-14 10:48:15', 'Asia/Kuala_Lumpur'];
+        yield 'UTC <> America/Mexico_City #1' => ['2023-05-02 14:00:00', '2023-05-02 08:00:00', 'America/Mexico_City'];
     }
 }

@@ -125,6 +125,6 @@ class DateFieldTest extends DuskTestCase
         yield 'UTC <> America/Santo_Domingo' => ['Dec 13 1983', 'UTC', 'America/Santo_Domingo'];
         yield 'UTC <> PST' => ['Dec 13 1983', 'UTC', 'PST', '1983-12-14'];
         yield 'America/Sao_Paulo <> America/Manaus #1' => ['Dec 13 1983', 'America/Sao_Paulo', 'America/Manaus'];
-        yield 'America/Sao_Paulo <> America/Manaus #2' =>['Aug 18 2022', 'America/Sao_Paulo', 'America/Manaus'];
+        yield 'America/Sao_Paulo <> America/Manaus #2' => ['Aug 18 2022', 'America/Sao_Paulo', 'America/Manaus'];
     }
 }

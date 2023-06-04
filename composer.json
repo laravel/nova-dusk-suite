@@ -18,7 +18,7 @@
         "laravel/scout": "^9.8|^10.0.1",
         "laravel/tinker": "^2.5",
         "league/flysystem-aws-s3-v3": "^1.0",
-        "meilisearch/meilisearch-php": "^1.1",
+        "meilisearch/meilisearch-php": "^0.19",
         "nova-kit/nova-on-vapor": "^1.0",
         "spatie/laravel-ray": "^1.17"
     },
