@@ -15,7 +15,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "http-interop/http-factory-guzzle": "^1.2",
         "laravel/framework": "^8.75",
-        "laravel/scout": "^9.8|^10.0.1",
+        "laravel/scout": "^9.8",
         "laravel/tinker": "^2.5",
         "league/flysystem-aws-s3-v3": "^1.0",
         "meilisearch/meilisearch-php": "^0.19",
