@@ -13,10 +13,7 @@ use Laravel\Nova\Tests\DuskTestCase;
  */
 class PanelTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function fields_can_be_placed_into_panels()
+    public function test_fields_can_be_placed_into_panels()
     {
         $address = AddressFactory::new()->create();
 
@@ -29,10 +26,7 @@ class PanelTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function fields_can_be_placed_into_edit_panels()
+    public function test_fields_can_be_placed_into_edit_panels()
     {
         $address = AddressFactory::new()->create();
 
