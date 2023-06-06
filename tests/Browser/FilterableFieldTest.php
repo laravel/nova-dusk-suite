@@ -189,6 +189,12 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertSeeResource(3)
                         ->assertSeeResource(4)
                         ->assertSeeResource(5);
+
+                    $browser->runFilter(function ($browser) {
+                        $browser->within(new SearchInputComponent('user-default-belongs-to-field', 'filter'), function ($browser) {
+                            $browser->assertEmptySearchResult();
+                        });
+                    });
                 });
 
             $browser->blank();
