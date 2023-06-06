@@ -36,7 +36,9 @@ class BookPurchases extends Lens
                 'sku',
                 'title',
                 'total' => DB::table('book_purchases')->selectRaw('sum(price) as total')->whereColumn('book_id', 'books.id'),
-            ])
+            ])->when(! ($request->orderBy && $request->orderByDirection), function ($query) {
+                return $query->orderBy('total', 'desc');
+            })
         ));
     }
 
