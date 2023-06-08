@@ -48,9 +48,9 @@ class FieldsAction extends Action
             Fields\Boolean::make('Toggle Readonly', 'use_readonly')->default(false),
             Fields\Boolean::make('Boolean')->tap($toggleReadonly),
             Fields\BooleanGroup::make('Boolean Group')
-                ->options(['boolean' => 'Selected'])
+                ->options(['selected' => 'Is Selected'])
                 ->dependsOn('boolean', function (Fields\BooleanGroup $field, NovaRequest $request, Fields\FormData $formData) {
-                    $field->setValue(['boolean' => $formData->boolean('boolean')]);
+                    $field->setValue(['selected' => $formData->boolean('boolean')]);
                 }),
             Fields\Color::make('Color')->tap($toggleReadonly),
             Fields\Date::make('Date')->tap($toggleReadonly),
