@@ -2,7 +2,9 @@
 
 namespace App\Nova\Lenses;
 
-use App\Models\BookPurchase;
+use Brick\Money\Money;
+use Illuminate\Support\Facades\DB;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -30,8 +32,13 @@ class BookPurchases extends Lens
     {
         return $request->withOrdering($request->withFilters(
             $query->addSelect([
-                'total' => BookPurchase::selectRaw('sum(price) as total')->whereColumn('book_id', 'books.id'),
-            ])
+                'id',
+                'sku',
+                'title',
+                'total' => DB::table('book_purchases')->selectRaw('sum(price) as total')->whereColumn('book_id', 'books.id'),
+            ])->when(! ($request->orderBy && $request->orderByDirection), function ($query) {
+                return $query->orderBy('total', 'desc');
+            })
         ));
     }
 
@@ -81,7 +88,17 @@ class BookPurchases extends Lens
      */
     public function actions(NovaRequest $request)
     {
-        return parent::actions($request);
+        return [
+            ExportAsCsv::make()->withFormat(function ($model) {
+                /** @var \App\Models\Book $model */
+                return [
+                    'ID' => $model->getKey(),
+                    'SKU' => $model->sku,
+                    'Title' => $model->title,
+                    'Total' => Money::ofMinor($model->total ?? 0, config('nova.currency', 'USD'))->getAmount()->toFloat(), // @phpstan-ignore-line
+                ];
+            }),
+        ];
     }
 
     /**
