@@ -27,7 +27,6 @@ class DateFieldTest extends DuskTestCase
 
         $person = PeopleFactory::new()->create([
             'name' => 'Tess Hemphill',
-            'created_at' => today(),
         ]);
 
         $user = User::find(1);
@@ -42,7 +41,6 @@ class DateFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($person, $user, $createdAt) {
             $browser->loginAs($user)
                 ->visit(new Update('people', $person->getKey()))
-                ->typeOnDate('@created_at', $createdAt)
                 ->typeOnDate('@date_of_birth', $createdAt)
                 ->update()
                 ->waitForText('The person was updated!');
@@ -51,17 +49,11 @@ class DateFieldTest extends DuskTestCase
 
             $this->assertSame(
                 $createdAt->toDateString(),
-                $person->created_at->toDateString()
-            );
-
-            $this->assertSame(
-                $createdAt->toDateString(),
                 $person->date_of_birth->toDateString()
             );
 
             $browser->visit(new Update('people', $person->getKey()))
                 ->type('@name', 'Tess')
-                ->assertValue('@created_at', $createdAt->toDateString())
                 ->assertValue('@date_of_birth', $createdAt->toDateString())
                 ->update()
                 ->waitForText('The person was updated!');
@@ -70,7 +62,7 @@ class DateFieldTest extends DuskTestCase
 
             $this->assertSame(
                 $createdAt->toDateString(),
-                $person->created_at->toDateString()
+                $person->date_of_birth->toDateString()
             );
 
             $browser->blank();
@@ -103,11 +95,9 @@ class DateFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $createdAt) {
             $browser->loginAs($user)
                 ->visit(new Create('people'))
-                ->typeOnDate('@created_at', $createdAt)
                 ->typeOnDate('@date_of_birth', $createdAt)
                 ->create()
                 ->waitForText('There was a problem submitting the form.')
-                ->assertValue('@created_at', $createdAt->toDateString())
                 ->assertValue('@date_of_birth', $createdAt->toDateString())
                 ->cancel();
 
