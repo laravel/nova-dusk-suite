@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * @property int $id
  * @property string $sku
+ * @property string $title
+ * @property string|null $description
+ * @property bool $active
  */
 class Book extends Model
 {

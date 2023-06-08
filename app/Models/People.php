@@ -5,6 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property \Carbon\CarbonInterface|null $date_of_birth
+ */
 class People extends Model
 {
     use Searchable;
