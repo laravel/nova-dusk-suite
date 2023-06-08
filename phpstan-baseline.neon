@@ -16,7 +16,7 @@ parameters:
 			path: app/Nova/Fields/BookPurchase.php
 
 		-
-			message: "#^Parameter \\#1 \\$callback of method Laravel\\\\Nova\\\\Element\\:\\:canSee\\(\\) expects Closure\\(Illuminate\\\\Http\\\\Request\\)\\: bool, Closure\\(Illuminate\\\\Http\\\\Request\\)\\: bool\\|null given\\.$#"
+			message: "#^Parameter \\#1 \\$callback of method Laravel\\\\Nova\\\\Element\\:\\:canSee\\(\\) expects Closure\\(Illuminate\\\\Http\\\\Request\\)\\: bool, Closure\\(Illuminate\\\\Http\\\\Request\\)\\: \\(bool\\|null\\) given\\.$#"
 			count: 1
 			path: app/Nova/Post.php
 

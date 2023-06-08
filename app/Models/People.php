@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Laravel\Scout\Searchable;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property \Carbon\CarbonInterface|null $date_of_birth
+ */
 class People extends Model
 {
     use Searchable;

@@ -40,7 +40,7 @@ class FieldsAction extends Action
         };
 
         $toggleReadonly = function ($field) {
-            $field->dependsOn('use_readonly', function ($field, NovaRequest $request, Fields\FormData $formData) {
+            $field->dependsOn('use_readonly', function (Fields\Field $field, NovaRequest $request, Fields\FormData $formData) {
                 $field->readonly($formData->use_readonly);
             });
         };
@@ -49,6 +49,11 @@ class FieldsAction extends Action
             Fields\Hidden::make('Selected Resources', 'selected_resources')->trackSelectedResources('use_readonly'),
             Fields\Boolean::make('Toggle Readonly', 'use_readonly')->default(false),
             Fields\Boolean::make('Boolean')->tap($toggleReadonly),
+            Fields\BooleanGroup::make('Boolean Group')
+                ->options(['boolean' => 'Selected'])
+                ->dependsOn('boolean', function (Fields\BooleanGroup $field, NovaRequest $request, Fields\FormData $formData) {
+                    $field->setValue(['boolean' => $formData->boolean('boolean')]);
+                }),
             Fields\Color::make('Color')->tap($toggleReadonly),
             Fields\Date::make('Date')->tap($toggleReadonly),
             Fields\DateTime::make('DateTime')->tap($toggleReadonly),

@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
+ * @property int $id
  * @property string $sku
+ * @property string $title
+ * @property string|null $description
+ * @property bool $active
  */
 class Book extends Model
 {
