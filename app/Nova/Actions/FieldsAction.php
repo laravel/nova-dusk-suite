@@ -37,7 +37,7 @@ class FieldsAction extends Action
             return ['hide' => 'Hide', 'show' => 'Show'];
         };
 
-        $toggleReadonly = function (Fields\Field $field) {
+        $toggleReadonly = function ($field) {
             $field->dependsOn('use_readonly', function (Fields\Field $field, NovaRequest $request, Fields\FormData $formData) {
                 $field->readonly($formData->use_readonly);
             });
