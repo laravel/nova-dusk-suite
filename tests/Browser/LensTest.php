@@ -44,7 +44,7 @@ class LensTest extends DuskTestCase
                 ->visit(new Lens('users', 'passthrough-lens'))
                 ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                     $browser->waitForTable()
-                        ->click('@1-view-button');
+                        ->viewResourceById(1);
                 })
                 ->on(new Detail('users', 1))
                 ->assertSeeIn('h1', 'User Details');
@@ -60,7 +60,7 @@ class LensTest extends DuskTestCase
                 ->visit(new Lens('users', 'passthrough-lens'))
                 ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                     $browser->waitForTable()
-                        ->click('@1-edit-button');
+                        ->editResourceById(1);
                 })
                 ->on(new Update('users', 1))
                 ->assertSeeIn('h1', 'Update User');
