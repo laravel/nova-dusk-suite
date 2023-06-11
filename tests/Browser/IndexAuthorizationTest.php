@@ -86,8 +86,8 @@ class IndexAuthorizationTest extends DuskTestCase
                 ->visit(new Index('posts'))
                 ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                     $browser->waitForTable()
-                        ->assertButtonDisabled('@'.$post->id.'-edit-button')
-                        ->assertButtonEnabled('@'.$post2->id.'-edit-button');
+                        ->assertButtonDisabled("@{$post->id}-edit-button")
+                        ->assertButtonEnabled("@{$post2->id}-edit-button");
                 });
 
             $browser->blank();
@@ -105,8 +105,8 @@ class IndexAuthorizationTest extends DuskTestCase
                 ->visit(new Index('posts'))
                 ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                     $browser->waitForTable()
-                        ->assertButtonDisabled('@'.$post->id.'-delete-button')
-                        ->assertButtonEnabled('@'.$post2->id.'-delete-button');
+                        ->assertButtonDisabled("@{$post->id}-delete-button")
+                        ->assertButtonEnabled("@{$post2->id}-delete-button");
                 });
 
             $browser->blank();
