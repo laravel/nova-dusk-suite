@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
+use Database\Factories\PeopleFactory;
 use Database\Factories\PostFactory;
 use Database\Factories\TagFactory;
 use Laravel\Dusk\Browser;
@@ -123,10 +124,10 @@ class RelationshipAuthorizationTest extends DuskTestCase
     {
         $this->defineApplicationStates('searchable');
 
-        $post = PostFactory::new()->create();
-        User::find(1)->shouldBlockFrom('post.addComment.'.$post->id);
+        $this->browse(function (Browser $browser) {
+            $post = PostFactory::new()->create();
+            User::find(1)->shouldBlockFrom('post.addComment.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
                 ->visit(new Create('comments'))
                 ->select('@commentable-type', 'posts')
@@ -140,10 +141,10 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
     public function test_create_button_should_be_missing_from_detail_index_when_not_authorized()
     {
-        $post = PostFactory::new()->create();
-        User::find(1)->shouldBlockFrom('post.addComment.'.$post->id);
-
         $this->browse(function (Browser $browser) {
+            $post = PostFactory::new()->create();
+            User::find(1)->shouldBlockFrom('post.addComment.'.$post->id);
+
             $browser->loginAs(1)
                 ->visit(new Detail('posts', 1))
                 ->within(new IndexComponent('comments'), function ($browser) {
@@ -156,11 +157,11 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
     public function test_resource_cant_be_attached_to_parent_if_not_authorized()
     {
-        $post = PostFactory::new()->create();
-        $tag = TagFactory::new()->create();
-        User::find(1)->shouldBlockFrom('post.attachTag.'.$post->id);
+        $this->browse(function (Browser $browser) {
+            $post = PostFactory::new()->create();
+            $tag = TagFactory::new()->create();
+            User::find(1)->shouldBlockFrom('post.attachTag.'.$post->id);
 
-        $this->browse(function (Browser $browser) use ($tag) {
             $browser->loginAs(1)
                 ->visit(Attach::morphToMany('posts', 1, 'tags'))
                 ->whenAvailable(new RelationSelectControlComponent('attachable'), function ($browser) use ($tag) {
@@ -173,14 +174,34 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
     public function test_attach_button_should_be_missing_from_detail_index_when_not_authorized()
     {
-        $post = PostFactory::new()->create();
-        User::find(1)->shouldBlockFrom('post.attachAnyTag.'.$post->id);
-
         $this->browse(function (Browser $browser) {
+            $post = PostFactory::new()->create();
+            User::find(1)->shouldBlockFrom('post.attachAnyTag.'.$post->id);
+
             $browser->loginAs(1)
                 ->visit(new Detail('posts', 1))
                 ->within(new IndexComponent('tags'), function ($browser) {
                     $browser->assertMissing('@attach-button');
+                });
+
+            $browser->blank();
+        });
+    }
+
+    public function test_relatable_filtering_can_be_used()
+    {
+        $this->browse(function (Browser $browser) {
+            [$person, $person1] = PeopleFactory::new()->times(2)->create([
+                'date_of_birth' => now()->subYears(10),
+            ]);
+            $person2 = PeopleFactory::new()->create(['date_of_birth' => null]);
+
+            $browser->loginAs(1)
+                ->visit(new Create('employees'))
+                ->whenAvailable(new RelationSelectControlComponent('people'), function (Browser $browser) use ($person, $person1, $person2) {
+                    $browser->assertSelectHasOption('', $person->getKey())
+                        ->assertSelectHasOption('', $person1->getKey())
+                        ->assertSelectMissingOption('', $person2->getKey());
                 });
 
             $browser->blank();
