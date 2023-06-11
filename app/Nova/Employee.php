@@ -108,7 +108,7 @@ class Employee extends Resource
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function relatablePersons(NovaRequest $request, $query)
+    public static function relatablePeople(NovaRequest $request, $query)
     {
         return $query->whereNotNull('date_of_birth');
     }
