@@ -94,6 +94,7 @@ class BookPurchases extends Lens
 
                 /**
                  * @phpstan-ignore-next-line
+                 *
                  * @var int $total
                  */
                 $total = $model->total ?? 0;
