@@ -95,7 +95,7 @@ class BookPurchases extends Lens
                     'ID' => $model->getKey(),
                     'SKU' => $model->sku,
                     'Title' => $model->title,
-                    'Total' => Money::ofMinor($model->total ?? 0, config('nova.currency', 'USD'))->getAmount()->toFloat(), // @phpstan-ignore-line
+                    'Total' => Money::ofMinor($model->total ?? 0, config('nova.currency', 'USD'))->getAmount()->toFloat(),
                 ];
             }),
         ];
