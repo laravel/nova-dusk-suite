@@ -17,7 +17,7 @@ class DateFieldTest extends DuskTestCase
      *
      * @dataProvider localiseDateDataProvider
      */
-    public function test_can_pick_date_using_date_input($date, $appTimezone, $userTimezone)
+    public function test_can_pick_date_using_date_input($date, $appTimezone, $userTimezone, $expectedDate = null)
     {
         $this->beforeServingApplication(function ($app, $config) use ($appTimezone) {
             $config->set('app.timezone', $appTimezone);
@@ -31,7 +31,8 @@ class DateFieldTest extends DuskTestCase
 
         $user = User::find(1);
 
-        $createdAt = CarbonImmutable::parse($date, $appTimezone)->startOfDay();
+        $createdAt = CarbonImmutable::parse($date, $appTimezone);
+        $expectedCreatedAt = CarbonImmutable::parse($expectedDate ?? $date, $appTimezone);
 
         tap($user->profile, function ($profile) use ($userTimezone) {
             $profile->timezone = $userTimezone;
@@ -110,11 +111,11 @@ class DateFieldTest extends DuskTestCase
     public static function localiseDateDataProvider()
     {
         yield 'UTC' => ['Dec 13 1983', 'UTC', 'UTC'];
-        yield 'UTC <> America/Chicago' => ['Dec 13 1983', 'UTC', 'America/Chicago'];
+        yield 'UTC <> America/Chicago' => ['Dec 13 1983', 'UTC', 'America/Chicago', '1983-12-14'];
         yield 'UTC <> Asia/Kuala_Lumpur' => ['Dec 13 1983', 'UTC', 'Asia/Kuala_Lumpur'];
-        yield 'UTC <> America/Santo_Domingo' => ['Dec 13 1983', 'UTC', 'America/Santo_Domingo'];
+        yield 'UTC <> America/Santo_Domingo' => ['Dec 13 1983', 'UTC', 'America/Santo_Domingo', '1983-12-14'];
         yield 'UTC <> PST' => ['Dec 13 1983', 'UTC', 'PST', '1983-12-14'];
-        yield 'America/Sao_Paulo <> America/Manaus #1' => ['Dec 13 1983', 'America/Sao_Paulo', 'America/Manaus'];
-        yield 'America/Sao_Paulo <> America/Manaus #2' => ['Aug 18 2022', 'America/Sao_Paulo', 'America/Manaus'];
+        yield 'America/Sao_Paulo <> America/Manaus #1' => ['Dec 13 1983', 'America/Sao_Paulo', 'America/Manaus', '1983-12-13 21:00:00'];
+        yield 'America/Sao_Paulo <> America/Manaus #2' => ['Aug 18 2022', 'America/Sao_Paulo', 'America/Manaus', '2022-08-18 21:00:00'];
     }
 }
