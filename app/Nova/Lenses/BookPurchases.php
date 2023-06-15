@@ -36,10 +36,12 @@ class BookPurchases extends Lens
                 'sku',
                 'title',
                 'total' => DB::table('book_purchases')->selectRaw('sum(price) as total')->whereColumn('book_id', 'books.id'),
-            ])->when(! ($request->orderBy && $request->orderByDirection), function ($query) {
-                return $query->orderBy('total', 'desc');
-            })
-        ));
+            ])->withCasts([
+                'total' => 'int',
+            ])
+        ), function ($query) {
+            return $query->orderBy('total', 'desc');
+        });
     }
 
     /**
@@ -91,11 +93,19 @@ class BookPurchases extends Lens
         return [
             ExportAsCsv::make()->withFormat(function ($model) {
                 /** @var \App\Models\Book $model */
+
+                /**
+                 * @phpstan-ignore-next-line
+                 *
+                 * @var int $total
+                 */
+                $total = $model->total ?? 0;
+
                 return [
                     'ID' => $model->getKey(),
                     'SKU' => $model->sku,
                     'Title' => $model->title,
-                    'Total' => Money::ofMinor($model->total ?? 0, config('nova.currency', 'USD'))->getAmount()->toFloat(),
+                    'Total' => Money::ofMinor($total, config('nova.currency', 'USD'))->getAmount()->toFloat(),
                 ];
             }),
         ];
