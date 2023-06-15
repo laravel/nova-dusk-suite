@@ -44,6 +44,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             return $this->app->make('uses_breadcrumbs');
         });
 
+        // Nova::enableRTL();
+
         $this->registerCustomUserCommand();
         $this->registerImpersonatingEvents();
         $this->registerMainMenu();
