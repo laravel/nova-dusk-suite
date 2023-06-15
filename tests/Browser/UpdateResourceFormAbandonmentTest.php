@@ -96,7 +96,7 @@ class UpdateResourceFormAbandonmentTest extends DuskTestCase
                 ->visit(new Index('videos'))
                 ->visit(new Update('videos', $video->id))
                 ->type('@title', 'Hello World')
-                ->click('@update-and-continue-editing-button')
+                ->updateAndContinueEditing()
                 ->waitForText('The user video was updated!')
                 ->cancel()
                 ->on(new Index('videos'));
