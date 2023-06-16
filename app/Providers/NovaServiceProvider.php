@@ -53,12 +53,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         $this->registerFieldMacros();
 
         if ($this->app->runningUnitTests()) {
-            Nova::userLocale(function ($locale) {
+            Nova::userLocale(function () {
+                $locale = app()->getLocale();
+
                 if ($locale === 'en') {
                     return 'en-GB';
                 }
 
-                return null;
+                return $locale;
             });
         }
     }
