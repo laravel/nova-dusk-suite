@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
@@ -123,9 +124,12 @@ class Captain extends Resource
             Actions\FieldsAction::make()->standalone()->canSee(function ($request) {
                 return ! ($request->allResourcesSelected() || (optional($request->selectedResourceIds())->isNotEmpty() ?? false));
             }),
+
             tap(Actions\FieldsAction::make()->fullscreen(), function ($action) {
                 $action->name = 'Fields Action (fullscreen)';
             }),
+
+            Actions\TrackSelectedAction::make(),
         ];
     }
 
@@ -138,5 +142,16 @@ class Captain extends Resource
     public function filters(NovaRequest $request): array
     {
         return [];
+    }
+
+    /**
+     * Determine if the current user can replicate the given resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    public function authorizedToReplicate(Request $request)
+    {
+        return false;
     }
 }

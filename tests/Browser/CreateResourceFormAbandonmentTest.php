@@ -16,8 +16,9 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('videos'))
-                ->runCreate()
-                ->keys('@title', 'Hello World', '{tab}')
+                ->runCreate(function ($browser) {
+                    $browser->keys('@title', 'Hello World', '{tab}');
+                })
                 ->within(new SidebarComponent(), function ($browser) {
                     $browser->clickLink('Users');
                 })
@@ -40,8 +41,9 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('videos'))
-                ->runCreate()
-                ->keys('@title', 'Hello World', '{tab}')
+                ->runCreate(function ($browser) {
+                    $browser->keys('@title', 'Hello World', '{tab}');
+                })
                 ->back()
                 ->pause(500)
                 ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
@@ -62,8 +64,9 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('videos'))
-                ->runCreate()
-                ->keys('@title', 'Hello World', '{tab}')
+                ->runCreate(function ($browser) {
+                    $browser->keys('@title', 'Hello World', '{tab}');
+                })
                 ->cancel()
                 ->on(new Index('videos'));
 
@@ -81,9 +84,10 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('videos'))
-                ->runCreate()
-                ->keys('@title', 'Hello World', '{tab}')
-                ->click('@create-and-add-another-button')
+                ->runCreate(function ($browser) {
+                    $browser->keys('@title', 'Hello World', '{tab}');
+                })
+                ->createAndAddAnother()
                 ->waitForText('The user video was created!')
                 ->cancel()
                 ->on(new Index('videos'));

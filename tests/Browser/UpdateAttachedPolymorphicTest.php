@@ -136,7 +136,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
                 ->visit(new Index('comments'))
                 ->within(new IndexComponent('comments'), function ($browser) {
                     $browser->waitForTable()
-                        ->click('@1-edit-button');
+                        ->editResourceById(1);
                 })
                 ->on(new Forbidden);
 

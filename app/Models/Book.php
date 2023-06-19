@@ -3,14 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @property int $id
+ * @property string $sku
+ * @property string $title
+ * @property string|null $description
+ * @property bool $active
+ */
 class Book extends Model
 {
-    use HasFactory;
-
     /**
      * The "booted" method of the model.
      *

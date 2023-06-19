@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateSnippetsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('flight_passports', function (Blueprint $table) {
-            $table->foreignId('flight_id');
-            $table->foreignId('passport_id');
+        Schema::create('snippets', function (Blueprint $table) {
+            $table->id();
+            $table->string('language');
+            $table->longText('content');
             $table->timestamps();
-
-            $table->index(['flight_id', 'passport_id']);
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('flight_passports');
+        Schema::dropIfExists('snippets');
     }
-};
+}

@@ -109,7 +109,7 @@ class Post extends Resource
             new Heading('Social Data'),
 
             KeyValue::make('Meta')
-                ->dependsOn('title', function (KeyValue $field, NovaRequest $request, FormData $formData) {
+                ->dependsOnCreating('title', function (KeyValue $field, NovaRequest $request, FormData $formData) {
                     $title = $formData->title ?? '';
 
                     if (Str::startsWith($title, 'Space Pilgrim:')) {

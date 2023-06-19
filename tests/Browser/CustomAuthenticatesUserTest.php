@@ -129,12 +129,10 @@ class CustomAuthenticatesUserTest extends DuskTestCase
         });
     }
 
-    /**
-     * @group external-network
-     */
     public function test_it_redirect_to_login_after_password_reset()
     {
         $this->beforeServingApplication(function ($app, $config) {
+            $config->set('mail.default', 'log');
             $config->set('nova.routes.login', '/login');
             $config->set('nova.routes.logout', '/logout');
 

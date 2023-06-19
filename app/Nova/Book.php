@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\FormData;
@@ -64,16 +65,14 @@ class Book extends Resource
                 ->stacked()
                 ->fullWidth()
                 ->nullable()
-                ->dependsOn(['title', 'active'], function (Trix $field, NovaRequest $request, FormData $formData) {
-                    if ($request->isCreateOrAttachRequest()) {
-                        $field->default($formData->title);
-                    }
-
+                ->dependsOn('active', function (Trix $field, NovaRequest $request, FormData $formData) {
                     if ($formData->boolean('active') === true) {
                         $field->show();
                     } else {
                         $field->hide();
                     }
+                })->dependsOnCreating('title', function (Trix $field, NovaRequest $request, FormData $formData) {
+                    $field->default($formData->title);
                 }),
 
             Boolean::make('Active')->default(function ($request) {
@@ -141,6 +140,7 @@ class Book extends Resource
     {
         return [
             new Actions\MarkAsActive(),
+            ExportAsCsv::make(),
         ];
     }
 
