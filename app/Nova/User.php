@@ -123,7 +123,8 @@ class User extends Resource
 
             Tag::make('Projects')
                 ->displayAsList()
-                ->withPreview(),
+                ->withPreview()
+                ->showCreateRelationButton(uses_inline_create()),
 
             ResourceTool::make()->canSee(function ($request) {
                 return ! $request->user()->isBlockedFrom('resourceTool');
