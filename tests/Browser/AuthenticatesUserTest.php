@@ -13,11 +13,9 @@ use Laravel\Nova\Tests\DuskTestCase;
 class AuthenticatesUserTest extends DuskTestCase
 {
     /**
-     * @test
-     *
      * @dataProvider intendedUrlDataProvider
      */
-    public function it_redirect_to_intended_url_after_login($targetUrl, $expectedUrl)
+    public function test_it_redirect_to_intended_url_after_login($targetUrl, $expectedUrl)
     {
         $this->browse(function (Browser $browser) use ($targetUrl, $expectedUrl) {
             $browser->logout()
@@ -114,11 +112,12 @@ class AuthenticatesUserTest extends DuskTestCase
         });
     }
 
-    /**
-     * @group external-network
-     */
     public function test_it_redirect_to_login_after_password_reset()
     {
+        $this->beforeServingApplication(function ($app, $config) {
+            $config->set('mail.default', 'log');
+        });
+
         $this->browse(function (Browser $browser) {
             $user = UserFactory::new()->create();
 

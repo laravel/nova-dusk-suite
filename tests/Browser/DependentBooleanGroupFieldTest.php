@@ -6,7 +6,9 @@ use App\Models\User;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
+use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -79,6 +81,28 @@ class DependentBooleanGroupFieldTest extends DuskTestCase
             $this->assertSame([
                 'read' => true,
             ], $user->permissions);
+        });
+    }
+
+    public function test_it_can_apply_value_from_field_dependencies()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new Index('captains'))
+                ->within(new IndexComponent('captains'), function ($browser) {
+                    $browser->runStandaloneAction('fields-action', function ($browser) {
+                        $browser->whenAvailable('input[type="checkbox"][name="selected"]', function ($browser) {
+                            $browser->assertNotChecked('');
+                        })
+                        ->whenAvailable('input[type="checkbox"][id="boolean-default-boolean-field"]', function ($browser) {
+                            $browser->check('')->pause(2000);
+                        })
+                        ->assertChecked('input[type="checkbox"][name="selected"]')
+                        ->assertChecked('input[type="checkbox"][id="boolean-default-boolean-field"]');
+                    });
+                });
+
+            $browser->blank();
         });
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphOne;
@@ -52,7 +53,9 @@ class People extends Resource
 
             Text::make(__('Name'))->rules('required'),
 
-            Date::make('Created At')->filterable(),
+            DateTime::make('Created At')->readonly()->filterable(),
+
+            Date::make('Date of Birth')->nullable()->filterable(),
 
             /** RELATION */
             HasOne::make(__('Employee'), 'employee', Employee::class)->exceptOnForms(),

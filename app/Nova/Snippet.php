@@ -2,68 +2,64 @@
 
 namespace App\Nova;
 
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Country;
+use Laravel\Nova\Fields\Code;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Tag;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-/**
- * @template TModel of \App\Models\Passport
- *
- * @extends \App\Nova\Resource<TModel>
- */
-class Passport extends Resource
+class Snippet extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<TModel>
+     * @var class-string<\App\Models\Snippet>
      */
-    public static $model = \App\Models\Passport::class;
+    public static $model = \App\Models\Snippet::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'value';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
      *
-     * @var array<int, string>
+     * @var array
      */
     public static $search = [
         'id',
     ];
 
     /**
-     * Indicates if the resource should be displayed in the sidebar.
-     *
-     * @var bool
-     */
-    public static $displayInNavigation = false;
-
-    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array<int, \Laravel\Nova\Fields\Field>
+     * @return array
      */
-    public function fields(NovaRequest $request): array
+    public function fields(NovaRequest $request)
     {
         return [
             ID::make()->sortable(),
 
-            BelongsTo::make('Profile'),
+            Select::make('Language')
+                ->options(function () {
+                    return [
+                        'php' => 'PHP',
+                        'markdown' => 'Markdown',
+                        'json' => 'json',
+                        'javascript' => 'JavaScript',
+                    ];
+                })->default('json')
+                ->displayUsingLabels(),
 
-            Text::make('Serial Number', 'value')->rules('required'),
-
-            Country::make('Country')->rules('required'),
-
-            Tag::make('Flights'),
+            Code::make('Content')
+                ->language(data_get($this->resource, 'language', 'json'))
+                ->dependsOn('language', function (Code $field, NovaRequest $request, FormData $formData) {
+                    $field->language($formData->language ?? 'json');
+                }),
         ];
     }
 
@@ -73,7 +69,7 @@ class Passport extends Resource
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function cards(NovaRequest $request): array
+    public function cards(NovaRequest $request)
     {
         return [];
     }
@@ -84,7 +80,7 @@ class Passport extends Resource
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function filters(NovaRequest $request): array
+    public function filters(NovaRequest $request)
     {
         return [];
     }
@@ -95,7 +91,7 @@ class Passport extends Resource
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function lenses(NovaRequest $request): array
+    public function lenses(NovaRequest $request)
     {
         return [];
     }
@@ -106,7 +102,7 @@ class Passport extends Resource
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function actions(NovaRequest $request): array
+    public function actions(NovaRequest $request)
     {
         return [];
     }

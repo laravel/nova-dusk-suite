@@ -4,7 +4,9 @@ namespace Laravel\Nova\Tests\Browser;
 
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
+use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
+use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class DependentFieldTest extends DuskTestCase
@@ -185,6 +187,42 @@ class DependentFieldTest extends DuskTestCase
                 'description' => 'Laravel is a web ecosystem full of delightful tools that are supercharged for developer happiness and productivity.',
                 'country' => null,
             ]);
+
+            $browser->blank();
+        });
+    }
+
+    /**
+     * @covers \Laravel\Nova\Fields\Markdown::dependsOn()
+     */
+    public function test_it_can_apply_cascading_depends_on_changes()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new Index('captains'))
+                ->within(new IndexComponent('captains'), function ($browser) {
+                    $browser->runStandaloneAction('fields-action', function ($browser) {
+                        $browser->waitFor('@select_1')
+                        ->assertMissing('@select_2')
+                        ->assertMissing('@select_3')
+                        ->select('@select_1', 'show')
+                        ->waitFor('@select_2')
+                        ->assertMissing('@select_3')
+                        ->select('@select_2', 'show')
+                        ->waitFor('@select_3')
+                        ->select('@select_3', 'show')
+                        ->select('@select_1', 'hide')
+                        ->pause(1000)
+                        ->assertMissing('@select_2')
+                        ->assertMissing('@select_3')
+                        ->select('@select_1', 'show')
+                        ->pause(1000)
+                        ->assertVisible('@select_2')
+                        ->assertSelected('@select_2', 'show')
+                        ->assertVisible('@select_3')
+                        ->assertSelected('@select_3', 'show');
+                    });
+                });
 
             $browser->blank();
         });

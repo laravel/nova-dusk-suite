@@ -54,8 +54,14 @@ class Profile extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
 
-            BelongsTo::make('User'),
-            BelongsTo::make('Company')->nullable(),
+            BelongsTo::make('User')
+                ->filterable()
+                ->searchable(uses_searchable()),
+
+            BelongsTo::make('Company')
+                ->filterable()
+                ->searchable(uses_searchable())
+                ->nullable(),
 
             URL::make('GitHub URL')->filterable(function ($request, $query, $value, $attribute) {
                 $query->where($attribute, '=', 'https://github.com/'.$value);
