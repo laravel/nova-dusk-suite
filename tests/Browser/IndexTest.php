@@ -106,7 +106,7 @@ class IndexTest extends DuskTestCase
             $browser->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTextIn('h1', 'Users')
-                        ->assertSee('Mohamed Said')
+                        ->assertSee('James Brooks')
                         ->assertSee('David Hemphill');
                 });
 
@@ -118,7 +118,7 @@ class IndexTest extends DuskTestCase
                 ->within(new IndexComponent('posts'), function ($browser) use ($post) {
                     $browser->assertSeeIn('h1', 'User Post')
                         ->assertSee($post->title)
-                        ->assertDontSee('Mohamed Said')
+                        ->assertDontSee('James Brooks')
                         ->assertDontSee('David Hemphill');
                 });
 
@@ -126,7 +126,7 @@ class IndexTest extends DuskTestCase
             $browser->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
-                        ->click('@1-view-button');
+                        ->viewResourceById(1);
                 })
                 ->on(new Detail('users', 1))
                 ->assertSeeIn('h1', 'User Details');
@@ -135,7 +135,7 @@ class IndexTest extends DuskTestCase
             $browser->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
-                        ->click('@1-edit-button');
+                        ->editResourceById(1);
                 })
                 ->on(new Update('users', 1))
                 ->assertSeeIn('h1', 'Update User');

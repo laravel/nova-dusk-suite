@@ -23,31 +23,31 @@ class UpdateAttachedTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitForTable()
-                                ->click('@1-edit-attached-button');
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('roles'), function ($browser) {
+                    $browser->waitForTable()
+                        ->click('@1-edit-attached-button');
+                })
+                ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
+                ->within(new BreadcrumbComponent(), function ($browser) {
+                    $browser->assertSeeLink('Users')
+                        ->assertSeeLink('User Details: Taylor Otwell')
+                        ->assertCurrentPageTitle('Update attached Role: 1');
+                })
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->whenAvailable('@via-resource-field', function ($browser) {
+                        $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
-                    ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
-                    ->within(new BreadcrumbComponent(), function ($browser) {
-                        $browser->assertSeeLink('Users')
-                            ->assertSeeLink('User Details: 1')
-                            ->assertCurrentPageTitle('Update attached Role: 1');
-                    })
-                    ->within(new FormComponent(), function ($browser) {
-                        $browser->whenAvailable('@via-resource-field', function ($browser) {
-                            $browser->assertSee('User')->assertSee('1');
-                        })
                         ->whenAvailable('@attachable-select', function ($browser) {
                             $browser->assertDisabled('')
-                                    ->assertSelected('', '1');
+                                ->assertSelected('', '1');
                         })
                         ->assertDisabled('@attachable-select')
                         ->assertInputValue('@notes', 'Test Notes')
                         ->type('@notes', 'Test Notes Updated');
-                    })
-                    ->update()
-                    ->waitForText('The resource was updated!');
+                })
+                ->update()
+                ->waitForText('The resource was updated!');
 
             $this->assertEquals('Test Notes Updated', User::with('roles')->find(1)->roles->first()->pivot->notes);
 
@@ -62,34 +62,34 @@ class UpdateAttachedTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitForTable()
-                                ->click('@1-edit-attached-button');
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('roles'), function ($browser) {
+                    $browser->waitForTable()
+                        ->click('@1-edit-attached-button');
+                })
+                ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
+                ->within(new BreadcrumbComponent(), function ($browser) {
+                    $browser->assertSeeLink('Users')
+                        ->assertSeeLink('User Details: Taylor Otwell')
+                        ->assertCurrentPageTitle('Update attached Role: 1');
+                })
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->whenAvailable('@via-resource-field', function ($browser) {
+                        $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
-                    ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
-                    ->within(new BreadcrumbComponent(), function ($browser) {
-                        $browser->assertSeeLink('Users')
-                            ->assertSeeLink('User Details: 1')
-                            ->assertCurrentPageTitle('Update attached Role: 1');
-                    })
-                    ->within(new FormComponent(), function ($browser) {
-                        $browser->whenAvailable('@via-resource-field', function ($browser) {
-                            $browser->assertSee('User')->assertSee('1');
-                        })
                         ->whenAvailable('@attachable-select', function ($browser) {
                             $browser->assertDisabled('')
-                                    ->assertSelected('', '1');
+                                ->assertSelected('', '1');
                         })
                         ->type('@notes', 'Test Notes Updated');
-                    })
-                    ->updateAndContinueEditing()
-                    ->waitForText('The resource was updated!')
-                    ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
-                    ->whenAvailable('@attachable-select', function ($browser) {
-                        $browser->assertDisabled('')
-                                ->assertSelected('', '1');
-                    });
+                })
+                ->updateAndContinueEditing()
+                ->waitForText('The resource was updated!')
+                ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
+                ->whenAvailable('@attachable-select', function ($browser) {
+                    $browser->assertDisabled('')
+                        ->assertSelected('', '1');
+                });
 
             $this->assertEquals('Test Notes Updated', User::with('roles')->find(1)->roles->first()->pivot->notes);
 
@@ -104,31 +104,31 @@ class UpdateAttachedTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('roles'), function ($browser) {
-                        $browser->waitForTable()
-                                ->click('@1-edit-attached-button');
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('roles'), function ($browser) {
+                    $browser->waitForTable()
+                        ->click('@1-edit-attached-button');
+                })
+                ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
+                ->within(new BreadcrumbComponent(), function ($browser) {
+                    $browser->assertSeeLink('Users')
+                        ->assertSeeLink('User Details: Taylor Otwell')
+                        ->assertCurrentPageTitle('Update attached Role: 1');
+                })
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->whenAvailable('@via-resource-field', function ($browser) {
+                        $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
-                    ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
-                    ->within(new BreadcrumbComponent(), function ($browser) {
-                        $browser->assertSeeLink('Users')
-                            ->assertSeeLink('User Details: 1')
-                            ->assertCurrentPageTitle('Update attached Role: 1');
-                    })
-                    ->within(new FormComponent(), function ($browser) {
-                        $browser->whenAvailable('@via-resource-field', function ($browser) {
-                            $browser->assertSee('User')->assertSee('1');
-                        })
                         ->whenAvailable('@attachable-select', function ($browser) {
                             $browser->assertDisabled('')
-                                    ->assertSelected('', '1');
+                                ->assertSelected('', '1');
                         })
                         ->type('@notes', str_repeat('A', 30));
-                    })
-                    ->update()
-                    ->waitForText('There was a problem submitting the form.')
-                    ->assertSee(__('validation.max.string', ['attribute' => 'notes', 'max' => 20]))
-                    ->cancel();
+                })
+                ->update()
+                ->waitForText('There was a problem submitting the form.')
+                ->assertSee(__('validation.max.string', ['attribute' => 'notes', 'max' => 20]))
+                ->cancel();
 
             $this->assertEquals('Test Notes', User::with('roles')->find(1)->roles->first()->pivot->notes);
 
@@ -147,41 +147,41 @@ class UpdateAttachedTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
-                        $browser->waitForTable()
-                            ->within('tr[data-pivot-id="2"]', function ($browser) {
-                                $browser->assertSee('$32.60')
-                                        ->click('@4-edit-attached-button');
-                            });
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
+                    $browser->waitForTable()
+                        ->within('tr[data-pivot-id="2"]', function ($browser) {
+                            $browser->assertSee('$32.60')
+                                ->click('@4-edit-attached-button');
+                        });
+                })
+                ->on(UpdateAttached::belongsToMany('users', 1, 'books', 4))
+                ->within(new BreadcrumbComponent(), function ($browser) {
+                    $browser->assertSeeLink('Users')
+                        ->assertSeeLink('User Details: Taylor Otwell')
+                        ->assertCurrentPageTitle('Update attached Book: laravel-testing-decoded');
+                })
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->whenAvailable('@via-resource-field', function ($browser) {
+                        $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
-                    ->on(UpdateAttached::belongsToMany('users', 1, 'books', 4))
-                    ->within(new BreadcrumbComponent(), function ($browser) {
-                        $browser->assertSeeLink('Users')
-                            ->assertSeeLink('User Details: 1')
-                            ->assertCurrentPageTitle('Update attached Book: laravel-testing-decoded');
-                    })
-                    ->within(new FormComponent(), function ($browser) {
-                        $browser->whenAvailable('@via-resource-field', function ($browser) {
-                            $browser->assertSee('User')->assertSee('1');
-                        })
                         ->whenAvailable('@price', function ($browser) {
                             $browser->assertValue('', 32.60)
-                                    ->type('', '43');
+                                ->type('', '43');
                         });
-                    })
-                    ->update()
-                    ->waitForText('The resource was updated!')
-                    ->on(new Detail('users', 1))
-                    ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
-                        $browser->waitForTable()
-                            ->within('tr[data-pivot-id="1"]', function ($browser) {
-                                $browser->assertSee('$34.00');
-                            })
-                            ->within('tr[data-pivot-id="2"]', function ($browser) {
-                                $browser->assertSee('$43.00');
-                            });
-                    });
+                })
+                ->update()
+                ->waitForText('The resource was updated!')
+                ->on(new Detail('users', 1))
+                ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
+                    $browser->waitForTable()
+                        ->within('tr[data-pivot-id="1"]', function ($browser) {
+                            $browser->assertSee('$34.00');
+                        })
+                        ->within('tr[data-pivot-id="2"]', function ($browser) {
+                            $browser->assertSee('$43.00');
+                        });
+                });
 
             $browser->blank();
         });

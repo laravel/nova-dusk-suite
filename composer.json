@@ -9,24 +9,27 @@
     "type": "project",
     "require": {
         "php": "^8.1",
+        "algolia/algoliasearch-client-php": "^3.3",
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^10.0",
-        "laravel/scout": "^9.8|^10.0.1",
+        "http-interop/http-factory-guzzle": "^1.2",
+        "laravel/framework": "^10.8",
+        "laravel/scout": "^10.0.1",
         "laravel/tinker": "^2.7",
         "laravel/vapor-core": "^2.22",
         "league/flysystem-aws-s3-v3": "^3.0",
+        "meilisearch/meilisearch-php": "^1.1",
         "nova-kit/nova-on-vapor": "^1.0",
         "spatie/laravel-ray": "^1.17"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
         "laravel/breeze": "^1.1",
-        "laravel/nova": "*",
-        "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^6.1",
+        "laravel/nova": "@dev",
+        "mockery/mockery": "^1.5.1",
+        "nunomaduro/collision": "^7.5",
         "nunomaduro/larastan": "^2.5.1",
         "orchestra/testbench-dusk": "^8.0",
-        "phpunit/phpunit": "^9.6"
+        "phpunit/phpunit": "^10.1"
     },
     "autoload": {
         "psr-4": {
@@ -95,12 +98,13 @@
     ],
     "config": {
         "allow-plugins": {
-            "composer/package-versions-deprecated": true
+            "composer/package-versions-deprecated": true,
+            "php-http/discovery": true
         },
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }

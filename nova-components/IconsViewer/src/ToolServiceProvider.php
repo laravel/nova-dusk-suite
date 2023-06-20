@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
+use Otwell\IconsViewer\Http\Middleware\Authorize;
 
 class ToolServiceProvider extends ServiceProvider
 {

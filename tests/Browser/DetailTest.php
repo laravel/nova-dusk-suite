@@ -24,14 +24,14 @@ class DetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->waitForTextIn('h1', 'User Details: 1')
-                    ->within('@users-detail-component', function ($browser) {
-                        $browser->assertSee('User Details: 1')
-                            ->assertSeeIn('@name', 'Taylor Otwell')
-                            ->assertSeeIn('@email', 'taylor@laravel.com')
-                            ->assertSeeIn('@settings->pagination', 'Simple');
-                    });
+                ->visit(new Detail('users', 1))
+                ->waitForTextIn('h1', 'User Details: Taylor Otwell')
+                ->within('@users-detail-component', function ($browser) {
+                    $browser->assertSee('User Details: Taylor Otwell')
+                        ->assertSeeIn('@name', 'Taylor Otwell')
+                        ->assertSeeIn('@email', 'taylor@laravel.com')
+                        ->assertSeeIn('@settings->pagination', 'Simple');
+                });
 
             $browser->blank();
         });
@@ -48,13 +48,13 @@ class DetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', $user->id))
-                    ->waitForTextIn('h1', 'User Details: '.$user->id)
-                    ->within('@users-detail-component', function ($browser) use ($user) {
-                        $browser->assertSee('User Details: '.$user->id)
-                            ->assertSeeIn('@id', $user->id)
-                            ->assertSeeIn('@email', $user->email);
-                    });
+                ->visit(new Detail('users', $user->id))
+                ->waitForTextIn('h1', 'User Details: '.$user->name)
+                ->within('@users-detail-component', function ($browser) use ($user) {
+                    $browser->assertSee('User Details: '.$user->name)
+                        ->assertSeeIn('@id', $user->id)
+                        ->assertSeeIn('@email', $user->email);
+                });
 
             $browser->blank();
         });
@@ -70,15 +70,15 @@ class DetailTest extends DuskTestCase
 
             // To Edit Resource screen
             $browser->visit(new Detail('users', 1))
-                    ->edit()
-                    ->on(new Update('users', 1))
-                    ->assertSeeIn('h1', 'Update User');
+                ->edit()
+                ->on(new Update('users', 1))
+                ->assertSeeIn('h1', 'Update User');
 
             // To Edit Resource screen using shortcut
             $browser->visit(new Detail('users', 1))
-                    ->keys('', ['e'])
-                    ->on(new Update('users', 1))
-                    ->assertSeeIn('h1', 'Update User');
+                ->keys('', ['e'])
+                ->on(new Update('users', 1))
+                ->assertSeeIn('h1', 'Update User');
 
             $browser->blank();
         });
@@ -91,14 +91,14 @@ class DetailTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 2))
-                    ->replicate()
-                    ->on(new Replicate('users', 2))
-                    ->assertSeeIn('h1', 'Create User')
-                    ->assertInputValue('@name', 'Mohamed Said')
-                    ->assertInputValue('@email', 'mohamed@laravel.com')
-                    ->assertSee('Create & Add Another')
-                    ->assertSee('Create User');
+                ->visit(new Detail('users', 2))
+                ->replicate()
+                ->on(new Replicate('users', 2))
+                ->assertSeeIn('h1', 'Create User')
+                ->assertInputValue('@name', 'James Brooks')
+                ->assertInputValue('@email', 'james@laravel.com')
+                ->assertSee('Create & Add Another')
+                ->assertSee('Create User');
 
             $browser->blank();
         });
@@ -113,23 +113,23 @@ class DetailTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 4))
-                    ->waitFor('@edit-resource-button')
-                    ->openControlSelector()
-                    ->assertNotPresent('@replicate-resource-button');
+                ->visit(new Detail('users', 4))
+                ->waitFor('@edit-resource-button')
+                ->openControlSelector()
+                ->assertNotPresent('@replicate-resource-button');
 
             // To different Detail screen
             $browser->visit(new Detail('users', 2))
-                    ->waitForTextIn('h1', 'User Details: 2')
-                    ->assertSeeIn('@users-detail-component', 'Mohamed Said');
+                ->waitForTextIn('h1', 'User Details: James Brooks')
+                ->assertSeeIn('@users-detail-component', 'James Brooks');
 
             $browser->script([
                 'Nova.visit("/resources/users/3");',
             ]);
 
             $browser->on(new Detail('users', 3))
-                    ->waitForTextIn('h1', 'User Details: 3')
-                    ->assertSeeIn('@users-detail-component', 'David Hemphill');
+                ->waitForTextIn('h1', 'User Details: David Hemphill')
+                ->assertSeeIn('@users-detail-component', 'David Hemphill');
 
             $browser->blank();
         });
@@ -142,11 +142,11 @@ class DetailTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 3))
-                    ->waitForTextIn('h1', 'User Details: 3')
-                    ->delete()
-                    ->waitForText('The user was deleted')
-                    ->on(new UserIndex);
+                ->visit(new Detail('users', 3))
+                ->waitForTextIn('h1', 'User Details: David Hemphill')
+                ->delete()
+                ->waitForText('The user was deleted')
+                ->on(new UserIndex);
 
             $this->assertNull(User::where('id', 3)->first());
 

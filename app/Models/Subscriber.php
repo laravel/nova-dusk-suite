@@ -32,6 +32,15 @@ class Subscriber extends Authenticatable
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array<string, class-string|string>
+     */
+    protected $casts = [
+        'meta' => 'json',
+    ];
+
+    /**
      * Determine if the user can impersonate another user.
      *
      * @return bool

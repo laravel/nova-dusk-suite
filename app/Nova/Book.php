@@ -2,8 +2,10 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
@@ -60,12 +62,23 @@ class Book extends Resource
 
             Trix::make('Description')
                 ->withFiles()
-                ->nullable(),
+                ->stacked()
+                ->fullWidth()
+                ->nullable()
+                ->dependsOn('active', function (Trix $field, NovaRequest $request, FormData $formData) {
+                    if ($formData->boolean('active') === true) {
+                        $field->show();
+                    } else {
+                        $field->hide();
+                    }
+                })->dependsOnCreating('title', function (Trix $field, NovaRequest $request, FormData $formData) {
+                    $field->default($formData->title);
+                }),
 
             Boolean::make('Active')->default(function ($request) {
                 return true;
             })->filterable()
-            ->showOnPreview(),
+                ->showOnPreview(),
 
             BelongsToMany::make('Purchasers', 'purchasers', User::class)
                 ->fields(new Fields\BookPurchase(null, true)),
@@ -127,6 +140,7 @@ class Book extends Resource
     {
         return [
             new Actions\MarkAsActive(),
+            ExportAsCsv::make(),
         ];
     }
 

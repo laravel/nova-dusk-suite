@@ -45,7 +45,7 @@ class User extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -110,20 +110,21 @@ class User extends Resource
                 'update' => 'Update',
                 'delete' => 'Delete',
             ])
-            ->noValueText('No permissions selected.')
-            ->dependsOn('email', function (BooleanGroup $field, NovaRequest $request, FormData $formData) {
-                if (! Str::endsWith($formData->email, 'laravel.com')) {
-                    $field->options(['read' => 'Read']);
-                }
-            })
-            ->filterable()
-            ->showOnPreview(),
+                ->noValueText('No permissions selected.')
+                ->dependsOn('email', function (BooleanGroup $field, NovaRequest $request, FormData $formData) {
+                    if (! Str::endsWith($formData->email, 'laravel.com')) {
+                        $field->options(['read' => 'Read']);
+                    }
+                })
+                ->filterable()
+                ->showOnPreview(),
 
             DateTime::make('Created At')->readonly()->filterable(),
 
             Tag::make('Projects')
                 ->displayAsList()
-                ->withPreview(),
+                ->withPreview()
+                ->showCreateRelationButton(uses_inline_create()),
 
             ResourceTool::make()->canSee(function ($request) {
                 return ! transform($request->user(), function ($user) {
@@ -169,29 +170,37 @@ class User extends Resource
                     ])
                     ->displayUsingLabels()
                     ->hideFromIndex(),
+
+                Select::make('Editor', 'settings->editor')
+                    ->options([
+                        'textarea' => 'Textarea',
+                        'markdown' => 'Markdown',
+                        'trix' => 'Trix',
+                    ])
+                    ->displayUsingLabels()
+                    ->hideFromIndex(),
             ]),
 
             BelongsToMany::make('Roles')
-                        ->display('name')
-                        ->fields(function ($request) {
-                            return [
-                                Text::make('Notes', 'notes')->rules('max:20'),
-                            ];
-                        })
-                        ->actions(function ($request) {
-                            return [
-                                new Actions\UpdatePivotNotes,
-                                Actions\StandaloneTask::make()->standalone(),
-                            ];
-                        })
-                        ->referToPivotAs('Role Assignment')
-                        ->prunable()
-                        ->showCreateRelationButton(uses_inline_create())
-                        ->filterable(),
+                ->display('name')
+                ->fields(function ($request) {
+                    return [
+                        Text::make('Notes', 'notes')->rules('max:20'),
+                    ];
+                })
+                ->actions(function ($request) {
+                    return [
+                        new Actions\UpdatePivotNotes,
+                        Actions\StandaloneTask::make()->standalone(),
+                    ];
+                })
+                ->referToPivotAs('Role Assignment')
+                ->prunable()
+                ->showCreateRelationButton(uses_inline_create())
+                ->filterable(),
 
             BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
-                ->fields(new Fields\BookPurchase('personal'))
-                ->help('Self-purchased books'),
+                ->fields(new Fields\BookPurchase('personal')),
 
             BelongsToMany::make('Gift Books', 'giftBooks', Book::class)
                 ->fields(
@@ -205,8 +214,7 @@ class User extends Resource
                         }),
                     ])
                 )->filterable()
-                ->allowDuplicateRelations()
-                ->help('Books purchased as gift'),
+                ->allowDuplicateRelations(),
         ];
     }
 

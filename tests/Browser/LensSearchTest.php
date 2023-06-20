@@ -25,27 +25,27 @@ class LensSearchTest extends DuskTestCase
 
             // Search For Single Post By ID...
             $browser->loginAs(1)
-                    ->visit(new Lens('posts', 'post'))
-                    ->within(new LensComponent('posts', 'post'), function ($browser) {
-                        $browser->waitForTable()
-                                ->searchFor('3')
-                                ->waitForTable()
-                                ->assertDontSeeResource(1)
-                                ->assertDontSeeResource(2)
-                                ->assertSeeResource(3)
-                                ->assertSee('1-1 of 1');
-                    });
+                ->visit(new Lens('posts', 'post'))
+                ->within(new LensComponent('posts', 'post'), function ($browser) {
+                    $browser->waitForTable()
+                        ->searchFor('3')
+                        ->waitForTable()
+                        ->assertDontSeeResource(1)
+                        ->assertDontSeeResource(2)
+                        ->assertSeeResource(3)
+                        ->assertSee('1-1 of 1');
+                });
 
             // Search For Single Post By Name...
             $browser->visit(new Lens('posts', 'post'))
-                    ->within(new LensComponent('posts', 'post'), function ($browser) {
-                        $browser->waitForTable()
-                                ->searchFor('Taylor')
-                                ->waitForTable()
-                                ->assertSeeResource(1)
-                                ->assertDontSeeResource(2)
-                                ->assertDontSeeResource(3);
-                    });
+                ->within(new LensComponent('posts', 'post'), function ($browser) {
+                    $browser->waitForTable()
+                        ->searchFor('Taylor')
+                        ->waitForTable()
+                        ->assertSeeResource(1)
+                        ->assertDontSeeResource(2)
+                        ->assertDontSeeResource(3);
+                });
 
             $browser->blank();
         });
@@ -64,16 +64,16 @@ class LensSearchTest extends DuskTestCase
                 ->create();
 
             $browser->loginAs(1)
-                    ->visit(new Lens('posts', 'post', ['posts_page' => 1, 'posts_search' => 'taylor']))
-                    ->within(new LensComponent('posts', 'post'), function ($browser) {
-                        $browser->waitForTable()
-                                ->assertSeeResource(1)
-                                ->assertDontSeeResource(2)
-                                ->assertDontSeeResource(3)
-                                ->assertDontSeeResource(4)
-                                ->assertSeeResource(5)
-                                ->assertQueryStringHas('posts_search', 'taylor');
-                    });
+                ->visit(new Lens('posts', 'post', ['posts_page' => 1, 'posts_search' => 'taylor']))
+                ->within(new LensComponent('posts', 'post'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertSeeResource(1)
+                        ->assertDontSeeResource(2)
+                        ->assertDontSeeResource(3)
+                        ->assertDontSeeResource(4)
+                        ->assertSeeResource(5)
+                        ->assertQueryStringHas('posts_search', 'taylor');
+                });
 
             $browser->blank();
         });

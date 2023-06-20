@@ -20,8 +20,8 @@ class UpdateAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
-                    ->visit(new Page("/resources/posts/{$post->id}/edit"))
-                    ->assertForbidden();
+                ->visit(new Page("/resources/posts/{$post->id}/edit"))
+                ->assertForbidden();
 
             $browser->blank();
         });

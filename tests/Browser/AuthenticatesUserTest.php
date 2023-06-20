@@ -2,6 +2,7 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
+use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Components\SidebarComponent;
@@ -12,11 +13,9 @@ use Laravel\Nova\Tests\DuskTestCase;
 class AuthenticatesUserTest extends DuskTestCase
 {
     /**
-     * @test
-     *
      * @dataProvider intendedUrlDataProvider
      */
-    public function it_redirect_to_intended_url_after_login($targetUrl, $expectedUrl)
+    public function test_it_redirect_to_intended_url_after_login($targetUrl, $expectedUrl)
     {
         $this->browse(function (Browser $browser) use ($targetUrl, $expectedUrl) {
             $browser->logout()
@@ -100,16 +99,39 @@ class AuthenticatesUserTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->logout()
-                    ->assertGuest()
-                    ->visit('/dashboard')
-                    ->waitForLocation('/login')
-                    ->visit(new Login())
-                    ->type('email', 'nova@laravel.com')
-                    ->type('password', 'password')
-                    ->clickAndWaitForReload('button[type="submit"]')
-                    ->assertPathIs('/dashboard');
+                ->assertGuest()
+                ->visit('/dashboard')
+                ->waitForLocation('/login')
+                ->visit(new Login())
+                ->type('email', 'nova@laravel.com')
+                ->type('password', 'password')
+                ->clickAndWaitForReload('button[type="submit"]')
+                ->assertPathIs('/dashboard');
 
             $browser->pause(2000)->blank();
+        });
+    }
+
+    public function test_it_redirect_to_login_after_password_reset()
+    {
+        $this->beforeServingApplication(function ($app, $config) {
+            $config->set('mail.default', 'log');
+        });
+
+        $this->browse(function (Browser $browser) {
+            $user = UserFactory::new()->create();
+
+            $browser->logout()
+                ->assertGuest()
+                ->visit(Nova::url('password/reset'))
+                ->waitForText('Forgot your password?')
+                ->type('input[id="email"]', $user->email)
+                ->click('button[type="submit"]')
+                ->waitForText(__('passwords.sent'))
+                ->pause(5000)
+                ->waitForLocation(Nova::url('login'));
+
+            $browser->blank();
         });
     }
 

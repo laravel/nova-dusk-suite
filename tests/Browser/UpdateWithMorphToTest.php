@@ -10,6 +10,7 @@ use Database\Factories\PhotoFactory;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
+use Laravel\Nova\Testing\Browser\Components\Controls\RelationSelectControlComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -18,6 +19,27 @@ class UpdateWithMorphToTest extends DuskTestCase
 {
     public function test_resource_can_be_updated_to_new_parent()
     {
+        $comment = CommentFactory::new()->create();
+        PostFactory::new()->create();
+
+        $this->browse(function (Browser $browser) use ($comment) {
+            $browser->loginAs(1)
+                ->visit(new Update('comments', $comment->id))
+                ->assertMissing('@commentable-unlock-relation')
+                ->selectRelation('commentable', 2)
+                ->assertMissing('@commentable-unlock-relation')
+                ->update()
+                ->waitForText('The comment was updated');
+
+            $this->assertSame(0, Post::withCount('comments')->find(1)->comments_count);
+            $this->assertSame(1, Post::withCount('comments')->find(2)->comments_count);
+
+            $browser->blank();
+        });
+    }
+
+    public function test_resource_can_be_updated_to_new_parent_using_searchable()
+    {
         $this->defineApplicationStates('searchable');
 
         $this->browse(function (Browser $browser) {
@@ -25,17 +47,19 @@ class UpdateWithMorphToTest extends DuskTestCase
             PostFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Update('comments', $comment->id))
-                    ->within(new BreadcrumbComponent(), function ($browser) use ($comment) {
-                        $browser->assertSeeLink('Comments')
-                            ->assertSeeLink('Comment Details: '.$comment->id)
-                            ->assertCurrentPageTitle('Update Comment');
-                    })
-                    ->within(new FormComponent(), function ($browser) {
-                        $browser->searchFirstRelation('commentable', 2);
-                    })
-                    ->update()
-                    ->waitForText('The comment was updated');
+                ->visit(new Update('comments', $comment->id))
+                ->within(new BreadcrumbComponent(), function ($browser) use ($comment) {
+                    $browser->assertSeeLink('Comments')
+                        ->assertSeeLink('Comment Details: '.$comment->id)
+                        ->assertCurrentPageTitle('Update Comment');
+                })
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->assertMissing('@commentable-unlock-relation')
+                        ->searchFirstRelation('commentable', 2)
+                        ->assertMissing('@commentable-unlock-relation');
+                })
+                ->update()
+                ->waitForText('The comment was updated');
 
             $posts = Post::withCount('comments')->findMany([1, 2], ['id']);
 
@@ -47,6 +71,26 @@ class UpdateWithMorphToTest extends DuskTestCase
     }
 
     public function test_morph_to_field_should_honor_custom_polymorphic_type()
+    {
+        $link = LinkFactory::new()->create();
+        $link->comments()->save($comment = CommentFactory::new()->create());
+
+        $this->browse(function (Browser $browser) use ($comment, $link) {
+            $browser->loginAs(1)
+                ->visit(new Update('comments', $comment->id))
+                ->assertEnabled('@commentable-type')
+                ->within('@commentable-type', function ($browser) {
+                    $browser->assertSee('Link');
+                })
+                ->whenAvailable(new RelationSelectControlComponent('commentable'), function ($browser) use ($link) {
+                    $browser->assertSelected('', $link->id);
+                });
+
+            $browser->blank();
+        });
+    }
+
+    public function test_morph_to_field_should_honor_custom_polymorphic_type_using_searchable()
     {
         $this->defineApplicationStates('searchable');
 
@@ -75,6 +119,51 @@ class UpdateWithMorphToTest extends DuskTestCase
 
     public function test_morph_to_field_should_ignore_query_parameters_when_editing()
     {
+        $post = PostFactory::new()->create();
+        $post->comments()->save($comment = CommentFactory::new()->create());
+
+        $this->browse(function (Browser $browser) use ($comment, $post) {
+            $browser->loginAs(1)
+                ->visit(new Update('comments', $comment->id, [
+                    'viaResource' => 'links',
+                    'viaResourceId' => $post->id,
+                    'viaRelationship' => 'comments',
+                ]))
+                ->whenAvailable('@commentable-type', function ($browser) {
+                    $browser->assertEnabled('')
+                        ->assertSelected('', 'posts');
+                })
+                ->whenAvailable(new RelationSelectControlComponent('commentable'), function ($browser) use ($post) {
+                    $browser->assertSelected('', $post->id);
+                });
+
+            // It can reset the value.
+            $browser->visit(new Update('comments', $comment->id, [
+                'viaResource' => 'posts',
+                'viaResourceId' => $post->id,
+                'viaRelationship' => 'comments',
+            ]))
+                ->assertQueryStringHas('viaResource', 'posts')
+                ->assertQueryStringHas('viaResourceId', $post->id)
+                ->assertQueryStringHas('viaRelationship', 'comments')
+                ->resetSearchRelation('commentable')
+                ->whenAvailable('@commentable-type', function ($browser) {
+                    $browser->assertEnabled('')
+                        ->assertSelected('', 'posts');
+                })
+                ->whenAvailable(new RelationSelectControlComponent('commentable'), function ($browser) use ($post) {
+                    $browser->assertSelected('', $post->id);
+                })
+                ->assertQueryStringMissing('viaResource')
+                ->assertQueryStringMissing('viaResourceId')
+                ->assertQueryStringMissing('viaRelationship');
+
+            $browser->blank();
+        });
+    }
+
+    public function test_morph_to_field_should_ignore_query_parameters_when_editing_using_searchable()
+    {
         $this->defineApplicationStates('searchable');
 
         $this->browse(function (Browser $browser) {
@@ -95,10 +184,29 @@ class UpdateWithMorphToTest extends DuskTestCase
                 ->within(new FormComponent(), function ($browser) use ($post) {
                     $browser->whenAvailable('select[dusk="commentable-type"]', function ($browser) {
                         $browser->assertEnabled('')
-                                ->assertSelected('', 'posts');
+                            ->assertSelected('', 'posts');
                     })
-                    ->assertSelectedSearchResult('commentable', $post->title);
+                        ->assertSelectedSearchResult('commentable', $post->title);
                 });
+
+            // It can reset the value.
+            $browser->visit(new Update('comments', $comment->id, [
+                'viaResource' => 'posts',
+                'viaResourceId' => $post->id,
+                'viaRelationship' => 'comments',
+            ]))
+                ->assertQueryStringHas('viaResource', 'posts')
+                ->assertQueryStringHas('viaResourceId', 1)
+                ->assertQueryStringHas('viaRelationship', 'comments')
+                ->resetSearchRelation('commentable')
+                ->whenAvailable('@commentable-type', function ($browser) {
+                    $browser->assertEnabled('')
+                        ->assertSelected('', 'posts');
+                })
+                ->assertSearchResultContains('commentable', $post->title)
+                ->assertQueryStringMissing('viaResource')
+                ->assertQueryStringMissing('viaResourceId')
+                ->assertQueryStringMissing('viaRelationship');
 
             $browser->blank();
         });
@@ -117,7 +225,7 @@ class UpdateWithMorphToTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Update('photos', $photo->id))
                 ->within(new FormComponent(), function ($browser) {
-                    $browser->selectRelation('imageable-select', '');
+                    $browser->selectRelation('imageable', '');
                 })->update()
                 ->waitForText('The photo was updated!');
 

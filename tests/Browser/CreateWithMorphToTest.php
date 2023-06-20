@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\Controls\RelationSelectControlComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -16,15 +17,17 @@ class CreateWithMorphToTest extends DuskTestCase
             $post = PostFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Create('comments'))
-                    ->waitForTextIn('@nova-form', 'Commentable')
-                    ->select('@commentable-type', 'posts')
-                    ->pause(500)
-                    ->selectRelation('commentable-select', 1)
-                    ->type('@body', 'Test Comment')
-                    ->create()
-                    ->waitForText('The comment was created!')
-                    ->on(new Detail('comments', 1));
+                ->visit(new Create('comments'))
+                ->waitForTextIn('@nova-form', 'Commentable')
+                ->select('@commentable-type', 'posts')
+                ->pause(500)
+                ->whenAvailable(new RelationSelectControlComponent('commentable'), function ($browser) {
+                    $browser->select('', 1);
+                })
+                ->type('@body', 'Test Comment')
+                ->create()
+                ->waitForText('The comment was created!')
+                ->on(new Detail('comments', 1));
 
             $this->assertSame(1, $post->loadCount('comments')->comments_count);
 
@@ -40,15 +43,15 @@ class CreateWithMorphToTest extends DuskTestCase
             $post = PostFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Create('comments'))
-                    ->waitForTextIn('@nova-form', 'Commentable')
-                    ->select('@commentable-type', 'posts')
-                    ->pause(500)
-                    ->searchFirstRelation('commentable', 1)
-                    ->type('@body', 'Test Comment')
-                    ->create()
-                    ->waitForText('The comment was created!')
-                    ->on(new Detail('comments', 1));
+                ->visit(new Create('comments'))
+                ->waitForTextIn('@nova-form', 'Commentable')
+                ->select('@commentable-type', 'posts')
+                ->pause(500)
+                ->searchFirstRelation('commentable', 1)
+                ->type('@body', 'Test Comment')
+                ->create()
+                ->waitForText('The comment was created!')
+                ->on(new Detail('comments', 1));
 
             $this->assertSame(1, $post->loadCount('comments')->comments_count);
 
@@ -74,15 +77,15 @@ class CreateWithMorphToTest extends DuskTestCase
             $post = PostFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Detail('posts', $post->id))
-                    ->runCreateRelation('comments')
-                    ->waitForTextIn('@nova-form', 'Commentable')
-                    ->assertDisabled('@commentable-type')
-                    ->assertDisabled('select[dusk="commentable-select"]')
-                    ->type('@body', 'Test Comment')
-                    ->create()
-                    ->waitForText('The comment was created!')
-                    ->on(new Detail('comments', 1));
+                ->visit(new Detail('posts', $post->id))
+                ->runCreateRelation('comments')
+                ->waitForTextIn('@nova-form', 'Commentable')
+                ->assertDisabled('@commentable-type')
+                ->assertSelectedSearchResult('commentable', $post->title)
+                ->type('@body', 'Test Comment')
+                ->create()
+                ->waitForText('The comment was created!')
+                ->on(new Detail('comments', 1));
 
             $this->assertSame(1, $post->loadCount('comments')->comments_count);
 
@@ -94,10 +97,10 @@ class CreateWithMorphToTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Create('comments'))
-                    ->waitForTextIn('@nova-form', 'Commentable')
-                    ->assertSee('User Post')
-                    ->assertSee('User Video');
+                ->visit(new Create('comments'))
+                ->waitForTextIn('@nova-form', 'Commentable')
+                ->assertSee('User Post')
+                ->assertSee('User Video');
 
             $browser->blank();
         });
@@ -119,10 +122,23 @@ class CreateWithMorphToTest extends DuskTestCase
                     $browser->assertDisabled('')
                         ->assertSelected('', 'posts');
                 })
-                ->whenAvailable('select[dusk="commentable-select"]', function ($browser) use ($post) {
-                    $browser->assertDisabled('')
-                        ->assertSelected('', $post->id);
-                });
+                ->assertSelectedSearchResult('commentable', $post->title);
+
+            // It can reset the value.
+            $browser->assertQueryStringHas('viaResource', 'posts')
+                ->assertQueryStringHas('viaResourceId', $post->id)
+                ->assertQueryStringHas('viaRelationship', 'comments')
+                ->resetSearchRelation('commentable')
+                ->whenAvailable('@commentable-type', function ($browser) {
+                    $browser->assertEnabled('')
+                        ->assertSelected('', 'posts');
+                })
+                ->whenAvailable(new RelationSelectControlComponent('commentable'), function ($browser) {
+                    $browser->assertSelectHasOption('', '');
+                })
+                ->assertQueryStringMissing('viaResource')
+                ->assertQueryStringMissing('viaResourceId')
+                ->assertQueryStringMissing('viaRelationship');
 
             $browser->blank();
         });

@@ -43,21 +43,21 @@ class Role extends Resource
             Text::make('Name', 'name')->rules('required')->sortable(),
 
             BelongsToMany::make('Users', 'users')
-                        ->display('name')
-                        ->fields(function ($request) {
-                            return [
-                                Text::make('Notes', 'notes')->rules('max:20'),
-                            ];
-                        })
-                        ->actions(function ($request) {
-                            return [
-                                new Actions\UpdatePivotNotes,
-                                new Actions\UpdateRequiredPivotNotes,
-                            ];
-                        })
-                        ->prunable()
-                        ->filterable()
-                        ->reorderAttachables(uses_with_reordering()),
+                ->display('name')
+                ->fields(function ($request) {
+                    return [
+                        Text::make('Notes', 'notes')->rules('max:20'),
+                    ];
+                })
+                ->actions(function ($request) {
+                    return [
+                        new Actions\UpdatePivotNotes,
+                        new Actions\UpdateRequiredPivotNotes,
+                    ];
+                })
+                ->prunable()
+                ->filterable()
+                ->reorderAttachables(uses_with_reordering()),
         ];
     }
 

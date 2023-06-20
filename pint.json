@@ -1,0 +1,9 @@
+{
+  "preset": "laravel",
+  "exclude": [
+    "tests/Browser"
+  ],
+  "rules": {
+    "no_superfluous_phpdoc_tags": false
+  }
+}

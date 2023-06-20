@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Nova\Dashboards\Main;
 use App\Nova\Dashboards\Posts;
 use Carbon\CarbonInterval;
@@ -13,6 +14,9 @@ use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Events\StartedImpersonating;
 use Laravel\Nova\Events\StoppedImpersonating;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\FormData;
+use Laravel\Nova\Fields\Hidden;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
@@ -40,11 +44,25 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             return $this->app->make('uses_breadcrumbs');
         });
 
+        // Nova::enableRTL();
+
         $this->registerCustomUserCommand();
         $this->registerImpersonatingEvents();
         $this->registerMainMenu();
         $this->registerUserMenu();
         $this->registerFieldMacros();
+
+        if ($this->app->runningUnitTests()) {
+            Nova::userLocale(function () {
+                $locale = app()->getLocale();
+
+                if ($locale === 'en') {
+                    return 'en-GB';
+                }
+
+                return $locale;
+            });
+        }
     }
 
     /**
@@ -167,6 +185,26 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function registerFieldMacros()
     {
+        Hidden::macro('trackSelectedResources', function (string $from) {
+            /** @phpstan-ignore-next-line */
+            $this->dependsOn($from, function (Hidden $field, NovaRequest $request, FormData $formData) use ($from) {
+                $bool = $formData->get($from, false) === true ? 'true' : 'false';
+
+                if ($request->allResourcesSelected()) {
+                    $field->setValue("{$bool} - all");
+                } else {
+                    tap($request->selectedResourceIds(), function ($selectedResourceIds) use ($field, $bool) {
+                        /** @var \Illuminate\Support\Collection<int, int|string> $selectedResourceIds */
+                        $field->setValue(
+                            sprintf('%s - %s', $bool, $selectedResourceIds->isEmpty() ? 'null' : $selectedResourceIds->join(','))
+                        );
+                    });
+                }
+            });
+
+            return $this;
+        });
+
         Field::macro('showWhen', function (bool $condition) {
             /** @phpstan-ignore-next-line */
             return $condition === true ? $this->show() : $this->hide();
@@ -186,9 +224,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function routes()
     {
         Nova::routes()
-                ->withAuthenticationRoutes()
-                ->withPasswordResetRoutes()
-                ->register();
+            ->withAuthenticationRoutes()
+            ->withPasswordResetRoutes()
+            ->register();
     }
 
     /**
@@ -229,8 +267,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             new IconsViewer,
             SidebarTool::make()->canSee(function (Request $request) {
                 return ! transform($request->user(), function ($user) {
-                    /** @var \App\Models\User $user */
-                    return $user->isBlockedFrom('sidebarTool');
+                    /** @var \App\Models\User|\App\Models\Subscriber $user */
+                    return $user instanceof User && $user->isBlockedFrom('sidebarTool');
                 }, false);
             }),
         ];

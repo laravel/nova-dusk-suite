@@ -4,10 +4,14 @@ namespace Laravel\Nova\Tests\Browser;
 
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\Controls\RelationSelectControlComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
+/**
+ * @covers \Laravel\Nova\Fields\BelongsTo::dependsOn()
+ */
 class DependentBelongsToFieldTest extends DuskTestCase
 {
     public function test_it_can_apply_depends_on_first_load()
@@ -29,7 +33,9 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 ->assertDontSeeIn('@nova-form', 'Attachment')
                 ->type('@title', 'Space Pilgrim: Episode 1')
                 ->pause(2000)
-                ->assertSelected('@user', 1)
+                ->within(new RelationSelectControlComponent('users'), function ($browser) {
+                    $browser->assertSelected('', 1);
+                })
                 ->assertInputValue('@key-value-key-0', 'Series')
                 ->assertInputValue('@key-value-value-0', 'Space Pilgrim')
                 ->assertSeeIn('@nova-form', 'Attachment')
@@ -49,7 +55,9 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 ->type('@title', 'Space Pilgrim: Episode 1')
                 ->type('@body', 'Content')
                 ->pause(2000)
-                ->assertSelected('@user', 1)
+                ->within(new RelationSelectControlComponent('users'), function ($browser) {
+                    $browser->assertSelected('', 1);
+                })
                 ->assertInputValue('@key-value-key-0', 'Series')
                 ->assertInputValue('@key-value-value-0', 'Space Pilgrim')
                 ->create()
@@ -77,14 +85,18 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 ->assertDontSeeIn('@nova-form', 'Attachment')
                 ->type('@title', 'Space Pilgrim: Episode '.$post1->id)
                 ->pause(2000)
-                ->assertSelected('@user', 4)
+                ->within(new RelationSelectControlComponent('users'), function ($browser) {
+                    $browser->assertSelected('', 1);
+                })
                 ->cancel();
 
             $browser->visit(new Update('posts', $post2->id))
                 ->assertSeeIn('@nova-form', 'Attachment')
                 ->type('@title', 'Space Pilgrim: Episode '.$post2->id)
                 ->pause(2000)
-                ->assertSelected('@user', $post2->user_id)
+                ->within(new RelationSelectControlComponent('users'), function ($browser) {
+                    $browser->assertSelected('', 1);
+                })
                 ->cancel();
 
             $browser->blank();

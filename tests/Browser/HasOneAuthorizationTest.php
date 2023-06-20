@@ -18,14 +18,14 @@ class HasOneAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Create('users'))
-                    ->assertMissing('@create-profile-relation-button')
-                    ->type('@name', 'Adam Wathan')
-                    ->type('@email', 'adam@laravel.com')
-                    ->type('@password', 'secret')
-                    ->select('@settings->pagination', 'simple')
-                    ->create()
-                    ->waitForText('The user was created!');
+                ->visit(new Create('users'))
+                ->assertMissing('@create-profile-relation-button')
+                ->type('@name', 'Adam Wathan')
+                ->type('@email', 'adam@laravel.com')
+                ->type('@password', 'secret')
+                ->select('@settings->pagination', 'simple')
+                ->create()
+                ->waitForText('The user was created!');
 
             $user = User::latest()->first();
 
@@ -41,11 +41,11 @@ class HasOneAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 2))
-                    ->assertMissing('@profiles-detail-component')
-                    ->visit(new Detail('users', 1))
-                    ->waitFor('@profiles-detail-component')
-                    ->assertSee('Profile');
+                ->visit(new Detail('users', 2))
+                ->assertMissing('@profiles-detail-component')
+                ->visit(new Detail('users', 1))
+                ->waitFor('@profiles-detail-component')
+                ->assertSee('Profile');
 
             $browser->blank();
         });
@@ -57,9 +57,9 @@ class HasOneAuthorizationTest extends DuskTestCase
             $user = UserFactory::new()->create();
 
             $browser->loginAs($user)
-                    ->visit(new Update('profiles', 2))
-                    ->assertMissing('@passports-detail-component')
-                    ->assertSee('Profile');
+                ->visit(new Update('profiles', 2))
+                ->assertMissing('@passports-detail-component')
+                ->assertSee('Profile');
 
             $browser->blank();
         });

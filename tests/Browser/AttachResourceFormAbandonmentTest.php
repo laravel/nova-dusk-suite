@@ -18,19 +18,19 @@ class AttachResourceFormAbandonmentTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->runAttachRelation('roles')
-                    ->whenAvailable('@via-resource-field', function ($browser) {
-                        $browser->assertSee('User')->assertSee('1');
-                    })
-                    ->keys('@notes', 'Test Notes', '{tab}')
-                    ->within(new SidebarComponent(), function ($browser) {
-                        $browser->clickLink('Users');
-                    })
-                    ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
-                    ->acceptDialog()
-                    ->on(new UserIndex)
-                    ->waitForTextIn('h1', 'Users');
+                ->visit(new Detail('users', 1))
+                ->runAttachRelation('roles')
+                ->whenAvailable('@via-resource-field', function ($browser) {
+                    $browser->assertSee('User')->assertSee('Taylor Otwell');
+                })
+                ->keys('@notes', 'Test Notes', '{tab}')
+                ->within(new SidebarComponent(), function ($browser) {
+                    $browser->clickLink('Users');
+                })
+                ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
+                ->acceptDialog()
+                ->on(new UserIndex)
+                ->waitForTextIn('h1', 'Users');
 
             $browser->blank();
         });
@@ -43,17 +43,17 @@ class AttachResourceFormAbandonmentTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->runAttachRelation('roles')
-                    ->whenAvailable('@via-resource-field', function ($browser) {
-                        $browser->assertSee('User')->assertSee('1');
-                    })
-                    ->keys('@notes', 'Test Notes', '{tab}')
-                    ->back()
-                    ->pause(500)
-                    ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
-                    ->acceptDialog()
-                    ->on(new Detail('users', 1));
+                ->visit(new Detail('users', 1))
+                ->runAttachRelation('roles')
+                ->whenAvailable('@via-resource-field', function ($browser) {
+                    $browser->assertSee('User')->assertSee('Taylor Otwell');
+                })
+                ->keys('@notes', 'Test Notes', '{tab}')
+                ->back()
+                ->pause(500)
+                ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
+                ->acceptDialog()
+                ->on(new Detail('users', 1));
 
             $browser->blank();
         });
@@ -66,14 +66,14 @@ class AttachResourceFormAbandonmentTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('users', 1))
-                    ->runAttachRelation('roles')
-                    ->whenAvailable('@via-resource-field', function ($browser) {
-                        $browser->assertSee('User')->assertSee('1');
-                    })
-                    ->keys('@notes', 'Test Notes', '{tab}')
-                    ->cancel()
-                    ->on(new Detail('users', 1));
+                ->visit(new Detail('users', 1))
+                ->runAttachRelation('roles')
+                ->whenAvailable('@via-resource-field', function ($browser) {
+                    $browser->assertSee('User')->assertSee('Taylor Otwell');
+                })
+                ->keys('@notes', 'Test Notes', '{tab}')
+                ->cancel()
+                ->on(new Detail('users', 1));
 
             $browser->blank();
         });

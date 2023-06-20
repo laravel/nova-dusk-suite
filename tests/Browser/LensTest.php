@@ -44,7 +44,7 @@ class LensTest extends DuskTestCase
                 ->visit(new Lens('users', 'passthrough-lens'))
                 ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                     $browser->waitForTable()
-                        ->click('@1-view-button');
+                        ->viewResourceById(1);
                 })
                 ->on(new Detail('users', 1))
                 ->assertSeeIn('h1', 'User Details');
@@ -60,7 +60,7 @@ class LensTest extends DuskTestCase
                 ->visit(new Lens('users', 'passthrough-lens'))
                 ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                     $browser->waitForTable()
-                        ->click('@1-edit-button');
+                        ->editResourceById(1);
                 })
                 ->on(new Update('users', 1))
                 ->assertSeeIn('h1', 'Update User');
@@ -160,25 +160,25 @@ class LensTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-            ->visit(new Lens('users', 'passthrough-lens'))
-            ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
-                $browser->waitForTable()
-                    ->assertSeeResource(1)
-                    ->assertSeeResource(25)
-                    ->assertDontSeeResource(26);
+                ->visit(new Lens('users', 'passthrough-lens'))
+                ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertSeeResource(1)
+                        ->assertSeeResource(25)
+                        ->assertDontSeeResource(26);
 
-                $browser->nextPage()
-                    ->assertDontSeeResource(1)
-                    ->assertDontSeeResource(25)
-                    ->assertSeeResource(26)
-                    ->assertSeeResource(50);
+                    $browser->nextPage()
+                        ->assertDontSeeResource(1)
+                        ->assertDontSeeResource(25)
+                        ->assertSeeResource(26)
+                        ->assertSeeResource(50);
 
-                $browser->previousPage()
-                    ->assertSeeResource(1)
-                    ->assertSeeResource(25)
-                    ->assertDontSeeResource(26)
-                    ->assertDontSeeResource(50);
-            });
+                    $browser->previousPage()
+                        ->assertSeeResource(1)
+                        ->assertSeeResource(25)
+                        ->assertDontSeeResource(26)
+                        ->assertDontSeeResource(50);
+                });
 
             $browser->blank();
         });

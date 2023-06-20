@@ -20,14 +20,14 @@ class SoftDeletingIndexTest extends DuskTestCase
             $dock = DockFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Index('docks'))
-                    ->within(new IndexComponent('docks'), function ($browser) use ($dock) {
-                        $browser->waitForTable()
-                                ->deleteResourceById($dock->id)
-                                ->waitForEmptyDialog()
-                                ->assertSee('No Dock matched the given criteria.')
-                                ->assertDontSeeResource($dock->id);
-                    });
+                ->visit(new Index('docks'))
+                ->within(new IndexComponent('docks'), function ($browser) use ($dock) {
+                    $browser->waitForTable()
+                        ->deleteResourceById($dock->id)
+                        ->waitForEmptyDialog()
+                        ->assertSee('No Dock matched the given criteria.')
+                        ->assertDontSeeResource($dock->id);
+                });
 
             $this->assertEquals(1, Dock::withTrashed()->count());
 
@@ -41,17 +41,17 @@ class SoftDeletingIndexTest extends DuskTestCase
             [$dock, $dock1, $dock2] = DockFactory::new()->times(3)->create();
 
             $browser->loginAs(1)
-                    ->visit(new Index('docks'))
-                    ->within(new IndexComponent('docks'), function ($browser) use ($dock, $dock1, $dock2) {
-                        $browser->waitForTable()
-                            ->clickCheckboxForId($dock2->id)
-                            ->clickCheckboxForId($dock1->id)
-                            ->deleteSelected()
-                            ->waitForTable()
-                            ->assertSeeResource($dock->id)
-                            ->assertDontSeeResource($dock1->id)
-                            ->assertDontSeeResource($dock2->id);
-                    });
+                ->visit(new Index('docks'))
+                ->within(new IndexComponent('docks'), function ($browser) use ($dock, $dock1, $dock2) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId($dock2->id)
+                        ->clickCheckboxForId($dock1->id)
+                        ->deleteSelected()
+                        ->waitForTable()
+                        ->assertSeeResource($dock->id)
+                        ->assertDontSeeResource($dock1->id)
+                        ->assertDontSeeResource($dock2->id);
+                });
 
             $browser->blank();
         });
@@ -64,21 +64,21 @@ class SoftDeletingIndexTest extends DuskTestCase
             [$dock1, $dock2] = DockFactory::new()->times(2)->create(['deleted_at' => now()]);
 
             $browser->loginAs(1)
-                    ->visit(new Index('docks'))
-                    ->within(new IndexComponent('docks'), function ($browser) use ($dock, $dock1, $dock2) {
-                        $browser->withTrashed();
+                ->visit(new Index('docks'))
+                ->within(new IndexComponent('docks'), function ($browser) use ($dock, $dock1, $dock2) {
+                    $browser->withTrashed();
 
-                        $browser->waitForTable()
-                            ->clickCheckboxForId($dock2->id)
-                            ->clickCheckboxForId($dock1->id)
-                            ->restoreSelected()
-                            ->waitForTable()
-                            ->withoutTrashed()
-                            ->waitForTable()
-                            ->assertSeeResource($dock->id)
-                            ->assertSeeResource($dock1->id)
-                            ->assertSeeResource($dock2->id);
-                    });
+                    $browser->waitForTable()
+                        ->clickCheckboxForId($dock2->id)
+                        ->clickCheckboxForId($dock1->id)
+                        ->restoreSelected()
+                        ->waitForTable()
+                        ->withoutTrashed()
+                        ->waitForTable()
+                        ->assertSeeResource($dock->id)
+                        ->assertSeeResource($dock1->id)
+                        ->assertSeeResource($dock2->id);
+                });
 
             $browser->blank();
         });
@@ -90,19 +90,19 @@ class SoftDeletingIndexTest extends DuskTestCase
             [$dock, $dock1, $dock2] = DockFactory::new()->times(3)->create();
 
             $browser->loginAs(1)
-                    ->visit(new Index('docks'))
-                    ->within(new IndexComponent('docks'), function ($browser) use ($dock, $dock1, $dock2) {
-                        $browser->withTrashed();
+                ->visit(new Index('docks'))
+                ->within(new IndexComponent('docks'), function ($browser) use ($dock, $dock1, $dock2) {
+                    $browser->withTrashed();
 
-                        $browser->waitForTable()
-                            ->clickCheckboxForId($dock2->id)
-                            ->clickCheckboxForId($dock1->id)
-                            ->forceDeleteSelected()
-                            ->waitForTable()
-                            ->assertSeeResource($dock->id)
-                            ->assertDontSeeResource($dock1->id)
-                            ->assertDontSeeResource($dock2->id);
-                    });
+                    $browser->waitForTable()
+                        ->clickCheckboxForId($dock2->id)
+                        ->clickCheckboxForId($dock1->id)
+                        ->forceDeleteSelected()
+                        ->waitForTable()
+                        ->assertSeeResource($dock->id)
+                        ->assertDontSeeResource($dock1->id)
+                        ->assertDontSeeResource($dock2->id);
+                });
 
             $browser->blank();
         });
@@ -116,21 +116,21 @@ class SoftDeletingIndexTest extends DuskTestCase
             $separateShip = ShipFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) use ($ship, $ship1, $ship2) {
-                        $browser->waitForTable()
-                            ->selectAllMatching()
-                            ->deleteSelected()
-                            ->waitForEmptyDialog()
-                            ->assertDontSeeResource($ship->id)
-                            ->assertDontSeeResource($ship1->id)
-                            ->assertDontSeeResource($ship2->id)
-                            ->withTrashed()
-                            ->waitForTable()
-                            ->assertSeeResource($ship->id)
-                            ->assertSeeResource($ship1->id)
-                            ->assertSeeResource($ship2->id);
-                    });
+                ->visit(new Detail('docks', 1))
+                ->within(new IndexComponent('ships'), function ($browser) use ($ship, $ship1, $ship2) {
+                    $browser->waitForTable()
+                        ->selectAllMatching()
+                        ->deleteSelected()
+                        ->waitForEmptyDialog()
+                        ->assertDontSeeResource($ship->id)
+                        ->assertDontSeeResource($ship1->id)
+                        ->assertDontSeeResource($ship2->id)
+                        ->withTrashed()
+                        ->waitForTable()
+                        ->assertSeeResource($ship->id)
+                        ->assertSeeResource($ship1->id)
+                        ->assertSeeResource($ship2->id);
+                });
 
             $this->assertNull($separateShip->fresh()->deleted_at);
 
@@ -149,18 +149,18 @@ class SoftDeletingIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                    ->visit(new Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) {
-                        $browser->withTrashed();
+                ->visit(new Detail('docks', 1))
+                ->within(new IndexComponent('ships'), function ($browser) {
+                    $browser->withTrashed();
 
-                        $browser->waitForTable()
-                            ->selectAllMatching()
-                            ->restoreSelected()
-                            ->waitForTable()
-                            ->assertSeeResource(1)
-                            ->assertSeeResource(2)
-                            ->assertSeeResource(3);
-                    });
+                    $browser->waitForTable()
+                        ->selectAllMatching()
+                        ->restoreSelected()
+                        ->waitForTable()
+                        ->assertSeeResource(1)
+                        ->assertSeeResource(2)
+                        ->assertSeeResource(3);
+                });
 
             $this->assertEquals(4, Ship::count());
             $this->assertEquals(0, Ship::onlyTrashed()->count());
@@ -180,18 +180,18 @@ class SoftDeletingIndexTest extends DuskTestCase
             $separateShip = ShipFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Detail('docks', 1))
-                    ->within(new IndexComponent('ships'), function ($browser) use ($ship, $ship1, $ship2) {
-                        $browser->withTrashed();
+                ->visit(new Detail('docks', 1))
+                ->within(new IndexComponent('ships'), function ($browser) use ($ship, $ship1, $ship2) {
+                    $browser->withTrashed();
 
-                        $browser->waitForTable()
-                            ->selectAllMatching()
-                            ->forceDeleteSelected()
-                            ->waitForEmptyDialog()
-                            ->assertDontSeeResource($ship->id)
-                            ->assertDontSeeResource($ship1->id)
-                            ->assertDontSeeResource($ship2->id);
-                    });
+                    $browser->waitForTable()
+                        ->selectAllMatching()
+                        ->forceDeleteSelected()
+                        ->waitForEmptyDialog()
+                        ->assertDontSeeResource($ship->id)
+                        ->assertDontSeeResource($ship1->id)
+                        ->assertDontSeeResource($ship2->id);
+                });
 
             $this->assertNotNull($separateShip->fresh());
             $this->assertEquals(1, Ship::count());
@@ -207,14 +207,14 @@ class SoftDeletingIndexTest extends DuskTestCase
             $dock = DockFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Index('docks'))
-                    ->within(new IndexComponent('docks'), function ($browser) use ($dock) {
-                        $browser->withTrashed()
-                                ->waitForTable()
-                                ->deleteResourceById($dock->id)
-                                ->waitForTable()
-                                ->assertSeeResource($dock->id);
-                    });
+                ->visit(new Index('docks'))
+                ->within(new IndexComponent('docks'), function ($browser) use ($dock) {
+                    $browser->withTrashed()
+                        ->waitForTable()
+                        ->deleteResourceById($dock->id)
+                        ->waitForTable()
+                        ->assertSeeResource($dock->id);
+                });
 
             $this->assertEquals(1, Dock::withTrashed()->count());
 
@@ -229,17 +229,17 @@ class SoftDeletingIndexTest extends DuskTestCase
             $ship1 = DockFactory::new()->create(['deleted_at' => now()]);
 
             $browser->loginAs(1)
-                    ->visit(new Index('docks'))
-                    ->within(new IndexComponent('docks'), function ($browser) use ($ship, $ship1) {
-                        $browser->waitForTable()
-                                ->assertSeeResource($ship->id)
-                                ->assertDontSeeResource($ship1->id);
+                ->visit(new Index('docks'))
+                ->within(new IndexComponent('docks'), function ($browser) use ($ship, $ship1) {
+                    $browser->waitForTable()
+                        ->assertSeeResource($ship->id)
+                        ->assertDontSeeResource($ship1->id);
 
-                        $browser->onlyTrashed()
-                                ->waitForTable()
-                                ->assertDontSeeResource($ship->id)
-                                ->assertSeeResource($ship1->id);
-                    });
+                    $browser->onlyTrashed()
+                        ->waitForTable()
+                        ->assertDontSeeResource($ship->id)
+                        ->assertSeeResource($ship1->id);
+                });
 
             $browser->blank();
         });
@@ -251,16 +251,16 @@ class SoftDeletingIndexTest extends DuskTestCase
             $dock = DockFactory::new()->create();
 
             $browser->loginAs(1)
-                    ->visit(new Index('docks'))
-                    ->within(new IndexComponent('docks'), function ($browser) use ($dock) {
-                        $browser->withTrashed()
-                                ->waitForTable()
-                                ->deleteResourceById($dock->id)
-                                ->waitForTable()
-                                ->restoreResourceById($dock->id)
-                                ->waitForTable()
-                                ->assertSeeResource($dock->id);
-                    });
+                ->visit(new Index('docks'))
+                ->within(new IndexComponent('docks'), function ($browser) use ($dock) {
+                    $browser->withTrashed()
+                        ->waitForTable()
+                        ->deleteResourceById($dock->id)
+                        ->waitForTable()
+                        ->restoreResourceById($dock->id)
+                        ->waitForTable()
+                        ->assertSeeResource($dock->id);
+                });
 
             $this->assertEquals(1, Dock::count());
 

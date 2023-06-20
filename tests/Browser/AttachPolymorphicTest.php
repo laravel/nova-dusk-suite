@@ -26,7 +26,7 @@ class AttachPolymorphicTest extends DuskTestCase
                 ->visit(new Detail('posts', $post->id))
                 ->within(new IndexComponent('tags'), function ($browser) {
                     $browser->waitFor('@attach-button')
-                            ->click('@attach-button');
+                        ->click('@attach-button');
                 })
                 ->on(Attach::morphToMany('posts', $post->id, 'tags'))
                 ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
@@ -60,7 +60,7 @@ class AttachPolymorphicTest extends DuskTestCase
                 ->visit(new Detail('posts', $post->id))
                 ->within(new IndexComponent('tags'), function ($browser) {
                     $browser->waitFor('@attach-button')
-                            ->click('@attach-button');
+                        ->click('@attach-button');
                 })
                 ->on(Attach::morphToMany('posts', $post->id, 'tags'))
                 ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
