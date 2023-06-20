@@ -61,12 +61,12 @@ class Invoice extends Resource
         return [
             ID::make()->sortable(),
 
-            Repeater::make('Invoice Items', 'items')
-                ->fields([
+            Repeater::make('Invoice Items', 'items', InvoiceItem::class)
+                ->repeatables([
                     Number::make('Quantity')->rules('numeric'),
                     Text::make('Description')->rules('string'),
                     Currency::make('Price')->rules('numeric')->asMinorUnits(),
-                ])->onlyOnForms(),
+                ]),
 
             HasMany::make('InvoiceItem', 'items'),
         ];
