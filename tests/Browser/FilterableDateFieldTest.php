@@ -12,7 +12,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 class FilterableDateFieldTest extends DuskTestCase
 {
     /**
-     * @group local-time
+     * @group date-field
      */
     public function test_it_can_filter_by_date_field()
     {
@@ -63,7 +63,7 @@ class FilterableDateFieldTest extends DuskTestCase
     }
 
     /**
-     * @group local-time
+     * @group datetime-field
      */
     public function test_it_can_filter_by_datetime_field()
     {

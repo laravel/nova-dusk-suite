@@ -12,7 +12,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 class DependentPivotFieldTest extends DuskTestCase
 {
     /**
-     * @group local-time
+     * @group datetime-field
      *
      * @covers \Laravel\Nova\Fields\Currency::dependsOn()
      * @covers \Laravel\Nova\Fields\Hidden::dependsOn()
