@@ -5,7 +5,6 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Menu\MenuItem;
-use Laravel\Nova\ResolvesFields;
 use Laravel\Nova\Resource as NovaResource;
 
 /**
