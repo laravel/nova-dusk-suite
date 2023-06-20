@@ -10,11 +10,12 @@ use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
+/**
+ * @group date-field
+ */
 class DateFieldTest extends DuskTestCase
 {
     /**
-     * @group local-time
-     *
      * @dataProvider localiseDateDataProvider
      */
     public function test_can_pick_date_using_date_input($date, $appTimezone, $userTimezone, $expectedDate = null)
@@ -73,8 +74,6 @@ class DateFieldTest extends DuskTestCase
     }
 
     /**
-     * @group local-time
-     *
      * @dataProvider localiseDateDataProvider
      */
     public function test_can_pick_date_using_date_input_and_maintain_current_value_on_validation_errors($date, $appTimezone, $userTimezone)
