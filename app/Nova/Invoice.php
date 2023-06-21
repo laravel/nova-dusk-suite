@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Repeater\InvoiceItem as InvoiceItemRepeater;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
@@ -63,10 +64,8 @@ class Invoice extends Resource
 
             Repeater::make('Invoice Items', 'items', InvoiceItem::class)
                 ->repeatables([
-                    Number::make('Quantity')->rules('numeric'),
-                    Text::make('Description')->rules('string'),
-                    Currency::make('Price')->rules('numeric')->asMinorUnits(),
-                ]),
+                    InvoiceItemRepeater::make(),
+                ])->asHasMany(),
 
             HasMany::make('InvoiceItem', 'items'),
         ];
