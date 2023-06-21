@@ -2,6 +2,9 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
+use Database\Factories\CaptainFactory;
+use Database\Factories\DockFactory;
+use Database\Factories\ShipFactory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Laravel\Dusk\Browser;
@@ -97,6 +100,58 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->assertDontSeeResource(4, 2)
                         ->assertSeeResource(3, 3)
                         ->assertDontSeeResource(4, 4);
+                });
+
+            $browser->blank();
+        });
+    }
+
+    public function test_it_can_filter_belongs_to_many_field_via_nested_relationship()
+    {
+        $this->browse(function (Browser $browser) {
+            [$dock, $dock1] = DockFactory::new()->times(2)->create();
+            [$captain, $captain1] = CaptainFactory::new()->times(2)->create();
+            [$ship, $ship1, $ship2] = ShipFactory::new()->times(3)->create([
+                'dock_id' => $dock->getKey(),
+            ]);
+            [$ship3, $ship4, $ship5] = ShipFactory::new()->times(5)->create([
+                'dock_id' => $dock1->getKey(),
+            ]);
+
+            $ship->captains()->sync([$captain->getKey(), $captain1->getKey()]);
+            $ship3->captains()->sync([$captain1->getKey()]);
+
+            $browser->loginAs(1)
+                ->visit(new Detail('docks', $dock->getKey()))
+                ->within(new IndexComponent('ships'), function ($browser) use ($captain, $captain1, $ship, $ship1, $ship2) {
+                    $browser->waitForTable()
+                        ->assertSeeResource($ship->getKey())
+                        ->assertSeeResource($ship1->getKey())
+                        ->assertSeeResource($ship2->getKey())
+                        ->runFilter(function ($browser) use ($captain) {
+                            $browser->whenAvailable('select[dusk="captains-default-belongs-to-many-field-filter"]', function ($browser) use ($captain) {
+                                $browser->select('', $captain->getKey());
+                            });
+                        })->waitForTable()
+                        ->assertQueryStringHas(
+                            'ships_filter',
+                            base64_encode(json_encode([['resource:captains:captains' => "{$captain->getKey()}"]]))
+                        )
+                        ->assertSeeResource($ship->getKey())
+                        ->assertDontSeeResource($ship1->getKey())
+                        ->assertDontSeeResource($ship2->getKey())
+                        ->runFilter(function ($browser) use ($captain1) {
+                            $browser->whenAvailable('select[dusk="captains-default-belongs-to-many-field-filter"]', function ($browser) use ($captain1) {
+                                $browser->select('', $captain1->getKey());
+                            });
+                        })->waitForTable()
+                        ->assertQueryStringHas(
+                            'ships_filter',
+                            base64_encode(json_encode([['resource:captains:captains' => "{$captain1->getKey()}"]]))
+                        )
+                        ->assertSeeResource($ship->getKey())
+                        ->assertDontSeeResource($ship1->getKey())
+                        ->assertDontSeeResource($ship2->getKey());
                 });
 
             $browser->blank();

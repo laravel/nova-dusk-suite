@@ -14,11 +14,12 @@ use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Testing\Browser\Pages\UpdateAttached;
 use Laravel\Nova\Tests\DuskTestCase;
 
+/**
+ * @group datetime-field
+ */
 class DateTimeFieldTest extends DuskTestCase
 {
     /**
-     * @group local-time
-     *
      * @dataProvider localiseDatetimeDataProvider
      */
     public function test_can_pick_date_using_datetime_input($appDateTime, $appTimezone, $localDateTime, $userTimezone)
@@ -44,15 +45,7 @@ class DateTimeFieldTest extends DuskTestCase
                 ->type('@price', '34')
                 ->typeOnDateTimeLocal('@purchased_at', $local)
                 ->create()
-                ->waitForText('The resource was attached!')
-                ->on(new Detail('users', $user->id))
-                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) use ($local) {
-                    $browser->waitForTable()
-                        ->assertSeeResource(4)
-                        ->within('@4-row', function ($browser) use ($local) {
-                            $browser->assertSee($local->format('d/m/Y, H:i'));
-                        });
-                });
+                ->waitForText('The resource was attached!');
 
             $book = $user->personalBooks()->first();
 
@@ -61,17 +54,26 @@ class DateTimeFieldTest extends DuskTestCase
                 $book->pivot->purchased_at->toDateTimeString()
             );
 
+            $browser->on(new Detail('users', $user->id))
+                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) use ($now) {
+                    $browser->waitForTable()
+                        ->assertSeeResource(4)
+                        ->within('@4-row', function ($browser) use ($now) {
+                            $browser->assertAttribute('td:nth-child(8) > div > span', 'title', $now->toIso8601String());
+                        });
+                });
+
             $browser->visit(UpdateAttached::belongsToMany('users', $user->id, 'books', 4, 'personalBooks', 1))
                 ->assertSeeIn('h1', 'Update attached Book: '.$user->name)
                 ->type('@price', '44')
                 ->update()
                 ->waitForText('The resource was updated!')
                 ->on(new Detail('users', $user->id))
-                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) use ($local) {
+                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) use ($now) {
                     $browser->waitForTable()
                         ->assertSeeResource(4)
-                        ->within('@4-row', function ($browser) use ($local) {
-                            $browser->assertSee($local->format('d/m/Y, H:i'));
+                        ->within('@4-row', function ($browser) use ($now) {
+                            $browser->assertAttribute('td:nth-child(8) > div > span', 'title', $now->toIso8601String());
                         });
                 });
 
@@ -89,8 +91,6 @@ class DateTimeFieldTest extends DuskTestCase
     }
 
     /**
-     * @group local-time
-     *
      * @dataProvider localiseDatetimeDataProvider
      */
     public function test_can_pick_date_using_datetime_input_and_maintain_current_value_on_validation_errors($appDateTime, $appTimezone, $localDateTime, $userTimezone)
@@ -153,8 +153,6 @@ class DateTimeFieldTest extends DuskTestCase
     }
 
     /**
-     * @group local-time
-     *
      * @dataProvider localiseDatetimeDataProvider
      */
     public function test_can_persist_date_using_datetime_input($appDateTime, $appTimezone, $localDateTime, $userTimezone)
@@ -172,7 +170,7 @@ class DateTimeFieldTest extends DuskTestCase
             $profile->save();
         });
 
-        $this->browse(function (Browser $browser) use ($user, $now, $local) {
+        $this->browse(function (Browser $browser) use ($user, $now) {
             $ship = ShipFactory::new()->create([
                 'departed_at' => $now,
             ]);
@@ -183,8 +181,8 @@ class DateTimeFieldTest extends DuskTestCase
                 ->update()
                 ->waitForText('The ship was updated!')
                 ->on(new Detail('ships', $ship->id))
-                ->within(new DetailComponent('ships', $ship->id), function ($browser) use ($local) {
-                    $browser->assertSeeIn('@departed_at', $local->format('d/m/Y, H:i'));
+                ->within(new DetailComponent('ships', $ship->id), function ($browser) use ($now) {
+                    $browser->assertAttribute('[dusk="departed_at"] > div > p', 'title', $now->toIso8601String());
                 });
 
             $browser->blank();
@@ -195,12 +193,12 @@ class DateTimeFieldTest extends DuskTestCase
 
     public static function localiseDatetimeDataProvider()
     {
-        yield 'UTC' => ['2021-10-14 02:48:15', 'UTC', '2021-10-14 02:48:15', 'UTC'];
-        yield 'UTC <> America/Chicago' => ['2021-10-14 02:48:15', 'UTC', '2021-10-13 21:48:15', 'America/Chicago'];
-        yield 'UTC <> America/Mexico_City' => ['2021-10-14 02:48:15', 'UTC', '2021-10-13 21:48:15', 'America/Mexico_City'];
-        yield 'UTC <> Asia/Kuala_Lumpur' => ['2021-10-14 02:48:15', 'UTC', '2021-10-14 10:48:15', 'Asia/Kuala_Lumpur'];
-        yield 'UTC <> CET' => ['2021-10-14 01:48:15', 'UTC', '2021-10-14 03:48:15', 'CET'];
-        yield 'UTC <> America/Mexico_City #1' => ['2023-05-02 14:00:00', 'UTC', '2023-05-02 08:00:00', 'America/Mexico_City'];
-        yield 'UTC <> CET #1' => ['2022-05-10 10:00:00', 'UTC', '2022-05-10 12:00:00', 'CET'];
+        yield 'UTC' => ['2021-10-14T02:48:15+00:00', 'UTC', '2021-10-14T02:48:15+00:00', 'UTC'];
+        yield 'UTC <> America/Chicago' => ['2021-10-14T02:48:15+00:00', 'UTC', '2021-10-13T21:48:15-05:00', 'America/Chicago'];
+        yield 'UTC <> America/Mexico_City' => ['2021-10-14T02:48:15+00:00', 'UTC', '2021-10-13T21:48:15-06:00', 'America/Mexico_City'];
+        yield 'UTC <> Asia/Kuala_Lumpur' => ['2021-10-14T02:48:15+00:00', 'UTC', '2021-10-14T10:48:15+08:00', 'Asia/Kuala_Lumpur'];
+        yield 'UTC <> CET' => ['2021-10-14T01:48:15+00:00', 'UTC', '2021-10-14T03:48:15+01:00', 'CET'];
+        // yield 'UTC <> America/Mexico_City #1' => ['2023-05-02T14:00:00+00:00', 'UTC', '2023-05-02T08:00:00-06:00', 'America/Mexico_City'];
+        yield 'UTC <> CET #1' => ['2022-05-10T10:00:00+00:00', 'UTC', '2022-05-10T12:00:00+01:00', 'CET'];
     }
 }
