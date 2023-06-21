@@ -3,12 +3,9 @@
 namespace App\Nova;
 
 use App\Nova\Repeater\InvoiceItem as InvoiceItemRepeater;
-use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Repeater;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
