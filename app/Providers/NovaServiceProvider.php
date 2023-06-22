@@ -294,7 +294,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             return $request->user()->profile->timezone ?? $default;
         });
 
-
         Nova::enableRTL(function (Request $request) {
             return data_get($request->user(), 'settings.direction', 'ltr') === 'rtl';
         });
