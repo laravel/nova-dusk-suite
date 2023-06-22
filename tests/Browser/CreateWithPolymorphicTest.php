@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
@@ -23,9 +24,11 @@ class CreateWithPolymorphicTest extends DuskTestCase
                         ->click('@create-button');
                 })
                 ->on(new Create('comments'))
-                ->assertDisabled('@commentable-type')
-                ->assertSelectedSearchResult('commentable', $post->title)
-                ->type('@body', 'Test Comment')
+                ->within(new FormComponent(), function ($browser) use ($post) {
+                    $browser->assertDisabled('@commentable-type')
+                        ->assertSelectedSearchResult('commentable', $post->title)
+                        ->type('@body', 'Test Comment');
+                })
                 ->create()
                 ->waitForText('The comment was created!')
                 ->on(new Detail('comments', 1));
