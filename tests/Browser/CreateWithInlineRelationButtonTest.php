@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Comment;
 use App\Models\Sail;
+use App\Models\User;
 use Database\Factories\DockFactory;
 use Database\Factories\PostFactory;
 use Database\Factories\ShipFactory;
@@ -12,6 +13,7 @@ use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Components\SearchInputComponent;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Testing\Browser\Pages\Create;
+use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateWithInlineRelationButtonTest extends DuskTestCase
@@ -237,6 +239,40 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
             $sail = Sail::latest()->first();
             $this->assertSame('Test Sail', $sail->name);
             $this->assertSame('test-sail', $sail->slug);
+
+            $browser->blank();
+        });
+    }
+
+    public function test_tag_resource_should_fetch_the_related_resource_id_info()
+    {
+        $this->defineApplicationStates('inline-create');
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new Update('users', 1))
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->assertMissing('@projects-selected-tags')
+                        ->runInlineCreate('projects', function ($browser) {
+                            $browser->waitForText('Create Project')
+                                ->select('@name', 'Vapor')
+                                ->pause(2000);
+                        });
+                })
+                ->waitForText('The project was created!')
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->whenAvailable('@projects-selected-tags', function ($browser) {
+                        $browser->assertSeeIn('p', 'Vapor');
+                    });
+                })
+                ->update()
+                ->waitForText('The user was updated!');
+
+            $this->assertTrue(
+                User::whereHas('projects', function ($query) {
+                    return $query->whereIn('name', ['Vapor']);
+                })->whereKey(1)->exists()
+            );
 
             $browser->blank();
         });
