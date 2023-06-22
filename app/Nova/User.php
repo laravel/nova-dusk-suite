@@ -176,6 +176,15 @@ class User extends Resource
                     ])
                     ->displayUsingLabels()
                     ->hideFromIndex(),
+
+                Select::make('Editor', 'settings->direction')
+                    ->options([
+                        'ltr' => 'Left to Right (LTR)',
+                        'rtl' => 'Right to Left (RTL)',
+                    ])
+                    ->default('ltr')
+                    ->displayUsingLabels()
+                    ->hideFromIndex(),
             ]),
 
             BelongsToMany::make('Roles')
