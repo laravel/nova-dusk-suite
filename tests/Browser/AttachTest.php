@@ -164,7 +164,7 @@ class AttachTest extends DuskTestCase
     }
 
     /**
-     * @group local-time
+     * @group datetime-field
      */
     public function test_it_can_attach_different_relation_groups()
     {
@@ -202,7 +202,7 @@ class AttachTest extends DuskTestCase
     }
 
     /**
-     * @group local-time
+     * @group datetime-field
      */
     public function test_it_can_attach_duplicate_relations_with_different_pivot()
     {
@@ -236,7 +236,7 @@ class AttachTest extends DuskTestCase
     }
 
     /**
-     * @group local-time
+     * @group datetime-field
      */
     public function test_it_cannot_attach_duplicate_relations_with_same_pivot()
     {

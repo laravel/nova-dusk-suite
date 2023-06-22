@@ -79,6 +79,16 @@ abstract class Resource extends NovaResource
     }
 
     // /**
+    //  * Return a new Action field instance.
+    //  *
+    //  * @return \Laravel\Nova\Fields\MorphMany
+    //  */
+    // protected function actionfield()
+    // {
+    //     return parent::actionfield()->collapsedByDefault();
+    // }
+
+    // /**
     //  * Return the menu item that should represent the resource.
     //  *
     //  * @param  \Illuminate\Http\Request  $request
