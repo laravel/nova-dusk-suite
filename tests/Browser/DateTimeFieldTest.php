@@ -37,6 +37,14 @@ class DateTimeFieldTest extends DuskTestCase
             $profile->save();
         });
 
+        $this->assertSame($appDateTime, $local->timezone($appTimezone)->toIso8601String());
+        $this->assertSame($localDateTime, $now->timezone($userTimezone)->toIso8601String());
+
+        $this->assertTrue(
+            $now->equalTo($local),
+            "{$now->toIso8601String()} should be equal to {$local->toIso8601String()}"
+        );
+
         $this->browse(function (Browser $browser) use ($user, $now, $local) {
             $browser->loginAs($user)
                 ->visit(Attach::belongsToMany('users', $user->id, 'books', 'personalBooks'))
@@ -49,9 +57,9 @@ class DateTimeFieldTest extends DuskTestCase
 
             $book = $user->personalBooks()->first();
 
-            $this->assertEquals(
-                $now->toDateTimeString(),
-                $book->pivot->purchased_at->toDateTimeString()
+            $this->assertTrue(
+                $now->equalTo($book->pivot->purchased_at),
+                "{$now->toIso8601String()} should be equal to {$book->pivot->purchased_at->toIso8601String()}"
             );
 
             $browser->on(new Detail('users', $user->id))
@@ -79,9 +87,9 @@ class DateTimeFieldTest extends DuskTestCase
 
             $book = $user->personalBooks()->first();
 
-            $this->assertEquals(
-                $now->toDateTimeString(),
-                $book->pivot->purchased_at->toDateTimeString()
+            $this->assertTrue(
+                $now->equalTo($book->pivot->purchased_at),
+                "{$now->toIso8601String()} should be equal to {$book->pivot->purchased_at->toIso8601String()}"
             );
 
             $browser->blank();
@@ -195,10 +203,10 @@ class DateTimeFieldTest extends DuskTestCase
     {
         yield 'UTC' => ['2021-10-14T02:48:15+00:00', 'UTC', '2021-10-14T02:48:15+00:00', 'UTC'];
         yield 'UTC <> America/Chicago' => ['2021-10-14T02:48:15+00:00', 'UTC', '2021-10-13T21:48:15-05:00', 'America/Chicago'];
-        yield 'UTC <> America/Mexico_City' => ['2021-10-14T02:48:15+00:00', 'UTC', '2021-10-13T21:48:15-06:00', 'America/Mexico_City'];
-        yield 'UTC <> Asia/Kuala_Lumpur' => ['2021-10-14T02:48:15+00:00', 'UTC', '2021-10-14T10:48:15+08:00', 'Asia/Kuala_Lumpur'];
-        yield 'UTC <> CET' => ['2021-10-14T01:48:15+00:00', 'UTC', '2021-10-14T03:48:15+01:00', 'CET'];
+        yield 'UTC <> America/Mexico_City' => ['2021-10-14T02:48:15+00:00', 'UTC', '2021-10-13T21:48:15-05:00', 'America/Mexico_City'];
         // yield 'UTC <> America/Mexico_City #1' => ['2023-05-02T14:00:00+00:00', 'UTC', '2023-05-02T08:00:00-06:00', 'America/Mexico_City'];
-        yield 'UTC <> CET #1' => ['2022-05-10T10:00:00+00:00', 'UTC', '2022-05-10T12:00:00+01:00', 'CET'];
+        yield 'UTC <> Europe/Paris' => ['2021-10-14T01:48:15+00:00', 'UTC', '2021-10-14T03:48:15+02:00', 'Europe/Paris'];
+        yield 'UTC <> Europe/Paris #1' => ['2022-05-10T10:00:00+00:00', 'UTC', '2022-05-10T12:00:00+02:00', 'Europe/Paris'];
+        yield 'UTC <> Asia/Kuala_Lumpur' => ['2021-10-14T02:48:15+00:00', 'UTC', '2021-10-14T10:48:15+08:00', 'Asia/Kuala_Lumpur'];
     }
 }
