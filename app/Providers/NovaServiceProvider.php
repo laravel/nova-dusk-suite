@@ -44,8 +44,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             return $this->app->make('uses_breadcrumbs');
         });
 
-        // Nova::enableRTL();
-
         $this->registerCustomUserCommand();
         $this->registerImpersonatingEvents();
         $this->registerMainMenu();
@@ -294,6 +292,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             $default = config('app.timezone');
 
             return $request->user()->profile->timezone ?? $default;
+        });
+
+        Nova::enableRTL(function (Request $request) {
+            return data_get($request->user(), 'settings.direction', 'ltr') === 'rtl';
         });
     }
 }

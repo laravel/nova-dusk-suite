@@ -2,8 +2,10 @@
 
 namespace App\Nova;
 
+use App\Nova\Repeater\InvoiceItem as InvoiceItemRepeater;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Repeater;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
@@ -56,6 +58,11 @@ class Invoice extends Resource
     {
         return [
             ID::make()->sortable(),
+
+            Repeater::make('Invoice Items', 'items', InvoiceItem::class)
+                ->repeatables([
+                    InvoiceItemRepeater::make(),
+                ])->asHasMany(),
 
             HasMany::make('InvoiceItem', 'items'),
         ];

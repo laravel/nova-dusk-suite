@@ -43,8 +43,9 @@ class DetailBelongsToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Detail('invoice-items', 1))
-                ->waitForText('Invoice Item Details', 15)
-                ->assertSeeIn('@nova-resource-detail', 'Invoice Item Details');
+                ->whenAvailable('@nova-resource-detail', function ($browser) {
+                    $browser->assertSee('Invoice Item Details');
+                });
 
             $browser->blank();
         });
