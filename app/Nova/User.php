@@ -135,7 +135,7 @@ class User extends Resource
 
             HasOne::make('Profile')->required(function () {
                 return file_exists(base_path('.hasone-required'));
-            })->help('User Personal Profile Information'),
+            }),
 
             HasOneThrough::make('Passport'),
 
@@ -177,6 +177,15 @@ class User extends Resource
                         'markdown' => 'Markdown',
                         'trix' => 'Trix',
                     ])
+                    ->displayUsingLabels()
+                    ->hideFromIndex(),
+
+                Select::make('Direction', 'settings->direction')
+                    ->options([
+                        'ltr' => 'Left to Right (LTR)',
+                        'rtl' => 'Right to Left (RTL)',
+                    ])
+                    ->default('ltr')
                     ->displayUsingLabels()
                     ->hideFromIndex(),
             ]),

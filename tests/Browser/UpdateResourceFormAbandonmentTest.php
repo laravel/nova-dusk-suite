@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use Database\Factories\VideoFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\SidebarComponent;
+use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
@@ -99,7 +100,7 @@ class UpdateResourceFormAbandonmentTest extends DuskTestCase
                 ->updateAndContinueEditing()
                 ->waitForText('The user video was updated!')
                 ->cancel()
-                ->on(new Index('videos'));
+                ->on(new Detail('videos', $video->id));
 
             $this->assertDatabaseHas('videos', [
                 'title' => 'Hello World',
