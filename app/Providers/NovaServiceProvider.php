@@ -175,6 +175,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             return $menu;
         });
     }
+
     /**
      * Register action macros.
      *
