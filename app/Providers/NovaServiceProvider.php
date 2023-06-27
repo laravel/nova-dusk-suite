@@ -183,13 +183,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function registerActionMacros()
     {
-        Action::macro('soleResource', function () {
-            return $this->canSee(function (NovaRequest $request) {
-                return $request->allResourcesSelected()
-                    && $request->selectedResourceIds()->count() === 1;
-            })->showInline()
-            ->showOnDetail();
-        });
+        //
     }
 
     /**

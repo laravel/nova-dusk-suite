@@ -284,7 +284,7 @@ class User extends Resource
                 }),
             ExportAsCsv::make()->withTypeSelector(),
             Actions\RememberTokenCopier::make()
-                ->soleResource()
+                ->sole()
                 ->canRun(function ($request, $model) {
                     return ! in_array($model->email, [
                         'taylor@laravel.com',

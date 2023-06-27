@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Validation\Rule;
+use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\HasOne;
@@ -150,7 +151,13 @@ class Profile extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            Action::openInNewTab('Open GitHub', function ($model) {
+                return $model->github_url;
+            })->canRun(function (NovaRequest $request, $profile) {
+                return ! is_null($profile->github_url);
+            })->sole(),
+        ];
     }
 
     /**
