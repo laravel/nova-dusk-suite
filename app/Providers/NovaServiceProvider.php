@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Events\StartedImpersonating;
 use Laravel\Nova\Events\StoppedImpersonating;
