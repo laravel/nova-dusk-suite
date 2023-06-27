@@ -284,15 +284,7 @@ class User extends Resource
                 }),
             ExportAsCsv::make()->withTypeSelector(),
             Actions\RememberTokenCopier::make()
-                ->showInline()
-                ->showOnDetail()
-                ->canSee(function (NovaRequest $request) {
-                    return with($request->selectedResourceIds(), function ($resources) {
-                        return ! is_null($resources)
-                            ? $resources->count() === 1
-                            : false;
-                    });
-                })
+                ->soleResource()
                 ->canRun(function ($request, $model) {
                     return ! in_array($model->email, [
                         'taylor@laravel.com',
