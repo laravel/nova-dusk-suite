@@ -48,6 +48,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         $this->registerImpersonatingEvents();
         $this->registerMainMenu();
         $this->registerUserMenu();
+        $this->registerActionMacros();
         $this->registerFieldMacros();
 
         if ($this->app->runningUnitTests()) {
@@ -174,6 +175,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             return $menu;
         });
+    }
+
+    /**
+     * Register action macros.
+     *
+     * @return void
+     */
+    public function registerActionMacros()
+    {
+        //
     }
 
     /**
