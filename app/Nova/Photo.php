@@ -54,11 +54,31 @@ class Photo extends Resource
                 People::class,
             ])->nullable(),
 
-            Image::make('URL')
-                ->storeOriginalName('filename'),
+            $this->imageField($request),
 
             Text::make('Filename')->onlyOnDetail(),
         ];
+    }
+
+    /**
+     * Get the image field for the user.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return \Laravel\Nova\Fields\VaporImage|\Laravel\Nova\Fields\Image
+     */
+    protected function imageField(NovaRequest $request)
+    {
+        $storage = $request->user()->settings['storage'] ?? 'local';
+
+        if ($storage === 'vapor') {
+            return VaporImage::make('URL')
+                ->disk($storage === 's3' ? 's3' : config('nova.storage_disk'))
+                ->storeOriginalName('filename');
+        }
+
+        return Image::make('URL')
+            ->disk($storage === 's3' ? 's3' : config('nova.storage_disk'))
+            ->storeOriginalName('filename');
     }
 
     /**
