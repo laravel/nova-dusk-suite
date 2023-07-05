@@ -62,7 +62,8 @@ class Invoice extends Resource
             Repeater::make('Invoice Items', 'items', InvoiceItem::class)
                 ->repeatables([
                     InvoiceItemRepeater::make(),
-                ])->asHasMany(),
+                ])->asHasMany()
+                ->uniqueField('id'),
 
             HasMany::make('InvoiceItem', 'items'),
         ];
