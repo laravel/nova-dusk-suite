@@ -38,6 +38,10 @@ class SendNotification extends Action
 
         if (! empty($fields->action_url) && ! empty($fields->action_text)) {
             $notification->action($fields->action_text, NovaURL::remote($fields->action_url));
+
+            if ($fields->openInNewTab === true) {
+                $notification->openInNewTab();
+            }
         }
 
         $models->each->notify($notification);
