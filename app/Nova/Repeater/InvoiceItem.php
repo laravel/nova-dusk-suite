@@ -27,7 +27,7 @@ class InvoiceItem extends Repeatable
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make(),
+            ID::hidden(),
 
             Number::make('Quantity')->rules('numeric'),
             Text::make('Description')->rules('string'),
