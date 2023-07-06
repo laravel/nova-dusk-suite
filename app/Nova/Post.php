@@ -107,11 +107,11 @@ class Post extends Resource
                 ->showCreateRelationButton(uses_inline_create()),
 
             Heading::make('Social Data')
-                ->dependsOn('title', function (Heading $field, NovaRequest $request, FormData $formData) {
+                ->dependsOnCreating('title', function (Heading $field, NovaRequest $request, FormData $formData) {
                     $title = $formData->title ?? '';
 
                     if (Str::startsWith($title, 'Space Pilgrim:')) {
-                        $field->setValue('Space Pilgrim Data');
+                        $field->hide();
                     }
                 }),
 
