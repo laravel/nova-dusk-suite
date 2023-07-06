@@ -107,6 +107,8 @@ class Post extends Resource
 
             Heading::make('Social Data')
                 ->dependsOn('title', function (Heading $field, NovaRequest $request, FormData $formData) {
+                    $title = $formData->title ?? '';
+
                     if (Str::startsWith($title, 'Space Pilgrim:')) {
                         $field->setValue('Space Pilgrim Data');
                     }
