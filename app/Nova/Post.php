@@ -106,7 +106,12 @@ class Post extends Resource
                 })->searchable(uses_searchable())
                 ->showCreateRelationButton(uses_inline_create()),
 
-            new Heading('Social Data'),
+            Heading::make('Social Data')
+                ->dependsOn('title', function (Heading $field, NovaRequest $request, FormData $formData) {
+                    if (Str::startsWith($title, 'Space Pilgrim:')) {
+                        $field->setValue('Space Pilgrim Data');
+                    }
+                }),
 
             KeyValue::make('Meta')
                 ->dependsOnCreating('title', function (KeyValue $field, NovaRequest $request, FormData $formData) {
