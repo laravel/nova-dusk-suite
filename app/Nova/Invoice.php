@@ -59,10 +59,10 @@ class Invoice extends Resource
         return [
             ID::make()->sortable(),
 
-            Repeater::make('Invoice Items', 'items', InvoiceItem::class)
+            Repeater::make('Invoice Items', 'items')
                 ->repeatables([
                     InvoiceItemRepeater::make(),
-                ])->asHasMany()
+                ])->asHasMany(InvoiceItem::class)
                 ->uniqueField('id'),
 
             HasMany::make('InvoiceItem', 'items'),
