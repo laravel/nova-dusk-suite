@@ -14,6 +14,9 @@ use Laravel\Nova\Tests\DuskTestCase;
  */
 class DependentBelongsToFieldTest extends DuskTestCase
 {
+    /**
+     * @covers \Laravel\Nova\Fields\Heading::dependsOn()
+     */
     public function test_it_can_apply_depends_on_first_load()
     {
         $this->browse(function (Browser $browser) {
@@ -30,12 +33,14 @@ class DependentBelongsToFieldTest extends DuskTestCase
             $browser->loginAs(4)
                 ->visit(new Create('posts'))
                 ->waitForTextIn('h1', 'Create User Post')
+                ->assertSeeIn('@nova-form', 'SOCIAL DATA')
                 ->assertDontSeeIn('@nova-form', 'Attachment')
                 ->type('@title', 'Space Pilgrim: Episode 1')
                 ->pause(2000)
                 ->within(new RelationSelectControlComponent('users'), function ($browser) {
                     $browser->assertSelected('', 1);
                 })
+                ->assertDontSeeIn('@nova-form', 'SOCIAL DATA')
                 ->assertInputValue('@key-value-key-0', 'Series')
                 ->assertInputValue('@key-value-value-0', 'Space Pilgrim')
                 ->assertSeeIn('@nova-form', 'Attachment')
