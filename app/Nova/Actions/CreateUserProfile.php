@@ -60,10 +60,10 @@ class CreateUserProfile extends Action
                 ->dependsOn(['github'], function (Timezone $field, NovaRequest $request, FormData $formData) {
                     switch ($formData->github) {
                         case 'crynobone':
-                            $field->default('Asia/Kuala_Lumpur');
+                            $field->setValue('Asia/Kuala_Lumpur');
                             break;
                         default:
-                            $field->default('UTC');
+                            $field->setValue('UTC');
                     }
                 })->default('UTC'),
         ];
