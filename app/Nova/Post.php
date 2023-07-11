@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\File;
@@ -73,6 +74,8 @@ class Post extends Resource
 
                     if (Str::startsWith($title, 'Space Pilgrim:')) {
                         $field->setValue(1);
+                    } elseif (Str::startsWith($title, 'Nova:')) {
+                        $field->setValue(null);
                     }
                 })
                 ->reorderAssociatables(uses_with_reordering())
@@ -115,17 +118,23 @@ class Post extends Resource
                 }),
 
             KeyValue::make('Meta')
-                ->dependsOnCreating('title', function (KeyValue $field, NovaRequest $request, FormData $formData) {
+                ->dependsOnCreating(['title', 'user'], function (KeyValue $field, NovaRequest $request, FormData $formData) {
                     $title = $formData->title ?? '';
 
+                    $defaults = [];
+
                     if (Str::startsWith($title, 'Space Pilgrim:')) {
-                        $field->default([
-                            'Series' => 'Space Pilgrim',
-                        ]);
+                        $defaults['Series'] = 'Space Pilgrim';
                     } elseif (Str::startsWith($title, 'Nova:')) {
-                        $field->default([
-                            'Series' => 'Laravel Nova',
-                        ]);
+                        $defaults['Series'] = 'Space Pilgrim';
+                    }
+
+                    if (is_null($formData->user)) {
+                        $defaults['Author'] = 'Anonymous';
+                    }
+
+                    if (! empty($defaults)) {
+                        $field->default($defaults);
                     }
                 })->nullable(),
         ];
@@ -141,8 +150,11 @@ class Post extends Resource
     {
         return [
             ID::make('ID', 'id'),
-            BelongsTo::make('User', 'user')->display('name')->canSee(function ($request) {
-                return $request->user()->getKey() != $this->user_id;
+            BelongsTo::make('User', 'user')->display('name')->canSee(function (Request $request) {
+                return transform($request->user(), function ($user) {
+                    /** @var \App\Models\User $user */
+                    return $user->getKey() != $this->user_id;
+                });
             }),
             Text::make('Title', 'title'),
             $this->editorField($request, 'Excerpt', 'excerpt')->alwaysShow(),
