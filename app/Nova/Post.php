@@ -126,7 +126,7 @@ class Post extends Resource
                     if (Str::startsWith($title, 'Space Pilgrim:')) {
                         $defaults['Series'] = 'Space Pilgrim';
                     } elseif (Str::startsWith($title, 'Nova:')) {
-                        $defaults['Series'] = 'Space Pilgrim';
+                        $defaults['Series'] = 'Laravel Nova';
                     }
 
                     if (is_null($formData->user)) {
