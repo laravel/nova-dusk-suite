@@ -74,6 +74,8 @@ class Post extends Resource
 
                     if (Str::startsWith($title, 'Space Pilgrim:')) {
                         $field->setValue(1);
+                    } elseif (Str::startsWith($title, 'Nova:')) {
+                        $field->setValue(null);
                     }
                 })
                 ->reorderAssociatables(uses_with_reordering())
@@ -116,17 +118,23 @@ class Post extends Resource
                 }),
 
             KeyValue::make('Meta')
-                ->dependsOnCreating('title', function (KeyValue $field, NovaRequest $request, FormData $formData) {
+                ->dependsOnCreating(['title', 'user'], function (KeyValue $field, NovaRequest $request, FormData $formData) {
                     $title = $formData->title ?? '';
 
+                    $defaults = [];
+
                     if (Str::startsWith($title, 'Space Pilgrim:')) {
-                        $field->default([
-                            'Series' => 'Space Pilgrim',
-                        ]);
+                        $defaults['Series'] = 'Space Pilgrim';
                     } elseif (Str::startsWith($title, 'Nova:')) {
-                        $field->default([
-                            'Series' => 'Laravel Nova',
-                        ]);
+                        $defaults['Series'] = 'Space Pilgrim';
+                    }
+
+                    if (is_null($formData->user)) {
+                        $defaults['Author'] = 'Anonymous';
+                    }
+
+                    if (! empty($defaults)) {
+                        $field->default($defaults);
                     }
                 })->nullable(),
         ];

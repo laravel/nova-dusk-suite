@@ -94,15 +94,15 @@ class Profile extends Resource
             MultiSelect::make('Interests')->options(function () {
                 return $this->interestsOptions()->all();
             })->filterable()
-            ->dependsOn('github_url', function (MultiSelect $field, NovaRequest $request, FormData $formData) {
-                if ($formData->github_url === 'https://github.com/taylorotwell') {
-                    $field->options(function () {
-                        return $this->interestsOptions()->reject(function ($value, $key) {
-                            return $key === 'hack';
-                        })->all();
-                    });
-                }
-            }),
+                ->dependsOn('github_url', function (MultiSelect $field, NovaRequest $request, FormData $formData) {
+                    if ($formData->github_url === 'https://github.com/taylorotwell') {
+                        $field->options(function () {
+                            return $this->interestsOptions()->reject(function ($value, $key) {
+                                return $key === 'hack';
+                            })->all();
+                        });
+                    }
+                }),
 
             HasOne::make('Passport'),
 
