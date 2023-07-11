@@ -55,6 +55,8 @@ class AddComment extends Action
                 ->dependsOn('anonymous', function (BelongsTo $field, NovaRequest $request, FormData $formData) {
                     if ($formData->boolean('anonymous') === false) {
                         $field->show()->rules('required');
+                    } else {
+                        $field->hide()->setValue(null);
                     }
                 }),
 
