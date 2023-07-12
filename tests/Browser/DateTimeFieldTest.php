@@ -143,7 +143,7 @@ class DateTimeFieldTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Update('ships', $ship->id))
-                ->type('@departed_at', '')
+                ->typeOnDate('@departed_at', '')
                 ->update()
                 ->waitForText('The ship was updated!');
 

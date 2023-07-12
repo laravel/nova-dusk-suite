@@ -11,14 +11,29 @@ parameters:
 			path: app/Nova/Dashboards/Metrics/NewPosts.php
 
 		-
-			message: "#^Access to an undefined property object\\:\\:\\$type\\.$#"
+			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\|Laravel\\\\Nova\\\\Support\\\\Fluent\\:\\:\\$type\\.$#"
 			count: 1
 			path: app/Nova/Fields/BookPurchase.php
+
+		-
+			message: "#^Parameter \\#1 \\$repeatables of method Laravel\\\\Nova\\\\Fields\\\\Repeater\\:\\:repeatables\\(\\) expects array\\<int, string\\>, array\\<int, App\\\\Nova\\\\Repeater\\\\InvoiceItem\\> given\\.$#"
+			count: 1
+			path: app/Nova/Invoice.php
 
 		-
 			message: "#^Parameter \\#1 \\$callback of method Laravel\\\\Nova\\\\Element\\:\\:canSee\\(\\) expects Closure\\(Illuminate\\\\Http\\\\Request\\)\\: bool, Closure\\(Illuminate\\\\Http\\\\Request\\)\\: \\(bool\\|null\\) given\\.$#"
 			count: 1
 			path: app/Nova/Post.php
+
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$github_url\\.$#"
+			count: 1
+			path: app/Nova/Profile.php
+
+		-
+			message: "#^Call to an undefined method Laravel\\\\Nova\\\\Actions\\\\Action\\|Laravel\\\\Nova\\\\Actions\\\\ActionResponse\\:\\:canRun\\(\\)\\.$#"
+			count: 1
+			path: app/Nova/Profile.php
 
 		-
 			message: "#^If condition is always true\\.$#"

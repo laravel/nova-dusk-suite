@@ -3,7 +3,6 @@ name: Larastan
 on:
   push:
     branches:
-      - "8.*"
       - "9.*"
       - "10.*"
       - "master"
