@@ -117,7 +117,7 @@ class DateFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($person) {
             $browser->loginAs(1)
                 ->visit(new Update('people', $person->getKey()))
-                ->type('@date_of_birth', '')
+                ->typeOnDate('@date_of_birth', '')
                 ->update()
                 ->waitForText('The person was updated!');
 
