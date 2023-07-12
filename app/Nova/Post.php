@@ -87,7 +87,7 @@ class Post extends Resource
             Text::make('Title', 'title')->rules('required')->sortable(),
 
             $this->editorField($request, 'Excerpt', 'excerpt')->nullable(),
-            $this->editorField($request, 'Body', 'body')->rules('required')->stacked(),
+            $this->editorField($request, 'Body', 'body')->rules('required')->stacked()->fullWidth(),
 
             File::make('Attachment')
                 ->nullable()
