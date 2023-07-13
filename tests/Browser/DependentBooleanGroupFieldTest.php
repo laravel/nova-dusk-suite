@@ -94,11 +94,11 @@ class DependentBooleanGroupFieldTest extends DuskTestCase
                         $browser->whenAvailable('input[type="checkbox"][name="selected"]', function ($browser) {
                             $browser->assertNotChecked('');
                         })
-                        ->whenAvailable('input[type="checkbox"][id="boolean-default-boolean-field"]', function ($browser) {
-                            $browser->check('')->pause(2000);
-                        })
-                        ->assertChecked('input[type="checkbox"][name="selected"]')
-                        ->assertChecked('input[type="checkbox"][id="boolean-default-boolean-field"]');
+                            ->whenAvailable('input[type="checkbox"][id="boolean-default-boolean-field"]', function ($browser) {
+                                $browser->check('')->pause(2000);
+                            })
+                            ->assertChecked('input[type="checkbox"][name="selected"]')
+                            ->assertChecked('input[type="checkbox"][id="boolean-default-boolean-field"]');
                     });
                 });
 

@@ -7,6 +7,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -37,6 +38,10 @@ class SendNotification extends Action
 
         if (! empty($fields->action_url) && ! empty($fields->action_text)) {
             $notification->action($fields->action_text, NovaURL::remote($fields->action_url));
+
+            if ($fields->openInNewTab === true) {
+                $notification->openInNewTab();
+            }
         }
 
         $models->each->notify($notification);
@@ -99,6 +104,14 @@ class SendNotification extends Action
                             'Download',
                             'View',
                         ])->default('Download');
+                    }
+                }),
+
+            Boolean::make('Open in New Tab', 'openInNewTab')
+                ->default(false)
+                ->dependsOn(['action_url', 'action_text'], function (Boolean $field, NovaRequest $request, FormData $formData) {
+                    if (empty($formData->action_url) || empty($formData->action_text)) {
+                        $field->hide();
                     }
                 }),
 

@@ -6,6 +6,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\VaporImage;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
@@ -54,11 +55,30 @@ class Photo extends Resource
                 People::class,
             ])->nullable(),
 
-            Image::make('URL')
-                ->storeOriginalName('filename'),
+            $this->imageField($request)->storeOriginalName('filename'),
 
             Text::make('Filename')->onlyOnDetail(),
         ];
+    }
+
+    /**
+     * Get the image field for the user.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return \Laravel\Nova\Fields\VaporImage|\Laravel\Nova\Fields\Image
+     */
+    protected function imageField(NovaRequest $request)
+    {
+        $storage = $request->user()->settings['storage'] ?? 'local';
+
+        if ($storage === 'vapor') {
+            return VaporImage::make('URL')
+                ->help('Using cloud storage');
+        }
+
+        return Image::make('URL')
+            ->disk($storage === 's3' ? 's3' : config('nova.storage_disk'))
+            ->help('Using local storage');
     }
 
     /**
