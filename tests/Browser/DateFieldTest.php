@@ -107,6 +107,26 @@ class DateFieldTest extends DuskTestCase
         static::reloadServing();
     }
 
+    public function test_it_can_clear_the_date_field_value()
+    {
+        $person = PeopleFactory::new()->create([
+            'name' => 'Tess Hemphill',
+            'date_of_birth' => CarbonImmutable::parse('Dec 13 1983'),
+        ]);
+
+        $this->browse(function (Browser $browser) use ($person) {
+            $browser->loginAs(1)
+                ->visit(new Update('people', $person->getKey()))
+                ->typeOnDate('@date_of_birth', '')
+                ->update()
+                ->waitForText('The person was updated!');
+
+            $person->refresh();
+
+            $this->assertNull($person->date_of_birth);
+        });
+    }
+
     public static function localiseDateDataProvider()
     {
         yield 'UTC' => ['Dec 13 1983', 'UTC', 'UTC'];

@@ -9,6 +9,7 @@ use Database\Factories\DockFactory;
 use Database\Factories\PostFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\Controls\RelationSelectControlComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Components\SearchInputComponent;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
@@ -92,17 +93,21 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             PostFactory::new()->create();
 
-            $browser->loginAs(1)
+            $browser->loginAs(4)
                 ->visit(new Create('comments'))
                 ->within(new FormComponent(), function ($browser) {
                     $browser->select('@commentable-type', 'posts')
-                        ->pause(500)
                         ->runInlineCreate('commentable', function ($browser) {
                             $browser->waitForText('Create User Post')
-                                ->selectRelation('users', 1)
                                 ->type('@title', 'Test Post')
                                 ->type('@body', 'Test Post Body')
-                                ->attach('@attachment', __DIR__.'/Fixtures/Document.pdf');
+                                ->whenAvailable(new RelationSelectControlComponent('users'), function ($browser) {
+                                    $browser->assertSelected('', 4)
+                                        ->select('', 1);
+                                })
+                                ->whenAvailable('@attachment', function ($browser) {
+                                    $browser->attach('', __DIR__.'/Fixtures/Document.pdf');
+                                });
                         });
                 })
                 ->waitForText('The user post was created!')
@@ -117,6 +122,13 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
             $comment = Comment::with('commentable')->latest()->first();
             $this->assertNull($comment->attachment);
             $this->assertNotNull($comment->commentable->attachment);
+
+            $this->assertDatabaseHas('posts', [
+                'user_id' => 1,
+                'title' => 'Test Post',
+                'body' => 'Test Post Body',
+                'attachment' => $comment->commentable->attachment,
+            ]);
         });
     }
 
@@ -127,16 +139,19 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             PostFactory::new()->create();
 
-            $browser->loginAs(1)
+            $browser->loginAs(4)
                 ->visit(new Create('comments'))
                 ->within(new FormComponent(), function ($browser) {
                     $browser->select('@commentable-type', 'posts')
                         ->pause(500)
                         ->runInlineCreate('commentable', function ($browser) {
                             $browser->waitForText('Create User Post')
-                                ->selectRelation('users', 1)
                                 ->type('@title', 'Test Post')
-                                ->type('@body', 'Test Post Body');
+                                ->type('@body', 'Test Post Body')
+                                ->whenAvailable(new RelationSelectControlComponent('users'), function ($browser) {
+                                    $browser->assertSelected('', 4)
+                                        ->select('', 1);
+                                });
                         });
                 })
                 ->waitForText('The user post was created!')
@@ -152,6 +167,13 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
             $comment = Comment::with('commentable')->latest()->first();
             $this->assertNotNull($comment->attachment);
             $this->assertNull($comment->commentable->attachment);
+
+            $this->assertDatabaseHas('posts', [
+                'user_id' => 1,
+                'title' => 'Test Post',
+                'body' => 'Test Post Body',
+                'attachment' => null,
+            ]);
         });
     }
 
@@ -166,13 +188,13 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                 ->visit(new Create('comments'))
                 ->within(new FormComponent(), function ($browser) {
                     $browser->select('@commentable-type', 'posts')
-                    ->pause(500)
-                    ->runInlineCreate('commentable', function ($browser) {
-                        $browser->waitForText('Create User Post')
-                            ->type('@title', 'Test Post')
-                            ->type('@body', 'Test Post Body')
-                            ->searchFirstRelation('users', 1);
-                    });
+                        ->pause(500)
+                        ->runInlineCreate('commentable', function ($browser) {
+                            $browser->waitForText('Create User Post')
+                                ->type('@title', 'Test Post')
+                                ->type('@body', 'Test Post Body')
+                                ->searchFirstRelation('users', 1);
+                        });
                 })
                 ->waitForText('The user post was created!')
                 ->within(new FormComponent(), function ($browser) use ($post) {
@@ -185,6 +207,13 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                 ->click('@cancel-create-button');
 
             $browser->blank();
+
+            $this->assertDatabaseHas('posts', [
+                'user_id' => 1,
+                'title' => 'Test Post',
+                'body' => 'Test Post Body',
+                'attachment' => null,
+            ]);
         });
     }
 

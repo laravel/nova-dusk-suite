@@ -74,6 +74,8 @@ class Post extends Resource
 
                     if (Str::startsWith($title, 'Space Pilgrim:')) {
                         $field->setValue(1);
+                    } elseif (Str::startsWith($title, 'Nova:')) {
+                        $field->setValue(null);
                     }
                 })
                 ->reorderAssociatables(uses_with_reordering())
@@ -85,7 +87,7 @@ class Post extends Resource
             Text::make('Title', 'title')->rules('required')->sortable(),
 
             $this->editorField($request, 'Excerpt', 'excerpt')->nullable(),
-            $this->editorField($request, 'Body', 'body')->rules('required')->stacked(),
+            $this->editorField($request, 'Body', 'body')->rules('required')->stacked()->fullWidth(),
 
             File::make('Attachment')
                 ->nullable()
@@ -106,20 +108,33 @@ class Post extends Resource
                 })->searchable(uses_searchable())
                 ->showCreateRelationButton(uses_inline_create()),
 
-            new Heading('Social Data'),
-
-            KeyValue::make('Meta')
-                ->dependsOnCreating('title', function (KeyValue $field, NovaRequest $request, FormData $formData) {
+            Heading::make('Social Data')
+                ->dependsOnCreating('title', function (Heading $field, NovaRequest $request, FormData $formData) {
                     $title = $formData->title ?? '';
 
                     if (Str::startsWith($title, 'Space Pilgrim:')) {
-                        $field->default([
-                            'Series' => 'Space Pilgrim',
-                        ]);
+                        $field->hide();
+                    }
+                }),
+
+            KeyValue::make('Meta')
+                ->dependsOnCreating(['title', 'user'], function (KeyValue $field, NovaRequest $request, FormData $formData) {
+                    $title = $formData->title ?? '';
+
+                    $defaults = [];
+
+                    if (Str::startsWith($title, 'Space Pilgrim:')) {
+                        $defaults['Series'] = 'Space Pilgrim';
                     } elseif (Str::startsWith($title, 'Nova:')) {
-                        $field->default([
-                            'Series' => 'Laravel Nova',
-                        ]);
+                        $defaults['Series'] = 'Laravel Nova';
+                    }
+
+                    if (is_null($formData->user)) {
+                        $defaults['Author'] = 'Anonymous';
+                    }
+
+                    if (! empty($defaults)) {
+                        $field->default($defaults);
                     }
                 })->nullable(),
         ];

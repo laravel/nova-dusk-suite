@@ -293,7 +293,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         Nova::notificationPollingInterval((int) CarbonInterval::days(1)->totalSeconds);
 
         Nova::serving(function (ServingNova $event) {
-            if (! is_null($pagination = data_get($event->request->user(), 'settings.pagination'))) {
+            /** @var \App\Models\User|null $user */
+            $user = $event->request->user();
+
+            // if (! is_null($user) && $user->getKey() === 4) {
+            //     Nova::initialPath('/dashboards/posts-dashboard');
+            // }
+
+            if (! is_null($pagination = data_get($user, 'settings.pagination'))) {
                 config(['nova.pagination' => $pagination]);
             }
         });

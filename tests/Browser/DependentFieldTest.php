@@ -203,24 +203,24 @@ class DependentFieldTest extends DuskTestCase
                 ->within(new IndexComponent('captains'), function ($browser) {
                     $browser->runStandaloneAction('fields-action', function ($browser) {
                         $browser->waitFor('@select_1')
-                        ->assertMissing('@select_2')
-                        ->assertMissing('@select_3')
-                        ->select('@select_1', 'show')
-                        ->waitFor('@select_2')
-                        ->assertMissing('@select_3')
-                        ->select('@select_2', 'show')
-                        ->waitFor('@select_3')
-                        ->select('@select_3', 'show')
-                        ->select('@select_1', 'hide')
-                        ->pause(1000)
-                        ->assertMissing('@select_2')
-                        ->assertMissing('@select_3')
-                        ->select('@select_1', 'show')
-                        ->pause(1000)
-                        ->assertVisible('@select_2')
-                        ->assertSelected('@select_2', 'show')
-                        ->assertVisible('@select_3')
-                        ->assertSelected('@select_3', 'show');
+                            ->assertMissing('@select_2')
+                            ->assertMissing('@select_3')
+                            ->select('@select_1', 'show')
+                            ->waitFor('@select_2')
+                            ->assertMissing('@select_3')
+                            ->select('@select_2', 'show')
+                            ->waitFor('@select_3')
+                            ->select('@select_3', 'show')
+                            ->select('@select_1', 'hide')
+                            ->pause(1000)
+                            ->assertMissing('@select_2')
+                            ->assertMissing('@select_3')
+                            ->select('@select_1', 'show')
+                            ->pause(1000)
+                            ->assertVisible('@select_2')
+                            ->assertSelected('@select_2', 'show')
+                            ->assertVisible('@select_3')
+                            ->assertSelected('@select_3', 'show');
                     });
                 });
 

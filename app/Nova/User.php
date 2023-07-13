@@ -102,7 +102,8 @@ class User extends Resource
                 ->default(true)
                 ->filterable()
                 ->showOnPreview()
-                ->hideFromIndex(),
+                ->hideFromIndex()
+                ->showWhenPeeking(),
 
             BooleanGroup::make('Permissions')->options([
                 'create' => 'Create',
