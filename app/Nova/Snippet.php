@@ -49,8 +49,9 @@ class Snippet extends Resource
                     return [
                         'php' => 'PHP',
                         'markdown' => 'Markdown',
-                        'json' => 'json',
+                        'json' => 'JSON',
                         'javascript' => 'JavaScript',
+                        'yaml' => 'YAML',
                     ];
                 })->default('json')
                 ->displayUsingLabels(),

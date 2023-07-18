@@ -175,9 +175,11 @@ class AttachTest extends DuskTestCase
                 ->visit(new Detail('users', 1))
                 ->runAttachRelation('books', 'giftBooks')
                 ->assertSeeIn('h1', 'Attach Book')
-                ->selectAttachable(4)
-                ->type('@price', '39')
-                ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now)
+                ->within(new FormComponent, function ($browser) use ($now) {
+                    $browser->selectAttachable(4)
+                        ->type('@price', '39')
+                        ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now);
+                })
                 ->create()
                 ->waitForText('The resource was attached!')
                 ->on(new Detail('users', 1))
