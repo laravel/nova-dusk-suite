@@ -224,6 +224,7 @@ class User extends Resource
                         }),
                     ])
                 )->filterable()
+                ->dontReorderAttachables()
                 ->allowDuplicateRelations(),
         ];
     }
@@ -311,6 +312,25 @@ class User extends Resource
             new Filters\SelectFirst,
             new Filters\Created,
         ];
+    }
+
+    /**
+     * Build a "relatable" query for the given resource.
+     *
+     * This query determines which instances of the model may be attached to other resources.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Laravel\Nova\Fields\Field  $field
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function relatableBooks(NovaRequest $request, $query, $field)
+    {
+        if ($field instanceof BelongsToMany && in_array($field->attribute, ['giftBooks'])) {
+            return $query->reorder()->orderBy('sku', 'desc');
+        }
+
+        return $query;
     }
 
     /**
