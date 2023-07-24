@@ -149,9 +149,9 @@ class DateTimeFieldTest extends DuskTestCase
 
             $ship->fresh();
 
-            $this->assertEquals(
-                $now->toDateTimeString(),
-                $ship->departed_at->toDateTimeString()
+            $this->assertSame(
+                $now->toIso8601String(),
+                $ship->departed_at->toIso8601String()
             );
 
             $browser->blank();

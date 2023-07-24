@@ -33,14 +33,17 @@ class DateFieldTest extends DuskTestCase
         $user = User::find(1);
 
         $createdAt = CarbonImmutable::parse($date, $appTimezone);
-        $expectedCreatedAt = CarbonImmutable::parse($expectedDate ?? $date, $appTimezone);
+
+        $expectedCreatedAt = ! is_null($expectedDate)
+            ? CarbonImmutable::parse($expectedDate)
+            : CarbonImmutable::parse($date, $appTimezone);
 
         tap($user->profile, function ($profile) use ($userTimezone) {
             $profile->timezone = $userTimezone;
             $profile->save();
         });
 
-        $this->browse(function (Browser $browser) use ($person, $user, $createdAt) {
+        $this->browse(function (Browser $browser) use ($person, $user, $createdAt, $expectedCreatedAt) {
             $browser->loginAs($user)
                 ->visit(new Update('people', $person->getKey()))
                 ->typeOnDate('@date_of_birth', $createdAt)
@@ -49,9 +52,9 @@ class DateFieldTest extends DuskTestCase
 
             $person->refresh();
 
-            $this->assertSame(
-                $createdAt->toDateString(),
-                $person->date_of_birth->toDateString()
+            $this->assertTrue(
+                $expectedCreatedAt->equalTo($person->date_of_birth),
+                "{$expectedCreatedAt->toIso8601String()} should be equal to {$person->date_of_birth->toIso8601String()}"
             );
 
             $browser->visit(new Update('people', $person->getKey()))
@@ -62,9 +65,9 @@ class DateFieldTest extends DuskTestCase
 
             $person->refresh();
 
-            $this->assertSame(
-                $createdAt->toDateString(),
-                $person->date_of_birth->toDateString()
+            $this->assertTrue(
+                $expectedCreatedAt->equalTo($person->date_of_birth),
+                "{$expectedCreatedAt->toIso8601String()} should be equal to {$person->date_of_birth->toIso8601String()}"
             );
 
             $browser->blank();
@@ -130,11 +133,11 @@ class DateFieldTest extends DuskTestCase
     public static function localiseDateDataProvider()
     {
         yield 'UTC' => ['Dec 13 1983', 'UTC', 'UTC'];
-        yield 'UTC <> America/Chicago' => ['Dec 13 1983', 'UTC', 'America/Chicago', '1983-12-14'];
+        yield 'UTC <> America/Chicago' => ['Dec 13 1983', 'UTC', 'America/Chicago'];
         yield 'UTC <> Asia/Kuala_Lumpur' => ['Dec 13 1983', 'UTC', 'Asia/Kuala_Lumpur'];
-        yield 'UTC <> America/Santo_Domingo' => ['Dec 13 1983', 'UTC', 'America/Santo_Domingo', '1983-12-14'];
-        yield 'UTC <> PST' => ['Dec 13 1983', 'UTC', 'PST', '1983-12-14'];
-        yield 'America/Sao_Paulo <> America/Manaus #1' => ['Dec 13 1983', 'America/Sao_Paulo', 'America/Manaus', '1983-12-13 21:00:00'];
-        yield 'America/Sao_Paulo <> America/Manaus #2' => ['Aug 18 2022', 'America/Sao_Paulo', 'America/Manaus', '2022-08-18 21:00:00'];
+        yield 'UTC <> America/Santo_Domingo' => ['Dec 13 1983', 'UTC', 'America/Santo_Domingo'];
+        yield 'UTC <> PST' => ['Dec 13 1983', 'UTC', 'PST'];
+        yield 'America/Sao_Paulo <> America/Manaus #1' => ['Dec 13 1983', 'America/Sao_Paulo', 'America/Manaus', '1983-12-13T00:00:00+00:00'];
+        yield 'America/Sao_Paulo <> America/Manaus #2' => ['Aug 18 2022', 'America/Sao_Paulo', 'America/Manaus', '2022-08-18T00:00:00+00:00'];
     }
 }
