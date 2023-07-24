@@ -324,7 +324,7 @@ class User extends Resource
     public static function relatableBooks(NovaRequest $request, $query, $field)
     {
         if ($field instanceof BelongsToMany && in_array($field->attribute, ['giftBooks'])) {
-            return $query->reorder()->orderBy('sku', 'desc');
+            return $query->reorder()->orderBy('sku', 'asc');
         }
 
         return $query;
