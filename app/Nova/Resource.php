@@ -91,7 +91,7 @@ abstract class Resource extends NovaResource
         return $query->latest(
             $column === 'id'
                 ? $query->getModel()->getQualifiedKeyName()
-                : $column
+                : $query->getModel()->qualifyColumn($column)
         );
     }
 
