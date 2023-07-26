@@ -19,5 +19,6 @@ Browser::$waitSeconds = 35;
 
 Options::$w3cCompliant = false;
 
+Options::addArgument('--incognito');
 Options::addArgument('--disable-popup-blocking');
 Options::addArgument('--force-prefers-reduced-motion');
