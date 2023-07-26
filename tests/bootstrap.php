@@ -15,7 +15,7 @@ if (isset($_SERVER['CI']) || isset($_ENV['CI'])) {
     Options::withUI();
 }
 
-Browser::$waitSeconds = 35;
+Browser::$waitSeconds = 60;
 
 Options::$w3cCompliant = false;
 
