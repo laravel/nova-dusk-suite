@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\Controls\RelationSelectControlComponent;
+use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -101,6 +102,51 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 ->pause(2000)
                 ->within(new RelationSelectControlComponent('users'), function ($browser) {
                     $browser->assertSelected('', 1);
+                })
+                ->cancel();
+
+            $browser->blank();
+        });
+    }
+
+    public function test_it_reset_the_field_value()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new Create('posts'))
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->assertSee('Attachment')
+                        ->assertInputValue('@key-value-key-0', 'Author')
+                        ->assertInputValue('@key-value-value-0', 'Anonymous')
+                        ->within(new RelationSelectControlComponent('users'), function ($browser) {
+                            $browser->select('', 4);
+                        })
+                        ->pause(4000)
+                        ->assertDontSee('Attachment')
+                        ->assertInputValue('@key-value-key-0', 'Author')
+                        ->assertInputValue('@key-value-value-0', 'Anonymous');
+
+                    $browser->type('@title', 'Space Pilgrim: Episode 1')
+                        ->pause(2000)
+                        ->within(new RelationSelectControlComponent('users'), function ($browser) {
+                            $browser->assertSelected('', 1);
+                        })
+                        ->assertSee('Attachment')
+                        ->assertInputValue('@key-value-key-0', 'Series')
+                        ->assertInputValue('@key-value-value-0', 'Space Pilgrim');
+
+                    $browser->type('@title', 'Nova: Episode 1')
+                        ->pause(2000)
+                        ->within(new RelationSelectControlComponent('users'), function ($browser) {
+                            $browser->assertNotSelected('', 1)
+                                ->assertNotSelected('', 2)
+                                ->assertNotSelected('', 3)
+                                ->assertNotSelected('', 4);
+                        })
+                        ->assertInputValue('@key-value-key-0', 'Series')
+                        ->assertInputValue('@key-value-value-0', 'Laravel Nova')
+                        ->assertInputValue('@key-value-key-1', 'Author')
+                        ->assertInputValue('@key-value-value-1', 'Anonymous');
                 })
                 ->cancel();
 
