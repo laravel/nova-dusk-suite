@@ -43,9 +43,10 @@ class DateFieldTest extends DuskTestCase
             $profile->save();
         });
 
-        $this->browse(function (Browser $browser) use ($person, $user, $createdAt, $expectedCreatedAt) {
+        $this->browse(function (Browser $browser) use ($person, $user, $userTimezone, $createdAt, $expectedCreatedAt) {
             $browser->loginAs($user)
                 ->visit(new Update('people', $person->getKey()))
+                ->luxonTimezone($userTimezone)
                 ->typeOnDate('@date_of_birth', $createdAt)
                 ->update()
                 ->waitForText('The person was updated!');
@@ -58,6 +59,7 @@ class DateFieldTest extends DuskTestCase
             );
 
             $browser->visit(new Update('people', $person->getKey()))
+                ->luxonTimezone($userTimezone)
                 ->type('@name', 'Tess')
                 ->assertValue('@date_of_birth', $createdAt->toDateString())
                 ->update()
@@ -95,9 +97,10 @@ class DateFieldTest extends DuskTestCase
             $profile->save();
         });
 
-        $this->browse(function (Browser $browser) use ($user, $createdAt) {
+        $this->browse(function (Browser $browser) use ($user, $userTimezone, $createdAt) {
             $browser->loginAs($user)
                 ->visit(new Create('people'))
+                ->luxonTimezone($userTimezone)
                 ->typeOnDate('@date_of_birth', $createdAt)
                 ->create()
                 ->waitForText('There was a problem submitting the form.')
