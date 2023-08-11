@@ -189,6 +189,18 @@ class User extends Resource
                     ->default('ltr')
                     ->displayUsingLabels()
                     ->hideFromIndex(),
+
+                Select::make('Resource Orderings', 'settings->resources->orderings')
+                    ->options([
+                        'id' => 'ID',
+                        'created_at' => 'Created At',
+                        'updated_at' => 'Updated At',
+                    ])
+                    ->default(function () {
+                        return config('site.resources.orderings');
+                    })
+                    ->displayUsingLabels()
+                    ->hideFromIndex(),
             ]),
 
             BelongsToMany::make('Roles')
