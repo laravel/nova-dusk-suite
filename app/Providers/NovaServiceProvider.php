@@ -300,6 +300,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             //     Nova::initialPath('/dashboards/posts-dashboard');
             // }
 
+            if (! is_null($orderings = data_get($user, 'settings.resources.orderings'))) {
+                config(['site.resources.orderings' => $orderings]);
+            }
+
             if (! is_null($pagination = data_get($user, 'settings.pagination'))) {
                 config(['nova.pagination' => $pagination]);
             }
