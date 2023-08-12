@@ -28,7 +28,8 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "nunomaduro/larastan": "^2.5.1",
-        "orchestra/testbench-dusk": "^7.16",
+        "orchestra/testbench": "^7.27",
+        "orchestra/testbench-dusk": "^7.28",
         "phpunit/phpunit": "^9.6"
     },
     "autoload": {
@@ -105,5 +106,6 @@
         "preferred-install": "dist",
         "sort-packages": true
     },
-    "minimum-stability": "stable"
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }
