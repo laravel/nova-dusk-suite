@@ -289,7 +289,7 @@ class User extends Resource
             new Actions\SendNotification(),
             Actions\StandaloneTask::make()->standalone(),
             Actions\RedirectToGoogle::make()->withoutConfirmation(),
-            Actions\ChangeCreatedAt::make()->showOnDetail(),
+            Actions\ChangeCreatedAt::make()->sole(),
             Actions\CreateUserProfile::make()
                 ->showInline()
                 ->showOnDetail()
