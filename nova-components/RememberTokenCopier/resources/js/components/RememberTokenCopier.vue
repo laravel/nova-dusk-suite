@@ -10,14 +10,12 @@
 
       <ModalFooter>
         <div class="flex items-center ml-auto">
-          <LoadingButton
-            component="DefaultButton"
-            type="button"
+          <Button
             dusk="close-action-button"
             @click="$emit('close')"
           >
             {{ __('Close') }}
-          </LoadingButton>
+          </Button>
         </div>
       </ModalFooter>
     </div>
@@ -25,6 +23,7 @@
 </template>
 
 <script setup>
+import { Button } from 'laravel-nova-ui'
 const emit = defineEmits(['close'])
 
 const props = defineProps({
