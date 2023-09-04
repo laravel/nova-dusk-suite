@@ -72,7 +72,7 @@ class Passport extends Resource
                     CountryVisit::make(),
                 ])
                 ->nullable()
-                ->asJson()
+                ->asJson(),
         ];
     }
 
