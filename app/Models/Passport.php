@@ -10,6 +10,15 @@ class Passport extends Model
     use HasFactory;
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array<string, class-string|string>
+     */
+    protected $casts = [
+        'visits' => 'json',
+    ];
+
+    /**
      * Get the profile the passport is belongs to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
