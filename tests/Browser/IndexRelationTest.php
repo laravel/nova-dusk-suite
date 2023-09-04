@@ -4,6 +4,8 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
 use Database\Factories\PostFactory;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
@@ -11,10 +13,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexRelationTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function relationships_can_be_searched()
+    public function test_relationships_can_be_searched()
     {
         $user = User::find(1);
         $user->posts()->save(PostFactory::new()->make());
@@ -35,10 +34,7 @@ class IndexRelationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_navigate_to_create_relationship_screen()
+    public function test_can_navigate_to_create_relationship_screen()
     {
         PostFactory::new()->create([
             'user_id' => 1,
@@ -57,10 +53,7 @@ class IndexRelationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function relations_can_be_paginated()
+    public function test_relations_can_be_paginated()
     {
         PostFactory::new()->times(10)->create(['user_id' => 1]);
         PostFactory::new()->create(['user_id' => 2]);
@@ -85,10 +78,7 @@ class IndexRelationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function relations_can_be_sorted()
+    public function test_relations_can_be_sorted()
     {
         PostFactory::new()->times(10)->create(['user_id' => 1]);
         PostFactory::new()->create(['user_id' => 2]);
@@ -113,10 +103,7 @@ class IndexRelationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function deleting_all_matching_relations_is_scoped_to_the_relationships()
+    public function test_deleting_all_matching_relations_is_scoped_to_the_relationships()
     {
         $post = PostFactory::new()->create(['user_id' => 1]);
         $post2 = PostFactory::new()->create(['user_id' => 2]);
@@ -138,10 +125,47 @@ class IndexRelationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function relations_filter_should_not_change_query_string_when_filter_has_not_been_applied()
+    public function test_deleting_attached_duplicate_relations_using_pivot_id()
+    {
+        Carbon::setTestNow($now = Carbon::parse('2021-02-16 12:55:00'));
+
+        DB::table('book_purchases')->insert([
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3400, 'purchased_at' => $now->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3900, 'purchased_at' => $now->toDatetimeString()],
+        ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new Detail('users', 1))
+                ->waitForTextIn('h1', 'User Details: Taylor Otwell')
+                ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId(4, 2)
+                        ->deleteSelected()
+                        ->pause(500);
+                });
+
+            $browser->blank();
+
+            $this->assertDatabaseHas('book_purchases', [
+                'id' => 1,
+                'user_id' => 1,
+                'book_id' => 4,
+                'type' => 'gift',
+                'price' => 3400,
+            ]);
+
+            $this->assertDatabaseMissing('book_purchases', [
+                'id' => 2,
+                'user_id' => 1,
+                'book_id' => 4,
+                'type' => 'gift',
+                'price' => 3900,
+            ]);
+        });
+    }
+
+    public function test_relations_filter_should_not_change_query_string_when_filter_has_not_been_applied()
     {
         PostFactory::new()->times(10)->create(['user_id' => 1]);
 
