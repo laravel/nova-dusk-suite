@@ -38,6 +38,51 @@ class IndexActionTest extends DuskTestCase
         });
     }
 
+    public function test_can_run_actions_on_matching_all_resources()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new UserIndex)
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->selectAllMatching()
+                        ->runAction('mark-as-active');
+                })->waitForText('The action was executed successfully.');
+
+            $this->assertEquals([
+                1 => true,
+                2 => true,
+                3 => true,
+                4 => true,
+            ], User::findMany([1, 2, 3, 4])->pluck('active', 'id')->all());
+
+            $browser->blank();
+        });
+    }
+
+    public function test_can_run_actions_on_matching_all_resources_with_searched_result()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new UserIndex)
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->searchFor('Taylor')
+                        ->selectAllMatching()
+                        ->runAction('mark-as-active');
+                })->waitForText('The action was executed successfully.');
+
+            $this->assertEquals([
+                1 => true,
+                2 => false,
+                3 => false,
+                4 => false,
+            ], User::findMany([1, 2, 3, 4])->pluck('active', 'id')->all());
+
+            $browser->blank();
+        });
+    }
+
     public function test_cannot_run_actions_on_deleted_resources()
     {
         $this->browse(function (Browser $browser) {
