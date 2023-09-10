@@ -88,7 +88,8 @@ class Comment extends Resource
             Link::class => 'Link',
             Post::class => 'Post',
             Video::class => 'Video',
-        ])->showCreateRelationButton(uses_inline_create())
+        ])->filterable()
+            ->showCreateRelationButton(uses_inline_create())
             ->searchable(uses_searchable());
     }
 
