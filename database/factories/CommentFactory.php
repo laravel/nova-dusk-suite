@@ -58,7 +58,7 @@ class CommentFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'commentable_type' => Link::class,
+                'commentable_type' => 'link',
                 'commentable_id' => LinkFactory::new(),
             ];
         });
