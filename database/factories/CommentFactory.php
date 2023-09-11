@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Comment;
-use App\Models\Link;
 use App\Models\Post;
 use App\Models\Video;
 use Illuminate\Database\Eloquent\Factories\Factory;
