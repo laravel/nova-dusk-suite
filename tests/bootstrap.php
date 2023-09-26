@@ -11,11 +11,13 @@ if (isset($_ENV['APP_SERVED']) || isset($_SERVER['APP_SERVED'])) {
 
 if (isset($_SERVER['CI']) || isset($_ENV['CI'])) {
     Options::withoutUI();
+
+    Browser::$waitSeconds = isset($_SERVER['GITHUB_ACTIONS']) || isset($_ENV['GITHUB_ACTIONS']) ? 45 : 35;
 } else {
     Options::withUI();
-}
 
-Browser::$waitSeconds = 35;
+    Browser::$waitSeconds = 25;
+}
 
 Options::$w3cCompliant = false;
 

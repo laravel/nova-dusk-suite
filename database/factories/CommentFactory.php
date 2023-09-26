@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Comment;
-use App\Models\Link;
 use App\Models\Post;
 use App\Models\Video;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -58,7 +57,7 @@ class CommentFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'commentable_type' => Link::class,
+                'commentable_type' => 'link',
                 'commentable_id' => LinkFactory::new(),
             ];
         });
