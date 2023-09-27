@@ -19,7 +19,8 @@ class DashboardTest extends DuskTestCase
                     $browser->assertSee('Dashboard')
                         ->assertCurrentPageTitle('Main');
                 })
-                ->assertSee('Get Started');
+                ->waitForText('Get Started')
+                ->assertSee('Welcome to Nova! Get familiar with Nova and explore its features in the documentation');
 
             $browser->blank();
         });

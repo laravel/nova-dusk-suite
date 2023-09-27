@@ -53,6 +53,9 @@ class IndexTest extends DuskTestCase
         });
     }
 
+    /**
+     * @group internal-server
+     */
     public function test_resource_index_can_show_reload_button_when_received_errors()
     {
         $this->beforeServingApplication(function ($app) {

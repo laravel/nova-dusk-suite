@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\Profile;
 use App\Models\User;
+use Database\Factories\CommentFactory;
 use Database\Factories\PostFactory;
 use Database\Factories\SubscriberFactory;
 use Laravel\Dusk\Browser;
@@ -104,6 +105,64 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertSeeResource(3)
                         ->assertSeeResource(4)
                         ->assertSeeResource(5);
+                });
+
+            $browser->blank();
+        });
+    }
+
+    public function test_it_can_filter_morph_to_field()
+    {
+        $this->browse(function (Browser $browser) {
+            $postComments = CommentFactory::new()->times(1)->create();
+            $linkComments = CommentFactory::new()->times(2)->links()->create();
+            $videoComments = CommentFactory::new()->times(3)->videos()->create();
+
+            $browser->loginAs(1)
+                ->visit(new Index('comments'))
+                ->within(new IndexComponent('comments'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertSeeResource(1)
+                        ->assertSeeResource(2)
+                        ->assertSeeResource(3)
+                        ->assertSeeResource(4)
+                        ->assertSeeResource(5)
+                        ->assertSeeResource(6)
+                        ->runFilter(function ($browser) {
+                            $browser->select('select[dusk="commentable-default-morph-to-field-filter"]', 'links');
+                        })
+                        ->waitForTable()
+                        ->assertFilterCount(1)
+                        ->assertDontSeeResource(1)
+                        ->assertSeeResource(2)
+                        ->assertSeeResource(3)
+                        ->assertDontSeeResource(4)
+                        ->assertDontSeeResource(5)
+                        ->assertDontSeeResource(6);
+
+                    $browser->runFilter(function ($browser) {
+                        $browser->select('select[dusk="commentable-default-morph-to-field-filter"]', 'posts');
+                    })
+                        ->waitForTable()
+                        ->assertFilterCount(1)
+                        ->assertSeeResource(1)
+                        ->assertDontSeeResource(2)
+                        ->assertDontSeeResource(3)
+                        ->assertDontSeeResource(4)
+                        ->assertDontSeeResource(5)
+                        ->assertDontSeeResource(6);
+
+                    $browser->runFilter(function ($browser) {
+                        $browser->select('select[dusk="commentable-default-morph-to-field-filter"]', 'videos');
+                    })
+                        ->waitForTable()
+                        ->assertFilterCount(1)
+                        ->assertDontSeeResource(1)
+                        ->assertDontSeeResource(2)
+                        ->assertDontSeeResource(3)
+                        ->assertSeeResource(4)
+                        ->assertSeeResource(5)
+                        ->assertSeeResource(6);
                 });
 
             $browser->blank();

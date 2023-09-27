@@ -136,7 +136,8 @@ class DependentActionFieldTest extends DuskTestCase
                             ->assertMissing('@user')
                             ->whenAvailable('#anonymous-default-boolean-field', function ($browser) {
                                 $browser->assertChecked('')->uncheck('');
-                            })->whenAvailable(new RelationSelectControlComponent('users'), function ($browser) {
+                            })->pause(1000)
+                            ->whenAvailable(new RelationSelectControlComponent('users'), function ($browser) {
                                 $browser->select('', 4);
                             });
                     });
