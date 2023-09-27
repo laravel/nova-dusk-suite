@@ -5,18 +5,21 @@ use Orchestra\Testbench\Dusk\Options;
 
 require __DIR__.'/../vendor/autoload.php';
 
-if (isset($_ENV['APP_SERVED']) || isset($_SERVER['APP_SERVED'])) {
-    Options::$providesApplicationServer = false;
-}
+$CI = isset($_SERVER['CI']) || isset($_ENV['CI']);
+$GITHUB_ACTIONS = isset($_SERVER['GITHUB_ACTIONS']) || isset($_ENV['GITHUB_ACTIONS']);
 
-if (isset($_SERVER['CI']) || isset($_ENV['CI'])) {
+if ($CI) {
     Options::withoutUI();
 
-    Browser::$waitSeconds = isset($_SERVER['GITHUB_ACTIONS']) || isset($_ENV['GITHUB_ACTIONS']) ? 45 : 35;
+    Browser::$waitSeconds = 35;
 } else {
     Options::withUI();
 
     Browser::$waitSeconds = 25;
+}
+
+if ($GITHUB_ACTIONS) {
+    Browser::$waitSeconds = 50;
 }
 
 Options::$w3cCompliant = false;
