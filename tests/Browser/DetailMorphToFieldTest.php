@@ -129,8 +129,9 @@ class DetailMorphToFieldTest extends DuskTestCase
                 ->visit(new Detail('comments', $comment->id))
                 ->waitForTextIn('h1', 'Comment Details')
                 ->within(new DetailComponent('comments', $comment->id), function ($browser) use ($post) {
-                    $browser->clickLink($post->title);
+                    $browser->clickLink($post->title)->pause(2000);
                 })
+                ->waitForRoute('nova.pages.detail', ['resource' => 'posts', 'resourceId' => $post->id])
                 ->waitForTextIn('h1', 'User Post Details')
                 ->assertSee('User Post Details: '.$post->id);
 
