@@ -14,10 +14,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class DetailMorphToFieldTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function morph_to_field_navigates_to_parent_resource_when_clicked()
+    public function test_morph_to_field_navigates_to_parent_resource_when_clicked()
     {
         $post = PostFactory::new()->create();
         $post->comments()->save($comment = CommentFactory::new()->make());
@@ -37,10 +34,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function morph_to_field_should_honor_custom_labels()
+    public function test_morph_to_field_should_honor_custom_labels()
     {
         $post = PostFactory::new()->create();
         $post->comments()->save(CommentFactory::new()->make());
@@ -55,10 +49,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function morph_to_field_should_honor_custom_labels_again()
+    public function test_morph_to_field_should_honor_custom_labels_again()
     {
         $video = VideoFactory::new()->create();
         $video->comments()->save($comment = CommentFactory::new()->make());
@@ -72,10 +63,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function morph_to_field_should_honor_custom_polymorphic_type()
+    public function test_morph_to_field_should_honor_custom_polymorphic_type()
     {
         $link = LinkFactory::new()->create();
         $link->comments()->save($comment = CommentFactory::new()->make());
@@ -92,10 +80,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function morph_to_field_can_be_displayed_when_not_defined_using_types()
+    public function test_morph_to_field_can_be_displayed_when_not_defined_using_types()
     {
         $comment = CommentFactory::new()->create([
             'commentable_type' => \Illuminate\Foundation\Auth\User::class,
@@ -114,10 +99,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function morph_to_field_accepts_parent_with_big_int_id()
+    public function test_morph_to_field_accepts_parent_with_big_int_id()
     {
         $post = PostFactory::new()->create([
             'id' => 9121018173229432287,
@@ -139,10 +121,7 @@ class DetailMorphToFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function morph_to_field_accepts_not_defined_using_types_parent_with_big_int_id()
+    public function test_morph_to_field_accepts_not_defined_using_types_parent_with_big_int_id()
     {
         UserFactory::new()->create([
             'id' => 9121018173229432288,
