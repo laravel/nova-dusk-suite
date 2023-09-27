@@ -10,6 +10,9 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class ComponentOverrideTest extends DuskTestCase
 {
+    /**
+     * @group internal-server
+     */
     public function test_it_can_override_default_components()
     {
         $this->beforeServingApplication(function ($app) {

@@ -13,6 +13,8 @@ class CustomAuthenticatesUserTest extends DuskTestCase
 {
     /**
      * @dataProvider intendedUrlDataProvider
+     *
+     * @group internal-server
      */
     public function test_it_redirect_to_intended_url_after_login($targetUrl, $expectedUrl)
     {
@@ -37,6 +39,9 @@ class CustomAuthenticatesUserTest extends DuskTestCase
         });
     }
 
+    /**
+     * @group internal-server
+     */
     public function test_it_redirect_to_login_after_logout()
     {
         $this->beforeServingApplication(function ($app, $config) {
@@ -60,6 +65,9 @@ class CustomAuthenticatesUserTest extends DuskTestCase
         });
     }
 
+    /**
+     * @group internal-server
+     */
     public function test_it_clear_user_association_after_logout()
     {
         $this->beforeServingApplication(function ($app, $config) {
@@ -81,6 +89,9 @@ class CustomAuthenticatesUserTest extends DuskTestCase
         });
     }
 
+    /**
+     * @group internal-server
+     */
     public function test_it_clear_user_association_after_session_timeout()
     {
         $this->beforeServingApplication(function ($app, $config) {
@@ -104,6 +115,9 @@ class CustomAuthenticatesUserTest extends DuskTestCase
         });
     }
 
+    /**
+     * @group internal-server
+     */
     public function test_it_can_relogin_after_session_timeout()
     {
         $this->beforeServingApplication(function ($app, $config) {
@@ -129,6 +143,9 @@ class CustomAuthenticatesUserTest extends DuskTestCase
         });
     }
 
+    /**
+     * @group internal-server
+     */
     public function test_it_redirect_to_login_after_password_reset()
     {
         $this->beforeServingApplication(function ($app, $config) {

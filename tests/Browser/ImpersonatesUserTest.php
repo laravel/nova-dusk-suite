@@ -179,6 +179,9 @@ class ImpersonatesUserTest extends DuskTestCase
         });
     }
 
+    /**
+     * @group internal-server
+     */
     public function test_it_can_impersonate_another_user_using_different_guard_with_nova_guard_on_none_default()
     {
         $this->beforeServingApplication(function ($app, $config) {
