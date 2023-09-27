@@ -21,6 +21,8 @@ class DateTimeFieldTest extends DuskTestCase
 {
     /**
      * @dataProvider localiseDatetimeDataProvider
+     *
+     * @group internal-server
      */
     public function test_can_pick_date_using_datetime_input($appDateTime, $appTimezone, $localDateTime, $userTimezone)
     {
@@ -102,6 +104,8 @@ class DateTimeFieldTest extends DuskTestCase
 
     /**
      * @dataProvider localiseDatetimeDataProvider
+     *
+     * @group internal-server
      */
     public function test_can_pick_date_using_datetime_input_and_maintain_current_value_on_validation_errors($appDateTime, $appTimezone, $localDateTime, $userTimezone)
     {
@@ -165,6 +169,8 @@ class DateTimeFieldTest extends DuskTestCase
 
     /**
      * @dataProvider localiseDatetimeDataProvider
+     *
+     * @group internal-server
      */
     public function test_can_persist_date_using_datetime_input($appDateTime, $appTimezone, $localDateTime, $userTimezone)
     {
