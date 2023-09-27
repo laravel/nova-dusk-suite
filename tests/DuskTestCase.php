@@ -44,6 +44,10 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
             $this->withoutMockingConsoleOutput();
         });
 
+        $this->beforeApplicationDestroyed(function () {
+            echo memory_get_peak_usage().PHP_EOL;
+        });
+
         parent::setUp();
     }
 
