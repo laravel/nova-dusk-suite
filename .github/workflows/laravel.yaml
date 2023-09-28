@@ -15,7 +15,7 @@ jobs:
   laravel-tests:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
-    timeout-minutes: 45
+    timeout-minutes: 55
     strategy:
       matrix:
         os:
