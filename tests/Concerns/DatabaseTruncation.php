@@ -2,8 +2,6 @@
 
 namespace Laravel\Nova\Tests\Concerns;
 
-use Illuminate\Foundation\Application;
-
 trait DatabaseTruncation
 {
     /**
