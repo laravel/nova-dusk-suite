@@ -81,7 +81,9 @@ jobs:
         run: composer show -D
 
       - name: Publish webpack.mix.js
-        run: cp ./nova/webpack.mix.js.dist ./nova/webpack.mix.js
+        run: |
+          cp ./nova/webpack.mix.js.dist ./nova/webpack.mix.js
+          echo '' > ./nova/resources/css/fonts.css
 
       - name: Install NPM on Laravel Nova
         run: npm --prefix "./nova/" ci
