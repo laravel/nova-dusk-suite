@@ -20,7 +20,7 @@ class DependentFieldTest extends DuskTestCase
             $browser->loginAs(4)
                 ->visit(new Create('projects'))
                 ->waitForTextIn('h1', 'Create Project')
-                ->within(new FormComponent, function ($browser) {
+                ->within(new FormComponent, static function ($browser) {
                     $browser->assertSelectMissingOptions('@type', ['product', 'service'])
                         ->assertSelected('@type', '')
                         ->select('@name', 'Secret')
@@ -111,7 +111,7 @@ class DependentFieldTest extends DuskTestCase
             $browser->loginAs(4)
                 ->visit(new Create('companies'))
                 ->waitForTextIn('h1', 'Create Company')
-                ->within(new FormComponent, function ($browser) {
+                ->within(new FormComponent, static function ($browser) {
                     $browser->fieldValue(
                         'description',
                         'Creators of Tailwind CSS, Tailwind UI, and Refactoring UI.'
@@ -140,7 +140,7 @@ class DependentFieldTest extends DuskTestCase
             $browser->loginAs(4)
                 ->visit(new Create('projects'))
                 ->waitForTextIn('h1', 'Create Project')
-                ->within(new FormComponent, function ($browser) {
+                ->within(new FormComponent, static function ($browser) {
                     $browser->assertSelectMissingOptions('@type', ['product', 'service'])
                         ->assertSelected('@type', '')
                         ->select('@name', 'Secret')
@@ -171,7 +171,7 @@ class DependentFieldTest extends DuskTestCase
             $browser->loginAs(4)
                 ->visit(new Create('companies'))
                 ->waitForTextIn('h1', 'Create Company')
-                ->within(new FormComponent, function ($browser) {
+                ->within(new FormComponent, static function ($browser) {
                     $browser->type('@name', 'Laravel LLC')
                         ->pause(1500)
                         ->fieldValue(
@@ -200,8 +200,8 @@ class DependentFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('captains'))
-                ->within(new IndexComponent('captains'), function ($browser) {
-                    $browser->runStandaloneAction('fields-action', function ($browser) {
+                ->within(new IndexComponent('captains'), static function ($browser) {
+                    $browser->runStandaloneAction('fields-action', static function ($browser) {
                         $browser->waitFor('@select_1')
                             ->assertMissing('@select_2')
                             ->assertMissing('@select_3')

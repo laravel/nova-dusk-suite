@@ -26,7 +26,7 @@ class LensSearchTest extends DuskTestCase
             // Search For Single Post By ID...
             $browser->loginAs(1)
                 ->visit(new Lens('posts', 'post'))
-                ->within(new LensComponent('posts', 'post'), function ($browser) {
+                ->within(new LensComponent('posts', 'post'), static function ($browser) {
                     $browser->waitForTable()
                         ->searchFor('3')
                         ->waitForTable()
@@ -38,7 +38,7 @@ class LensSearchTest extends DuskTestCase
 
             // Search For Single Post By Name...
             $browser->visit(new Lens('posts', 'post'))
-                ->within(new LensComponent('posts', 'post'), function ($browser) {
+                ->within(new LensComponent('posts', 'post'), static function ($browser) {
                     $browser->waitForTable()
                         ->searchFor('Taylor')
                         ->waitForTable()
@@ -65,7 +65,7 @@ class LensSearchTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Lens('posts', 'post', ['posts_page' => 1, 'posts_search' => 'taylor']))
-                ->within(new LensComponent('posts', 'post'), function ($browser) {
+                ->within(new LensComponent('posts', 'post'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(1)
                         ->assertDontSeeResource(2)

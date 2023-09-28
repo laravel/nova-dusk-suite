@@ -27,11 +27,11 @@ class RemoveAttachedTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
-                ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
+                ->within(new IndexComponent('books', 'giftBooks'), static function ($browser) {
                     $browser->waitForTable()
-                        ->within('tr[data-pivot-id="2"]', function ($browser) {
+                        ->within('tr[data-pivot-id="2"]', static function ($browser) {
                             $browser->click('@4-delete-button')
-                                ->elsewhereWhenAvailable(new DeleteResourceModalComponent(), function ($browser) {
+                                ->elsewhereWhenAvailable(new DeleteResourceModalComponent(), static function ($browser) {
                                     $browser->confirm();
                                 })->pause(500);
                         });

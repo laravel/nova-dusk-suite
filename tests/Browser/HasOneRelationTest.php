@@ -18,7 +18,7 @@ class HasOneRelationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
-                ->within(new IndexComponent('profiles'), function ($browser) {
+                ->within(new IndexComponent('profiles'), static function ($browser) {
                     $browser->assertMissing('@create-button');
                 });
 

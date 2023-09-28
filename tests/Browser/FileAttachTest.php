@@ -53,10 +53,10 @@ class FileAttachTest extends DuskTestCase
 
             // Delete the file...
             $browser->visit(new Update('captains', $captain->id))
-                ->whenAvailable('button[dusk="photo-delete-link"]', function ($browser) {
+                ->whenAvailable('button[dusk="photo-delete-link"]', static function ($browser) {
                     $browser->click('');
                 })
-                ->whenAvailable(new ConfirmUploadRemovalModalComponent(), function ($browser) {
+                ->whenAvailable(new ConfirmUploadRemovalModalComponent(), static function ($browser) {
                     $browser->confirm();
                 })
                 ->waitForText('The file was deleted!');

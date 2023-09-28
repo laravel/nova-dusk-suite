@@ -40,12 +40,12 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($ship, $ship2) {
             $browser->loginAs(1)
                 ->visit(new Create('sails'))
-                ->whenAvailable(new RelationSelectControlComponent('ships'), function ($browser) use ($ship, $ship2) {
+                ->whenAvailable(new RelationSelectControlComponent('ships'), static function ($browser) use ($ship, $ship2) {
                     $browser->assertSelectMissingOption('', $ship->id)
                         ->assertSelectHasOption('', $ship2->id);
                 })
                 ->withTrashedRelation('ships')
-                ->whenAvailable(new RelationSelectControlComponent('ships'), function ($browser) use ($ship, $ship2) {
+                ->whenAvailable(new RelationSelectControlComponent('ships'), static function ($browser) use ($ship, $ship2) {
                     $browser->assertSelectHasOptions('', [$ship->id, $ship2->id])
                         ->select('', $ship->id);
                 })

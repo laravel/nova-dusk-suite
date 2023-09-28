@@ -17,7 +17,7 @@ class IndexFilterTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->setPerPage('50')
                         ->waitForTable()
@@ -38,7 +38,7 @@ class IndexFilterTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->setPerPage('50')
                         ->waitForTable()
@@ -48,7 +48,7 @@ class IndexFilterTest extends DuskTestCase
                         ->assertSee('1-50 of 54');
                 })
                 ->refresh()
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(50)
                         ->assertSeeResource(25)
@@ -65,7 +65,7 @@ class IndexFilterTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->selectFilter('Select First', '1')
                         ->waitForTable()
@@ -90,7 +90,7 @@ class IndexFilterTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->selectFilter('Select First', '1')
                         ->waitForTable()
@@ -117,7 +117,7 @@ class IndexFilterTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSee('1-25 of 29')
                         ->nextPage()
@@ -147,7 +147,7 @@ class IndexFilterTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new UserIndex([
                     'users_filter' => 'W3siQXBwXFxOb3ZhXFxGaWx0ZXJzXFxXaXRoUG9zdHMiOiIifSx7IkFwcFxcTm92YVxcRmlsdGVyc1xcU2VsZWN0Rmlyc3QiOiIifSx7IkFwcFxcTm92YVxcRmlsdGVyc1xcQ3JlYXRlZCI6IjIwMjItMDEtMDEifSx7IlRleHQ6bmFtZSI6IiJ9LHsiQm9vbGVhbjphY3RpdmUiOiIifSx7IkJvb2xlYW5Hcm91cDpwZXJtaXNzaW9ucyI6IiJ9LHsiRGF0ZVRpbWU6Y3JlYXRlZF9hdCI6W251bGwsbnVsbF19LHsicmVzb3VyY2U6cm9sZXM6cm9sZXMiOiIifSx7InJlc291cmNlOmJvb2tzOmdpZnRCb29rcyI6IiJ9XQ==',
-                ]))->within(new IndexComponent('users'), function ($browser) {
+                ]))->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertDontSeeResource(1)
                         ->assertDontSeeResource(2)
@@ -156,7 +156,7 @@ class IndexFilterTest extends DuskTestCase
                         ->assertMissing('@filter-per-page')
                         ->click('@filter-selector')
                         ->pause(500)
-                        ->elsewhere('', function ($browser) {
+                        ->elsewhere('', static function ($browser) {
                             $browser->assertVisible('@filter-per-page')
                                 ->type('input[dusk="Created-date-filter"]', '')
                                 ->assertVisible('@filter-per-page');
@@ -169,7 +169,7 @@ class IndexFilterTest extends DuskTestCase
                         ->assertSeeResource(5)
                         ->assertSeeResource(6)
                         ->assertSeeResource(7)
-                        ->elsewhere('', function ($browser) {
+                        ->elsewhere('', static function ($browser) {
                             $browser->assertVisible('@filter-per-page');
                         })
                         ->closeCurrentDropdown()
@@ -188,7 +188,7 @@ class IndexFilterTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($url) {
             $browser->loginAs(1)
                 ->visit($url)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->assertDontSeeResource(1)
                         ->assertDontSeeResource(2)
                         ->assertSeeResource(3)
@@ -204,12 +204,12 @@ class IndexFilterTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertMissing('@filter-per-page')
                         ->click('@filter-selector')
                         ->pause(500)
-                        ->elsewhere('', function ($browser) {
+                        ->elsewhere('', static function ($browser) {
                             $browser->assertVisible('@filter-per-page')
                                 ->type('input[dusk="Created-date-filter"]', '')
                                 ->assertVisible('@filter-per-page');

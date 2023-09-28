@@ -16,7 +16,7 @@ class IndexSearchTest extends DuskTestCase
             // Search For Single User By ID...
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->searchFor('3')
                         ->waitForTable()
@@ -28,7 +28,7 @@ class IndexSearchTest extends DuskTestCase
 
             // Search For Single User By Name...
             $browser->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->searchFor('Taylor')
                         ->waitForTable()
@@ -47,7 +47,7 @@ class IndexSearchTest extends DuskTestCase
             // Search For Single User By ID...
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->searchFor('3')
                         ->waitForTable()
@@ -57,11 +57,11 @@ class IndexSearchTest extends DuskTestCase
                         ->assertDontSeeResource(4)
                         ->assertQueryStringHas('users_search', '3');
                 })
-                ->within(new SidebarComponent(), function ($browser) {
+                ->within(new SidebarComponent(), static function ($browser) {
                     $browser->clickLink('Users');
                 })
                 ->waitForTextIn('h1', 'Users')
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertValue('@search', '')
                         ->assertQueryStringMissing('users_search', '')
@@ -81,7 +81,7 @@ class IndexSearchTest extends DuskTestCase
             // Search For Single User By ID...
             $browser->loginAs(1)
                 ->visit(new UserIndex(['users_page' => 1, 'users_search' => 'taylor']))
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(1)
                         ->assertDontSeeResource(2)

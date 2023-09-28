@@ -24,17 +24,17 @@ class AttachPolymorphicTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Detail('posts', $post->id))
-                ->within(new IndexComponent('tags'), function ($browser) {
+                ->within(new IndexComponent('tags'), static function ($browser) {
                     $browser->waitFor('@attach-button')
                         ->click('@attach-button');
                 })
                 ->on(Attach::morphToMany('posts', $post->id, 'tags'))
-                ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
+                ->within(new BreadcrumbComponent(), static function ($browser) use ($post) {
                     $browser->assertSeeLink('User Post')
                         ->assertSeeLink("User Post Details: {$post->id}")
                         ->assertCurrentPageTitle('Attach Tag');
                 })
-                ->within(new FormComponent(), function ($browser) use ($tag) {
+                ->within(new FormComponent(), static function ($browser) use ($tag) {
                     $browser->searchFirstRelation('tags', $tag->id);
                 })
                 ->create()
@@ -58,17 +58,17 @@ class AttachPolymorphicTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Detail('posts', $post->id))
-                ->within(new IndexComponent('tags'), function ($browser) {
+                ->within(new IndexComponent('tags'), static function ($browser) {
                     $browser->waitFor('@attach-button')
                         ->click('@attach-button');
                 })
                 ->on(Attach::morphToMany('posts', $post->id, 'tags'))
-                ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
+                ->within(new BreadcrumbComponent(), static function ($browser) use ($post) {
                     $browser->assertSeeLink('User Post')
                         ->assertSeeLink("User Post Details: {$post->id}")
                         ->assertCurrentPageTitle('Attach Tag');
                 })
-                ->within(new FormComponent(), function ($browser) use ($tag) {
+                ->within(new FormComponent(), static function ($browser) use ($tag) {
                     $browser->searchFirstRelation('tags', $tag->id);
                 })
                 ->create()
@@ -92,12 +92,12 @@ class AttachPolymorphicTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::morphToMany('posts', $post->id, 'tags'))
-                ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
+                ->within(new BreadcrumbComponent(), static function ($browser) use ($post) {
                     $browser->assertSeeLink('User Post')
                         ->assertSeeLink("User Post Details: {$post->id}")
                         ->assertCurrentPageTitle('Attach Tag');
                 })
-                ->within(new FormComponent(), function ($browser) use ($tag) {
+                ->within(new FormComponent(), static function ($browser) use ($tag) {
                     $browser->searchFirstRelation('tags', $tag->id)
                         ->type('@notes', 'Test Notes');
                 })
@@ -121,13 +121,13 @@ class AttachPolymorphicTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::morphToMany('posts', $post->id, 'tags'))
-                ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
+                ->within(new BreadcrumbComponent(), static function ($browser) use ($post) {
                     $browser->assertSeeLink('User Post')
                         ->assertSeeLink("User Post Details: {$post->id}")
                         ->assertCurrentPageTitle('Attach Tag');
                 })
-                ->within(new FormComponent(), function ($browser) {
-                    $browser->whenAvailable('@notes', function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
+                    $browser->whenAvailable('@notes', static function ($browser) {
                         $browser->type('', str_repeat('A', 30));
                     });
                 })
@@ -154,12 +154,12 @@ class AttachPolymorphicTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::morphToMany('posts', $post->id, 'tags'))
-                ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
+                ->within(new BreadcrumbComponent(), static function ($browser) use ($post) {
                     $browser->assertSeeLink('User Post')
                         ->assertSeeLink("User Post Details: {$post->id}")
                         ->assertCurrentPageTitle('Attach Tag');
                 })
-                ->within(new FormComponent(), function ($browser) use ($tag) {
+                ->within(new FormComponent(), static function ($browser) use ($tag) {
                     $browser->searchFirstRelation('tags', $tag->id)
                         ->type('@notes', str_repeat('A', 30));
                 })

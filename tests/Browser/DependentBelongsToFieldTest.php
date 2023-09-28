@@ -38,7 +38,7 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 ->assertDontSeeIn('@nova-form', 'Attachment')
                 ->type('@title', 'Space Pilgrim: Episode 1')
                 ->pause(2000)
-                ->within(new RelationSelectControlComponent('users'), function ($browser) {
+                ->within(new RelationSelectControlComponent('users'), static function ($browser) {
                     $browser->assertSelected('', 1);
                 })
                 ->assertDontSeeIn('@nova-form', 'SOCIAL DATA')
@@ -61,7 +61,7 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 ->type('@title', 'Space Pilgrim: Episode 1')
                 ->type('@body', 'Content')
                 ->pause(2000)
-                ->within(new RelationSelectControlComponent('users'), function ($browser) {
+                ->within(new RelationSelectControlComponent('users'), static function ($browser) {
                     $browser->assertSelected('', 1);
                 })
                 ->assertInputValue('@key-value-key-0', 'Series')
@@ -91,7 +91,7 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 ->assertDontSeeIn('@nova-form', 'Attachment')
                 ->type('@title', 'Space Pilgrim: Episode '.$post1->id)
                 ->pause(2000)
-                ->within(new RelationSelectControlComponent('users'), function ($browser) {
+                ->within(new RelationSelectControlComponent('users'), static function ($browser) {
                     $browser->assertSelected('', 1);
                 })
                 ->cancel();
@@ -100,7 +100,7 @@ class DependentBelongsToFieldTest extends DuskTestCase
                 ->assertSeeIn('@nova-form', 'Attachment')
                 ->type('@title', 'Space Pilgrim: Episode '.$post2->id)
                 ->pause(2000)
-                ->within(new RelationSelectControlComponent('users'), function ($browser) {
+                ->within(new RelationSelectControlComponent('users'), static function ($browser) {
                     $browser->assertSelected('', 1);
                 })
                 ->cancel();
@@ -114,11 +114,11 @@ class DependentBelongsToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Create('posts'))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
                     $browser->assertSee('Attachment')
                         ->assertInputValue('@key-value-key-0', 'Author')
                         ->assertInputValue('@key-value-value-0', 'Anonymous')
-                        ->within(new RelationSelectControlComponent('users'), function ($browser) {
+                        ->within(new RelationSelectControlComponent('users'), static function ($browser) {
                             $browser->select('', 4);
                         })
                         ->pause(4000)
@@ -128,7 +128,7 @@ class DependentBelongsToFieldTest extends DuskTestCase
 
                     $browser->type('@title', 'Space Pilgrim: Episode 1')
                         ->pause(2000)
-                        ->within(new RelationSelectControlComponent('users'), function ($browser) {
+                        ->within(new RelationSelectControlComponent('users'), static function ($browser) {
                             $browser->assertSelected('', 1);
                         })
                         ->assertSee('Attachment')
@@ -137,7 +137,7 @@ class DependentBelongsToFieldTest extends DuskTestCase
 
                     $browser->type('@title', 'Nova: Episode 1')
                         ->pause(2000)
-                        ->within(new RelationSelectControlComponent('users'), function ($browser) {
+                        ->within(new RelationSelectControlComponent('users'), static function ($browser) {
                             $browser->assertNotSelected('', 1)
                                 ->assertNotSelected('', 2)
                                 ->assertNotSelected('', 3)

@@ -22,7 +22,7 @@ class PaginationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex(['users_page' => 2]))
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForEmptyDialog()
                         ->assertDisabled('nav button[dusk="next"]')
                         ->assertEnabled('nav button[dusk="previous"]')
@@ -45,7 +45,7 @@ class PaginationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex(['users_page' => 2]))
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForEmptyDialog()
                         ->assertDisabled('nav button[dusk="next"]')
                         ->assertDisabled('nav button[dusk="last"]')

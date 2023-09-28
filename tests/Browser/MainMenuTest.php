@@ -34,13 +34,13 @@ class MainMenuTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex())
-                ->within(new SidebarComponent(), function ($browser) {
+                ->within(new SidebarComponent(), static function ($browser) {
                     $browser->assertPresent('@current-active-link')
                         ->assertSeeIn('@current-active-link', 'Users')
                         ->assertDontSeeIn('@current-active-link', 'Passthrough Lens');
                 })
                 ->visit(new Lens('users', 'passthrough-lens'))
-                ->whenAvailable(new SidebarComponent(), function ($browser) {
+                ->whenAvailable(new SidebarComponent(), static function ($browser) {
                     $browser->assertPresent('@current-active-link')
                         ->assertDontSeeIn('@current-active-link', 'Users')
                         ->assertSeeIn('@current-active-link', 'Passthrough Lens');
@@ -55,12 +55,12 @@ class MainMenuTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex())
-                ->within(new SidebarComponent(), function ($browser) {
+                ->within(new SidebarComponent(), static function ($browser) {
                     $browser->assertPresent('@current-active-link')
                         ->assertSeeIn('@current-active-link', 'Users');
                 })
                 ->visit(new Lens('users', 'passthrough-lens'))
-                ->whenAvailable(new SidebarComponent(), function ($browser) {
+                ->whenAvailable(new SidebarComponent(), static function ($browser) {
                     $browser->assertMissing('@current-active-link');
                 });
         });

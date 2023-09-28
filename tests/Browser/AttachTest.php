@@ -22,8 +22,8 @@ class AttachTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
-                ->within(new FormComponent(), function ($browser) use ($role) {
-                    $browser->whenAvailable('@via-resource-field', function ($browser) {
+                ->within(new FormComponent(), static function ($browser) use ($role) {
+                    $browser->whenAvailable('@via-resource-field', static function ($browser) {
                         $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
                         ->selectAttachable($role->id);
@@ -48,13 +48,13 @@ class AttachTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent(), static function ($browser) {
                     $browser->assertSeeLink('Users')
                         ->assertSeeLink('User Details: Taylor Otwell')
                         ->assertCurrentPageTitle('Attach Role');
                 })
-                ->within(new FormComponent(), function ($browser) use ($role) {
-                    $browser->whenAvailable('@via-resource-field', function ($browser) {
+                ->within(new FormComponent(), static function ($browser) use ($role) {
+                    $browser->whenAvailable('@via-resource-field', static function ($browser) {
                         $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
                         ->selectAttachable($role->id)
@@ -81,13 +81,13 @@ class AttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent(), static function ($browser) {
                     $browser->assertSeeLink('Users')
                         ->assertSeeLink('User Details: Taylor Otwell')
                         ->assertCurrentPageTitle('Attach Role');
                 })
-                ->within(new FormComponent(), function ($browser) {
-                    $browser->whenAvailable('@via-resource-field', function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
+                    $browser->whenAvailable('@via-resource-field', static function ($browser) {
                         $browser->assertSee('User')->assertSee('Taylor Otwell');
                     });
                 })
@@ -117,12 +117,12 @@ class AttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
-                ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
+                ->within(new IndexComponent('books', 'giftBooks'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(4)
                         ->assertDontSeeResource(3);
                 })
-                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
+                ->within(new IndexComponent('books', 'personalBooks'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(3)
                         ->assertDontSeeResource(4);
@@ -140,7 +140,7 @@ class AttachTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
                 ->runAttachRelation('roles')
-                ->whenAvailable('@via-resource-field', function ($browser) {
+                ->whenAvailable('@via-resource-field', static function ($browser) {
                     $browser->assertSee('User')->assertSee('Taylor Otwell');
                 })
                 ->selectAttachable($role->id)
@@ -149,7 +149,7 @@ class AttachTest extends DuskTestCase
                 ->on(new Detail('users', 1))
                 ->waitForTextIn('h1', 'User Details: Taylor Otwell')
                 ->visit(new Attach('users', 1, 'roles'))
-                ->whenAvailable('@via-resource-field', function ($browser) {
+                ->whenAvailable('@via-resource-field', static function ($browser) {
                     $browser->assertSee('User')->assertSee('Taylor Otwell');
                 });
 
@@ -175,7 +175,7 @@ class AttachTest extends DuskTestCase
                 ->visit(new Detail('users', 1))
                 ->runAttachRelation('books', 'giftBooks')
                 ->assertSeeIn('h1', 'Attach Book')
-                ->within(new FormComponent, function ($browser) use ($now) {
+                ->within(new FormComponent, static function ($browser) use ($now) {
                     $browser->selectAttachable(4)
                         ->type('@price', '39')
                         ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now);
@@ -183,11 +183,11 @@ class AttachTest extends DuskTestCase
                 ->create()
                 ->waitForText('The resource was attached!')
                 ->on(new Detail('users', 1))
-                ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
+                ->within(new IndexComponent('books', 'giftBooks'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(4);
                 })
-                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
+                ->within(new IndexComponent('books', 'personalBooks'), static function ($browser) {
                     $browser->waitForEmptyDialog()
                         ->assertSee('No Book matched the given criteria.');
                 });
@@ -224,11 +224,11 @@ class AttachTest extends DuskTestCase
                 ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now)
                 ->create()
                 ->waitForText('The resource was attached!')
-                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
+                ->within(new IndexComponent('books', 'personalBooks'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(4);
                 })
-                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
+                ->within(new IndexComponent('books', 'personalBooks'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(4);
                 });

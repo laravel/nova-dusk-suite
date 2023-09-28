@@ -16,10 +16,10 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('videos'))
-                ->runCreate(function ($browser) {
+                ->runCreate(static function ($browser) {
                     $browser->keys('@title', 'Hello World', '{tab}');
                 })
-                ->within(new SidebarComponent(), function ($browser) {
+                ->within(new SidebarComponent(), static function ($browser) {
                     $browser->clickLink('Users');
                 })
                 ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
@@ -41,7 +41,7 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('videos'))
-                ->runCreate(function ($browser) {
+                ->runCreate(static function ($browser) {
                     $browser->keys('@title', 'Hello World', '{tab}');
                 })
                 ->back()
@@ -64,7 +64,7 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('videos'))
-                ->runCreate(function ($browser) {
+                ->runCreate(static function ($browser) {
                     $browser->keys('@title', 'Hello World', '{tab}');
                 })
                 ->cancel()
@@ -84,7 +84,7 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('videos'))
-                ->runCreate(function ($browser) {
+                ->runCreate(static function ($browser) {
                     $browser->keys('@title', 'Hello World', '{tab}');
                 })
                 ->createAndAddAnother()

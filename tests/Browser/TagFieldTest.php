@@ -22,11 +22,11 @@ class TagFieldTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Update('flights', $flight->getKey()))
-                ->within(new FormComponent(), function ($browser) use ($passports) {
+                ->within(new FormComponent(), static function ($browser) use ($passports) {
                     $browser->assertMissing('@passports-selected-tags')
-                        ->within(new SearchInputComponent('passports'), function ($browser) use ($passports) {
+                        ->within(new SearchInputComponent('passports'), static function ($browser) use ($passports) {
                             $browser->searchAndSelectFirstResult($passports[0]->getKey());
-                        })->whenAvailable('@passports-selected-tags', function ($browser) use ($passports) {
+                        })->whenAvailable('@passports-selected-tags', static function ($browser) use ($passports) {
                             $browser->assertSeeIn('span', Str::upper($passports[0]->value));
                         });
                 })

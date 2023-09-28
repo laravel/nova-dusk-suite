@@ -15,10 +15,10 @@ class DependentBelongsToManyFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Attach('users', 1, 'books', 'personalBooks'))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
                     $browser->assertSee('Attach Book')
                         ->assertSeeIn('p.help-text', 'Price starts from $0-$99')
-                        ->within(new RelationSelectControlComponent('attachable'), function ($browser) {
+                        ->within(new RelationSelectControlComponent('attachable'), static function ($browser) {
                             $browser->select('', 1);
                         })->pause(500)
                         ->assertSeeIn('p.help-text', 'Price starts from $10-$199');

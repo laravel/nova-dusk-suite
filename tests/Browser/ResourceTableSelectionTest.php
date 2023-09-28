@@ -16,7 +16,7 @@ class ResourceTableSelectionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
                             $browser->assertCheckboxIsNotChecked()
@@ -36,7 +36,7 @@ class ResourceTableSelectionTest extends DuskTestCase
                 });
 
             $browser->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
                             $browser->selectAllOnCurrentPage()
@@ -58,7 +58,7 @@ class ResourceTableSelectionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
                             $browser->selectAllOnCurrentPage()
@@ -78,7 +78,7 @@ class ResourceTableSelectionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->selectAllOnCurrentPage()
                         ->assertChecked('[dusk="1-row"] input.checkbox')
@@ -107,7 +107,7 @@ class ResourceTableSelectionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->selectAllMatching()
                         ->assertChecked('[dusk="1-row"] input.checkbox')

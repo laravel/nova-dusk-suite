@@ -27,14 +27,14 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex())
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(1)
                         ->assertSeeResource(2)
                         ->assertSeeResource(3)
                         ->assertSeeResource(4)
-                        ->runFilter(function ($browser) {
-                            $browser->whenAvailable('select[dusk="giftBooks-default-belongs-to-many-field-filter"]', function ($browser) {
+                        ->runFilter(static function ($browser) {
+                            $browser->whenAvailable('select[dusk="giftBooks-default-belongs-to-many-field-filter"]', static function ($browser) {
                                 $browser->select('', 4);
                             });
                         })->waitForTable()
@@ -42,8 +42,8 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->assertSeeResource(2)
                         ->assertDontSeeResource(3)
                         ->assertDontSeeResource(4)
-                        ->runFilter(function ($browser) {
-                            $browser->whenAvailable('select[dusk="giftBooks-default-belongs-to-many-field-filter"]', function ($browser) {
+                        ->runFilter(static function ($browser) {
+                            $browser->whenAvailable('select[dusk="giftBooks-default-belongs-to-many-field-filter"]', static function ($browser) {
                                 $browser->select('', 3);
                             });
                         })->waitForTable()
@@ -69,14 +69,14 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
-                ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
+                ->within(new IndexComponent('books', 'giftBooks'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(4, 1)
                         ->assertSeeResource(4, 2)
                         ->assertSeeResource(3, 3)
                         ->assertDontSeeResource(4, 4)
-                        ->runFilter(function ($browser) {
-                            $browser->whenAvailable('select[dusk="giftBooks-default-belongs-to-many-field-filter"]', function ($browser) {
+                        ->runFilter(static function ($browser) {
+                            $browser->whenAvailable('select[dusk="giftBooks-default-belongs-to-many-field-filter"]', static function ($browser) {
                                 $browser->select('', 4);
                             });
                         })->waitForTable()
@@ -87,8 +87,8 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->assertSeeResource(4, 2)
                         ->assertDontSeeResource(3, 3)
                         ->assertDontSeeResource(4, 4)
-                        ->runFilter(function ($browser) {
-                            $browser->whenAvailable('select[dusk="giftBooks-default-belongs-to-many-field-filter"]', function ($browser) {
+                        ->runFilter(static function ($browser) {
+                            $browser->whenAvailable('select[dusk="giftBooks-default-belongs-to-many-field-filter"]', static function ($browser) {
                                 $browser->select('', 3);
                             });
                         })->waitForTable()
@@ -123,13 +123,13 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Detail('docks', $dock->getKey()))
-                ->within(new IndexComponent('ships'), function ($browser) use ($captain, $captain1, $ship, $ship1, $ship2) {
+                ->within(new IndexComponent('ships'), static function ($browser) use ($captain, $captain1, $ship, $ship1, $ship2) {
                     $browser->waitForTable()
                         ->assertSeeResource($ship->getKey())
                         ->assertSeeResource($ship1->getKey())
                         ->assertSeeResource($ship2->getKey())
-                        ->runFilter(function ($browser) use ($captain) {
-                            $browser->whenAvailable('select[dusk="captains-default-belongs-to-many-field-filter"]', function ($browser) use ($captain) {
+                        ->runFilter(static function ($browser) use ($captain) {
+                            $browser->whenAvailable('select[dusk="captains-default-belongs-to-many-field-filter"]', static function ($browser) use ($captain) {
                                 $browser->select('', $captain->getKey());
                             });
                         })->waitForTable()
@@ -140,8 +140,8 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->assertSeeResource($ship->getKey())
                         ->assertDontSeeResource($ship1->getKey())
                         ->assertDontSeeResource($ship2->getKey())
-                        ->runFilter(function ($browser) use ($captain1) {
-                            $browser->whenAvailable('select[dusk="captains-default-belongs-to-many-field-filter"]', function ($browser) use ($captain1) {
+                        ->runFilter(static function ($browser) use ($captain1) {
+                            $browser->whenAvailable('select[dusk="captains-default-belongs-to-many-field-filter"]', static function ($browser) use ($captain1) {
                                 $browser->select('', $captain1->getKey());
                             });
                         })->waitForTable()

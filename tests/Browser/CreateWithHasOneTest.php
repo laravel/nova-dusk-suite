@@ -22,7 +22,7 @@ class CreateWithHasOneTest extends DuskTestCase
                 ->waitForText('The person was created!')
                 ->visit(new Detail('people', 1))
                 ->runCreateRelation('employees')
-                ->whenAvailable(new SearchInputComponent('people'), function ($browser) {
+                ->whenAvailable(new SearchInputComponent('people'), static function ($browser) {
                     $browser->assertSelectedSearchResult('Adam Wathan');
                 })
                 ->cancel();

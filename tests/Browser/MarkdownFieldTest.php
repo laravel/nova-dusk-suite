@@ -24,7 +24,7 @@ class MarkdownFieldTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Update('companies', $company->getKey()))
-                ->within('[dusk="description"] .CodeMirror', function ($browser) use ($value) {
+                ->within('[dusk="description"] .CodeMirror', static function ($browser) use ($value) {
                     $browser->click('');
 
                     $browser->driver->getKeyboard()->sendKeys($value);
@@ -52,9 +52,9 @@ class MarkdownFieldTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Update('companies', $company->getKey()))
                 ->assertVisible('nav[aria-label="breadcrumb"]')
-                ->within('@description', function ($browser) use ($action) {
+                ->within('@description', static function ($browser) use ($action) {
                     $browser->assertPresent('@markdown-editor')
-                        ->within('.CodeMirror', function ($browser) {
+                        ->within('.CodeMirror', static function ($browser) {
                             $browser->click('');
 
                             $browser->driver->getKeyboard()->sendKeys('Test: ');
@@ -87,9 +87,9 @@ class MarkdownFieldTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Update('companies', $company->getKey()))
                 ->assertVisible('nav[aria-label="breadcrumb"]')
-                ->within('@description', function ($browser) use ($action) {
+                ->within('@description', static function ($browser) use ($action) {
                     $browser->assertPresent('@markdown-editor')
-                        ->within('.CodeMirror', function ($browser) use ($action) {
+                        ->within('.CodeMirror', static function ($browser) use ($action) {
                             $browser->click('');
 
                             $browser->driver->getKeyboard()->sendKeys(['Test: ', $action]);
@@ -149,7 +149,7 @@ class MarkdownFieldTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Update('companies', $company->getKey()))
                 ->assertVisible('nav[aria-label="breadcrumb"]')
-                ->within('@description', function ($browser) {
+                ->within('@description', static function ($browser) {
                     $browser->assertPresent('@markdown-editor')
                         ->assertMissing('@markdown-fullscreen-editor');
 

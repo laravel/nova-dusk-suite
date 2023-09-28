@@ -21,7 +21,7 @@ class SoftDeletingLensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
-                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
+                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), static function ($browser) {
                     $browser->waitForTable(25)
                         ->deleteResourceById(1)
                         ->waitForTable(25);
@@ -43,7 +43,7 @@ class SoftDeletingLensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
-                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
+                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), static function ($browser) {
                     $browser->waitForTable(25)
                         ->clickCheckboxForId(3)
                         ->clickCheckboxForId(2)
@@ -67,7 +67,7 @@ class SoftDeletingLensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
-                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
+                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), static function ($browser) {
                     $browser->waitForTable(25)
                         ->clickCheckboxForId(3)
                         ->clickCheckboxForId(2)
@@ -90,7 +90,7 @@ class SoftDeletingLensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
-                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
+                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), static function ($browser) {
                     $browser->waitForTable(25)
                         ->clickCheckboxForId(3)
                         ->clickCheckboxForId(2)
@@ -114,7 +114,7 @@ class SoftDeletingLensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
-                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
+                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), static function ($browser) {
                     $browser->waitForTable(25)
                         ->selectFilter('Select First', '2');
 
@@ -138,7 +138,7 @@ class SoftDeletingLensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
-                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
+                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), static function ($browser) {
                     $browser->selectFilter('Select First', '2');
 
                     $browser->selectAllMatching()
@@ -162,7 +162,7 @@ class SoftDeletingLensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
-                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
+                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), static function ($browser) {
                     $browser->waitForTable(25)
                         ->selectFilter('Select First', '2');
 
@@ -187,7 +187,7 @@ class SoftDeletingLensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('docks', 'passthrough-with-trashed-lens'))
-                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), function ($browser) {
+                ->within(new LensComponent('docks', 'passthrough-with-trashed-lens'), static function ($browser) {
                     $browser->waitForTable(25)
                         ->restoreResourceById(1)
                         ->waitForTable(25);

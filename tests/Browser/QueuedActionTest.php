@@ -18,7 +18,7 @@ class QueuedActionTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
                 ->runAction('sleep')
-                ->within(new IndexComponent('action-events'), function ($browser) {
+                ->within(new IndexComponent('action-events'), static function ($browser) {
                     $browser->waitForTable()
                         ->scrollIntoView('')
                         ->assertSee('Sleep')

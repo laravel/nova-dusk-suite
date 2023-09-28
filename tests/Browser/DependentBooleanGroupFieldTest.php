@@ -68,7 +68,7 @@ class DependentBooleanGroupFieldTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Update('users', $user->id))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
                     $browser->type('@email', 'mior@laravel-nova.com')->pause(2000);
                 })->update()
                 ->waitForText('The user was updated!');
@@ -89,12 +89,12 @@ class DependentBooleanGroupFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('captains'))
-                ->within(new IndexComponent('captains'), function ($browser) {
-                    $browser->runStandaloneAction('fields-action', function ($browser) {
-                        $browser->whenAvailable('input[type="checkbox"][name="selected"]', function ($browser) {
+                ->within(new IndexComponent('captains'), static function ($browser) {
+                    $browser->runStandaloneAction('fields-action', static function ($browser) {
+                        $browser->whenAvailable('input[type="checkbox"][name="selected"]', static function ($browser) {
                             $browser->assertNotChecked('');
                         })
-                            ->whenAvailable('input[type="checkbox"][id="boolean-default-boolean-field"]', function ($browser) {
+                            ->whenAvailable('input[type="checkbox"][id="boolean-default-boolean-field"]', static function ($browser) {
                                 $browser->check('')->pause(2000);
                             })
                             ->assertChecked('input[type="checkbox"][name="selected"]')

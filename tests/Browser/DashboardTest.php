@@ -15,7 +15,7 @@ class DashboardTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Dashboard())
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent(), static function ($browser) {
                     $browser->assertSee('Dashboard')
                         ->assertCurrentPageTitle('Main');
                 })

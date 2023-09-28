@@ -25,11 +25,11 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent(), static function ($browser) {
                     $browser->assertSee('Resources')
                         ->assertCurrentPageTitle('Users');
                 })
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(1)
                         ->assertSeeResource(2)
@@ -67,7 +67,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForText('Failed to load Users!')
                         ->assertSee('Reload');
                 })
@@ -88,7 +88,7 @@ class IndexTest extends DuskTestCase
 
             // to Create Resource screen
             $browser->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitFor('@create-button')->click('@create-button');
                 })
                 ->on(new Create('users'))
@@ -107,7 +107,7 @@ class IndexTest extends DuskTestCase
 
             // to different Resource Index screen
             $browser->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTextIn('h1', 'Users')
                         ->assertSee('James Brooks')
                         ->assertSee('David Hemphill');
@@ -118,7 +118,7 @@ class IndexTest extends DuskTestCase
             ]);
 
             $browser->on(new Index('posts'))
-                ->within(new IndexComponent('posts'), function ($browser) use ($post) {
+                ->within(new IndexComponent('posts'), static function ($browser) use ($post) {
                     $browser->assertSeeIn('h1', 'User Post')
                         ->assertSee($post->title)
                         ->assertDontSee('James Brooks')
@@ -127,7 +127,7 @@ class IndexTest extends DuskTestCase
 
             // to Resource Detail screen
             $browser->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->viewResourceById(1);
                 })
@@ -136,7 +136,7 @@ class IndexTest extends DuskTestCase
 
             // to Resource Edit screen
             $browser->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->editResourceById(1);
                 })
@@ -152,7 +152,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSee('1-4 of 4')
                         ->assertSelectAllMatchingCount(4)
@@ -174,7 +174,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(50)
                         ->assertSeeResource(36)
@@ -198,7 +198,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSee('1-4 of 4')
                         ->assertSeeIn('table > tbody > tr:first-child', 'Laravel Nova');
@@ -222,7 +222,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(50)
                         ->assertSeeResource(30)
@@ -259,7 +259,7 @@ class IndexTest extends DuskTestCase
             $browser->script('localStorage.setItem("nova.resources.roles.collapsed", true)');
 
             $browser->visit(new Index('roles'))
-                ->within(new IndexComponent('roles'), function ($browser) use ($role) {
+                ->within(new IndexComponent('roles'), static function ($browser) use ($role) {
                     $browser->assertSee($role->name);
                 });
 

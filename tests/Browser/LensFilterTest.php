@@ -17,7 +17,7 @@ class LensFilterTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('users', 'passthrough-lens'))
-                ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                ->within(new LensComponent('users', 'passthrough-lens'), static function ($browser) {
                     $browser->waitForTable()
                         ->setPerPage('50')
                         ->waitForTable()
@@ -37,7 +37,7 @@ class LensFilterTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('users', 'passthrough-lens'))
-                ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                ->within(new LensComponent('users', 'passthrough-lens'), static function ($browser) {
                     $browser->waitForTable()
                         ->setPerPage('50')
                         ->waitForTable()
@@ -46,7 +46,7 @@ class LensFilterTest extends DuskTestCase
                         ->assertSeeResource(1);
                 })
                 ->refresh()
-                ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                ->within(new LensComponent('users', 'passthrough-lens'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(50)
                         ->assertSeeResource(25)
@@ -62,7 +62,7 @@ class LensFilterTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('users', 'passthrough-lens'))
-                ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                ->within(new LensComponent('users', 'passthrough-lens'), static function ($browser) {
                     $browser->selectFilter('Select First', '1')
                         ->waitForTable()
                         ->assertSeeResource(1)
@@ -84,7 +84,7 @@ class LensFilterTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('users', 'passthrough-lens'))
-                ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                ->within(new LensComponent('users', 'passthrough-lens'), static function ($browser) {
                     $browser->waitForTable()
                         ->selectFilter('Select First', '1')
                         ->waitForTable()
@@ -110,7 +110,7 @@ class LensFilterTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($url) {
             $browser->loginAs(1)
                 ->visit($url)
-                ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
+                ->within(new LensComponent('users', 'passthrough-lens'), static function ($browser) {
                     $browser->waitForTable()
                         ->assertDontSeeResource(1)
                         ->assertDontSeeResource(2)

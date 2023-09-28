@@ -17,10 +17,10 @@ class IndexPreviewTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), static function ($browser) {
                     $browser->waitForTable()
                         ->previewResourceById(1)
-                        ->elsewhereWhenAvailable(new PreviewResourceModalComponent(), function ($browser) {
+                        ->elsewhereWhenAvailable(new PreviewResourceModalComponent(), static function ($browser) {
                             $browser->assertSee('PREVIEWING TAYLOR OTWELL')
                                 ->assertSeeIn('@name', 'Taylor Otwell')
                                 ->assertSeeIn('@email', 'taylor@laravel.com')

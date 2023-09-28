@@ -29,8 +29,8 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Create('sails'))
-                ->within(new FormComponent(), function ($browser) use ($dock) {
-                    $browser->runInlineCreate('ship', function ($browser) use ($dock) {
+                ->within(new FormComponent(), static function ($browser) use ($dock) {
+                    $browser->runInlineCreate('ship', static function ($browser) use ($dock) {
                         $browser->waitForText('Create Ship')
                             ->searchFirstRelation('docks', $dock->id)
                             ->type('@name', 'Ship name');
@@ -38,7 +38,7 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                 })
                 ->waitForText('The ship was created!')
                 ->pause(500)
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
                     $browser->assertSee('Ship name')
                         ->type('@inches', 25);
                 })
@@ -59,8 +59,8 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(1)
                 ->visit(new Create('sails'))
-                ->within(new FormComponent(), function ($browser) use ($dock) {
-                    $browser->runInlineCreate('ship', function ($browser) use ($dock) {
+                ->within(new FormComponent(), static function ($browser) use ($dock) {
+                    $browser->runInlineCreate('ship', static function ($browser) use ($dock) {
                         $browser->waitForText('Create Ship')
                             ->searchFirstRelation('docks', $dock->id)
                             ->type('@name', 'Ship name');
@@ -68,8 +68,8 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                 })
                 ->waitForText('The ship was created!')
                 ->pause(500)
-                ->within(new FormComponent(), function ($browser) {
-                    $browser->within(new SearchInputComponent('ships'), function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
+                    $browser->within(new SearchInputComponent('ships'), static function ($browser) {
                         $browser->assertSelectedFirstSearchResult('Ship name')
                             ->resetSearchResult()
                             ->assertSearchResult(function ($browser, $attribute) {
@@ -95,23 +95,23 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
 
             $browser->loginAs(4)
                 ->visit(new Create('comments'))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
                     $browser->select('@commentable-type', 'posts')
-                        ->runInlineCreate('commentable', function ($browser) {
+                        ->runInlineCreate('commentable', static function ($browser) {
                             $browser->waitForText('Create User Post')
                                 ->type('@title', 'Test Post')
                                 ->type('@body', 'Test Post Body')
-                                ->whenAvailable(new RelationSelectControlComponent('users'), function ($browser) {
+                                ->whenAvailable(new RelationSelectControlComponent('users'), static function ($browser) {
                                     $browser->assertSelected('', 4)
                                         ->select('', 1);
                                 })
-                                ->whenAvailable('@attachment', function ($browser) {
+                                ->whenAvailable('@attachment', static function ($browser) {
                                     $browser->attach('', __DIR__.'/Fixtures/Document.pdf');
                                 });
                         });
                 })
                 ->waitForText('The user post was created!')
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
                     $browser->type('@body', 'Test Comment Body');
                 })
                 ->create()
@@ -141,21 +141,21 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
 
             $browser->loginAs(4)
                 ->visit(new Create('comments'))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
                     $browser->select('@commentable-type', 'posts')
                         ->pause(500)
-                        ->runInlineCreate('commentable', function ($browser) {
+                        ->runInlineCreate('commentable', static function ($browser) {
                             $browser->waitForText('Create User Post')
                                 ->type('@title', 'Test Post')
                                 ->type('@body', 'Test Post Body')
-                                ->whenAvailable(new RelationSelectControlComponent('users'), function ($browser) {
+                                ->whenAvailable(new RelationSelectControlComponent('users'), static function ($browser) {
                                     $browser->assertSelected('', 4)
                                         ->select('', 1);
                                 });
                         });
                 })
                 ->waitForText('The user post was created!')
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
                     $browser->type('@body', 'Test Comment Body')
                         ->attach('@attachment', __DIR__.'/Fixtures/Document.pdf');
                 })
@@ -186,10 +186,10 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Create('comments'))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
                     $browser->select('@commentable-type', 'posts')
                         ->pause(500)
-                        ->runInlineCreate('commentable', function ($browser) {
+                        ->runInlineCreate('commentable', static function ($browser) {
                             $browser->waitForText('Create User Post')
                                 ->type('@title', 'Test Post')
                                 ->type('@body', 'Test Post Body')
@@ -197,9 +197,9 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                         });
                 })
                 ->waitForText('The user post was created!')
-                ->within(new FormComponent(), function ($browser) use ($post) {
+                ->within(new FormComponent(), static function ($browser) use ($post) {
                     $browser->assertSelectedFirstSearchResult('commentable', 'Test Post')
-                        ->within(new SearchInputComponent('commentable'), function ($browser) use ($post) {
+                        ->within(new SearchInputComponent('commentable'), static function ($browser) use ($post) {
                             $browser->resetSearchResult()
                                 ->assertSearchResultContains(['Test Post', $post->title]);
                         });
@@ -224,15 +224,15 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
-                ->within(new FormComponent(), function ($browser) {
-                    $browser->runInlineCreate('roles', function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
+                    $browser->runInlineCreate('roles', static function ($browser) {
                         $browser->waitForText('Create Role')
                             ->type('@name', 'Manager');
                     });
                 })
                 ->waitForText('The role was created!')
                 ->pause(500)
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
                     $browser->assertSee('Manager');
                 })
                 ->create()
@@ -251,10 +251,10 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Create('sails'))
-                ->within(new FormComponent(), function ($browser) use ($dock) {
+                ->within(new FormComponent(), static function ($browser) use ($dock) {
                     $browser->type('@name', 'Test Sail')
                         ->type('@inches', 350)
-                        ->runInlineCreate('ship', function ($browser) use ($dock) {
+                        ->runInlineCreate('ship', static function ($browser) use ($dock) {
                             $browser->waitForText('Create Ship')
                                 ->searchFirstRelation('docks', $dock->id)
                                 ->keys('@name', 'Test Ship', '{tab}');
@@ -280,17 +280,17 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Update('users', 1))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
                     $browser->assertMissing('@projects-selected-tags')
-                        ->runInlineCreate('projects', function ($browser) {
+                        ->runInlineCreate('projects', static function ($browser) {
                             $browser->waitForText('Create Project')
                                 ->select('@name', 'Vapor')
                                 ->pause(2000);
                         });
                 })
                 ->waitForText('The project was created!')
-                ->within(new FormComponent(), function ($browser) {
-                    $browser->whenAvailable('@projects-selected-tags', function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
+                    $browser->whenAvailable('@projects-selected-tags', static function ($browser) {
                         $browser->assertSeeIn('p', 'Vapor');
                     });
                 })

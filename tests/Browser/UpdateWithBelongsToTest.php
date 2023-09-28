@@ -22,12 +22,12 @@ class UpdateWithBelongsToTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Update('posts', $post->id))
                 ->waitForTextIn('h1', 'Update User Post: '.$post->id)
-                ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
+                ->within(new BreadcrumbComponent(), static function ($browser) use ($post) {
                     $browser->assertSeeLink('User Post')
                         ->assertSeeLink('User Post Details: '.$post->id)
                         ->assertCurrentPageTitle('Update User Post');
                 })
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
                     $browser->assertMissing('@user-unlock-relation')
                         ->selectRelation('users', 2);
                 })
@@ -81,12 +81,12 @@ class UpdateWithBelongsToTest extends DuskTestCase
                     'viaRelationship' => 'posts',
                 ]))
                 ->waitForTextIn('h1', 'Update User Post: '.$post->id)
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent(), static function ($browser) {
                     $browser->assertSeeLink('Users')
                         ->assertSeeLink('User Details: James Brooks')
                         ->assertCurrentPageTitle('Update User Post');
                 })
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent(), static function ($browser) {
                     $browser->assertSelectedSearchResult('users', 'Taylor Otwell');
                 })
                 ->assertMissing('@users-unlock-relation');
@@ -95,7 +95,7 @@ class UpdateWithBelongsToTest extends DuskTestCase
             $browser->assertQueryStringHas('viaResource', 'users')
                 ->assertQueryStringHas('viaResourceId', 2)
                 ->assertQueryStringHas('viaRelationship', 'posts')
-                ->within(new SearchInputComponent('users'), function ($browser) {
+                ->within(new SearchInputComponent('users'), static function ($browser) {
                     $browser->assertSelectedSearchResult('Taylor Otwell')
                         ->resetSearchResult();
                 })
@@ -127,7 +127,7 @@ class UpdateWithBelongsToTest extends DuskTestCase
             $browser->assertQueryStringHas('viaResource', 'users')
                 ->assertQueryStringHas('viaResourceId', 2)
                 ->assertQueryStringHas('viaRelationship', 'posts')
-                ->within(new SearchInputComponent('users'), function ($browser) use ($user) {
+                ->within(new SearchInputComponent('users'), static function ($browser) use ($user) {
                     $browser->resetSearchResult()
                         ->assertSearchResultContains($user->name);
                 })

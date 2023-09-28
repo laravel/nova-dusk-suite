@@ -21,7 +21,7 @@ class MorphOneRelationTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Detail('people', $photo->imageable_id))
-                ->within(new IndexComponent('photos'), function ($browser) {
+                ->within(new IndexComponent('photos'), static function ($browser) {
                     $browser->assertMissing('@create-button');
                 });
 

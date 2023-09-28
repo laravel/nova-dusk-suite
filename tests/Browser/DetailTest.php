@@ -26,7 +26,7 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
                 ->waitForTextIn('h1', 'User Details: Taylor Otwell')
-                ->within('@users-detail-component', function ($browser) {
+                ->within('@users-detail-component', static function ($browser) {
                     $browser->assertSee('User Details: Taylor Otwell')
                         ->assertSeeIn('@name', 'Taylor Otwell')
                         ->assertSeeIn('@email', 'taylor@laravel.com')
@@ -50,7 +50,7 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('users', $user->id))
                 ->waitForTextIn('h1', 'User Details: '.$user->name)
-                ->within('@users-detail-component', function ($browser) use ($user) {
+                ->within('@users-detail-component', static function ($browser) use ($user) {
                     $browser->assertSee('User Details: '.$user->name)
                         ->assertSeeIn('@id', $user->id)
                         ->assertSeeIn('@email', $user->email);
