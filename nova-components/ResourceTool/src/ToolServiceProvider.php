@@ -2,6 +2,7 @@
 
 namespace Otwell\ResourceTool;
 
+use Illuminate\Support\Env;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
@@ -15,10 +16,6 @@ class ToolServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Nova::serving(function (ServingNova $event) {
-            Nova::script('resource-tool', __DIR__.'/../dist/js/tool.js');
-        });
-
         Nova::serving(function (ServingNova $event) {
             if (Env::get('DUSK_REMOTE_ASSETS')) {
                Nova::remoteScript(mix('tool.js', 'vendor/nova-components/resource-tool'));
