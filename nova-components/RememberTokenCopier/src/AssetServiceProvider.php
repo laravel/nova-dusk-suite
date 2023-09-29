@@ -18,7 +18,7 @@ class AssetServiceProvider extends ServiceProvider
     {
         Nova::serving(function (ServingNova $event) {
             if (Env::get('DUSK_REMOTE_ASSETS')) {
-               Nova::remoteScript(mix('asset.js', 'vendor/nova-components/remember-token-copier'));
+                Nova::remoteScript(mix('asset.js', 'vendor/nova-components/remember-token-copier'));
             } else {
                 Nova::script('remember-token-copier', __DIR__.'/../dist/js/asset.js');
             }
