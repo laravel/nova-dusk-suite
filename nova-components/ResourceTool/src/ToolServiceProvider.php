@@ -18,7 +18,7 @@ class ToolServiceProvider extends ServiceProvider
     {
         Nova::serving(function (ServingNova $event) {
             if (Env::get('DUSK_REMOTE_ASSETS') === true) {
-                Nova::remoteScript(mix('tool.js', 'vendor/nova-components/resource-tool'));
+                Nova::remoteScript(mix('js/tool.js', 'vendor/nova-components/resource-tool'));
             } else {
                 Nova::script('resource-tool', __DIR__.'/../dist/js/tool.js');
             }
