@@ -19,7 +19,7 @@ if ($CI) {
 }
 
 if ($GITHUB_ACTIONS) {
-    Browser::$waitSeconds = 50;
+    Browser::$waitSeconds = 65;
 }
 
 Options::$w3cCompliant = false;
