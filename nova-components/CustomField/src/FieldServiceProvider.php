@@ -18,7 +18,7 @@ class FieldServiceProvider extends ServiceProvider
     {
         Nova::serving(function (ServingNova $event) {
             if (Env::get('DUSK_REMOTE_ASSETS')) {
-               Nova::remoteScript(mix('field.js', 'vendor/nova-components/custom-field'));
+                Nova::remoteScript(mix('field.js', 'vendor/nova-components/custom-field'));
             } else {
                 Nova::script('custom-field', __DIR__.'/../dist/js/field.js');
                 // Nova::style('custom-field', __DIR__.'/../dist/css/field.css');
