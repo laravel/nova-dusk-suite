@@ -101,6 +101,8 @@ jobs:
 
       - name: Prepare assets
         run: php artisan nova:publish
+        env:
+          DUSK_REMOTE_ASSETS: true
 
       - name: Prepare storage
         run: php artisan storage:link
@@ -119,6 +121,7 @@ jobs:
       - name: Execute tests (Dusk tests) via PHPUnit
         run: vendor/bin/phpunit -c phpunit.dusk.xml --exclude-group=external-network,local-time,date-field,datetime-field --stop-on-error --stop-on-failure
         env:
+          DUSK_REMOTE_ASSETS: true
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
           LOG_DEPRECATIONS_CHANNEL: deprecations

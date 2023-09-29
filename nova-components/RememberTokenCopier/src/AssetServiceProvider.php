@@ -2,6 +2,7 @@
 
 namespace Otwell\RememberTokenCopier;
 
+use Illuminate\Support\Env;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
@@ -16,8 +17,18 @@ class AssetServiceProvider extends ServiceProvider
     public function boot()
     {
         Nova::serving(function (ServingNova $event) {
-            Nova::script('remember-token-copier', __DIR__.'/../dist/js/asset.js');
+            if (Env::get('DUSK_REMOTE_ASSETS')) {
+               Nova::remoteScript(mix('asset.js', 'vendor/nova-components/remember-token-copier'));
+            } else {
+                Nova::script('remember-token-copier', __DIR__.'/../dist/js/asset.js');
+            }
         });
+
+        if (Env::get('DUSK_REMOTE_ASSETS')) {
+            $this->publishes([
+                __DIR__.'/../dist' => public_path('vendor/nova-components/remember-token-copier'),
+            ], ['nova-assets', 'laravel-assets']);
+        }
     }
 
     /**

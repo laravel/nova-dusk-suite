@@ -18,6 +18,20 @@ class ToolServiceProvider extends ServiceProvider
         Nova::serving(function (ServingNova $event) {
             Nova::script('resource-tool', __DIR__.'/../dist/js/tool.js');
         });
+
+        Nova::serving(function (ServingNova $event) {
+            if (Env::get('DUSK_REMOTE_ASSETS')) {
+               Nova::remoteScript(mix('tool.js', 'vendor/nova-components/resource-tool'));
+            } else {
+                Nova::script('resource-tool', __DIR__.'/../dist/js/tool.js');
+            }
+        });
+
+        if (Env::get('DUSK_REMOTE_ASSETS')) {
+            $this->publishes([
+                __DIR__.'/../dist' => public_path('vendor/nova-components/resource-tool'),
+            ], ['nova-assets', 'laravel-assets']);
+        }
     }
 
     /**

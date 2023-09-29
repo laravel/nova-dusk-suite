@@ -73,7 +73,11 @@ class Profile extends Resource
                 return str_replace('https://twitter.com/', '@', $value);
             })->nullable()
                 ->rules(['nullable', 'different:github_url'])
-                ->updateRules(['nullable', 'unique:profiles,twitter_url,{{resourceId}}']),
+                ->updateRules(['nullable', 'unique:profiles,twitter_url,{{resourceId}}'])
+                ->canSee(function ($request) {
+                    return ! $request->isResourceDetailRequest()
+                        || ($request->isResourceDetailRequest() && ! $request->viaRelationship());
+                }),
 
             Timezone::make('Timezone')
                 ->nullable()
