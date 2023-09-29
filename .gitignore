@@ -22,6 +22,7 @@ yarn-error.log
 .disable-breadcrumbs
 
 /public/vendor/nova/*
+/public/vendor/nova-components/*
 /resources/views/vendor/nova/*
 !/nova-components*
 /nova

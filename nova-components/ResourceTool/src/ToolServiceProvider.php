@@ -17,14 +17,14 @@ class ToolServiceProvider extends ServiceProvider
     public function boot()
     {
         Nova::serving(function (ServingNova $event) {
-            if (Env::get('DUSK_REMOTE_ASSETS')) {
+            if (Env::get('DUSK_REMOTE_ASSETS') === true) {
                 Nova::remoteScript(mix('tool.js', 'vendor/nova-components/resource-tool'));
             } else {
                 Nova::script('resource-tool', __DIR__.'/../dist/js/tool.js');
             }
         });
 
-        if (Env::get('DUSK_REMOTE_ASSETS')) {
+        if (Env::get('DUSK_REMOTE_ASSETS') === true) {
             $this->publishes([
                 __DIR__.'/../dist' => public_path('vendor/nova-components/resource-tool'),
             ], ['nova-assets', 'laravel-assets']);
