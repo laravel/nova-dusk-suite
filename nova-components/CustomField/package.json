@@ -15,7 +15,7 @@
     "form-backend-validation": "^2.3.3",
     "laravel-mix": "^6.0.41",
     "lodash": "^4.17.21",
-    "postcss": "^8.3.11",
+    "postcss": "^8.4.31",
     "vue-loader": "^16.8.3"
   }
 }
