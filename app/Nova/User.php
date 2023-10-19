@@ -222,7 +222,12 @@ class User extends Resource
                 ->filterable(),
 
             BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
-                ->fields(new Fields\BookPurchase('personal')),
+                ->fields(new Fields\BookPurchase('personal'))
+                ->actions(function ($request) {
+                    return [
+                        new Actions\PivotTouch(),
+                    ];
+                }),
 
             BelongsToMany::make('Gift Books', 'giftBooks', Book::class)
                 ->fields(
@@ -235,7 +240,12 @@ class User extends Resource
                                         : null;
                         }),
                     ])
-                )->filterable()
+                )
+                ->actions(function ($request) {
+                    return [
+                        new Actions\PivotTouch(),
+                    ];
+                })->filterable()
                 ->dontReorderAttachables()
                 ->allowDuplicateRelations(),
         ];
