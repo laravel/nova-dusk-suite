@@ -3,7 +3,6 @@
 namespace App\Nova\Actions;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
@@ -23,7 +22,7 @@ class PivotTouch extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        $models->each(function ($model) use ($fields) {
+        $models->each(function ($model) {
             $model->touch();
         });
 
