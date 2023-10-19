@@ -140,6 +140,7 @@ class Book extends Resource
     {
         return [
             new Actions\MarkAsActive(),
+            new Actions\Touch(),
             ExportAsCsv::make(),
         ];
     }
