@@ -71,8 +71,8 @@ return [
         ],
 
         'subscribers' => [
-            'driver' => 'database',
-            'table' => \App\Models\Subscriber::class,
+            'driver' => 'eloquent',
+            'model' => \App\Models\Subscriber::class,
         ],
     ],
 
