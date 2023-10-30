@@ -1,0 +1,57 @@
+#!/usr/bin/env php
+<?php
+
+$workingPath = getcwd();
+
+require __DIR__.'/../vendor/autoload.php';
+
+$input = new Symfony\Component\Console\Input\ArgvInput();
+$files = new Illuminate\Filesystem\Filesystem();
+
+$version = ($input->hasParameterOption('--dev') && $input->hasParameterOption('--stable') === false) ? '10.x-dev' : '^10.0';
+
+$files->deleteDirectory("{$workingPath}/skeleton");
+
+Symfony\Component\Process\Process::fromShellCommandline(
+    'composer create-project "laravel/laravel:'.$version.'" skeleton --no-install --no-scripts --no-plugins --quiet', $workingPath
+)->mustRun();
+
+Illuminate\Support\Collection::make([
+    'app/Console/Kernel.php',
+    'app/Exceptions/Handler.php',
+    'app/Http/Kernel.php',
+    'app/Http/Controllers/*.php',
+    'app/Http/Middleware/*.php',
+    'config/*.php',
+    'lang/en/*.php',
+])->transform(fn ($file) => "{$workingPath}/skeleton/{$file}")
+->map(fn ($file) => str_contains($file, '*') ? [...$files->glob($file)] : $file)
+->flatten()
+->each(function ($file) use ($files, $workingPath) {
+    $files->copy($file, "{$workingPath}".Illuminate\Support\Str::after($file, "{$workingPath}/skeleton"));
+});
+
+$files->delete("{$workingPath}/config/sanctum.php");
+
+transform([
+    "env('APP_ENV', 'production')" => "env('APP_ENV', 'testing')",
+    "    'asset_url' => env('ASSET_URL')," => "    'asset_url' => env('ASSET_URL'),".PHP_EOL.PHP_EOL."    'mix_url' => env('MIX_ASSET_URL'),",
+    "        /*
+         * Package Service Providers...
+         */" => "        /*
+         * Package Service Providers...
+         */
+        Laravel\Dusk\DuskServiceProvider::class,
+        Otwell\CustomField\FieldServiceProvider::class,
+        Otwell\IconsViewer\ToolServiceProvider::class,
+        Otwell\RememberTokenCopier\AssetServiceProvider::class,
+        Otwell\ResourceTool\ToolServiceProvider::class,
+        Otwell\SidebarTool\ToolServiceProvider::class,",
+    "        App\Providers\EventServiceProvider::class," => "        App\Providers\EventServiceProvider::class,".PHP_EOL."        App\Providers\NovaServiceProvider::class,"
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/app.php"));
+
+$files->deleteDirectory("{$workingPath}/skeleton");
+
+Symfony\Component\Process\Process::fromShellCommandline(
+    'php artisan nova:publish --force', $workingPath
+)->mustRun();

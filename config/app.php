@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+    'env' => env('APP_ENV', 'testing'),
 
     /*
     |--------------------------------------------------------------------------
@@ -58,6 +58,8 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL'),
+
+    'mix_url' => env('MIX_ASSET_URL'),
 
     /*
     |--------------------------------------------------------------------------
@@ -159,6 +161,12 @@ return [
         /*
          * Package Service Providers...
          */
+        Laravel\Dusk\DuskServiceProvider::class,
+        Otwell\CustomField\FieldServiceProvider::class,
+        Otwell\IconsViewer\ToolServiceProvider::class,
+        Otwell\RememberTokenCopier\AssetServiceProvider::class,
+        Otwell\ResourceTool\ToolServiceProvider::class,
+        Otwell\SidebarTool\ToolServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -167,6 +175,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\NovaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
     ])->toArray(),
 
