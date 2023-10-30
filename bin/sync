@@ -8,7 +8,7 @@ require __DIR__.'/../vendor/autoload.php';
 $input = new Symfony\Component\Console\Input\ArgvInput();
 $files = new Illuminate\Filesystem\Filesystem();
 
-$version = ($input->hasParameterOption('--dev') && $input->hasParameterOption('--stable') === false) ? '8.x-dev' : '^8.0';
+$version = ($input->hasParameterOption('--dev') && $input->hasParameterOption('--stable') === false) ? '9.x-dev' : '^9.0';
 
 $files->deleteDirectory("{$workingPath}/skeleton");
 
@@ -23,7 +23,7 @@ Illuminate\Support\Collection::make([
     'app/Http/Controllers/*.php',
     'app/Http/Middleware/*.php',
     'config/*.php',
-    'resources/lang/en/*.php',
+    'lang/en/*.php',
 ])->transform(fn ($file) => "{$workingPath}/skeleton/{$file}")
 ->map(fn ($file) => str_contains($file, '*') ? [...$files->glob($file)] : $file)
 ->flatten()
@@ -31,13 +31,16 @@ Illuminate\Support\Collection::make([
     $files->copy($file, "{$workingPath}".Illuminate\Support\Str::after($file, "{$workingPath}/skeleton"));
 });
 
+$files->delete("{$workingPath}/config/sanctum.php");
+
 transform([
-    "// \Illuminate\Session\Middleware\AuthenticateSession::class," => "\Illuminate\Session\Middleware\AuthenticateSession::class,",
+    "            \Illuminate\Session\Middleware\StartSession::class," => "            \Illuminate\Session\Middleware\StartSession::class,".PHP_EOL
+    ."            \Illuminate\Session\Middleware\AuthenticateSession::class,",
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/app/Http/Kernel.php"));
 
 transform([
     "env('APP_ENV', 'production')" => "env('APP_ENV', 'testing')",
-    "    'asset_url' => env('ASSET_URL', null)," => "    'asset_url' => env('ASSET_URL', null),".PHP_EOL.PHP_EOL."    'mix_url' => env('MIX_ASSET_URL', null),",
+    "    'asset_url' => env('ASSET_URL')," => "    'asset_url' => env('ASSET_URL'),".PHP_EOL.PHP_EOL."    'mix_url' => env('MIX_ASSET_URL'),",
     "        /*
          * Package Service Providers...
          */" => "        /*
