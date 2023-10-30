@@ -63,6 +63,7 @@ foreach ($files->glob('tests/Browser/*') as $file) {
 
 $files->copy($workingPath.'/vendor/laravel/nova/tests/bootstrap.php', $workingPath.'/tests/bootstrap.php');
 $files->copy($workingPath.'/vendor/laravel/nova/tests/DuskTestCase.php', $workingPath.'/tests/DuskTestCase.php');
+$files->copy($workingPath.'/vendor/laravel/nova/tests/Concerns/DatabaseTruncation.php', $workingPath.'/tests/Concerns/DatabaseTruncation.php');
 
 Symfony\Component\Process\Process::fromShellCommandline(
     'cp -rf ./vendor/laravel/nova/tests/Browser/* ./tests/Browser/', $workingPath
