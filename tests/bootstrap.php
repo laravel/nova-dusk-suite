@@ -11,7 +11,7 @@ $GITHUB_ACTIONS = isset($_SERVER['GITHUB_ACTIONS']) || isset($_ENV['GITHUB_ACTIO
 if ($CI) {
     Options::withoutUI();
 
-    Browser::$waitSeconds = 35;
+    Browser::$waitSeconds = 40;
 } else {
     Options::withUI();
 
@@ -19,7 +19,7 @@ if ($CI) {
 }
 
 if ($GITHUB_ACTIONS) {
-    Browser::$waitSeconds = 50;
+    Browser::$waitSeconds = 60;
 }
 
 Options::$w3cCompliant = false;

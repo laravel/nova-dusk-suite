@@ -71,7 +71,7 @@ class Company extends Resource
                 ->readonly()
                 ->nullable(),
 
-            MorphOne::make('Photo'),
+            MorphOne::make('Photo')->help('Company photo'),
 
             HasMany::make('Profiles'),
         ];

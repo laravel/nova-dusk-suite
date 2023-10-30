@@ -36,7 +36,7 @@ class IndexTest extends DuskTestCase
                         ->assertSeeResource(3)
                         ->assertSee('1-4 of 4');
                 })
-                ->assertTitle('Nova Site - Users');
+                ->assertTitle('Users - Nova Site');
 
             $browser->blank();
         });
@@ -71,7 +71,7 @@ class IndexTest extends DuskTestCase
                     $browser->waitForText('Failed to load Users!')
                         ->assertSee('Reload');
                 })
-                ->assertTitle('Nova Site - Users');
+                ->assertTitle('Users - Nova Site');
 
             $browser->blank();
         });
@@ -92,7 +92,7 @@ class IndexTest extends DuskTestCase
                     $browser->waitFor('@create-button')->click('@create-button');
                 })
                 ->on(new Create('users'))
-                ->assertSeeIn('h1', 'Create User')
+                ->waitForTextIn('@create-user-panel-heading', 'Create User')
                 ->assertSee('Create & Add Another')
                 ->assertSee('Create User');
 
@@ -101,11 +101,11 @@ class IndexTest extends DuskTestCase
                 ->waitFor('@users-index-component')
                 ->keys('', ['c'])
                 ->on(new Create('users'))
-                ->assertSeeIn('h1', 'Create User')
+                ->waitForTextIn('h1', 'Create User')
                 ->assertSee('Create & Add Another')
                 ->assertSee('Create User');
 
-            // to different Resource Index screen
+//            // to different Resource Index screen
             $browser->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTextIn('h1', 'Users')
@@ -119,7 +119,7 @@ class IndexTest extends DuskTestCase
 
             $browser->on(new Index('posts'))
                 ->within(new IndexComponent('posts'), function ($browser) use ($post) {
-                    $browser->assertSeeIn('h1', 'User Post')
+                    $browser->waitForTextIn('h1', 'User Post')
                         ->assertSee($post->title)
                         ->assertDontSee('James Brooks')
                         ->assertDontSee('David Hemphill');
@@ -132,7 +132,7 @@ class IndexTest extends DuskTestCase
                         ->viewResourceById(1);
                 })
                 ->on(new Detail('users', 1))
-                ->assertSeeIn('h1', 'User Details');
+                ->waitForTextIn('h1', 'User Details');
 
             // to Resource Edit screen
             $browser->visit(new UserIndex)
@@ -141,7 +141,7 @@ class IndexTest extends DuskTestCase
                         ->editResourceById(1);
                 })
                 ->on(new Update('users', 1))
-                ->assertSeeIn('h1', 'Update User');
+                ->waitForTextIn('h1', 'Update User');
 
             $browser->blank();
         });
@@ -156,7 +156,6 @@ class IndexTest extends DuskTestCase
                     $browser->waitForTable()
                         ->assertSee('1-4 of 4')
                         ->assertSelectAllMatchingCount(4)
-                        ->closeCurrentDropdown()
                         ->searchFor('Taylor')
                         ->waitForTable()
                         ->assertSelectAllMatchingCount(1)

@@ -74,7 +74,9 @@ class FilterableFieldTest extends DuskTestCase
                 ->within(new IndexComponent('posts'), function ($browser) {
                     $browser->waitForTable()
                         ->runFilter(function ($browser) {
-                            $browser->select('select[dusk="user-default-belongs-to-field-filter"]', 1);
+                            $browser->whenAvailable('select[dusk="user-default-belongs-to-field-filter"]', function ($browser) {
+                                $browser->select('', 1);
+                            });
                         })
                         ->waitForTable()
                         ->assertFilterCount(1)

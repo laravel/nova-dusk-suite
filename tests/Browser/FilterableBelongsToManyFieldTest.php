@@ -34,8 +34,8 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->assertSeeResource(3)
                         ->assertSeeResource(4)
                         ->runFilter(function ($browser) {
-                            $browser->whenAvailable('select[dusk="giftBooks-default-belongs-to-many-field-filter"]', function ($browser) {
-                                $browser->select('', 4);
+                            $browser->whenAvailable('@giftBooks-default-belongs-to-many-field-filter', function ($browser) {
+                                $browser->select('', 4)->pause(1000);
                             });
                         })->waitForTable()
                         ->assertSeeResource(1)
@@ -43,8 +43,8 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->assertDontSeeResource(3)
                         ->assertDontSeeResource(4)
                         ->runFilter(function ($browser) {
-                            $browser->whenAvailable('select[dusk="giftBooks-default-belongs-to-many-field-filter"]', function ($browser) {
-                                $browser->select('', 3);
+                            $browser->whenAvailable('@giftBooks-default-belongs-to-many-field-filter', function ($browser) {
+                                $browser->select('', 3)->pause(1000);
                             });
                         })->waitForTable()
                         ->assertSeeResource(1)
@@ -76,20 +76,22 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->assertSeeResource(3, 3)
                         ->assertDontSeeResource(4, 4)
                         ->runFilter(function ($browser) {
-                            $browser->whenAvailable('select[dusk="giftBooks-default-belongs-to-many-field-filter"]', function ($browser) {
-                                $browser->select('', 4);
+                            $browser->whenAvailable('@giftBooks-default-belongs-to-many-field-filter', function ($browser) {
+                                $browser->select('', 4)->pause(1000);
                             });
-                        })->waitForTable()
+                        })
+                        ->waitForTable()
                         ->assertQueryStringHas(
                             'books_filter',
                             'W3sicmVzb3VyY2U6Ym9va3M6Z2lmdEJvb2tzIjoiNCJ9LHsiQm9vbGVhbjphY3RpdmUiOiIifSx7IkN1cnJlbmN5OnByaWNlIjpbbnVsbCxudWxsXX1d'
-                        )->assertSeeResource(4, 1)
+                        )
+                        ->assertSeeResource(4, 1)
                         ->assertSeeResource(4, 2)
                         ->assertDontSeeResource(3, 3)
                         ->assertDontSeeResource(4, 4)
                         ->runFilter(function ($browser) {
-                            $browser->whenAvailable('select[dusk="giftBooks-default-belongs-to-many-field-filter"]', function ($browser) {
-                                $browser->select('', 3);
+                            $browser->whenAvailable('@giftBooks-default-belongs-to-many-field-filter', function ($browser) {
+                                $browser->select('', 3)->pause(1000);
                             });
                         })->waitForTable()
                         ->assertQueryStringHas(
@@ -129,8 +131,8 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->assertSeeResource($ship1->getKey())
                         ->assertSeeResource($ship2->getKey())
                         ->runFilter(function ($browser) use ($captain) {
-                            $browser->whenAvailable('select[dusk="captains-default-belongs-to-many-field-filter"]', function ($browser) use ($captain) {
-                                $browser->select('', $captain->getKey());
+                            $browser->whenAvailable('@captains-default-belongs-to-many-field-filter', function ($browser) use ($captain) {
+                                $browser->select('', $captain->getKey())->pause(1000);
                             });
                         })->waitForTable()
                         ->assertQueryStringHas(
@@ -141,8 +143,8 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->assertDontSeeResource($ship1->getKey())
                         ->assertDontSeeResource($ship2->getKey())
                         ->runFilter(function ($browser) use ($captain1) {
-                            $browser->whenAvailable('select[dusk="captains-default-belongs-to-many-field-filter"]', function ($browser) use ($captain1) {
-                                $browser->select('', $captain1->getKey());
+                            $browser->whenAvailable('@captains-default-belongs-to-many-field-filter', function ($browser) use ($captain1) {
+                                $browser->select('', $captain1->getKey())->pause(1000);
                             });
                         })->waitForTable()
                         ->assertQueryStringHas(

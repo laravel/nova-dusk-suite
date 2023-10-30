@@ -34,6 +34,7 @@ class AttachPolymorphicTest extends DuskTestCase
                         ->assertSeeLink("User Post Details: {$post->id}")
                         ->assertCurrentPageTitle('Attach Tag');
                 })
+
                 ->within(new FormComponent(), function ($browser) use ($tag) {
                     $browser->searchFirstRelation('tags', $tag->id);
                 })

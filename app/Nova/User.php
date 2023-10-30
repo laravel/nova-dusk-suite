@@ -133,7 +133,7 @@ class User extends Resource
 
             HasOne::make('Profile')->required(function () {
                 return file_exists(base_path('.hasone-required'));
-            }),
+            })->help('User personal profile informations'),
 
             HasOneThrough::make('Passport'),
 

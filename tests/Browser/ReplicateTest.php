@@ -120,12 +120,15 @@ class ReplicateTest extends DuskTestCase
                         ->openControlSelectorById(4)->elsewhere('', function ($browser) {
                             $browser->assertNotPresent('@4-replicate-button');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(3)->elsewhere('', function ($browser) {
                             $browser->assertPresent('@3-replicate-button');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(2)->elsewhere('', function ($browser) {
                             $browser->assertPresent('@2-replicate-button');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(1)->elsewhere('', function ($browser) {
                             $browser->assertPresent('@1-replicate-button');
                         });

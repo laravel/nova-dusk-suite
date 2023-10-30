@@ -63,7 +63,7 @@ class IndexSearchTest extends DuskTestCase
                 ->waitForTextIn('h1', 'Users')
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
-                        ->assertValue('@search', '')
+                        ->assertValue('@search-input', '')
                         ->assertQueryStringMissing('users_search', '')
                         ->assertSeeResource(1)
                         ->assertSeeResource(2)

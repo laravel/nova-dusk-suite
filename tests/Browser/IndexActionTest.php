@@ -157,10 +157,12 @@ class IndexActionTest extends DuskTestCase
                             $browser->waitFor('@1-preview-button')
                                 ->assertMissing('@1-inline-actions');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(2)
                         ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
                             $browser->assertSee('Mark As Inactive');
                         })
+                        ->closeCurrentDropdown()
                         ->runInlineAction(2, 'mark-as-inactive');
                 })->waitForText('The action was executed successfully.');
 

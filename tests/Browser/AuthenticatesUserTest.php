@@ -38,6 +38,7 @@ class AuthenticatesUserTest extends DuskTestCase
                 ->visit(new Dashboard())
                 ->press('Taylor Otwell')
                 ->press('Logout')
+                ->waitForDialog()
                 ->assertDialogOpened('Are you sure you want to log out?')
                 ->acceptDialog()
                 ->on(new Login())
