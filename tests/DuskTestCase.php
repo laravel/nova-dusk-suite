@@ -51,8 +51,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      * Server specific setup. It may share alot with the main setUp() method, but
      * should exclude things like DB migrations so we don't end up wiping the
      * DB content mid test. Using this method means we can be explicit.
-     *
-     * @return void
      */
     protected function setUpDuskServer(): void
     {
@@ -66,8 +64,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
 
     /**
      * Reload serving on a given host and port.
-     *
-     * @return void
      */
     public static function reloadServing(): void
     {
@@ -177,7 +173,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     /**
      * Run the given callback with searchable functionality enabled.
      *
-     * @param  callable  $callback
      * @return void
      */
     protected function whileSearchable(callable $callback)
@@ -190,7 +185,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     /**
      * Run the given callback with inline-create functionality enabled.
      *
-     * @param  callable  $callback
      * @return void
      */
     protected function whileInlineCreate(callable $callback)
@@ -203,7 +197,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     /**
      * Run the given callback with index-query-asc-order functionality enabled.
      *
-     * @param  callable  $callback
      * @return void
      */
     protected function whileIndexQueryAscOrder(callable $callback)
@@ -218,6 +211,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      *
      * @param  array|string  $states
      * @param  \Closure(\Laravel\Dusk\Browser):void  $callback
+     * @return $this
      */
     protected function defineApplicationStates($states)
     {
@@ -230,6 +224,8 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
                 @unlink(base_path(".{$state}"));
             }
         });
+
+        return $this;
     }
 
     /**

@@ -52,6 +52,26 @@ transform([
 
 $files->deleteDirectory("{$workingPath}/skeleton");
 
+$files->deleteDirectory("{$workingPath}/lang/vendor/nova");
+$files->deleteDirectory("{$workingPath}/public/vendor/nova");
+$files->deleteDirectory("{$workingPath}/resources/lang/vendor/nova");
+$files->deleteDirectory("{$workingPath}/resources/views/vendor/nova");
+
+foreach ($files->glob('tests/Browser/*') as $file) {
+    $files->delete($file);
+}
+
+$files->copy($workingPath.'/vendor/laravel/nova/tests/bootstrap.php', $workingPath.'/tests/bootstrap.php');
+$files->copy($workingPath.'/vendor/laravel/nova/tests/DuskTestCase.php', $workingPath.'/tests/DuskTestCase.php');
+
+Symfony\Component\Process\Process::fromShellCommandline(
+    'cp -rf ./vendor/laravel/nova/tests/Browser/* ./tests/Browser/', $workingPath
+)->mustRun();
+
+transform([
+    'return realpath(__DIR__.\'/../vendor/laravel/nova-dusk-suite\');' => 'return realpath(__DIR__.\'/../\');',
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/tests/DuskTestCase.php"));
+
 Symfony\Component\Process\Process::fromShellCommandline(
     'php artisan nova:publish --force', $workingPath
 )->mustRun();
