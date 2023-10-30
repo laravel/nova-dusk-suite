@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use Database\Factories\DockFactory;
 use Database\Factories\ShipFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
@@ -37,7 +38,9 @@ class CreateWithHasManyThroughTest extends DuskTestCase
                         ->click('@create-button');
                 })
                 ->on(new Create('sails'))
-                ->type('@inches', '25')
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->type('@inches', '25');
+                })
                 ->create()
                 ->waitForText('The sail was created!');
 
