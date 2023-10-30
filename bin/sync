@@ -50,6 +50,53 @@ transform([
     "        App\Providers\EventServiceProvider::class," => "        App\Providers\EventServiceProvider::class,".PHP_EOL."        App\Providers\NovaServiceProvider::class,"
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/app.php"));
 
+transform([
+    "    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+    ]," => "    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'web-subscribers' => [
+            'driver' => 'session',
+            'provider' => 'subscribers',
+        ],
+    ],",
+    "        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ]," => "        'subscribers' => [
+            'driver' => 'database',
+            'table' => \App\Models\Subscriber::class,
+        ],"
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/auth.php"));
+
+transform([
+    "        'single' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/laravel.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'replace_placeholders' => true,
+        ]," => "        'single' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/laravel.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'replace_placeholders' => true,
+        ],
+
+        'deprecations' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/deprecations.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'replace_placeholders' => true,
+        ],"
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/logging.php"));
+
 $files->deleteDirectory("{$workingPath}/skeleton");
 
 $files->deleteDirectory("{$workingPath}/lang/vendor/nova");
