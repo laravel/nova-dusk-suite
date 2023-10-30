@@ -28,6 +28,7 @@ class ActionModalAbandonmentTest extends DuskTestCase
                                 })
                                     ->assertPresentModal()
                                     ->keys('', '{escape}')
+                                    ->waitForDialog()
                                     ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                                     ->acceptDialog()
                                     ->pause(100)

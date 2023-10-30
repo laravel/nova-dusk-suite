@@ -55,14 +55,14 @@ class ResourceClickActionTest extends DuskTestCase
                 ->visit(new UserIndex())
                 ->within(new IndexComponent('users'), function (Browser $browser) {
                     $browser->click('tr[dusk="3-row"] td:nth-child(3)')
-                        ->assertChecked('[dusk="3-row"] input.checkbox');
+                        ->assertCheckboxChecked('[dusk="3-row"] [role="checkbox"]');
                 });
 
             $browser->loginAs($fetchUser(4, 'ignore'))
                 ->visit(new UserIndex())
                 ->within(new IndexComponent('users'), function (Browser $browser) {
                     $browser->click('tr[dusk="3-row"] td:nth-child(3)')
-                        ->assertNotChecked('[dusk="3-row"] input.checkbox');
+                        ->assertCheckboxNotChecked('[dusk="3-row"] [role="checkbox"]');
                 })->assertPathIs((new UserIndex())->url());
 
             $browser->blank();

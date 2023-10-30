@@ -31,7 +31,7 @@ class LensTest extends DuskTestCase
                         ->assertSeeResource(2)
                         ->assertSeeResource(3);
                 })
-                ->assertTitle('Nova Site - Passthrough Lens');
+                ->assertTitle('Passthrough Lens - Nova Site');
 
             $browser->blank();
         });
@@ -120,7 +120,6 @@ class LensTest extends DuskTestCase
                 ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                     $browser->waitForTable()
                         ->assertSelectAllMatchingCount(4)
-                        ->closeCurrentDropdown()
                         ->selectFilter('Select First', '1')
                         ->assertSelectAllMatchingCount(1);
                 });
