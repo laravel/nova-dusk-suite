@@ -31,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
                 'driver' => 'single',
                 'path' => storage_path('logs/deprecations.log'),
                 'level' => config('logging.channels.single.level', 'debug'),
+                'replace_placeholders' => true,
             ],
         ]);
 
