@@ -76,3 +76,4 @@ transform([
 Symfony\Component\Process\Process::fromShellCommandline(
     'php artisan nova:publish --force', $workingPath
 )->mustRun();
+
