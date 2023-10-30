@@ -17,6 +17,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        config([
+            'auth.guards.web-subscribers' => [
+                'driver' => 'session',
+                'provider' => 'subscribers',
+            ],
+            'auth.providers.subscribers' => [
+                'driver' => 'eloquent',
+                'model' => \App\Models\Subscriber::class,
+            ],
+            'logging.channels.deprecations' => [
+                'driver' => 'single',
+                'path' => storage_path('logs/deprecations.log'),
+                'level' => config('logging.channels.single.level', 'debug'),
+            ],
+        ]);
+
         Model::preventLazyLoading((bool) config('app.debug'));
 
         $this->app->instance('uses_searchable', file_exists(base_path('.searchable')));
