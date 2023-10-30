@@ -27,12 +27,9 @@ class AppServiceProvider extends ServiceProvider
                 'driver' => 'eloquent',
                 'model' => \App\Models\Subscriber::class,
             ],
-            'logging.channels.deprecations' => [
-                'driver' => 'single',
-                'path' => storage_path('logs/deprecations.log'),
-                'level' => config('logging.channels.single.level', 'debug'),
-                'replace_placeholders' => true,
-            ],
+            'logging.channels.deprecations' => array_merge(
+                config('logging.channels.single'), ['path' => storage_path('logs/deprecations.log')],
+            ),
         ]);
 
         if (version_compare(Application::VERSION, '9.35.0', '>=')) {
