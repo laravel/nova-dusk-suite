@@ -30,7 +30,7 @@
         "nunomaduro/collision": "^7.5",
         "nunomaduro/larastan": "^2.5.1",
         "orchestra/testbench": "^8.7",
-        "orchestra/testbench-dusk": "8.x-dev",
+        "orchestra/testbench-dusk": "8.14",
         "phpunit/phpunit": "^10.1"
     },
     "autoload": {

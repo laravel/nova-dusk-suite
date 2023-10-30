@@ -71,8 +71,8 @@ transform([
         //     'driver' => 'database',
         //     'table' => 'users',
         // ]," => "        'subscribers' => [
-            'driver' => 'database',
-            'table' => \App\Models\Subscriber::class,
+            'driver' => 'eloquent',
+            'model' => \App\Models\Subscriber::class,
         ],"
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/auth.php"));
 
