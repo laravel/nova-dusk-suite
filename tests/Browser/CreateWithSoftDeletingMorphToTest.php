@@ -20,7 +20,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('videos', $video->id))
                 ->runCreateRelation('comments')
-                ->within(new FormComponent(), static function ($browser) use ($video) {
+                ->within(new FormComponent(), function ($browser) use ($video) {
                     $browser->assertDisabled('@commentable-type')
                         ->assertSelectedSearchResult('commentable', $video->title);
                 })
@@ -43,12 +43,12 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Create('comments'))
                 ->select('@commentable-type', 'videos')
-                ->whenAvailable(new RelationSelectControlComponent('commentable'), static function ($browser) use ($video, $video2) {
+                ->whenAvailable(new RelationSelectControlComponent('commentable'), function ($browser) use ($video, $video2) {
                     $browser->assertSelectMissingOptions('', [$video->id, $video->title])
                         ->assertSelectHasOption('', $video2->id);
                 })
                 ->withTrashedRelation('commentable')
-                ->whenAvailable(new RelationSelectControlComponent('commentable'), static function ($browser) use ($video, $video2) {
+                ->whenAvailable(new RelationSelectControlComponent('commentable'), function ($browser) use ($video, $video2) {
                     $browser->assertSelectHasOptions('', [$video->id, $video2->id])
                         ->select('', $video->id)
                         ->assertSelected('', $video->id)

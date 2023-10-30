@@ -22,6 +22,7 @@ class DateTimeFieldTest extends DuskTestCase
     /**
      * @dataProvider localiseDatetimeDataProvider
      *
+     * @group local-time
      * @group internal-server
      */
     public function test_can_pick_date_using_datetime_input($appDateTime, $appTimezone, $localDateTime, $userTimezone)
@@ -66,10 +67,10 @@ class DateTimeFieldTest extends DuskTestCase
             );
 
             $browser->on(new Detail('users', $user->id))
-                ->within(new IndexComponent('books', 'personalBooks'), static function ($browser) use ($now) {
+                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) use ($now) {
                     $browser->waitForTable()
                         ->assertSeeResource(4)
-                        ->within('@4-row', static function ($browser) use ($now) {
+                        ->within('@4-row', function ($browser) use ($now) {
                             $browser->assertAttribute('td:nth-child(8) > div > span', 'title', $now->toIso8601String());
                         });
                 });
@@ -81,10 +82,10 @@ class DateTimeFieldTest extends DuskTestCase
                 ->update()
                 ->waitForText('The resource was updated!')
                 ->on(new Detail('users', $user->id))
-                ->within(new IndexComponent('books', 'personalBooks'), static function ($browser) use ($now) {
+                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) use ($now) {
                     $browser->waitForTable()
                         ->assertSeeResource(4)
-                        ->within('@4-row', static function ($browser) use ($now) {
+                        ->within('@4-row', function ($browser) use ($now) {
                             $browser->assertAttribute('td:nth-child(8) > div > span', 'title', $now->toIso8601String());
                         });
                 });
@@ -105,6 +106,7 @@ class DateTimeFieldTest extends DuskTestCase
     /**
      * @dataProvider localiseDatetimeDataProvider
      *
+     * @group local-time
      * @group internal-server
      */
     public function test_can_pick_date_using_datetime_input_and_maintain_current_value_on_validation_errors($appDateTime, $appTimezone, $localDateTime, $userTimezone)
@@ -199,7 +201,7 @@ class DateTimeFieldTest extends DuskTestCase
                 ->update()
                 ->waitForText('The ship was updated!')
                 ->on(new Detail('ships', $ship->id))
-                ->within(new DetailComponent('ships', $ship->id), static function ($browser) use ($now) {
+                ->within(new DetailComponent('ships', $ship->id), function ($browser) use ($now) {
                     $browser->assertAttribute('[dusk="departed_at"] > div > p', 'title', $now->toIso8601String());
                 });
 

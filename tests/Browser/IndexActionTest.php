@@ -20,7 +20,7 @@ class IndexActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), static function ($browser) {
+                ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->clickCheckboxForId(3)
                         ->clickCheckboxForId(2)
@@ -43,7 +43,7 @@ class IndexActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), static function ($browser) {
+                ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->selectAllMatching()
                         ->runAction('mark-as-active');
@@ -65,7 +65,7 @@ class IndexActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), static function ($browser) {
+                ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->searchFor('Taylor')
                         ->selectAllMatching()
@@ -88,7 +88,7 @@ class IndexActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), static function ($browser) {
+                ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->clickCheckboxForId(3);
 
@@ -109,7 +109,7 @@ class IndexActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('posts'))
-                ->within(new IndexComponent('posts'), static function ($browser) {
+                ->within(new IndexComponent('posts'), function ($browser) {
                     $browser->waitForTable();
 
                     Post::query()->delete();
@@ -131,7 +131,7 @@ class IndexActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), static function ($browser) {
+                ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->selectAllMatching()
                         ->runAction('mark-as-active');
@@ -150,17 +150,19 @@ class IndexActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), static function ($browser) {
+                ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->openControlSelectorById(1)
-                        ->elsewhere('', static function ($browser) {
+                        ->elsewhere('', function ($browser) {
                             $browser->waitFor('@1-preview-button')
                                 ->assertMissing('@1-inline-actions');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(2)
-                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), static function ($browser) {
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
                             $browser->assertSee('Mark As Inactive');
                         })
+                        ->closeCurrentDropdown()
                         ->runInlineAction(2, 'mark-as-inactive');
                 })->waitForText('The action was executed successfully.');
 

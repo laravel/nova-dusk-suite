@@ -56,6 +56,7 @@ class CustomAuthenticatesUserTest extends DuskTestCase
                 ->visit(new Dashboard())
                 ->press('Taylor Otwell')
                 ->press('Logout')
+                ->waitForDialog()
                 ->assertDialogOpened('Are you sure you want to log out?')
                 ->acceptDialog()
                 ->waitForLocation('/login')
@@ -106,7 +107,7 @@ class CustomAuthenticatesUserTest extends DuskTestCase
 
             $browser->deleteCookie('nova_dusk_suite_session');
 
-            $browser->within(new SidebarComponent(), static function ($browser) {
+            $browser->within(new SidebarComponent(), function ($browser) {
                 $browser->clickLink('Books');
             })->waitForLocation('/login')
                 ->assertGuest();

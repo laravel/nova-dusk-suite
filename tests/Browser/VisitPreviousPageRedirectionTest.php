@@ -19,7 +19,7 @@ class VisitPreviousPageRedirectionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('categories'))
-                ->runCreate(static function ($browser) {
+                ->runCreate(function ($browser) {
                     $browser->type('@name', 'Laravel');
                 })
                 ->createAndAddAnother()
@@ -40,7 +40,7 @@ class VisitPreviousPageRedirectionTest extends DuskTestCase
                 ->visit(new Index('categories', [
                     'categories_page' => 2,
                 ]))
-                ->runCreate(static function ($browser) {
+                ->runCreate(function ($browser) {
                     $browser->type('@name', 'Laravel');
                 })
                 ->createAndAddAnother()
@@ -60,11 +60,11 @@ class VisitPreviousPageRedirectionTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Index('categories'))
-                ->within(new IndexComponent('categories'), static function ($browser) use ($category) {
+                ->within(new IndexComponent('categories'), function ($browser) use ($category) {
                     $browser->waitForTable()
                         ->editResourceById($category->getKey());
                 })->on(new Update('categories', $category->getKey()))
-                ->within(new FormComponent(), static function ($browser) {
+                ->within(new FormComponent(), function ($browser) {
                     $browser->type('@name', 'Laravel');
                 })
                 ->updateAndContinueEditing()
@@ -83,7 +83,7 @@ class VisitPreviousPageRedirectionTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Detail('categories', $category->getKey()))
-                ->within(new IndexComponent('categories', 'subcategories'), static function ($browser) {
+                ->within(new IndexComponent('categories', 'subcategories'), function ($browser) {
                     $browser->waitForEmptyDialog()
                         ->click('@create-button');
                 })
@@ -92,7 +92,7 @@ class VisitPreviousPageRedirectionTest extends DuskTestCase
                 ->assertQueryStringHas('viaResourceId', $category->getKey())
                 ->assertQueryStringHas('viaRelationship', 'subcategories')
                 ->assertQueryStringHas('relationshipType', 'hasMany')
-                ->within(new FormComponent(), static function ($browser) {
+                ->within(new FormComponent(), function ($browser) {
                     $browser->type('@name', 'Laravel');
                 })
                 ->createAndAddAnother()

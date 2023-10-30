@@ -18,10 +18,9 @@ class InlineCreateResourceModalAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
-                ->showInlineCreate('roles', static function ($browser) {
+                ->showInlineCreate('roles', function ($browser) {
                     $browser->waitForText('Create Role')
-                        ->keys('@name', 'Manager', '{tab}')
-                        ->keys('', '{escape}');
+                        ->keys('@name', 'Manager', '{escape}');
                 })
                 ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                 ->acceptDialog()
@@ -43,7 +42,7 @@ class InlineCreateResourceModalAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
-                ->showInlineCreate('roles', static function ($browser) {
+                ->showInlineCreate('roles', function ($browser) {
                     $browser->waitForText('Create Role')
                         ->keys('@name', 'Manager', '{tab}')
                         ->click('@cancel-create-button');

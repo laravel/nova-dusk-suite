@@ -23,7 +23,7 @@ class IndexBelongsToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
                 ->visit(new Index('posts'))
-                ->within(new IndexComponent('posts'), static function ($browser) use ($user) {
+                ->within(new IndexComponent('posts'), function ($browser) use ($user) {
                     $browser->waitForTable()
                         ->clickLink($user->name);
                 })

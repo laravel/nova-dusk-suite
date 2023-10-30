@@ -21,7 +21,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Index('docks'))
-                ->within(new IndexComponent('docks'), static function ($browser) use ($dock) {
+                ->within(new IndexComponent('docks'), function ($browser) use ($dock) {
                     $browser->waitForTable()
                         ->deleteResourceById($dock->id)
                         ->waitForEmptyDialog()
@@ -42,7 +42,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Index('docks'))
-                ->within(new IndexComponent('docks'), static function ($browser) use ($dock, $dock1, $dock2) {
+                ->within(new IndexComponent('docks'), function ($browser) use ($dock, $dock1, $dock2) {
                     $browser->waitForTable()
                         ->clickCheckboxForId($dock2->id)
                         ->clickCheckboxForId($dock1->id)
@@ -65,7 +65,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Index('docks'))
-                ->within(new IndexComponent('docks'), static function ($browser) use ($dock, $dock1, $dock2) {
+                ->within(new IndexComponent('docks'), function ($browser) use ($dock, $dock1, $dock2) {
                     $browser->withTrashed();
 
                     $browser->waitForTable()
@@ -91,7 +91,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Index('docks'))
-                ->within(new IndexComponent('docks'), static function ($browser) use ($dock, $dock1, $dock2) {
+                ->within(new IndexComponent('docks'), function ($browser) use ($dock, $dock1, $dock2) {
                     $browser->withTrashed();
 
                     $browser->waitForTable()
@@ -117,7 +117,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Detail('docks', 1))
-                ->within(new IndexComponent('ships'), static function ($browser) use ($ship, $ship1, $ship2) {
+                ->within(new IndexComponent('ships'), function ($browser) use ($ship, $ship1, $ship2) {
                     $browser->waitForTable()
                         ->selectAllMatching()
                         ->deleteSelected()
@@ -150,7 +150,7 @@ class SoftDeletingIndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Detail('docks', 1))
-                ->within(new IndexComponent('ships'), static function ($browser) {
+                ->within(new IndexComponent('ships'), function ($browser) {
                     $browser->withTrashed();
 
                     $browser->waitForTable()
@@ -181,7 +181,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Detail('docks', 1))
-                ->within(new IndexComponent('ships'), static function ($browser) use ($ship, $ship1, $ship2) {
+                ->within(new IndexComponent('ships'), function ($browser) use ($ship, $ship1, $ship2) {
                     $browser->withTrashed();
 
                     $browser->waitForTable()
@@ -208,7 +208,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Index('docks'))
-                ->within(new IndexComponent('docks'), static function ($browser) use ($dock) {
+                ->within(new IndexComponent('docks'), function ($browser) use ($dock) {
                     $browser->withTrashed()
                         ->waitForTable()
                         ->deleteResourceById($dock->id)
@@ -230,7 +230,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Index('docks'))
-                ->within(new IndexComponent('docks'), static function ($browser) use ($ship, $ship1) {
+                ->within(new IndexComponent('docks'), function ($browser) use ($ship, $ship1) {
                     $browser->waitForTable()
                         ->assertSeeResource($ship->id)
                         ->assertDontSeeResource($ship1->id);
@@ -252,7 +252,7 @@ class SoftDeletingIndexTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Index('docks'))
-                ->within(new IndexComponent('docks'), static function ($browser) use ($dock) {
+                ->within(new IndexComponent('docks'), function ($browser) use ($dock) {
                     $browser->withTrashed()
                         ->waitForTable()
                         ->deleteResourceById($dock->id)

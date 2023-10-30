@@ -30,7 +30,7 @@ class PivotFileAttachTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
-                ->within(new FormComponent(), static function ($browser) use ($ship) {
+                ->within(new FormComponent(), function ($browser) use ($ship) {
                     $browser->searchFirstRelation('ships', $ship->id)
                         ->attach('@contract', __DIR__.'/Fixtures/Document.pdf');
                 })
@@ -55,7 +55,7 @@ class PivotFileAttachTest extends DuskTestCase
 
             // Detach the record...
             $browser->visit(new Detail('captains', $captain->id))
-                ->within(new IndexComponent('ships'), static function ($browser) use ($ship) {
+                ->within(new IndexComponent('ships'), function ($browser) use ($ship) {
                     $browser->waitForTable()
                         ->deleteResourceById($ship->id)
                         ->waitForEmptyDialog()
@@ -95,10 +95,10 @@ class PivotFileAttachTest extends DuskTestCase
 
             // Delete the file...
             $browser->visit(UpdateAttached::belongsToMany('captains', $captain->id, 'ships', $ship->id))
-                ->whenAvailable('button[dusk="contract-delete-link"]', static function ($browser) {
+                ->whenAvailable('button[dusk="contract-delete-link"]', function ($browser) {
                     $browser->click('');
                 })
-                ->whenAvailable(new ConfirmUploadRemovalModalComponent(), static function ($browser) {
+                ->whenAvailable(new ConfirmUploadRemovalModalComponent(), function ($browser) {
                     $browser->confirm();
                 })
                 ->waitForText('The file was deleted!');

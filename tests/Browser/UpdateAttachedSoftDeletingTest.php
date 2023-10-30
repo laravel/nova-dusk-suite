@@ -24,13 +24,13 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($captain) {
             $browser->loginAs(1)
                 ->visit(new Detail('captains', 1))
-                ->within(new IndexComponent('ships'), static function ($browser) {
+                ->within(new IndexComponent('ships'), function ($browser) {
                     $browser->withTrashed()
                         ->waitFor('@1-edit-attached-button')
                         ->click('@1-edit-attached-button');
                 })
                 ->on(UpdateAttached::belongsToMany('captains', 1, 'ships', 1))
-                ->whenAvailable('select[dusk="attachable-select"]', static function ($browser) {
+                ->whenAvailable('select[dusk="attachable-select"]', function ($browser) {
                     $browser->assertDisabled('');
                 })
                 ->type('@notes', 'Test Notes')
@@ -58,14 +58,14 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($captain) {
             $browser->loginAs(1)
                 ->visit(new Detail('captains', 1))
-                ->within(new IndexComponent('ships'), static function ($browser) {
+                ->within(new IndexComponent('ships'), function ($browser) {
                     $browser->withTrashed()
                         ->waitFor('@1-edit-attached-button')
                         ->click('@1-edit-attached-button');
                 })
                 ->on(UpdateAttached::belongsToMany('captains', 1, 'ships', 1))
                 ->assertDisabled('select[dusk="attachable-select"]')
-                ->whenAvailable('@notes', static function ($browser) {
+                ->whenAvailable('@notes', function ($browser) {
                     $browser->type('', 'Test Notes');
                 })
                 ->updateAndContinueEditing()

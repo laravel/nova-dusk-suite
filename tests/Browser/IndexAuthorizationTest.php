@@ -52,20 +52,22 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($posts) {
             $browser->loginAs(1)
                 ->visit(new Index('posts'))
-                ->within(new IndexComponent('posts'), static function ($browser) use ($posts) {
+                ->within(new IndexComponent('posts'), function ($browser) use ($posts) {
                     $browser->waitForTable()
                         ->assertDontSeeLink($posts[0]->id)
-                        ->openControlSelectorById($posts[0]->id, static function ($browser) use ($posts) {
+                        ->openControlSelectorById($posts[0]->id, function ($browser) use ($posts) {
                             $browser->assertMissing("{$posts[0]->id}-preview-button");
                         })
                         ->assertSeeLink($posts[0]->user->name)
                         ->assertSeeLink($posts[1]->id)
-                        ->openControlSelectorById($posts[1]->id, static function ($browser) use ($posts) {
+                        ->closeCurrentDropdown()
+                        ->openControlSelectorById($posts[1]->id, function ($browser) use ($posts) {
                             $browser->assertVisible("{$posts[1]->id}-preview-button");
                         })
                         ->assertDontSeeLink($posts[1]->user->name)
                         ->assertSeeLink($posts[2]->id)
-                        ->openControlSelectorById($posts[2]->id, static function ($browser) use ($posts) {
+                        ->closeCurrentDropdown()
+                        ->openControlSelectorById($posts[2]->id, function ($browser) use ($posts) {
                             $browser->assertVisible("{$posts[2]->id}-preview-button");
                         })
                         ->assertSeeLink($posts[2]->user->name);
@@ -84,7 +86,7 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(1)
                 ->visit(new Index('posts'))
-                ->within(new IndexComponent('posts'), static function ($browser) use ($post, $post2) {
+                ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                     $browser->waitForTable()
                         ->assertButtonDisabled("@{$post->id}-edit-button")
                         ->assertButtonEnabled("@{$post2->id}-edit-button");
@@ -103,7 +105,7 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post, $post2) {
             $browser->loginAs(1)
                 ->visit(new Index('posts'))
-                ->within(new IndexComponent('posts'), static function ($browser) use ($post, $post2) {
+                ->within(new IndexComponent('posts'), function ($browser) use ($post, $post2) {
                     $browser->waitForTable()
                         ->assertButtonDisabled("@{$post->id}-delete-button")
                         ->assertButtonEnabled("@{$post2->id}-delete-button");
@@ -121,7 +123,7 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('posts'))
-                ->within(new IndexComponent('posts'), static function ($browser) {
+                ->within(new IndexComponent('posts'), function ($browser) {
                     $browser->waitForTable()
                         ->clickCheckboxForId(3)
                         ->clickCheckboxForId(2)
@@ -145,7 +147,7 @@ class IndexAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('posts'))
-                ->within(new IndexComponent('posts'), static function ($browser) {
+                ->within(new IndexComponent('posts'), function ($browser) {
                     $browser->waitForTable()
                         ->selectAllMatching()
                         ->deleteSelected()

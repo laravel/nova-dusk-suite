@@ -21,7 +21,7 @@ class CreateWithMorphToTest extends DuskTestCase
                 ->waitForTextIn('@nova-form', 'Commentable')
                 ->select('@commentable-type', 'posts')
                 ->pause(500)
-                ->whenAvailable(new RelationSelectControlComponent('commentable'), static function ($browser) {
+                ->whenAvailable(new RelationSelectControlComponent('commentable'), function ($browser) {
                     $browser->select('', 1);
                 })
                 ->type('@body', 'Test Comment')
@@ -118,7 +118,7 @@ class CreateWithMorphToTest extends DuskTestCase
                     'viaRelationship' => 'comments',
                 ]))
                 ->waitForTextIn('@nova-form', 'Commentable')
-                ->whenAvailable('@commentable-type', static function ($browser) {
+                ->whenAvailable('@commentable-type', function ($browser) {
                     $browser->assertDisabled('')
                         ->assertSelected('', 'posts');
                 })
@@ -129,11 +129,11 @@ class CreateWithMorphToTest extends DuskTestCase
                 ->assertQueryStringHas('viaResourceId', $post->id)
                 ->assertQueryStringHas('viaRelationship', 'comments')
                 ->resetSearchRelation('commentable')
-                ->whenAvailable('@commentable-type', static function ($browser) {
+                ->whenAvailable('@commentable-type', function ($browser) {
                     $browser->assertEnabled('')
                         ->assertSelected('', 'posts');
                 })
-                ->whenAvailable(new RelationSelectControlComponent('commentable'), static function ($browser) {
+                ->whenAvailable(new RelationSelectControlComponent('commentable'), function ($browser) {
                     $browser->assertSelectHasOption('', '');
                 })
                 ->assertQueryStringMissing('viaResource')

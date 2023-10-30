@@ -43,13 +43,13 @@ class DetailActionTest extends DuskTestCase
                 ->visit(new Detail('users', 4))
                 ->waitForTextIn('h1', 'User Details: Laravel Nova');
 
-            $browser->within(new IndexComponent('roles'), static function ($browser) use ($role) {
+            $browser->within(new IndexComponent('roles'), function ($browser) use ($role) {
                 $browser->waitForTable()
                     ->clickCheckboxForId(1);
 
                 $role->users()->detach(4);
 
-                $browser->runAction('update-pivot-notes', static function ($browser) {
+                $browser->runAction('update-pivot-notes', function ($browser) {
                     $browser->assertSee('Provide a description for notes.')
                         ->type('@notes', 'Custom Notes');
                 });
@@ -115,7 +115,7 @@ class DetailActionTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
                 ->waitForTextIn('h1', 'User Details: Taylor Otwell')
-                ->within(new IndexComponent('posts'), static function ($browser) {
+                ->within(new IndexComponent('posts'), function ($browser) {
                     $browser->waitForTable()
                         ->selectAllMatching()
                         ->runAction('mark-as-active');

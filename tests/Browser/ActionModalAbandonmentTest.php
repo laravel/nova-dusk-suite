@@ -18,16 +18,17 @@ class ActionModalAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
-                ->within(new IndexComponent('roles'), static function ($browser) {
+                ->within(new IndexComponent('roles'), function ($browser) {
                     $browser->waitForTable()
                         ->clickCheckboxForId(1)
-                        ->selectAction('update-required-pivot-notes', static function ($browser) {
-                            $browser->elsewhere('', static function ($browser) {
-                                $browser->whenAvailable(new ConfirmActionModalComponent(), static function ($browser) {
+                        ->selectAction('update-required-pivot-notes', function ($browser) {
+                            $browser->elsewhere('', function ($browser) {
+                                $browser->whenAvailable(new ConfirmActionModalComponent(), function ($browser) {
                                     $browser->keys('@notes', 'Custom Notes', '{tab}');
                                 })
                                     ->assertPresentModal()
                                     ->keys('', '{escape}')
+                                    ->waitForDialog()
                                     ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                                     ->acceptDialog()
                                     ->pause(100)
@@ -47,11 +48,11 @@ class ActionModalAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
-                ->within(new IndexComponent('roles'), static function ($browser) {
+                ->within(new IndexComponent('roles'), function ($browser) {
                     $browser->waitForTable()
                         ->clickCheckboxForId(1)
-                        ->selectAction('update-required-pivot-notes', static function ($browser) {
-                            $browser->elsewhereWhenAvailable(new ConfirmActionModalComponent(), static function ($browser) {
+                        ->selectAction('update-required-pivot-notes', function ($browser) {
+                            $browser->elsewhereWhenAvailable(new ConfirmActionModalComponent(), function ($browser) {
                                 $browser->type('@notes', 'Custom Notes')->cancel();
                             })
                                 ->pause(100)

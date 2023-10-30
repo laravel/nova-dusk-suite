@@ -29,7 +29,7 @@ class FilterableDateFieldTest extends DuskTestCase
                 ->visit(new Index('people'))
                 ->within(new IndexComponent('people'), function (Browser $browser) use ($date, $people, $people1) {
                     $browser->waitForTable()
-                        ->runFilter(static function ($browser) use ($date) {
+                        ->runFilter(function ($browser) use ($date) {
                             $browser->typeOnDate('@date_of_birth-default-date-field-range-start', $date)
                                 ->typeOnDate('@date_of_birth-default-date-field-range-end', $date->addDay(1));
                         })
@@ -45,7 +45,7 @@ class FilterableDateFieldTest extends DuskTestCase
                 })
                 ->within(new IndexComponent('people'), function (Browser $browser) use ($date1, $people, $people1) {
                     $browser->waitForTable()
-                        ->runFilter(static function ($browser) use ($date1) {
+                        ->runFilter(function ($browser) use ($date1) {
                             $browser->typeOnDate('@date_of_birth-default-date-field-range-start', $date1)
                                 ->typeOnDate('@date_of_birth-default-date-field-range-end', $date1->addDay(1));
                         })
@@ -80,7 +80,7 @@ class FilterableDateFieldTest extends DuskTestCase
                 ->visit(new Index('people'))
                 ->within(new IndexComponent('people'), function (Browser $browser) use ($date, $people, $people1) {
                     $browser->waitForTable()
-                        ->runFilter(static function ($browser) use ($date) {
+                        ->runFilter(function ($browser) use ($date) {
                             $browser->typeOnDate('@created_at-default-date-time-field-range-start', $date)
                                 ->typeOnDate('@created_at-default-date-time-field-range-end', $date->addDay(1));
                         })
@@ -96,7 +96,7 @@ class FilterableDateFieldTest extends DuskTestCase
                 })
                 ->within(new IndexComponent('people'), function (Browser $browser) use ($date1, $people, $people1) {
                     $browser->waitForTable()
-                        ->runFilter(static function ($browser) use ($date1) {
+                        ->runFilter(function ($browser) use ($date1) {
                             $browser->typeOnDate('@created_at-default-date-time-field-range-start', $date1)
                                 ->typeOnDate('@created_at-default-date-time-field-range-end', $date1->addDay(1));
                         })

@@ -22,8 +22,8 @@ class AttachDuplicationTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
-                ->within(new FormComponent(), static function ($browser) use ($role) {
-                    $browser->whenAvailable('@via-resource-field', static function ($browser) {
+                ->within(new FormComponent(), function ($browser) use ($role) {
+                    $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
                         ->selectAttachable($role->id);
@@ -33,10 +33,10 @@ class AttachDuplicationTest extends DuskTestCase
                 ->on(new Detail('users', 1))
                 ->waitForTextIn('h1', 'User Details: Taylor Otwell')
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
-                ->whenAvailable('@via-resource-field', static function ($browser) {
+                ->whenAvailable('@via-resource-field', function ($browser) {
                     $browser->assertSee('User')->assertSee('Taylor Otwell');
                 })
-                ->whenAvailable(new RelationSelectControlComponent('attachable'), static function ($browser) use ($role) {
+                ->whenAvailable(new RelationSelectControlComponent('attachable'), function ($browser) use ($role) {
                     $browser->assertSelectMissingOption('', $role->id);
                 });
 
@@ -61,7 +61,7 @@ class AttachDuplicationTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('users', 1, 'books', 'giftBooks'))
                 ->assertSeeIn('h1', 'Attach Book')
-                ->within(new FormComponent(), static function ($browser) use ($now) {
+                ->within(new FormComponent(), function ($browser) use ($now) {
                     $browser->selectAttachable(4)
                         ->type('@price', '39')
                         ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now);
@@ -69,11 +69,11 @@ class AttachDuplicationTest extends DuskTestCase
                 ->create()
                 ->waitForText('The resource was attached!')
                 ->on(new Detail('users', 1))
-                ->within(new IndexComponent('books', 'giftBooks'), static function ($browser) {
+                ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(4);
                 })
-                ->within(new IndexComponent('books', 'personalBooks'), static function ($browser) {
+                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
                     $browser->waitForEmptyDialog()
                         ->assertSee('No Book matched the given criteria.');
                 });
@@ -104,18 +104,18 @@ class AttachDuplicationTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('users', 1, 'books', 'personalBooks'))
                 ->assertSeeIn('h1', 'Attach Book')
-                ->within(new FormComponent(), static function ($browser) use ($now) {
+                ->within(new FormComponent(), function ($browser) use ($now) {
                     $browser->selectAttachable(4)
                         ->type('@price', '34')
                         ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now);
                 })
                 ->create()
                 ->waitForText('The resource was attached!')
-                ->within(new IndexComponent('books', 'personalBooks'), static function ($browser) {
+                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(4);
                 })
-                ->within(new IndexComponent('books', 'personalBooks'), static function ($browser) {
+                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(4);
                 });

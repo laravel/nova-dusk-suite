@@ -28,7 +28,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(UpdateAttached::morphToMany('posts', 1, 'tags', 1))
                 ->assertDisabled('select[dusk="attachable-select"]')
-                ->whenAvailable('@notes', static function ($browser) {
+                ->whenAvailable('@notes', function ($browser) {
                     $browser->assertInputValue('', 'Test Notes');
                 })
                 ->type('@notes', 'Test Notes Updated')
@@ -56,7 +56,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(UpdateAttached::morphToMany('posts', 1, 'tags', 1))
                 ->assertDisabled('select[dusk="attachable-select"]')
-                ->whenAvailable('@notes', static function ($browser) {
+                ->whenAvailable('@notes', function ($browser) {
                     $browser->assertInputValue('', 'Test Notes')
                         ->type('', 'Test Notes Updated');
                 })
@@ -81,7 +81,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(UpdateAttached::morphToMany('posts', 1, 'tags', 1))
-                ->whenAvailable('@notes', static function ($browser) {
+                ->whenAvailable('@notes', function ($browser) {
                     $browser->assertInputValue('', 'Test Notes')
                         ->type('', 'Test Notes Updated');
                 })
@@ -107,7 +107,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(UpdateAttached::morphToMany('posts', 1, 'tags', 1))
-                ->whenAvailable('@notes', static function ($browser) {
+                ->whenAvailable('@notes', function ($browser) {
                     $browser->type('', str_repeat('A', 30));
                 })
                 ->update()
@@ -134,7 +134,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('comments'))
-                ->within(new IndexComponent('comments'), static function ($browser) {
+                ->within(new IndexComponent('comments'), function ($browser) {
                     $browser->waitForTable()
                         ->editResourceById(1);
                 })

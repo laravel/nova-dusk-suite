@@ -62,7 +62,7 @@ class CustomFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($flight) {
             $browser->loginAs(1)
                 ->visit(new Index('flights'))
-                ->within(new IndexComponent('flights'), static function ($browser) use ($flight) {
+                ->within(new IndexComponent('flights'), function ($browser) use ($flight) {
                     $browser->waitForTable()
                         ->assertSee($flight->name);
                 });

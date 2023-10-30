@@ -30,7 +30,7 @@ class DependentPivotFieldTest extends DuskTestCase
                 ->assertEnabled('select[dusk="type"]')
                 ->type('@price', '0')
                 ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now)
-                ->whenAvailable('select[dusk="type"]', static function ($browser) {
+                ->whenAvailable('select[dusk="type"]', function ($browser) {
                     $browser->assertDisabled('')
                         ->assertSelected('', 'gift');
                 })
@@ -38,11 +38,11 @@ class DependentPivotFieldTest extends DuskTestCase
                 ->waitForText('The resource was attached!')
                 ->on(new Detail('books', 2))
                 ->visit(new Detail('users', 4))
-                ->within(new IndexComponent('books', 'giftBooks'), static function ($browser) {
+                ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(2);
                 })
-                ->within(new IndexComponent('books', 'personalBooks'), static function ($browser) {
+                ->within(new IndexComponent('books', 'personalBooks'), function ($browser) {
                     $browser->waitForEmptyDialog()
                         ->assertSee('No Book matched the given criteria.');
                 });

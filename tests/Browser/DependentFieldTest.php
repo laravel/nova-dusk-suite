@@ -20,7 +20,7 @@ class DependentFieldTest extends DuskTestCase
             $browser->loginAs(4)
                 ->visit(new Create('projects'))
                 ->waitForTextIn('h1', 'Create Project')
-                ->within(new FormComponent, static function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->assertSelectMissingOptions('@type', ['product', 'service'])
                         ->assertSelected('@type', '')
                         ->select('@name', 'Secret')
@@ -111,8 +111,8 @@ class DependentFieldTest extends DuskTestCase
             $browser->loginAs(4)
                 ->visit(new Create('companies'))
                 ->waitForTextIn('h1', 'Create Company')
-                ->within(new FormComponent, static function ($browser) {
-                    $browser->fieldValue(
+                ->within(new FormComponent, function ($browser) {
+                    $browser->setFieldValue(
                         'description',
                         'Creators of Tailwind CSS, Tailwind UI, and Refactoring UI.'
                     )->type('@name', 'Tailwind Labs Inc')
@@ -140,14 +140,14 @@ class DependentFieldTest extends DuskTestCase
             $browser->loginAs(4)
                 ->visit(new Create('projects'))
                 ->waitForTextIn('h1', 'Create Project')
-                ->within(new FormComponent, static function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->assertSelectMissingOptions('@type', ['product', 'service'])
                         ->assertSelected('@type', '')
                         ->select('@name', 'Secret')
                         ->pause(1500)
                         ->assertSelectHasOptions('@type', ['product', 'service'])
                         ->select('@type', 'product')
-                        ->fieldValue('description', 'Laravel Beep!');
+                        ->setFieldValue('description', 'Laravel Beep!');
                 })
                 ->create()
                 ->waitForText('The project was created!');
@@ -171,13 +171,15 @@ class DependentFieldTest extends DuskTestCase
             $browser->loginAs(4)
                 ->visit(new Create('companies'))
                 ->waitForTextIn('h1', 'Create Company')
-                ->within(new FormComponent, static function ($browser) {
-                    $browser->type('@name', 'Laravel LLC')
-                        ->pause(1500)
-                        ->fieldValue(
-                            'description',
-                            'Laravel is a web ecosystem full of delightful tools that are supercharged for developer happiness and productivity.'
-                        )->assertDisabled('@country');
+                ->within(new FormComponent, function ($form) {
+                    $form->type('@name', 'Laravel LLC')
+                        ->whenAvailable('@description', function () use ($form) {
+                            $form->setFieldValue(
+                                'description',
+                                'Laravel is a web ecosystem full of delightful tools that are supercharged for developer happiness and productivity.'
+                            );
+                        })
+                        ->assertDisabled('@country');
                 })
                 ->create()
                 ->waitForText('The company was created!');
@@ -200,8 +202,8 @@ class DependentFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Index('captains'))
-                ->within(new IndexComponent('captains'), static function ($browser) {
-                    $browser->runStandaloneAction('fields-action', static function ($browser) {
+                ->within(new IndexComponent('captains'), function ($browser) {
+                    $browser->runStandaloneAction('fields-action', function ($browser) {
                         $browser->waitFor('@select_1')
                             ->assertMissing('@select_2')
                             ->assertMissing('@select_3')

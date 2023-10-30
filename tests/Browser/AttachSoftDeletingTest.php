@@ -23,12 +23,12 @@ class AttachSoftDeletingTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
-                ->within(new BreadcrumbComponent(), static function ($browser) use ($captain) {
+                ->within(new BreadcrumbComponent(), function ($browser) use ($captain) {
                     $browser->assertSeeLink('Captains')
                         ->assertSeeLink('Captain Details: '.$captain->id)
                         ->assertCurrentPageTitle('Attach Ship');
                 })
-                ->within(new FormComponent(), static function ($browser) use ($ship) {
+                ->within(new FormComponent(), function ($browser) use ($ship) {
                     $browser->searchFirstRelation('ships', $ship->id);
                 })
                 ->create()
@@ -51,12 +51,12 @@ class AttachSoftDeletingTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
-                ->within(new BreadcrumbComponent(), static function ($browser) use ($captain) {
+                ->within(new BreadcrumbComponent(), function ($browser) use ($captain) {
                     $browser->assertSeeLink('Captains')
                         ->assertSeeLink('Captain Details: '.$captain->id)
                         ->assertCurrentPageTitle('Attach Ship');
                 })
-                ->within(new FormComponent(), static function ($browser) use ($ship) {
+                ->within(new FormComponent(), function ($browser) use ($ship) {
                     $browser->withTrashedRelation('ships')
                         ->searchFirstRelation('ships', $ship->id);
                 })
@@ -83,12 +83,12 @@ class AttachSoftDeletingTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
-                ->within(new BreadcrumbComponent(), static function ($browser) use ($captain) {
+                ->within(new BreadcrumbComponent(), function ($browser) use ($captain) {
                     $browser->assertSeeLink('Captains')
                         ->assertSeeLink('Captain Details: '.$captain->id)
                         ->assertCurrentPageTitle('Attach Ship');
                 })
-                ->within(new FormComponent(), static function ($browser) use ($ship) {
+                ->within(new FormComponent(), function ($browser) use ($ship) {
                     $browser->searchFirstRelation('ships', $ship->id);
                 })
                 ->create()
@@ -111,12 +111,12 @@ class AttachSoftDeletingTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('captains', $captain->id, 'ships'))
-                ->within(new BreadcrumbComponent(), static function ($browser) use ($captain) {
+                ->within(new BreadcrumbComponent(), function ($browser) use ($captain) {
                     $browser->assertSeeLink('Captains')
                         ->assertSeeLink('Captain Details: '.$captain->id)
                         ->assertCurrentPageTitle('Attach Ship');
                 })
-                ->within(new FormComponent(), static function ($browser) use ($ship) {
+                ->within(new FormComponent(), function ($browser) use ($ship) {
                     $browser->withTrashedRelation('ships')
                         ->searchFirstRelation('ships', $ship->id);
                 })

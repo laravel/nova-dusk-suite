@@ -22,18 +22,19 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
-                ->within(new IndexComponent('roles'), static function ($browser) {
+                ->within(new IndexComponent('roles'), function ($browser) {
                     $browser->waitForTable()
                         ->click('@1-edit-attached-button');
                 })
                 ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
-                ->whenAvailable('@via-resource-field', static function ($browser) {
+                ->whenAvailable('@via-resource-field', function ($browser) {
                     $browser->assertSee('User')->assertSee('Taylor Otwell');
                 })
                 ->keys('@notes', 'Test Notes Updated', '{tab}')
-                ->within(new SidebarComponent(), static function ($browser) {
+                ->within(new SidebarComponent(), function ($browser) {
                     $browser->clickLink('Users');
                 })
+                ->waitForDialog()
                 ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                 ->acceptDialog()
                 ->on(new UserIndex)
@@ -52,17 +53,17 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
-                ->within(new IndexComponent('roles'), static function ($browser) {
+                ->within(new IndexComponent('roles'), function ($browser) {
                     $browser->waitForTable()
                         ->click('@1-edit-attached-button');
                 })
                 ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
-                ->whenAvailable('@via-resource-field', static function ($browser) {
+                ->whenAvailable('@via-resource-field', function ($browser) {
                     $browser->assertSee('User')->assertSee('Taylor Otwell');
                 })
                 ->keys('@notes', 'Test Notes Updated', '{tab}')
                 ->back()
-                ->pause(500)
+                ->waitForDialog()
                 ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                 ->acceptDialog()
                 ->on(new Detail('users', 1));
@@ -80,12 +81,12 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
-                ->within(new IndexComponent('roles'), static function ($browser) {
+                ->within(new IndexComponent('roles'), function ($browser) {
                     $browser->waitForTable()
                         ->click('@1-edit-attached-button');
                 })
                 ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
-                ->whenAvailable('@via-resource-field', static function ($browser) {
+                ->whenAvailable('@via-resource-field', function ($browser) {
                     $browser->assertSee('User')->assertSee('Taylor Otwell');
                 })
                 ->keys('@notes', 'Test Notes Updated', '{tab}')

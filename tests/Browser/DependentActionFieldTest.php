@@ -30,7 +30,7 @@ class DependentActionFieldTest extends DuskTestCase
                 ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function (Browser $browser) {
                     $browser->clickCheckboxForId(1)
-                        ->runAction('send-notification', static function ($browser) {
+                        ->runAction('send-notification', function ($browser) {
                             $browser->assertSelected('@type', '')
                                 ->assertDisabled('@message')
                                 ->assertDisabled('@icon')
@@ -67,7 +67,7 @@ class DependentActionFieldTest extends DuskTestCase
 
             $browser->within(new IndexComponent('users'), function (Browser $browser) {
                 $browser->clickCheckboxForId(2)
-                    ->runAction('send-notification', static function ($browser) {
+                    ->runAction('send-notification', function ($browser) {
                         $browser->assertSelected('@type', '')
                             ->assertDisabled('@message')
                             ->assertDisabled('@icon')
@@ -113,11 +113,10 @@ class DependentActionFieldTest extends DuskTestCase
                 ->within(new IndexComponent('posts'), function (Browser $browser) use ($post) {
                     $browser->waitForTable()
                         ->clickCheckboxForId($post->id)
-                        ->runAction('add-comment', static function ($browser) {
-                            $browser->type('@body', 'Hello world')
-                                ->whenAvailable('#anonymous-default-boolean-field', static function ($browser) {
-                                    $browser->assertChecked('');
-                                });
+                        ->runAction('add-comment', function ($browser) {
+                            $browser
+                                ->type('@body', 'Hello world')
+                                ->assertAttribute('@anonymous-default-boolean-field', 'data-state', 'checked');
                         });
                 })
                 ->waitForText('The action was executed successfully.');
@@ -131,13 +130,13 @@ class DependentActionFieldTest extends DuskTestCase
 
             $browser->within(new IndexComponent('posts'), function (Browser $browser) use ($post) {
                 $browser->clickCheckboxForId($post->id)
-                    ->runAction('add-comment', static function ($browser) {
+                    ->runAction('add-comment', function ($browser) {
                         $browser->type('@body', 'Hello world with userId')
                             ->assertMissing('@user')
-                            ->whenAvailable('#anonymous-default-boolean-field', static function ($browser) {
-                                $browser->assertChecked('')->uncheck('');
-                            })->pause(1000)
-                            ->whenAvailable(new RelationSelectControlComponent('users'), static function ($browser) {
+                            ->assertAttribute('@anonymous-default-boolean-field', 'data-state', 'checked')
+                            ->check('@anonymous-default-boolean-field')
+                            ->pause(1000)
+                            ->whenAvailable(new RelationSelectControlComponent('users'), function ($browser) {
                                 $browser->select('', 4);
                             });
                     });
@@ -161,7 +160,7 @@ class DependentActionFieldTest extends DuskTestCase
                 ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function (Browser $browser) {
                     $browser->waitForTable()
-                        ->runInlineAction(4, 'create-user-profile', static function ($browser) {
+                        ->runInlineAction(4, 'create-user-profile', function ($browser) {
                             $browser->assertSelected('@timezone', 'UTC')
                                 ->type('@github', 'crynobone')
                                 ->assertSelected('@timezone', 'Asia/Kuala_Lumpur');
@@ -179,34 +178,34 @@ class DependentActionFieldTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Index('captains'))
-                ->within(new IndexComponent('captains'), static function ($browser) use ($captains) {
+                ->within(new IndexComponent('captains'), function ($browser) use ($captains) {
                     $browser->waitForTable()
                         ->selectAllOnCurrentPage()
-                        ->selectAction('track-selected-action', static function ($browser) use ($captains) {
+                        ->selectAction('track-selected-action', function ($browser) use ($captains) {
                             $browser->assertValue('@selected_resources', 'false - '.$captains->pluck('id')->reverse()->join(','))
-                                ->click('input[type="checkbox"][id="toggle-default-boolean-field"]')
+                                ->click("[id='toggle-default-boolean-field']")
                                 ->pause(1000)
                                 ->assertValue('@selected_resources', 'true - '.$captains->pluck('id')->reverse()->join(','))
                                 ->cancel();
                         })
                         ->unselectAllOnCurrentPage()
                         ->selectAllMatching()
-                        ->selectAction('track-selected-action', static function ($browser) {
+                        ->selectAction('track-selected-action', function ($browser) {
                             $browser->assertValue('@selected_resources', 'false - all')
-                                ->click('input[type="checkbox"][id="toggle-default-boolean-field"]')
+                                ->click('[id="toggle-default-boolean-field"]')
                                 ->pause(1000)
                                 ->assertValue('@selected_resources', 'true - all')
                                 ->cancel();
                         });
                 })
                 ->visit(new Detail('captains', $captains[0]->getKey()))
-                ->within(new DetailComponent('captains', $captains[0]->getKey()), static function ($browser) use ($captains) {
+                ->within(new DetailComponent('captains', $captains[0]->getKey()), function ($browser) use ($captains) {
                     $browser->openControlSelector()
-                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), static function ($browser) use ($captains) {
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) use ($captains) {
                             $browser->click("button[data-action-id='track-selected-action']")
-                                ->elsewhereWhenAvailable(new ConfirmActionModalComponent(), static function ($browser) use ($captains) {
+                                ->elsewhereWhenAvailable(new ConfirmActionModalComponent(), function ($browser) use ($captains) {
                                     $browser->assertValue('@selected_resources', 'false - '.$captains[0]->getKey())
-                                        ->click('input[type="checkbox"][id="toggle-default-boolean-field"]')
+                                        ->click('[id="toggle-default-boolean-field"]')
                                         ->pause(1000)
                                         ->assertValue('@selected_resources', 'true - '.$captains[0]->getKey())
                                         ->cancel();

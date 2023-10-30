@@ -23,7 +23,7 @@ class FormButtonTest extends DuskTestCase
                 ->visit(new Dashboard)
                 ->within(new HeaderComponent(), function (Browser $browser) use ($user) {
                     $browser->press($user->name)
-                        ->elsewhereWhenAvailable('[data-menu-open=true]', static function ($browser) {
+                        ->elsewhereWhenAvailable('[data-menu-open=true]', function ($browser) {
                             $browser->press('Verify Account');
                         });
                 })->on(new Detail('users', $user->id));

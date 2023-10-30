@@ -20,7 +20,7 @@ class CreateWithBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Create('posts'))
-                ->within(new FormComponent(), static function ($browser) {
+                ->within(new FormComponent(), function ($browser) {
                     $browser->type('@title', 'Test Post')
                         ->type('@body', 'Test Post Body')
                         ->selectRelation('users', 1);
@@ -43,8 +43,8 @@ class CreateWithBelongsToTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
                 ->runCreateRelation('posts')
-                ->within(new FormComponent(), static function ($browser) {
-                    $browser->within(new SearchInputComponent('users'), static function ($browser) {
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->within(new SearchInputComponent('users'), function ($browser) {
                         $browser->assertSelectedSearchResult('Taylor Otwell');
                     })
                         ->type('@title', 'Test Post')
@@ -69,7 +69,7 @@ class CreateWithBelongsToTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($dock) {
             $browser->loginAs(1)
                 ->visit(new Create('ships'))
-                ->within(new FormComponent(), static function ($browser) {
+                ->within(new FormComponent(), function ($browser) {
                     $browser->searchFirstRelation('docks', '1')
                         ->type('@name', 'Test Ship');
                 })
@@ -90,7 +90,7 @@ class CreateWithBelongsToTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('docks', 1))
                 ->runCreateRelation('ships')
-                ->within(new FormComponent(), static function ($browser) use ($dock) {
+                ->within(new FormComponent(), function ($browser) use ($dock) {
                     $browser->assertSelectedSearchResult('docks', $dock->name)
                         ->type('@name', 'Test Ship');
                 })
@@ -124,12 +124,12 @@ class CreateWithBelongsToTest extends DuskTestCase
                     'viaRelationship' => 'posts',
                 ]))
                 ->waitForTextIn('@nova-form', 'Taylor Otwell')
-                ->within(new BreadcrumbComponent(), static function ($browser) {
+                ->within(new BreadcrumbComponent(), function ($browser) {
                     $browser->assertSeeLink('Users')
                         ->assertSeeLink('User Details: Taylor Otwell')
                         ->assertCurrentPageTitle('Create User Post');
                 })
-                ->within(new FormComponent(), static function ($browser) {
+                ->within(new FormComponent(), function ($browser) {
                     $browser->assertSelectedSearchResult('users', 'Taylor Otwell');
                 });
 
@@ -137,7 +137,7 @@ class CreateWithBelongsToTest extends DuskTestCase
             $browser->assertQueryStringHas('viaResource', 'users')
                 ->assertQueryStringHas('viaResourceId', 1)
                 ->assertQueryStringHas('viaRelationship', 'posts')
-                ->within(new SearchInputComponent('users'), static function ($browser) {
+                ->within(new SearchInputComponent('users'), function ($browser) {
                     $browser->assertSelectedSearchResult('Taylor Otwell')
                         ->resetSearchResult();
                 })

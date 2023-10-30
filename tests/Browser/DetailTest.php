@@ -13,10 +13,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class DetailTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function can_view_resource_attributes()
+    public function test_can_view_resource_attributes()
     {
         User::whereKey(1)->update([
             'settings' => ['pagination' => 'simple'],
@@ -26,7 +23,7 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
                 ->waitForTextIn('h1', 'User Details: Taylor Otwell')
-                ->within('@users-detail-component', static function ($browser) {
+                ->within('@users-detail-component', function ($browser) {
                     $browser->assertSee('User Details: Taylor Otwell')
                         ->assertSeeIn('@name', 'Taylor Otwell')
                         ->assertSeeIn('@email', 'taylor@laravel.com')
@@ -50,7 +47,7 @@ class DetailTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('users', $user->id))
                 ->waitForTextIn('h1', 'User Details: '.$user->name)
-                ->within('@users-detail-component', static function ($browser) use ($user) {
+                ->within('@users-detail-component', function ($browser) use ($user) {
                     $browser->assertSee('User Details: '.$user->name)
                         ->assertSeeIn('@id', $user->id)
                         ->assertSeeIn('@email', $user->email);
@@ -60,10 +57,7 @@ class DetailTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_navigate_to_different_screens()
+    public function test_can_navigate_to_different_screens()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1);
@@ -72,22 +66,19 @@ class DetailTest extends DuskTestCase
             $browser->visit(new Detail('users', 1))
                 ->edit()
                 ->on(new Update('users', 1))
-                ->assertSeeIn('h1', 'Update User');
+                ->waitForTextIn('h1', 'Update User');
 
             // To Edit Resource screen using shortcut
             $browser->visit(new Detail('users', 1))
                 ->keys('', ['e'])
                 ->on(new Update('users', 1))
-                ->assertSeeIn('h1', 'Update User');
+                ->waitForTextIn('h1', 'Update User');
 
             $browser->blank();
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_navigate_to_replicate_resource_screen()
+    public function test_can_navigate_to_replicate_resource_screen()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -104,10 +95,7 @@ class DetailTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function cannot_navigate_to_replicate_resource_screen_when_blocked_via_policy()
+    public function test_cannot_navigate_to_replicate_resource_screen_when_blocked_via_policy()
     {
         User::find(1)->shouldBlockFrom('user.replicate.4');
 
@@ -135,10 +123,7 @@ class DetailTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function resource_can_be_deleted()
+    public function test_resource_can_be_deleted()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)

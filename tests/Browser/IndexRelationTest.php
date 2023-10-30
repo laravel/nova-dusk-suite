@@ -22,7 +22,7 @@ class IndexRelationTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
                 ->waitForTextIn('h1', 'User Details: Taylor Otwell')
-                ->within(new IndexComponent('posts'), static function ($browser) {
+                ->within(new IndexComponent('posts'), function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(1)
                         ->searchFor('No Matching Posts')
@@ -62,7 +62,7 @@ class IndexRelationTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
                 ->waitForTextIn('h1', 'User Details: Taylor Otwell')
-                ->within(new IndexComponent('posts'), static function ($browser) {
+                ->within(new IndexComponent('posts'), function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(10)
                         ->assertDontSeeResource(1)
@@ -87,7 +87,7 @@ class IndexRelationTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
                 ->waitForTextIn('h1', 'User Details: Taylor Otwell')
-                ->within(new IndexComponent('posts'), static function ($browser) {
+                ->within(new IndexComponent('posts'), function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(10)
                         ->assertSeeResource(6)
@@ -112,7 +112,7 @@ class IndexRelationTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
                 ->waitForTextIn('h1', 'User Details: Taylor Otwell')
-                ->within(new IndexComponent('posts'), static function ($browser) {
+                ->within(new IndexComponent('posts'), function ($browser) {
                     $browser->waitForTable()
                         ->selectAllMatching()
                         ->deleteSelected();
@@ -138,7 +138,7 @@ class IndexRelationTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
                 ->waitForTextIn('h1', 'User Details: Taylor Otwell')
-                ->within(new IndexComponent('books', 'giftBooks'), static function ($browser) {
+                ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
                     $browser->waitForTable()
                         ->clickCheckboxForId(4, 2)
                         ->deleteSelected()
@@ -173,7 +173,7 @@ class IndexRelationTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('users', 1))
                 ->waitForTextIn('h1', 'User Details: Taylor Otwell')
-                ->within(new IndexComponent('posts'), static function ($browser) {
+                ->within(new IndexComponent('posts'), function ($browser) {
                     $browser->waitForTable()
                         ->assertQueryStringMissing('posts_filter')
                         ->selectFilter('Select First', '3')

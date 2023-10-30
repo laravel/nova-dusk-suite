@@ -18,11 +18,11 @@ class CreateTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Create('users'))
-                ->within(new BreadcrumbComponent(), static function ($browser) {
+                ->within(new BreadcrumbComponent(), function ($browser) {
                     $browser->assertSeeLink('Users')
                         ->assertCurrentPageTitle('Create User');
                 })
-                ->within(new FormComponent(), static function ($browser) {
+                ->within(new FormComponent(), function ($browser) {
                     $browser->type('@name', 'Adam Wathan')
                         ->type('@email', 'adam@laravel.com')
                         ->type('@password', 'secret')
@@ -37,12 +37,12 @@ class CreateTest extends DuskTestCase
                 ->assertQueryStringHas('viaResource', 'users')
                 ->assertQueryStringHas('viaResourceId', $user->id)
                 ->assertQueryStringHas('viaRelationship', 'profile')
-                ->within(new BreadcrumbComponent(), static function ($browser) use ($user) {
+                ->within(new BreadcrumbComponent(), function ($browser) use ($user) {
                     $browser->assertSeeLink('Users')
                         ->assertSeeLink('User Details: '.$user->name)
                         ->assertCurrentPageTitle('Create Profile');
                 })
-                ->within(new FormComponent(), static function ($browser) {
+                ->within(new FormComponent(), function ($browser) {
                     $browser->type('@github_url', 'https://github.com/adamwathan')
                         ->type('@twitter_url', 'https://twitter.com/adamwathan')
                         ->select('select[dusk="timezone"]', 'UTC')
@@ -89,7 +89,7 @@ class CreateTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Create('users'))
-                ->within(new FormComponent(), static function ($browser) {
+                ->within(new FormComponent(), function ($browser) {
                     $browser->type('@name', 'Adam Wathan')
                         ->type('@email', 'adam@laravel.com')
                         ->type('@password', 'secret');

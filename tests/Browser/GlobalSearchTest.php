@@ -17,17 +17,17 @@ class GlobalSearchTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Dashboard())
-                ->within('@global-search-component', static function ($browser) {
+                ->within('@global-search-component', function ($browser) {
                     $browser->type('@global-search', 'a')
-                        ->elsewhereWhenAvailable('@global-search-results', static function ($browser) {
+                        ->elsewhereWhenAvailable('@global-search-results', function ($browser) {
                             $browser->assertSee('BOOKS')->assertSee('USERS');
                         })
-                        ->elsewhere('', static function ($browser) {
+                        ->elsewhere('', function ($browser) {
                             $browser->assertMissing('@global-search-empty-results');
                         })
                         ->keys('@global-search', '{backspace}')
                         ->pause(1000)
-                        ->elsewhere('', static function ($browser) {
+                        ->elsewhere('', function ($browser) {
                             $browser->assertMissing('@global-search-results')
                                 ->assertMissing('@global-search-empty-results');
                         });
@@ -46,9 +46,9 @@ class GlobalSearchTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(1)
                 ->visit(new Dashboard())
-                ->within('@global-search-component', static function ($browser) use ($user) {
+                ->within('@global-search-component', function ($browser) use ($user) {
                     $browser->type('@global-search', $user->getKey())
-                        ->elsewhereWhenAvailable('@global-search-results', static function ($browser) {
+                        ->elsewhereWhenAvailable('@global-search-results', function ($browser) {
                             $browser->click('button[dusk="users 0"]');
                         });
                 })
@@ -66,9 +66,9 @@ class GlobalSearchTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Dashboard())
-                ->within('@global-search-component', static function ($browser) {
+                ->within('@global-search-component', function ($browser) {
                     $browser->type('@global-search', 'taylor')
-                        ->elsewhereWhenAvailable('@global-search-results', static function ($browser) {
+                        ->elsewhereWhenAvailable('@global-search-results', function ($browser) {
                             $key = OperatingSystem::onMac() ? WebDriverKeys::META : WebDriverKeys::CONTROL;
 
                             $browser->driver->getKeyboard()->pressKey($key);
@@ -81,9 +81,9 @@ class GlobalSearchTest extends DuskTestCase
 
             $this->assertCount($currentWindowHandles + 1, $browser->driver->getWindowHandles());
 
-            $browser->within('@global-search-component', static function ($browser) {
+            $browser->within('@global-search-component', function ($browser) {
                 $browser->click('@global-search')
-                        ->elsewhereWhenAvailable('@global-search-results', static function ($browser) {
+                        ->elsewhereWhenAvailable('@global-search-results', function ($browser) {
                             $browser->click('button[dusk="users 0"]');
                         });
             })

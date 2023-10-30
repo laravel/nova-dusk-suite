@@ -25,6 +25,7 @@ class ComponentOverrideTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Create('users'))
                 ->click('.custom-help-component')
+                ->waitForDialog()
                 ->assertDialogOpened('HelpText was overriden using component-override.js')
                 ->dismissDialog();
 

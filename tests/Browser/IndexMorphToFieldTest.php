@@ -21,7 +21,7 @@ class IndexMorphToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($comment) {
             $browser->loginAs(1)
                 ->visit(new Index('comments'))
-                ->within(new IndexComponent('comments'), static function ($browser) use ($comment) {
+                ->within(new IndexComponent('comments'), function ($browser) use ($comment) {
                     $browser->waitForTable()
                         ->clickLink('Post: '.$comment->commentable->title);
                 })
@@ -45,7 +45,7 @@ class IndexMorphToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($comment) {
             $browser->loginAs(1)
                 ->visit(new Index('comments'))
-                ->within(new IndexComponent('comments'), static function ($browser) use ($comment) {
+                ->within(new IndexComponent('comments'), function ($browser) use ($comment) {
                     $browser->waitForTable()
                         ->assertSee('Illuminate\Foundation\Auth\User: '.$comment->commentable->id);
                 });

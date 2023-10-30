@@ -19,7 +19,7 @@ class LensActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('users', 'passthrough-lens'))
-                ->within(new LensComponent('users', 'passthrough-lens'), static function ($browser) {
+                ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                     $browser->waitForTable()
                         ->clickCheckboxForId(3)
                         ->clickCheckboxForId(2)
@@ -47,19 +47,22 @@ class LensActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('users', 'passthrough-lens'))
-                ->within(new LensComponent('users', 'passthrough-lens'), static function ($browser) {
+                ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                     $browser->waitForTable()
                         ->openControlSelectorById(1)
-                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), static function ($browser) {
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
                             $browser->waitFor('@1-preview-button')
                                 ->assertMissing('@1-inline-actions');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(2)
-                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), static function ($browser) {
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
                             $browser->assertSee('Mark As Inactive');
                         })
+                        ->closeCurrentDropdown()
                         ->runInlineAction(2, 'mark-as-inactive');
-                })->waitForText('The action was executed successfully.');
+                })
+                ->waitForText('The action was executed successfully.');
 
             $this->assertEquals([
                 1 => false,
@@ -80,7 +83,7 @@ class LensActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('users', 'passthrough-lens'))
-                ->within(new LensComponent('users', 'passthrough-lens'), static function ($browser) {
+                ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                     $browser->waitForTable()
                         ->selectFilter('Select First', '2');
 

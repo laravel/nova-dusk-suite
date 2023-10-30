@@ -50,7 +50,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(2)
                 ->visit(new Create('posts'))
-                ->whenAvailable(new RelationSelectControlComponent('users'), static function ($browser) use ($user) {
+                ->whenAvailable(new RelationSelectControlComponent('users'), function ($browser) use ($user) {
                     $browser->assertSelectMissingOptions('', [$user->id, $user->name]);
                 });
 
@@ -111,7 +111,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
                 ->visit(new Create('comments'))
                 ->select('@commentable-type', 'posts')
                 ->pause(500)
-                ->whenAvailable(new RelationSelectControlComponent('commentable'), static function ($browser) use ($post) {
+                ->whenAvailable(new RelationSelectControlComponent('commentable'), function ($browser) use ($post) {
                     $browser->assertSelectMissingOptions('', [$post->id, $post->title]);
                 })
                 ->cancel();
@@ -147,7 +147,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Detail('posts', 1))
-                ->within(new IndexComponent('comments'), static function ($browser) {
+                ->within(new IndexComponent('comments'), function ($browser) {
                     $browser->assertMissing('@create-button');
                 });
 
@@ -164,7 +164,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::morphToMany('posts', 1, 'tags'))
-                ->whenAvailable(new RelationSelectControlComponent('attachable'), static function ($browser) use ($tag) {
+                ->whenAvailable(new RelationSelectControlComponent('attachable'), function ($browser) use ($tag) {
                     $browser->assertSelectMissingOption('', $tag->name);
                 });
 
@@ -180,7 +180,7 @@ class RelationshipAuthorizationTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Detail('posts', 1))
-                ->within(new IndexComponent('tags'), static function ($browser) {
+                ->within(new IndexComponent('tags'), function ($browser) {
                     $browser->assertMissing('@attach-button');
                 });
 
