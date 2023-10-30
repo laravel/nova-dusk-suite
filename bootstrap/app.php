@@ -41,6 +41,20 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+$app['config']->set([
+    'auth.guards.web-subscribers' => [
+        'driver' => 'session',
+        'provider' => 'subscribers',
+    ],
+    'auth.providers.subscribers' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Subscriber::class,
+    ],
+    'logging.channels.deprecations' => array_merge(
+        config('logging.channels.single'), ['path' => storage_path('logs/deprecations.log')],
+    ),
+]);
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application
