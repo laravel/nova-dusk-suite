@@ -64,10 +64,9 @@ class IndexActionTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new UserIndex)
+                ->visit(new UserIndex(['users_search' => 'Taylor']))
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
-                        ->searchFor('Taylor')
                         ->selectAllMatching()
                         ->runAction('mark-as-active');
                 })->waitForText('The action was executed successfully.');
