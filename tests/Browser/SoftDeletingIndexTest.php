@@ -66,9 +66,9 @@ class SoftDeletingIndexTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Index('docks'))
                 ->within(new IndexComponent('docks'), function ($browser) use ($dock, $dock1, $dock2) {
-                    $browser->withTrashed();
-
                     $browser->waitForTable()
+                        ->withTrashed()
+                        ->waitForTable()
                         ->clickCheckboxForId($dock2->id)
                         ->clickCheckboxForId($dock1->id)
                         ->restoreSelected()
@@ -90,10 +90,8 @@ class SoftDeletingIndexTest extends DuskTestCase
             [$dock, $dock1, $dock2] = DockFactory::new()->times(3)->create();
 
             $browser->loginAs(1)
-                ->visit(new Index('docks'))
+                ->visit(new Index('docks', ['docks_trashed' => 'with']))
                 ->within(new IndexComponent('docks'), function ($browser) use ($dock, $dock1, $dock2) {
-                    $browser->withTrashed();
-
                     $browser->waitForTable()
                         ->clickCheckboxForId($dock2->id)
                         ->clickCheckboxForId($dock1->id)
@@ -149,10 +147,8 @@ class SoftDeletingIndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new Detail('docks', 1))
+                ->visit(new Detail('docks', 1, ['ships_trashed' => 'with']))
                 ->within(new IndexComponent('ships'), function ($browser) {
-                    $browser->withTrashed();
-
                     $browser->waitForTable()
                         ->selectAllMatching()
                         ->restoreSelected()
@@ -180,10 +176,8 @@ class SoftDeletingIndexTest extends DuskTestCase
             $separateShip = ShipFactory::new()->create();
 
             $browser->loginAs(1)
-                ->visit(new Detail('docks', 1))
+                ->visit(new Detail('docks', 1, ['ships_trashed' => 'with']))
                 ->within(new IndexComponent('ships'), function ($browser) use ($ship, $ship1, $ship2) {
-                    $browser->withTrashed();
-
                     $browser->waitForTable()
                         ->selectAllMatching()
                         ->forceDeleteSelected()
@@ -207,10 +201,9 @@ class SoftDeletingIndexTest extends DuskTestCase
             $dock = DockFactory::new()->create();
 
             $browser->loginAs(1)
-                ->visit(new Index('docks'))
+                ->visit(new Index('docks', ['docks_trashed' => 'with']))
                 ->within(new IndexComponent('docks'), function ($browser) use ($dock) {
-                    $browser->withTrashed()
-                        ->waitForTable()
+                    $browser->waitForTable()
                         ->deleteResourceById($dock->id)
                         ->waitForTable()
                         ->assertSeeResource($dock->id);
@@ -251,10 +244,9 @@ class SoftDeletingIndexTest extends DuskTestCase
             $dock = DockFactory::new()->create();
 
             $browser->loginAs(1)
-                ->visit(new Index('docks'))
+                ->visit(new Index('docks', ['docks_trashed' => 'with']))
                 ->within(new IndexComponent('docks'), function ($browser) use ($dock) {
-                    $browser->withTrashed()
-                        ->waitForTable()
+                    $browser->waitForTable()
                         ->deleteResourceById($dock->id)
                         ->waitForTable()
                         ->restoreResourceById($dock->id)

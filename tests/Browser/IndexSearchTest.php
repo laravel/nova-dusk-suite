@@ -46,11 +46,9 @@ class IndexSearchTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             // Search For Single User By ID...
             $browser->loginAs(1)
-                ->visit(new UserIndex)
+                ->visit(new UserIndex(['users_search' => '3']))
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
-                        ->searchFor('3')
-                        ->waitForTable()
                         ->assertDontSeeResource(1)
                         ->assertDontSeeResource(2)
                         ->assertSeeResource(3)
