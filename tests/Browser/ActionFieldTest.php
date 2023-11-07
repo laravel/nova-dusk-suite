@@ -78,12 +78,14 @@ class ActionFieldTest extends DuskTestCase
 
     public function test_actions_can_be_validated()
     {
-        RoleFactory::new()->create()->users()->attach(1);
-
         $this->browse(function (Browser $browser) {
+            $role = RoleFactory::new()->create();
+
+            $role->users()->attach(1);
+
             $browser->loginAs(1)
-                ->visit(new Detail('users', 1))
-                ->within(new IndexComponent('roles'), function ($browser) {
+                ->visit(new Detail('roles', $role->id))
+                ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->clickCheckboxForId(1)
                         ->runAction('update-required-pivot-notes')
@@ -98,12 +100,14 @@ class ActionFieldTest extends DuskTestCase
 
     public function test_actions_can_be_toggle_between_similar_fields()
     {
-        RoleFactory::new()->create()->users()->attach(1);
-
         $this->browse(function (Browser $browser) {
+            $role = RoleFactory::new()->create();
+
+            $role->users()->attach(1);
+
             $browser->loginAs(1)
-                ->visit(new Detail('users', 1))
-                ->within(new IndexComponent('roles'), function ($browser) {
+                ->visit(new Detail('roles', $role->id))
+                ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->clickCheckboxForId(1)
                         ->selectAction('update-pivot-notes', function ($browser) {
