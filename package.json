@@ -16,7 +16,7 @@
         "@vue/compiler-sfc": "^3.2.37",
         "alpinejs": "^2.7.3",
         "autoprefixer": "^10.1.0",
-        "axios": "^0.21",
+        "axios": "^1.6",
         "cross-env": "^7.0",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
