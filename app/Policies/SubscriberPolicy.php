@@ -6,7 +6,7 @@ use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class SubsciberPolicy
+class SubscriberPolicy
 {
     use HandlesAuthorization;
 
