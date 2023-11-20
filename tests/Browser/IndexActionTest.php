@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\Post;
 use App\Models\User;
 use Database\Factories\PostFactory;
+use Database\Factories\SubscriberFactory;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\ActionDropdownComponent;
@@ -171,6 +172,29 @@ class IndexActionTest extends DuskTestCase
                 3 => true,
                 4 => true,
             ], User::findMany([1, 2, 3, 4])->pluck('active', 'id')->all());
+
+            $browser->blank();
+        });
+    }
+
+    public function test_actions_that_cannot_be_ran_are_disabled()
+    {
+        $this->browse(function (Browser $browser) {
+            $subscribers = SubscriberFactory::new()->times(5)->create();
+
+            $browser->loginAs(1)
+                ->visit(new Index('subscribers'))
+                ->within(new IndexComponent('subscribers'), function ($browser) use ($subscribers) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId($subscribers[0]->id)
+                        ->whenAvailable('@action-select', function ($browser) {
+                            $browser->assertSelectHasOption('', 'sleep')
+                                ->select('', 'sleep')
+                                ->assertSelected('', '');
+                        })
+                        ->pause(1500)
+                        ->assertMissing('.modal[data-modal-open=true]');
+                });
 
             $browser->blank();
         });

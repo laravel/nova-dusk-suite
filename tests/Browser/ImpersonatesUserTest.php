@@ -170,7 +170,7 @@ class ImpersonatesUserTest extends DuskTestCase
                 ->within(new IndexComponent('subscribers'), function ($browser) use ($user, $subscriber) {
                     $browser->openControlSelectorById($subscriber->id)
                         ->elsewhere('', function ($browser) use ($user, $subscriber) {
-                            $browser->assertVisible("@{$subscriber->id}-replicate-button")
+                            $browser->assertMissing("@{$subscriber->id}-replicate-button")
                                 ->assertVisible("@{$subscriber->id}-impersonate-button")
                                 ->clickAndWaitForReload("@{$subscriber->id}-impersonate-button")
                                 ->assertPathIs('/')
@@ -215,7 +215,7 @@ class ImpersonatesUserTest extends DuskTestCase
                 ->within(new IndexComponent('subscribers'), function ($browser) use ($user, $subscriber) {
                     $browser->openControlSelectorById($subscriber->id)
                         ->elsewhere('', function ($browser) use ($user, $subscriber) {
-                            $browser->assertVisible("@{$subscriber->id}-replicate-button")
+                            $browser->assertMissing("@{$subscriber->id}-replicate-button")
                                 ->assertVisible("@{$subscriber->id}-impersonate-button")
                                 ->clickAndWaitForReload("@{$subscriber->id}-impersonate-button")
                                 ->assertPathIs('/')

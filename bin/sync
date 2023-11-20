@@ -77,6 +77,10 @@ transform([
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/auth.php"));
 
 transform([
+    "env('BCRYPT_ROUNDS', 12)," => "env('BCRYPT_ROUNDS', 10),",
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/hashing.php"));
+
+transform([
     "        'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),

@@ -5,7 +5,9 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Database\Factories\RoleFactory;
+use Database\Factories\SubscriberFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\ActionDropdownComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -123,6 +125,22 @@ class DetailActionTest extends DuskTestCase
 
             $this->assertEquals(1, $post->fresh()->active);
             $this->assertEquals(0, $post2->fresh()->active);
+
+            $browser->blank();
+        });
+    }
+
+    public function test_actions_that_cannot_be_ran_are_disabled()
+    {
+        $this->browse(function (Browser $browser) {
+            $subscribers = SubscriberFactory::new()->times(5)->create();
+
+            $browser->loginAs(1)
+                ->visit(new Detail('subscribers', $subscribers[0]->id))
+                ->openControlSelector()
+                ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
+                    $browser->assertDisabled('button[data-action-id="sleep"]');
+                });
 
             $browser->blank();
         });
