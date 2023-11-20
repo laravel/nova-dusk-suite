@@ -2,10 +2,12 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
+use Database\Factories\SubscriberFactory;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Components\SelectAllDropdownComponent;
+use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -121,6 +123,25 @@ class ResourceTableSelectionTest extends DuskTestCase
                 });
 
             $browser->blank();
+        });
+    }
+
+    public function test_select_all_dropdown_and_checkboxes_are_missing_when_not_authorized_to_delete_a_resource()
+    {
+        SubscriberFactory::new()->times(5)->create();
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(4)
+                ->visit(new Index('subscribers'))
+                ->within(new IndexComponent('subscribers'), function ($browser) {
+                    $browser->waitForTable()
+                        ->assertMissing('@select-all-dropdown')
+                        ->assertMissing('[dusk="1-row"] [role="checkbox"]')
+                        ->assertMissing('[dusk="2-row"] [role="checkbox"]')
+                        ->assertMissing('[dusk="3-row"] [role="checkbox"]')
+                        ->assertMissing('[dusk="4-row"] [role="checkbox"]')
+                        ->assertMissing('[dusk="5-row"] [role="checkbox"]');
+                });
         });
     }
 }
