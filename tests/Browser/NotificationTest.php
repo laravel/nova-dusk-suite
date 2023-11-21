@@ -49,11 +49,9 @@ class NotificationTest extends DuskTestCase
 
             $browser->loginAs($user)
                 ->visit(new Dashboard())
-                ->within(new HeaderComponent(), function ($browser) use ($notification) {
-                    $browser->showNotificationPanel(function ($browser) use ($notification) {
-                        $browser->within("@notification-{$notification->id}", function ($browser) {
-                            $browser->click('@mark-as-read-button');
-                        });
+                ->within(new HeaderComponent(), function ($browser) {
+                    $browser->showNotificationPanel(function ($browser) {
+                        $browser->click('@mark-as-read-button');
                     });
                 })->pause(2000);
 
