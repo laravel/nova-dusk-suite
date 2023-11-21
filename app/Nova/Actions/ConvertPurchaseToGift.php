@@ -22,8 +22,9 @@ class ConvertPurchaseToGift extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         $models->each(function ($model) {
-            $model->type = 'purchase';
-            $model->save();
+            ray($model);
+            // $model->pivot->type = 'purchase';
+            // $model->pivot->save();
         });
     }
 
