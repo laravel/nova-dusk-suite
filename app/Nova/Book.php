@@ -84,7 +84,12 @@ class Book extends Resource
                 ->fields(new Fields\BookPurchase(null, true)),
 
             BelongsToMany::make('Personal Purchasers', 'personalPurchasers', User::class)
-                ->fields(new Fields\BookPurchase('personal')),
+                ->fields(new Fields\BookPurchase('personal'))
+                ->actions(function () {
+                    return [
+                        new Actions\ConvertPurchaseToGift(),
+                    ];
+                }),
 
             BelongsToMany::make('Gift Purchasers', 'giftPurchasers', User::class)
                 ->fields(new Fields\BookPurchase('gift'))

@@ -223,6 +223,7 @@ class User extends Resource
                 ->actions(function ($request) {
                     return [
                         new Actions\PivotTouch(),
+                        new Actions\ConvertPurchaseToGift(),
                     ];
                 }),
 
