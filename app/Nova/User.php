@@ -226,6 +226,12 @@ class User extends Resource
                 ->actions(function ($request) {
                     return [
                         new Actions\PivotTouch(),
+                        Actions\ConvertPurchaseToGift::make()
+                            ->canSee(function () {
+                                return true;
+                            })->canRun(function () {
+                                return true;
+                            }),
                     ];
                 }),
 
