@@ -81,7 +81,12 @@ class Book extends Resource
                 ->showOnPreview(),
 
             BelongsToMany::make('Purchasers', 'purchasers', User::class)
-                ->fields(new Fields\BookPurchase(null, true)),
+                ->fields(new Fields\BookPurchase(null, true))
+                ->actions(function () {
+                    return [
+                        new Actions\PivotTouch(),
+                    ];
+                }),
 
             BelongsToMany::make('Personal Purchasers', 'personalPurchasers', User::class)
                 ->fields(new Fields\BookPurchase('personal'))
