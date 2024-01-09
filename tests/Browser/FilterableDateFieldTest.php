@@ -81,10 +81,12 @@ class FilterableDateFieldTest extends DuskTestCase
                 ->within(new IndexComponent('people'), function (Browser $browser) use ($date, $people, $people1) {
                     $browser->waitForTable()
                         ->runFilter(function ($browser) use ($date) {
-                            $browser->typeOnDate('@created_at-default-date-time-field-range-start', $date)
-                                ->typeOnDate('@created_at-default-date-time-field-range-end', $date->addDay(1));
-                        })
-                        ->waitForTable();
+                            $browser->typeInDateTimeField('@created_at-default-date-time-field-range-start', $date)
+                                ->typeInDateTimeField('@created_at-default-date-time-field-range-end', $date->addDay());
+                        }, function ($browser) {
+                            $browser->waitForTable();
+                            $browser->closeCurrentDropdown();
+                        });
 
                     $people->each(function ($person) use ($browser) {
                         $browser->assertSeeResource($person->getKey());
@@ -97,10 +99,12 @@ class FilterableDateFieldTest extends DuskTestCase
                 ->within(new IndexComponent('people'), function (Browser $browser) use ($date1, $people, $people1) {
                     $browser->waitForTable()
                         ->runFilter(function ($browser) use ($date1) {
-                            $browser->typeOnDate('@created_at-default-date-time-field-range-start', $date1)
-                                ->typeOnDate('@created_at-default-date-time-field-range-end', $date1->addDay(1));
-                        })
-                        ->waitForTable();
+                            $browser->typeInDateTimeField('@created_at-default-date-time-field-range-start', $date1)
+                                ->typeInDateTimeField('@created_at-default-date-time-field-range-end',
+                                    $date1->addDay(1));
+                        }, function ($browser) {
+                            $browser->waitForTable();
+                        });
 
                     $people->each(function ($person) use ($browser) {
                         $browser->assertDontSeeResource($person->getKey());
