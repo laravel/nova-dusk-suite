@@ -8,7 +8,8 @@ require __DIR__.'/../vendor/autoload.php';
 $input = new Symfony\Component\Console\Input\ArgvInput();
 $files = new Illuminate\Filesystem\Filesystem();
 
-$version = ($input->hasParameterOption('--dev') && $input->hasParameterOption('--stable') === false) ? '10.x-dev' : '^10.0';
+// $version = ($input->hasParameterOption('--dev') && $input->hasParameterOption('--stable') === false) ? 'dev-master' : '^11.0';
+$version = 'dev-master';
 
 $files->deleteDirectory("{$workingPath}/skeleton");
 
@@ -22,6 +23,7 @@ Illuminate\Support\Collection::make([
     'app/Http/Kernel.php',
     'app/Http/Controllers/*.php',
     'app/Http/Middleware/*.php',
+    'bootstrap/app.php',
     'config/*.php',
     'lang/en/*.php',
 ])->transform(fn ($file) => "{$workingPath}/skeleton/{$file}")

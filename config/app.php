@@ -61,6 +61,8 @@ return [
 
     'mix_url' => env('MIX_ASSET_URL'),
 
+    'mix_url' => env('MIX_ASSET_URL'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -167,6 +169,12 @@ return [
         Otwell\RememberTokenCopier\AssetServiceProvider::class,
         Otwell\ResourceTool\ToolServiceProvider::class,
         Otwell\SidebarTool\ToolServiceProvider::class,
+        Laravel\Dusk\DuskServiceProvider::class,
+        Otwell\CustomField\FieldServiceProvider::class,
+        Otwell\IconsViewer\ToolServiceProvider::class,
+        Otwell\RememberTokenCopier\AssetServiceProvider::class,
+        Otwell\ResourceTool\ToolServiceProvider::class,
+        Otwell\SidebarTool\ToolServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -175,6 +183,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\NovaServiceProvider::class,
         App\Providers\NovaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
     ])->toArray(),
