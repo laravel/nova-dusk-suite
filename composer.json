@@ -15,20 +15,21 @@
         "laravel/dusk": "dev-develop",
         "laravel/framework": "^11.0",
         "laravel/scout": "dev-develop",
-        "laravel/tinker": "dev-develop",
+        "laravel/tinker": "^2.9",
         "laravel/vapor-core": "dev-develop",
         "league/flysystem-aws-s3-v3": "^3.0",
         "meilisearch/meilisearch-php": "^1.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
-        "laravel/breeze": "dev-develop",
+        "larastan/larastan": "^2.5.1",
+        "laravel/breeze": "^2.0",
         "laravel/nova": "@dev",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^7.5",
-        "nunomaduro/larastan": "^2.5.1",
+        "nunomaduro/collision": "^8.0",
+        "orchestra/testbench": "^9.0",
         "orchestra/testbench-dusk": "^9.0",
-        "phpunit/phpunit": "^10.1"
+        "phpunit/phpunit": "^10.5"
     },
     "autoload": {
         "psr-4": {
