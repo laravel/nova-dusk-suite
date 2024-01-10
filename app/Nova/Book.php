@@ -143,6 +143,7 @@ class Book extends Resource
     {
         return [
             new Lenses\BookPurchases,
+            new Lenses\BookCatalogues,
         ];
     }
 
