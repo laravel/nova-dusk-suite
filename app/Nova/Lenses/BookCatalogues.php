@@ -6,7 +6,6 @@ use Brick\Money\Money;
 use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Currency;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\LensRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
