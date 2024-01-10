@@ -2,6 +2,7 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
+use App\Models\Book;
 use App\Models\User;
 use Database\Factories\PostFactory;
 use Illuminate\Support\Carbon;
@@ -163,6 +164,40 @@ class IndexRelationTest extends DuskTestCase
                 'price' => 3900,
             ]);
         });
+    }
+
+    public function test_can_run_related_resources_action_using_resource_ids()
+    {
+        $now = Carbon::now();
+
+        DB::table('book_purchases')->insert([
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3400, 'purchased_at' => $now->toDatetimeString()],
+            ['user_id' => 1, 'book_id' => 4, 'type' => 'gift', 'price' => 3900, 'purchased_at' => $now->toDatetimeString()],
+        ]);
+
+        $book = Book::find(4);
+
+        $this->assertNotNull($book->updated_at);
+        $this->assertTrue($now->greaterThan($book->updated_at));
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new Detail('users', 1))
+                ->waitForTextIn('h1', 'User Details: Taylor Otwell')
+                ->within(new IndexComponent('books', 'giftBooks'), function ($browser) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId(4, 2)
+                        ->runAction('touch')
+                        ->pause(500);
+                })->waitForText('The action was executed successfully.');
+
+            $browser->blank();
+        });
+
+        $updatedBook = Book::find(4);
+
+        $this->assertTrue($now->lessThan($updatedBook->updated_at));
+        $this->assertFalse($book->updated_at->equalTo($updatedBook->updated_at));
     }
 
     public function test_relations_filter_should_not_change_query_string_when_filter_has_not_been_applied()

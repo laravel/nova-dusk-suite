@@ -32,7 +32,6 @@ class BookPurchases extends Lens
     {
         return $request->withOrdering($request->withFilters(
             $query->addSelect([
-                'id',
                 'sku',
                 'title',
                 'total' => DB::table('book_purchases')->selectRaw('sum(price) as total')->whereColumn('book_id', 'books.id'),
@@ -53,7 +52,6 @@ class BookPurchases extends Lens
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
             Text::make(__('SKU'), 'sku')->sortable(),
             Text::make('Title'),
             Currency::make('total')->asMinorUnits(),

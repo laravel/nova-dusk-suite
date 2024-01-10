@@ -177,4 +177,55 @@ class ActionFieldTest extends DuskTestCase
             $browser->blank();
         });
     }
+
+    public function test_action_modal_focuses_the_first_input()
+    {
+        $this->markTestSkipped('Modal no longer focused on the first input');
+
+        RoleFactory::new()->create()->users()->attach(1);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('roles'), function ($browser) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId(1)
+                        ->runAction('update-pivot-notes', function ($browser) {
+                            $browser->assertSee('Provide a description for notes.')
+                                ->assertFocused('@notes');
+                        });
+                });
+
+            $browser->blank();
+        });
+    }
+
+    public function test_action_modal_focus_is_trapped_to_just_the_modal()
+    {
+        $this->markTestSkipped('Modal no longer focused on the first input');
+
+        RoleFactory::new()->create()->users()->attach(1);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('roles'), function ($browser) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId(1)
+                        ->runAction('update-pivot-notes', function ($browser) {
+                            $browser->assertSee('Provide a description for notes.')
+                                ->assertFocused('@notes')
+                                ->pause(500)
+                                ->keys('@notes', '{tab}')
+                                ->keys('@cancel-action-button', '{tab}')
+                                ->pause(500)
+                                ->keys('@confirm-action-button', '{tab}')
+                                ->pause(500)
+                                ->assertFocused('@notes');
+                        });
+                });
+
+            $browser->blank();
+        });
+    }
 }
