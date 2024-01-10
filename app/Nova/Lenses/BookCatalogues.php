@@ -6,13 +6,12 @@ use Brick\Money\Money;
 use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Currency;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\LensRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Lenses\Lens;
 
-class BookPurchases extends Lens
+class BookCatalogues extends Lens
 {
     /**
      * The columns that should be searched.
@@ -32,7 +31,6 @@ class BookPurchases extends Lens
     {
         return $request->withOrdering($request->withFilters(
             $query->addSelect([
-                'id',
                 'sku',
                 'title',
                 'total' => DB::table('book_purchases')->selectRaw('sum(price) as total')->whereColumn('book_id', 'books.id'),
@@ -53,7 +51,6 @@ class BookPurchases extends Lens
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
             Text::make(__('SKU'), 'sku')->sortable(),
             Text::make('Title'),
             Currency::make('total')->asMinorUnits(),
@@ -102,7 +99,6 @@ class BookPurchases extends Lens
                 $total = $model->total ?? 0;
 
                 return [
-                    'ID' => $model->getKey(),
                     'SKU' => $model->sku,
                     'Title' => $model->title,
                     'Total' => Money::ofMinor($total, config('nova.currency', 'USD'))->getAmount()->toFloat(),
@@ -118,6 +114,6 @@ class BookPurchases extends Lens
      */
     public function uriKey()
     {
-        return 'book-purchases';
+        return 'book-catalogues';
     }
 }
