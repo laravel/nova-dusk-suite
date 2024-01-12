@@ -18,14 +18,13 @@ Symfony\Component\Process\Process::fromShellCommandline(
 )->mustRun();
 
 Illuminate\Support\Collection::make([
-    'app/Console/Kernel.php',
-    'app/Exceptions/Handler.php',
-    'app/Http/Kernel.php',
     'app/Http/Controllers/*.php',
     'app/Http/Middleware/*.php',
     'bootstrap/app.php',
-    'config/*.php',
+    'bootstrap/providers.php',
     'lang/en/*.php',
+    'public/index.php',
+    'artisan',
 ])->transform(fn ($file) => "{$workingPath}/skeleton/{$file}")
 ->map(fn ($file) => str_contains($file, '*') ? [...$files->glob($file)] : $file)
 ->flatten()
@@ -33,23 +32,20 @@ Illuminate\Support\Collection::make([
     $files->copy($file, "{$workingPath}".Illuminate\Support\Str::after($file, "{$workingPath}/skeleton"));
 });
 
+Illuminate\Support\Collection::make([
+    'vendor/laravel/framework/config/*.php',
+])->transform(fn ($file) => "{$workingPath}/{$file}")
+->map(fn ($file) => str_contains($file, '*') ? [...$files->glob($file)] : $file)
+->flatten()
+->each(function ($file) use ($files, $workingPath) {
+    $files->copy($file, "{$workingPath}".Illuminate\Support\Str::after($file, "{$workingPath}/vendor/laravel/framework"));
+});
+
 $files->delete("{$workingPath}/config/sanctum.php");
 
 transform([
     "env('APP_ENV', 'production')" => "env('APP_ENV', 'testing')",
     "    'asset_url' => env('ASSET_URL')," => "    'asset_url' => env('ASSET_URL'),".PHP_EOL.PHP_EOL."    'mix_url' => env('MIX_ASSET_URL'),",
-    "        /*
-         * Package Service Providers...
-         */" => "        /*
-         * Package Service Providers...
-         */
-        Laravel\Dusk\DuskServiceProvider::class,
-        Otwell\CustomField\FieldServiceProvider::class,
-        Otwell\IconsViewer\ToolServiceProvider::class,
-        Otwell\RememberTokenCopier\AssetServiceProvider::class,
-        Otwell\ResourceTool\ToolServiceProvider::class,
-        Otwell\SidebarTool\ToolServiceProvider::class,",
-    "        App\Providers\EventServiceProvider::class," => "        App\Providers\EventServiceProvider::class,".PHP_EOL."        App\Providers\NovaServiceProvider::class,"
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/app.php"));
 
 transform([
@@ -102,6 +98,20 @@ transform([
             'replace_placeholders' => true,
         ],"
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/logging.php"));
+
+transform([
+    "    App\Providers\AppServiceProvider::class,
+" => "    App\Providers\AppServiceProvider::class,
+
+    Laravel\Nova\NovaServiceProvider::class,
+    Laravel\Dusk\DuskServiceProvider::class,
+    Otwell\CustomField\FieldServiceProvider::class,
+    Otwell\IconsViewer\ToolServiceProvider::class,
+    Otwell\RememberTokenCopier\AssetServiceProvider::class,
+    Otwell\ResourceTool\ToolServiceProvider::class,
+    Otwell\SidebarTool\ToolServiceProvider::class,
+",
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/bootstrap/providers.php"));
 
 $files->deleteDirectory("{$workingPath}/skeleton");
 
