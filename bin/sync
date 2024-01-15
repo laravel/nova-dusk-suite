@@ -49,6 +49,10 @@ transform([
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/app.php"));
 
 transform([
+
+    "'collation' => 'utf8mb4_0900_ai_ci'," => "'collation' => 'utf8mb4_unicode_ci',"
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/database.php"));
+transform([
     "    'guards' => [
         'web' => [
             'driver' => 'session',
