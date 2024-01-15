@@ -119,6 +119,11 @@ transform([
 ",
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/bootstrap/providers.php"));
 
+
+transform([
+    'Application::configure()' => 'Application::configure(dirname(__DIR__))',
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/bootstrap/app.php"));
+
 $files->deleteDirectory("{$workingPath}/skeleton");
 
 $files->deleteDirectory("{$workingPath}/lang/vendor/nova");
