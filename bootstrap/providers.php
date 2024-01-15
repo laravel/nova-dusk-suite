@@ -2,8 +2,10 @@
 
 return [
     App\Providers\AppServiceProvider::class,
+    App\Providers\AuthServiceProvider::class,
+    App\Providers\EventServiceProvider::class,
+    App\Nova\NovaServiceProvider::class,
 
-    Laravel\Nova\NovaServiceProvider::class,
     Laravel\Dusk\DuskServiceProvider::class,
     Otwell\CustomField\FieldServiceProvider::class,
     Otwell\IconsViewer\ToolServiceProvider::class,
