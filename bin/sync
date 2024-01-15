@@ -79,6 +79,10 @@ transform([
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/auth.php"));
 
 transform([
+    "env('CACHE_STORE', 'database')," => "env('CACHE_STORE', 'file'),",
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/cache.php"));
+
+transform([
     "env('BCRYPT_ROUNDS', 12)," => "env('BCRYPT_ROUNDS', 10),",
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/hashing.php"));
 
@@ -104,6 +108,17 @@ transform([
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/logging.php"));
 
 transform([
+    "env('QUEUE_CONNECTION', 'database')," => "env('QUEUE_CONNECTION', 'sync'),",
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/queue.php"));
+transform([
+    "env('SESSION_DRIVER', 'cookie')," => "env('SESSION_DRIVER', 'file'),",
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/session.php"));
+
+transform([
+    'Application::configure()' => 'Application::configure(dirname(__DIR__))',
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/bootstrap/app.php"));
+
+transform([
     "    App\Providers\AppServiceProvider::class,
 " => "    App\Providers\AppServiceProvider::class,
     App\Providers\AuthServiceProvider::class,
@@ -118,11 +133,6 @@ transform([
     Otwell\SidebarTool\ToolServiceProvider::class,
 ",
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/bootstrap/providers.php"));
-
-
-transform([
-    'Application::configure()' => 'Application::configure(dirname(__DIR__))',
-], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/bootstrap/app.php"));
 
 $files->deleteDirectory("{$workingPath}/skeleton");
 
