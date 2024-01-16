@@ -4,7 +4,6 @@ namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
 use Database\Factories\PostFactory;
-use Illuminate\Foundation\Testing\RefreshDatabaseState;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Nova;
