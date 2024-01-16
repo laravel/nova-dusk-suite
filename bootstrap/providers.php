@@ -5,6 +5,7 @@ return [
     App\Providers\AuthServiceProvider::class,
     App\Providers\EventServiceProvider::class,
     App\Providers\NovaServiceProvider::class,
+    App\Providers\RouteServiceProvider::class,
 
     Laravel\Dusk\DuskServiceProvider::class,
     Otwell\CustomField\FieldServiceProvider::class,

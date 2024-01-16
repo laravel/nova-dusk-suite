@@ -116,12 +116,17 @@ transform([
 
 transform([
     'Application::configure()' => 'Application::configure(dirname(__DIR__))',
-    '    ->withMiddleware(function (Middleware $middleware) {
-        //
-    })' => "    ->withMiddleware(function (Middleware \$middleware) {
-        \$middleware->auth(fn () => '/login')
-            ->guest(fn () => '/nova');
-    })",
+    "    ->withRouting(
+        web: __DIR__.'/../routes/web.php',
+        // api: __DIR__.'/../routes/api.php',
+        commands: __DIR__.'/../routes/console.php',
+        // channels: __DIR__.'/../routes/channels.php',
+    )" => "    // ->withRouting(
+        // web: __DIR__.'/../routes/web.php',
+        // api: __DIR__.'/../routes/api.php',
+        // commands: __DIR__.'/../routes/console.php',
+        // channels: __DIR__.'/../routes/channels.php',
+    // )",
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/bootstrap/app.php"));
 
 transform([
@@ -130,6 +135,7 @@ transform([
     App\Providers\AuthServiceProvider::class,
     App\Providers\EventServiceProvider::class,
     App\Providers\NovaServiceProvider::class,
+    App\Providers\RouteServiceProvider::class,
 
     Laravel\Dusk\DuskServiceProvider::class,
     Otwell\CustomField\FieldServiceProvider::class,
