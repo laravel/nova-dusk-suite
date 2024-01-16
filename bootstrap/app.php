@@ -19,7 +19,8 @@ return Application::configure(dirname(__DIR__))
         // channels: __DIR__.'/../routes/channels.php',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->guest(fn () => '/nova');
+        $middleware->auth(fn () => '/login')
+            ->guest(fn () => '/nova');
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

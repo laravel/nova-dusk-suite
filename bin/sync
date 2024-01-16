@@ -119,7 +119,8 @@ transform([
     '    ->withMiddleware(function (Middleware $middleware) {
         //
     })' => "    ->withMiddleware(function (Middleware \$middleware) {
-        \$middleware->guest(fn () => '/nova');
+        \$middleware->auth(fn () => '/login')
+            ->guest(fn () => '/nova');
     })",
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/bootstrap/app.php"));
 
