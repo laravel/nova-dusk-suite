@@ -14,7 +14,9 @@ use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Page;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
+use Orchestra\Testbench\Attributes\ResetRefreshDatabaseState;
 
+#[ResetRefreshDatabaseState]
 class UpdateTest extends DuskTestCase
 {
     public function test_cant_view_update_page_if_not_authorized_to_update()
@@ -88,8 +90,6 @@ class UpdateTest extends DuskTestCase
 
         $this->assertEquals('Taylor Otwell Updated', $user->name);
         $this->assertTrue(Hash::check('secret', $user->password));
-
-        RefreshDatabaseState::$migrated = false;
     }
 
     public function test_resource_can_be_updated_and_user_can_continue_editing()
@@ -114,8 +114,6 @@ class UpdateTest extends DuskTestCase
 
         $this->assertEquals('Taylor Otwell Updated', $user->name);
         $this->assertTrue(Hash::check('secret', $user->password));
-
-        RefreshDatabaseState::$migrated = false;
     }
 
     public function test_resource_can_be_updated_using_enter_key_and_redirected_to_detail_page()
@@ -139,8 +137,6 @@ class UpdateTest extends DuskTestCase
 
         $this->assertEquals('Taylor Otwell Updated', $user->name);
         $this->assertTrue(Hash::check('secret', $user->password));
-
-        RefreshDatabaseState::$migrated = false;
     }
 
     public function test_user_isnt_logged_out_when_updating_their_own_resource()
@@ -171,7 +167,5 @@ class UpdateTest extends DuskTestCase
 
         $this->assertEquals('Taylor Otwell Updated', $user->name);
         $this->assertTrue(Hash::check('secret', $user->password));
-
-        RefreshDatabaseState::$migrated = false;
     }
 }

@@ -116,6 +116,11 @@ transform([
 
 transform([
     'Application::configure()' => 'Application::configure(dirname(__DIR__))',
+    '    ->withMiddleware(function (Middleware $middleware) {
+        //
+    })' => "    ->withMiddleware(function (Middleware \$middleware) {
+        \$middleware->guest(fn () => '/nova');
+    })",
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/bootstrap/app.php"));
 
 transform([
