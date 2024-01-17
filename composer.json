@@ -14,7 +14,7 @@
         "http-interop/http-factory-guzzle": "^1.2",
         "laravel/dusk": "dev-develop",
         "laravel/framework": "^11.0",
-        "laravel/scout": "dev-develop",
+        "laravel/scout": "^10.8",
         "laravel/tinker": "^2.9",
         "laravel/vapor-core": "dev-develop",
         "league/flysystem-aws-s3-v3": "^3.0",
