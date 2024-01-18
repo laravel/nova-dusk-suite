@@ -121,12 +121,12 @@ transform([
         // api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
         // channels: __DIR__.'/../routes/channels.php',
-    )" => "    // ->withRouting(
-        // web: __DIR__.'/../routes/web.php',
-        // api: __DIR__.'/../routes/api.php',
-        // commands: __DIR__.'/../routes/console.php',
+    )" => "    ->withRouting(
+        web: __DIR__.'/../routes/web.php',
+        api: __DIR__.'/../routes/api.php',
+        commands: __DIR__.'/../routes/console.php',
         // channels: __DIR__.'/../routes/channels.php',
-    // )",
+    )",
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/bootstrap/app.php"));
 
 transform([
@@ -135,7 +135,7 @@ transform([
     App\Providers\AuthServiceProvider::class,
     App\Providers\EventServiceProvider::class,
     App\Providers\NovaServiceProvider::class,
-    App\Providers\RouteServiceProvider::class,
+    // App\Providers\RouteServiceProvider::class,
 
     Laravel\Dusk\DuskServiceProvider::class,
     Otwell\CustomField\FieldServiceProvider::class,

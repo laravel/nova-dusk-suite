@@ -16,7 +16,7 @@
         "laravel/framework": "^11.0",
         "laravel/scout": "^10.8",
         "laravel/tinker": "^2.9",
-        "laravel/vapor-core": "dev-develop",
+        "laravel/vapor-core": "^2.36",
         "league/flysystem-aws-s3-v3": "^3.0",
         "meilisearch/meilisearch-php": "^1.1",
         "nova-kit/nova-on-vapor": "dev-develop",
