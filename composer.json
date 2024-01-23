@@ -12,7 +12,7 @@
         "algolia/algoliasearch-client-php": "^3.3",
         "guzzlehttp/guzzle": "^7.8",
         "http-interop/http-factory-guzzle": "^1.2",
-        "laravel/dusk": "dev-develop",
+        "laravel/dusk": "^8.0",
         "laravel/framework": "^11.0",
         "laravel/scout": "^10.8",
         "laravel/tinker": "^2.9",
