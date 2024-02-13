@@ -8,7 +8,7 @@ require __DIR__.'/../vendor/autoload.php';
 $input = new Symfony\Component\Console\Input\ArgvInput();
 $files = new Illuminate\Filesystem\Filesystem();
 
-$version = ($input->hasParameterOption('--dev') && $input->hasParameterOption('--stable') === false) ? '9.x-dev' : '^9.0';
+$version = ($input->hasParameterOption('--dev') && $input->hasParameterOption('--stable') === false) ? '10.x-dev' : '^10.0';
 
 $files->deleteDirectory("{$workingPath}/skeleton");
 
@@ -32,11 +32,6 @@ Illuminate\Support\Collection::make([
 });
 
 $files->delete("{$workingPath}/config/sanctum.php");
-
-transform([
-    "            \Illuminate\Session\Middleware\StartSession::class," => "            \Illuminate\Session\Middleware\StartSession::class,".PHP_EOL
-    ."            \Illuminate\Session\Middleware\AuthenticateSession::class,",
-], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/app/Http/Kernel.php"));
 
 transform([
     "env('APP_ENV', 'production')" => "env('APP_ENV', 'testing')",
@@ -82,20 +77,27 @@ transform([
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/auth.php"));
 
 transform([
+    "env('BCRYPT_ROUNDS', 12)," => "env('BCRYPT_ROUNDS', 10),",
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/hashing.php"));
+
+transform([
     "        'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
+            'replace_placeholders' => true,
         ]," => "        'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
+            'replace_placeholders' => true,
         ],
 
         'deprecations' => [
             'driver' => 'single',
             'path' => storage_path('logs/deprecations.log'),
             'level' => env('LOG_LEVEL', 'debug'),
+            'replace_placeholders' => true,
         ],"
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/logging.php"));
 
