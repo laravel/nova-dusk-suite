@@ -77,8 +77,6 @@ class DateFieldTest extends DuskTestCase
 
             $browser->blank();
         });
-
-        static::reloadServing();
     }
 
     /**
@@ -115,8 +113,6 @@ class DateFieldTest extends DuskTestCase
 
             $browser->blank();
         });
-
-        static::reloadServing();
     }
 
     public function test_it_can_clear_the_date_field_value()

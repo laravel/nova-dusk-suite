@@ -3,6 +3,7 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use Laravel\Dusk\Browser;
+use Laravel\Dusk\Keyboard;
 use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
 use Laravel\Nova\Testing\Browser\Pages\Dashboard;
 use Laravel\Nova\Testing\Browser\Pages\Page;
@@ -39,10 +40,14 @@ class DashboardTest extends DuskTestCase
 
     public function test_it_can_focus_global_search_using_shortcut()
     {
+        $this->requiresKeyboardSupport();
+
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Dashboard())
-                ->keys('', ['/'])
+                ->withKeyboard(function (Keyboard $keyboard) {
+                    $keyboard->type(['/']);
+                })
                 ->assertFocused('@global-search');
 
             $browser->blank();
