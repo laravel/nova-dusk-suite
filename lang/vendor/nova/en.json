@@ -454,7 +454,11 @@
   "To": "To",
   "There are no fields to display.": "There are no fields to display.",
   "Notifications": "Notifications",
-  "Mark all as Read": "Mark all as Read",
+  "Mark all as Read": "Mark all as read",
+  "Delete all notifications": "Delete all notifications",
+  "Are you sure you want to delete all the notifications?" : "Are you sure you want to delete all the notifications?",
+  "Mark Read": "Mark Read",
+  "Mark Unread": "Mark Unread",
   "Copy to clipboard": "Copy to clipboard",
   "Are you sure you want to delete this notification?": "Are you sure you want to delete this notification?",
   "The image could not be loaded": "The image could not be loaded",
@@ -466,5 +470,6 @@
   "Uploading files... (:current/:total)": "Uploading files... (:current/:total)",
   "Remove": "Remove",
   "Uploading": "Uploading",
-  "The image could not be loaded.": "The image could not be loaded."
+  "The image could not be loaded.": "The image could not be loaded.",
+  "User Actions": "User Actions"
 }

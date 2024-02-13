@@ -81,13 +81,29 @@ class Book extends Resource
                 ->showOnPreview(),
 
             BelongsToMany::make('Purchasers', 'purchasers', User::class)
-                ->fields(new Fields\BookPurchase(null, true)),
+                ->fields(new Fields\BookPurchase(null, true))
+                ->actions(function () {
+                    return [
+                        new Actions\PivotTouch(),
+                    ];
+                }),
 
             BelongsToMany::make('Personal Purchasers', 'personalPurchasers', User::class)
-                ->fields(new Fields\BookPurchase('personal')),
+                ->fields(new Fields\BookPurchase('personal'))
+                ->actions(function () {
+                    return [
+                        new Actions\PivotTouch(),
+                        new Actions\ConvertPurchaseToGift(),
+                    ];
+                }),
 
             BelongsToMany::make('Gift Purchasers', 'giftPurchasers', User::class)
                 ->fields(new Fields\BookPurchase('gift'))
+                ->actions(function ($request) {
+                    return [
+                        new Actions\PivotTouch(),
+                    ];
+                })
                 ->allowDuplicateRelations()
                 ->collapsedByDefault(),
         ];
@@ -127,6 +143,7 @@ class Book extends Resource
     {
         return [
             new Lenses\BookPurchases,
+            new Lenses\BookCatalogues,
         ];
     }
 
@@ -140,6 +157,7 @@ class Book extends Resource
     {
         return [
             new Actions\MarkAsActive(),
+            new Actions\Touch(),
             ExportAsCsv::make(),
         ];
     }

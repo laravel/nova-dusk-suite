@@ -78,6 +78,23 @@ abstract class Resource extends NovaResource
     //     return parent::relatableQuery($request, $query);
     // }
 
+    /**
+     * Apply the default orderings for the given resource.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation  $query
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation
+     */
+    public static function defaultOrderings($query)
+    {
+        $column = config('site.resources.orderings') ?? 'id';
+
+        return $query->latest(
+            $column === 'id'
+                ? $query->getModel()->getQualifiedKeyName()
+                : $query->getModel()->qualifyColumn($column)
+        );
+    }
+
     // /**
     //  * Return a new Action field instance.
     //  *

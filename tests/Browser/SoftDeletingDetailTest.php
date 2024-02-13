@@ -28,7 +28,7 @@ class SoftDeletingDetailTest extends DuskTestCase
             $browser->visit(new Detail('docks', 1))
                 ->edit()
                 ->on(new Update('docks', 1))
-                ->assertSeeIn('h1', 'Update Dock');
+                ->waitForTextIn('h1', 'Update Dock');
 
             $browser->visit(new Detail('docks', 1))
                 ->delete()

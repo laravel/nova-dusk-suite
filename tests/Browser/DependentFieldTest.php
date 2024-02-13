@@ -112,7 +112,7 @@ class DependentFieldTest extends DuskTestCase
                 ->visit(new Create('companies'))
                 ->waitForTextIn('h1', 'Create Company')
                 ->within(new FormComponent, function ($browser) {
-                    $browser->fieldValue(
+                    $browser->setFieldValue(
                         'description',
                         'Creators of Tailwind CSS, Tailwind UI, and Refactoring UI.'
                     )->type('@name', 'Tailwind Labs Inc')
@@ -147,7 +147,7 @@ class DependentFieldTest extends DuskTestCase
                         ->pause(1500)
                         ->assertSelectHasOptions('@type', ['product', 'service'])
                         ->select('@type', 'product')
-                        ->fieldValue('description', 'Laravel Beep!');
+                        ->setFieldValue('description', 'Laravel Beep!');
                 })
                 ->create()
                 ->waitForText('The project was created!');
@@ -171,13 +171,15 @@ class DependentFieldTest extends DuskTestCase
             $browser->loginAs(4)
                 ->visit(new Create('companies'))
                 ->waitForTextIn('h1', 'Create Company')
-                ->within(new FormComponent, function ($browser) {
-                    $browser->type('@name', 'Laravel LLC')
-                        ->pause(1500)
-                        ->fieldValue(
-                            'description',
-                            'Laravel is a web ecosystem full of delightful tools that are supercharged for developer happiness and productivity.'
-                        )->assertDisabled('@country');
+                ->within(new FormComponent, function ($form) {
+                    $form->type('@name', 'Laravel LLC')
+                        ->whenAvailable('@description', function () use ($form) {
+                            $form->setFieldValue(
+                                'description',
+                                'Laravel is a web ecosystem full of delightful tools that are supercharged for developer happiness and productivity.'
+                            );
+                        })
+                        ->assertDisabled('@country');
                 })
                 ->create()
                 ->waitForText('The company was created!');

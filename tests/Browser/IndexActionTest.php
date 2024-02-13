@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\Post;
 use App\Models\User;
 use Database\Factories\PostFactory;
+use Database\Factories\SubscriberFactory;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\ActionDropdownComponent;
@@ -31,6 +32,50 @@ class IndexActionTest extends DuskTestCase
                 1 => false,
                 2 => true,
                 3 => true,
+                4 => false,
+            ], User::findMany([1, 2, 3, 4])->pluck('active', 'id')->all());
+
+            $browser->blank();
+        });
+    }
+
+    public function test_can_run_actions_on_matching_all_resources()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new UserIndex)
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->selectAllMatching()
+                        ->runAction('mark-as-active');
+                })->waitForText('The action was executed successfully.');
+
+            $this->assertEquals([
+                1 => true,
+                2 => true,
+                3 => true,
+                4 => true,
+            ], User::findMany([1, 2, 3, 4])->pluck('active', 'id')->all());
+
+            $browser->blank();
+        });
+    }
+
+    public function test_can_run_actions_on_matching_all_resources_with_searched_result()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new UserIndex(['users_search' => 'Taylor']))
+                ->within(new IndexComponent('users'), function ($browser) {
+                    $browser->waitForTable()
+                        ->selectAllMatching()
+                        ->runAction('mark-as-active');
+                })->waitForText('The action was executed successfully.');
+
+            $this->assertEquals([
+                1 => true,
+                2 => false,
+                3 => false,
                 4 => false,
             ], User::findMany([1, 2, 3, 4])->pluck('active', 'id')->all());
 
@@ -112,10 +157,12 @@ class IndexActionTest extends DuskTestCase
                             $browser->waitFor('@1-preview-button')
                                 ->assertMissing('@1-inline-actions');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(2)
                         ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
                             $browser->assertSee('Mark As Inactive');
                         })
+                        ->closeCurrentDropdown()
                         ->runInlineAction(2, 'mark-as-inactive');
                 })->waitForText('The action was executed successfully.');
 
@@ -125,6 +172,29 @@ class IndexActionTest extends DuskTestCase
                 3 => true,
                 4 => true,
             ], User::findMany([1, 2, 3, 4])->pluck('active', 'id')->all());
+
+            $browser->blank();
+        });
+    }
+
+    public function test_actions_that_cannot_be_ran_are_disabled()
+    {
+        $this->browse(function (Browser $browser) {
+            $subscribers = SubscriberFactory::new()->times(5)->create();
+
+            $browser->loginAs(1)
+                ->visit(new Index('subscribers'))
+                ->within(new IndexComponent('subscribers'), function ($browser) use ($subscribers) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId($subscribers[0]->id)
+                        ->whenAvailable('@action-select', function ($browser) {
+                            $browser->assertSelectHasOption('', 'sleep')
+                                ->select('', 'sleep')
+                                ->assertSelected('', '');
+                        })
+                        ->pause(1500)
+                        ->assertMissing('.modal[data-modal-open=true]');
+                });
 
             $browser->blank();
         });

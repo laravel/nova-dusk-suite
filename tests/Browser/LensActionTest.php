@@ -54,12 +54,15 @@ class LensActionTest extends DuskTestCase
                             $browser->waitFor('@1-preview-button')
                                 ->assertMissing('@1-inline-actions');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(2)
                         ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
                             $browser->assertSee('Mark As Inactive');
                         })
+                        ->closeCurrentDropdown()
                         ->runInlineAction(2, 'mark-as-inactive');
-                })->waitForText('The action was executed successfully.');
+                })
+                ->waitForText('The action was executed successfully.');
 
             $this->assertEquals([
                 1 => false,
@@ -82,7 +85,8 @@ class LensActionTest extends DuskTestCase
                 ->visit(new Lens('users', 'passthrough-lens'))
                 ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                     $browser->waitForTable()
-                        ->selectFilter('Select First', '2');
+                        ->selectFilter('Select First', '2')
+                        ->waitForTable();
 
                     $browser->selectAllMatching()
                         ->runAction('mark-as-active');

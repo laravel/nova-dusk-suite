@@ -114,10 +114,9 @@ class DependentActionFieldTest extends DuskTestCase
                     $browser->waitForTable()
                         ->clickCheckboxForId($post->id)
                         ->runAction('add-comment', function ($browser) {
-                            $browser->type('@body', 'Hello world')
-                                ->whenAvailable('#anonymous-default-boolean-field', function ($browser) {
-                                    $browser->assertChecked('');
-                                });
+                            $browser
+                                ->type('@body', 'Hello world')
+                                ->assertAttribute('@anonymous-default-boolean-field', 'data-state', 'checked');
                         });
                 })
                 ->waitForText('The action was executed successfully.');
@@ -134,9 +133,10 @@ class DependentActionFieldTest extends DuskTestCase
                     ->runAction('add-comment', function ($browser) {
                         $browser->type('@body', 'Hello world with userId')
                             ->assertMissing('@user')
-                            ->whenAvailable('#anonymous-default-boolean-field', function ($browser) {
-                                $browser->assertChecked('')->uncheck('');
-                            })->whenAvailable(new RelationSelectControlComponent('users'), function ($browser) {
+                            ->assertAttribute('@anonymous-default-boolean-field', 'data-state', 'checked')
+                            ->check('@anonymous-default-boolean-field')
+                            ->pause(1000)
+                            ->whenAvailable(new RelationSelectControlComponent('users'), function ($browser) {
                                 $browser->select('', 4);
                             });
                     });
@@ -183,7 +183,7 @@ class DependentActionFieldTest extends DuskTestCase
                         ->selectAllOnCurrentPage()
                         ->selectAction('track-selected-action', function ($browser) use ($captains) {
                             $browser->assertValue('@selected_resources', 'false - '.$captains->pluck('id')->reverse()->join(','))
-                                ->click('input[type="checkbox"][id="toggle-default-boolean-field"]')
+                                ->click("[id='toggle-default-boolean-field']")
                                 ->pause(1000)
                                 ->assertValue('@selected_resources', 'true - '.$captains->pluck('id')->reverse()->join(','))
                                 ->cancel();
@@ -192,7 +192,7 @@ class DependentActionFieldTest extends DuskTestCase
                         ->selectAllMatching()
                         ->selectAction('track-selected-action', function ($browser) {
                             $browser->assertValue('@selected_resources', 'false - all')
-                                ->click('input[type="checkbox"][id="toggle-default-boolean-field"]')
+                                ->click('[id="toggle-default-boolean-field"]')
                                 ->pause(1000)
                                 ->assertValue('@selected_resources', 'true - all')
                                 ->cancel();
@@ -205,7 +205,7 @@ class DependentActionFieldTest extends DuskTestCase
                             $browser->click("button[data-action-id='track-selected-action']")
                                 ->elsewhereWhenAvailable(new ConfirmActionModalComponent(), function ($browser) use ($captains) {
                                     $browser->assertValue('@selected_resources', 'false - '.$captains[0]->getKey())
-                                        ->click('input[type="checkbox"][id="toggle-default-boolean-field"]')
+                                        ->click('[id="toggle-default-boolean-field"]')
                                         ->pause(1000)
                                         ->assertValue('@selected_resources', 'true - '.$captains[0]->getKey())
                                         ->cancel();

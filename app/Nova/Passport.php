@@ -2,9 +2,11 @@
 
 namespace App\Nova;
 
+use App\Nova\Repeater\CountryVisit;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Repeater;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -64,6 +66,13 @@ class Passport extends Resource
             Country::make('Country')->rules('required'),
 
             Tag::make('Flights'),
+
+            Repeater::make(__('Visits'), 'visits')
+                ->repeatables([
+                    CountryVisit::make(),
+                ])
+                ->nullable()
+                ->asJson(),
         ];
     }
 

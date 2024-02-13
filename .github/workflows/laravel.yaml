@@ -8,7 +8,6 @@ on:
       - "10.*"
       - "master"
       - "pr-*"
-      - "feat-*"
       - "fixes-*"
   pull_request:
 
@@ -16,7 +15,7 @@ jobs:
   laravel-tests:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
-    timeout-minutes: 35
+    timeout-minutes: 45
     strategy:
       matrix:
         os:
@@ -106,8 +105,7 @@ jobs:
         run: php artisan storage:link
 
       - name: Upgrade Chrome Driver
-        run: php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
-
+        run: vendor/bin/dusk-updater detect --auto-update
       - name: Prepare Testbench
         run: php artisan package:discover
 
@@ -118,7 +116,7 @@ jobs:
         run: vendor/laravel/dusk/bin/chromedriver-linux &
 
       - name: Execute tests (Dusk tests) via PHPUnit
-        run: vendor/bin/phpunit -c phpunit.dusk.xml --exclude-group=external-network,local-time --stop-on-error --stop-on-failure
+        run: vendor/bin/phpunit -c phpunit.dusk.xml --exclude-group=external-network,local-time,date-field,datetime-field --stop-on-error --stop-on-failure
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root

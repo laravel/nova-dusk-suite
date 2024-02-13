@@ -17,10 +17,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class ActionFieldTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function actions_can_be_instantly_dispatched()
+    public function test_actions_can_be_instantly_dispatched()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -31,10 +28,7 @@ class ActionFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function actions_can_receive_and_utilize_field_input()
+    public function test_actions_can_receive_and_utilize_field_input()
     {
         RoleFactory::new()->create()->users()->attach(1);
 
@@ -56,10 +50,7 @@ class ActionFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function actions_modal_shouldnt_closed_when_user_using_shortcut()
+    public function test_actions_modal_shouldnt_closed_when_user_using_shortcut()
     {
         RoleFactory::new()->create()->users()->attach(1);
 
@@ -85,17 +76,16 @@ class ActionFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function actions_can_be_validated()
+    public function test_actions_can_be_validated()
     {
-        RoleFactory::new()->create()->users()->attach(1);
-
         $this->browse(function (Browser $browser) {
+            $role = RoleFactory::new()->create();
+
+            $role->users()->attach(1);
+
             $browser->loginAs(1)
-                ->visit(new Detail('users', 1))
-                ->within(new IndexComponent('roles'), function ($browser) {
+                ->visit(new Detail('roles', $role->id))
+                ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->clickCheckboxForId(1)
                         ->runAction('update-required-pivot-notes')
@@ -108,17 +98,16 @@ class ActionFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function actions_can_be_toggle_between_similar_fields()
+    public function test_actions_can_be_toggle_between_similar_fields()
     {
-        RoleFactory::new()->create()->users()->attach(1);
-
         $this->browse(function (Browser $browser) {
+            $role = RoleFactory::new()->create();
+
+            $role->users()->attach(1);
+
             $browser->loginAs(1)
-                ->visit(new Detail('users', 1))
-                ->within(new IndexComponent('roles'), function ($browser) {
+                ->visit(new Detail('roles', $role->id))
+                ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->clickCheckboxForId(1)
                         ->selectAction('update-pivot-notes', function ($browser) {
@@ -138,25 +127,23 @@ class ActionFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function actions_cant_be_executed_when_not_authorized_to_run()
+    public function test_actions_cant_be_executed_when_not_authorized_to_run()
     {
         User::whereIn('id', [1, 2])->update(['active' => true]);
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(2)
                 ->visit(new UserIndex)
-                ->within(new IndexComponent('users'), function ($browser) {
+                ->within(new IndexComponent('users'), function (Browser $browser) {
                     $browser->waitForTable()
                         ->openControlSelectorById(1)
-                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function (Browser $browser) {
                             $browser->waitFor('@1-preview-button')
                                 ->assertMissing('@1-inline-actions');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(2)
-                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function (Browser $browser) {
                             $browser->assertSee('Mark As Inactive');
                         });
                 });
@@ -167,10 +154,7 @@ class ActionFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function cannot_run_standalone_actions_on_deleted_resource()
+    public function test_cannot_run_standalone_actions_on_deleted_resource()
     {
         PostFactory::new()->times(5)->create(['user_id' => 1]);
 
@@ -182,12 +166,64 @@ class ActionFieldTest extends DuskTestCase
 
                     Post::query()->delete();
 
-                    $browser->runStandaloneAction('standalone-task', function ($browser) {
+                    $browser->runStandaloneAction('standalone-task', function (Browser $browser) {
                         $browser->assertSee('Provide a description for notes.')
                             ->type('@notes', 'Custom Notes');
                     });
-                })->waitForText('Action executed with [Custom Notes]')
+                })
+                ->waitForText('Action executed with [Custom Notes]')
                 ->assertSee('Action executed with [Custom Notes]');
+
+            $browser->blank();
+        });
+    }
+
+    public function test_action_modal_focuses_the_first_input()
+    {
+        $this->markTestSkipped('Modal no longer focused on the first input');
+
+        RoleFactory::new()->create()->users()->attach(1);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('roles'), function ($browser) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId(1)
+                        ->runAction('update-pivot-notes', function ($browser) {
+                            $browser->assertSee('Provide a description for notes.')
+                                ->assertFocused('@notes');
+                        });
+                });
+
+            $browser->blank();
+        });
+    }
+
+    public function test_action_modal_focus_is_trapped_to_just_the_modal()
+    {
+        $this->markTestSkipped('Modal no longer focused on the first input');
+
+        RoleFactory::new()->create()->users()->attach(1);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new Detail('users', 1))
+                ->within(new IndexComponent('roles'), function ($browser) {
+                    $browser->waitForTable()
+                        ->clickCheckboxForId(1)
+                        ->runAction('update-pivot-notes', function ($browser) {
+                            $browser->assertSee('Provide a description for notes.')
+                                ->assertFocused('@notes')
+                                ->pause(500)
+                                ->keys('@notes', '{tab}')
+                                ->keys('@cancel-action-button', '{tab}')
+                                ->pause(500)
+                                ->keys('@confirm-action-button', '{tab}')
+                                ->pause(500)
+                                ->assertFocused('@notes');
+                        });
+                });
 
             $browser->blank();
         });

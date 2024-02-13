@@ -8,7 +8,7 @@ use Database\Factories\PassportFactory;
 use Illuminate\Support\Str;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
-use Laravel\Nova\Testing\Browser\Components\SearchInputComponent;
+use Laravel\Nova\Testing\Browser\Components\SearchSearchInputComponent;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -24,7 +24,7 @@ class TagFieldTest extends DuskTestCase
                 ->visit(new Update('flights', $flight->getKey()))
                 ->within(new FormComponent(), function ($browser) use ($passports) {
                     $browser->assertMissing('@passports-selected-tags')
-                        ->within(new SearchInputComponent('passports'), function ($browser) use ($passports) {
+                        ->within(new SearchSearchInputComponent('passports'), function ($browser) use ($passports) {
                             $browser->searchAndSelectFirstResult($passports[0]->getKey());
                         })->whenAvailable('@passports-selected-tags', function ($browser) use ($passports) {
                             $browser->assertSeeIn('span', Str::upper($passports[0]->value));
