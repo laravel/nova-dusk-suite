@@ -99,8 +99,6 @@ class DateTimeFieldTest extends DuskTestCase
 
             $browser->blank();
         });
-
-        static::reloadServing();
     }
 
     /**
@@ -137,8 +135,6 @@ class DateTimeFieldTest extends DuskTestCase
 
             $browser->blank();
         });
-
-        static::reloadServing();
     }
 
     public function test_can_reset_datetime_input()
@@ -165,8 +161,6 @@ class DateTimeFieldTest extends DuskTestCase
 
             $browser->blank();
         });
-
-        static::reloadServing();
     }
 
     /**
@@ -207,8 +201,6 @@ class DateTimeFieldTest extends DuskTestCase
 
             $browser->blank();
         });
-
-        static::reloadServing();
     }
 
     public static function localiseDatetimeDataProvider()
