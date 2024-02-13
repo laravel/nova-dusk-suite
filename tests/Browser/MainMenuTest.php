@@ -15,6 +15,9 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class MainMenuTest extends DuskTestCase
 {
+    /**
+     * @group internal-server
+     */
     public function test_resource_link_is_not_active_when_visiting_lens_with_custom_main_menu()
     {
         $this->beforeServingApplication(function ($app) {

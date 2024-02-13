@@ -61,11 +61,9 @@ class IndexDeletionTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new UserIndex)
+                ->visit(new UserIndex(['users_search' => 'David']))
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
-                        ->searchFor('David')
-                        ->waitForTable()
                         ->selectAllMatching()
                         ->deleteSelected()
                         ->clearSearch()

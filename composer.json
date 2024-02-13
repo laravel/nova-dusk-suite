@@ -12,6 +12,7 @@
         "algolia/algoliasearch-client-php": "^3.3",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
+        "laravel/dusk": "^7.11.3",
         "laravel/framework": "^9.0",
         "laravel/scout": "^10.0.1",
         "laravel/tinker": "^2.7",
@@ -23,12 +24,13 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
+        "larastan/larastan": "^2.5.1",
         "laravel/breeze": "^1.1",
         "laravel/nova": "@dev",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
-        "nunomaduro/larastan": "^2.5.1",
-        "orchestra/testbench-dusk": "^7.16",
+        "orchestra/testbench": "^7.27",
+        "orchestra/testbench-dusk": "^7.28",
         "phpunit/phpunit": "^9.6"
     },
     "autoload": {
@@ -105,5 +107,6 @@
         "preferred-install": "dist",
         "sort-packages": true
     },
-    "minimum-stability": "stable"
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }

@@ -27,6 +27,7 @@ class AttachResourceFormAbandonmentTest extends DuskTestCase
                 ->within(new SidebarComponent(), function ($browser) {
                     $browser->clickLink('Users');
                 })
+                ->waitForDialog()
                 ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                 ->acceptDialog()
                 ->on(new UserIndex)
@@ -50,7 +51,7 @@ class AttachResourceFormAbandonmentTest extends DuskTestCase
                 })
                 ->keys('@notes', 'Test Notes', '{tab}')
                 ->back()
-                ->pause(500)
+                ->waitForDialog()
                 ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                 ->acceptDialog()
                 ->on(new Detail('users', 1));

@@ -18,17 +18,11 @@
 </template>
 
 <script setup>
+import IconsCollectionCard from '@/components/IconsCollectionCard'
+
 const props = defineProps({
   icons: { type: Object, default: {solid: [], outline: []} },
 })
-</script>
-
-<script>
-import IconsCollectionCard from '@/components/IconsCollectionCard'
-
-export default {
-  components: { IconsCollectionCard },
-}
 </script>
 
 <style lang="postcss" scoped>

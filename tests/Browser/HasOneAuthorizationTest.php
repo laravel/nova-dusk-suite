@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests\Browser;
 use App\Models\User;
 use Database\Factories\UserFactory;
 use Laravel\Dusk\Browser;
+use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Update;
@@ -19,11 +20,13 @@ class HasOneAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Create('users'))
-                ->assertMissing('@create-profile-relation-button')
-                ->type('@name', 'Adam Wathan')
-                ->type('@email', 'adam@laravel.com')
-                ->type('@password', 'secret')
-                ->select('@settings->pagination', 'simple')
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->assertMissing('@create-profile-relation-button')
+                        ->type('@name', 'Adam Wathan')
+                        ->type('@email', 'adam@laravel.com')
+                        ->type('@password', 'secret')
+                        ->select('@settings->pagination', 'simple');
+                })
                 ->create()
                 ->waitForText('The user was created!');
 

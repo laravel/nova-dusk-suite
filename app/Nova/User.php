@@ -136,7 +136,7 @@ class User extends Resource
 
             HasOne::make('Profile')->required(function () {
                 return file_exists(base_path('.hasone-required'));
-            }),
+            })->help('User personal profile informations'),
 
             HasOneThrough::make('Passport'),
 
@@ -189,6 +189,18 @@ class User extends Resource
                     ->default('ltr')
                     ->displayUsingLabels()
                     ->hideFromIndex(),
+
+                Select::make('Resource Orderings', 'settings->resources->orderings')
+                    ->options([
+                        'id' => 'ID',
+                        'created_at' => 'Created At',
+                        'updated_at' => 'Updated At',
+                    ])
+                    ->default(function () {
+                        return config('site.resources.orderings');
+                    })
+                    ->displayUsingLabels()
+                    ->hideFromIndex(),
             ]),
 
             BelongsToMany::make('Roles')
@@ -210,7 +222,18 @@ class User extends Resource
                 ->filterable(),
 
             BelongsToMany::make('Purchase Books', 'personalBooks', Book::class)
-                ->fields(new Fields\BookPurchase('personal')),
+                ->fields(new Fields\BookPurchase('personal'))
+                ->actions(function ($request) {
+                    return [
+                        new Actions\PivotTouch(),
+                        Actions\ConvertPurchaseToGift::make()
+                            ->canSee(function () {
+                                return true;
+                            })->canRun(function () {
+                                return true;
+                            }),
+                    ];
+                }),
 
             BelongsToMany::make('Gift Books', 'giftBooks', Book::class)
                 ->fields(
@@ -223,7 +246,13 @@ class User extends Resource
                                         : null;
                         }),
                     ])
-                )->filterable()
+                )
+                ->actions(function ($request) {
+                    return [
+                        new Actions\PivotTouch(),
+                    ];
+                })->filterable()
+                ->dontReorderAttachables()
                 ->allowDuplicateRelations(),
         ];
     }
@@ -311,6 +340,25 @@ class User extends Resource
             new Filters\SelectFirst,
             new Filters\Created,
         ];
+    }
+
+    /**
+     * Build a "relatable" query for the given resource.
+     *
+     * This query determines which instances of the model may be attached to other resources.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Laravel\Nova\Fields\Field  $field
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function relatableBooks(NovaRequest $request, $query, $field)
+    {
+        if ($field instanceof BelongsToMany && in_array($field->attribute, ['giftBooks'])) {
+            return $query->reorder()->orderBy('sku', 'asc');
+        }
+
+        return $query;
     }
 
     /**

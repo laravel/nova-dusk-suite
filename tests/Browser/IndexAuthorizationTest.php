@@ -60,11 +60,13 @@ class IndexAuthorizationTest extends DuskTestCase
                         })
                         ->assertSeeLink($posts[0]->user->name)
                         ->assertSeeLink($posts[1]->id)
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById($posts[1]->id, function ($browser) use ($posts) {
                             $browser->assertVisible("{$posts[1]->id}-preview-button");
                         })
                         ->assertDontSeeLink($posts[1]->user->name)
                         ->assertSeeLink($posts[2]->id)
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById($posts[2]->id, function ($browser) use ($posts) {
                             $browser->assertVisible("{$posts[2]->id}-preview-button");
                         })

@@ -10,6 +10,9 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class ComponentOverrideTest extends DuskTestCase
 {
+    /**
+     * @group internal-server
+     */
     public function test_it_can_override_default_components()
     {
         $this->beforeServingApplication(function ($app) {
@@ -22,6 +25,7 @@ class ComponentOverrideTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Create('users'))
                 ->click('.custom-help-component')
+                ->waitForDialog()
                 ->assertDialogOpened('HelpText was overriden using component-override.js')
                 ->dismissDialog();
 

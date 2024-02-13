@@ -62,7 +62,7 @@ class InvoiceItem extends Resource
 
             BelongsTo::make('Invoice', 'invoice'),
 
-            Number::make('Quantity')->rules('numeric'),
+            Number::make('Quantity')->rules('numeric')->filterable(),
             Text::make('Description')->rules('string'),
             Currency::make('Price')->rules('numeric')->asMinorUnits(),
         ];

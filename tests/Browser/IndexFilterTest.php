@@ -16,11 +16,9 @@ class IndexFilterTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new UserIndex)
+                ->visit(new UserIndex(['users_per_page' => 50]))
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
-                        ->setPerPage('50')
-                        ->waitForTable()
                         ->assertSeeResource(50)
                         ->assertSeeResource(25)
                         ->assertDontSeeResource(1)
@@ -37,11 +35,9 @@ class IndexFilterTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new UserIndex)
+                ->visit(new UserIndex(['users_per_page' => 50]))
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
-                        ->setPerPage('50')
-                        ->waitForTable()
                         ->assertSeeResource(50)
                         ->assertSeeResource(25)
                         ->assertDontSeeResource(1)

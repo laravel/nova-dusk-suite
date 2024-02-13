@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->unsignedInteger('price')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

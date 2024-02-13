@@ -22,6 +22,7 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
                 ->within(new SidebarComponent(), function ($browser) {
                     $browser->clickLink('Users');
                 })
+                ->waitForDialog()
                 ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                 ->acceptDialog()
                 ->on(new UserIndex)
@@ -45,7 +46,7 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
                     $browser->keys('@title', 'Hello World', '{tab}');
                 })
                 ->back()
-                ->pause(500)
+                ->waitForDialog()
                 ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                 ->acceptDialog()
                 ->on(new Index('videos'));

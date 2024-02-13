@@ -13,12 +13,14 @@ class ActionModalAbandonmentTest extends DuskTestCase
 {
     public function test_modal_shows_exit_warning_dialog_if_form_has_changes()
     {
-        RoleFactory::new()->create()->users()->attach(1);
-
         $this->browse(function (Browser $browser) {
+            $role = RoleFactory::new()->create();
+
+            $role->users()->attach(1);
+
             $browser->loginAs(1)
-                ->visit(new Detail('users', 1))
-                ->within(new IndexComponent('roles'), function ($browser) {
+                ->visit(new Detail('roles', $role->id))
+                ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->clickCheckboxForId(1)
                         ->selectAction('update-required-pivot-notes', function ($browser) {
@@ -28,6 +30,7 @@ class ActionModalAbandonmentTest extends DuskTestCase
                                 })
                                     ->assertPresentModal()
                                     ->keys('', '{escape}')
+                                    ->waitForDialog()
                                     ->assertDialogOpened('Do you really want to leave? You have unsaved changes.')
                                     ->acceptDialog()
                                     ->pause(100)
@@ -42,12 +45,14 @@ class ActionModalAbandonmentTest extends DuskTestCase
 
     public function test_it_doesnt_show_exit_warning_if_modal_has_changes_when_clicking_cancel()
     {
-        RoleFactory::new()->create()->users()->attach(1);
-
         $this->browse(function (Browser $browser) {
+            $role = RoleFactory::new()->create();
+
+            $role->users()->attach(1);
+
             $browser->loginAs(1)
-                ->visit(new Detail('users', 1))
-                ->within(new IndexComponent('roles'), function ($browser) {
+                ->visit(new Detail('roles', $role->id))
+                ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->clickCheckboxForId(1)
                         ->selectAction('update-required-pivot-notes', function ($browser) {

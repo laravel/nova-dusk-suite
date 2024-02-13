@@ -132,6 +132,12 @@ class Subscriber extends Resource
      */
     public function actions(NovaRequest $request): array
     {
-        return [];
+        return [
+            Actions\Sleep::make()->canSee(function ($request) {
+                return optional($request->user())->id !== 4;
+            })->canRun(function () {
+                return false;
+            }),
+        ];
     }
 }

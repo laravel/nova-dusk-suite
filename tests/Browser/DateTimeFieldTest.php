@@ -21,6 +21,9 @@ class DateTimeFieldTest extends DuskTestCase
 {
     /**
      * @dataProvider localiseDatetimeDataProvider
+     *
+     * @group local-time
+     * @group internal-server
      */
     public function test_can_pick_date_using_datetime_input($appDateTime, $appTimezone, $localDateTime, $userTimezone)
     {
@@ -45,9 +48,10 @@ class DateTimeFieldTest extends DuskTestCase
             "{$now->toIso8601String()} should be equal to {$local->toIso8601String()}"
         );
 
-        $this->browse(function (Browser $browser) use ($user, $now, $local) {
+        $this->browse(function (Browser $browser) use ($user, $userTimezone, $now, $local) {
             $browser->loginAs($user)
                 ->visit(Attach::belongsToMany('users', $user->id, 'books', 'personalBooks'))
+                ->luxonTimezone($userTimezone)
                 ->assertSeeIn('h1', 'Attach Book')
                 ->selectAttachable(4)
                 ->type('@price', '34')
@@ -72,6 +76,7 @@ class DateTimeFieldTest extends DuskTestCase
                 });
 
             $browser->visit(UpdateAttached::belongsToMany('users', $user->id, 'books', 4, 'personalBooks', 1))
+                ->luxonTimezone($userTimezone)
                 ->assertSeeIn('h1', 'Update attached Book: '.$user->name)
                 ->type('@price', '44')
                 ->update()
@@ -100,6 +105,9 @@ class DateTimeFieldTest extends DuskTestCase
 
     /**
      * @dataProvider localiseDatetimeDataProvider
+     *
+     * @group local-time
+     * @group internal-server
      */
     public function test_can_pick_date_using_datetime_input_and_maintain_current_value_on_validation_errors($appDateTime, $appTimezone, $localDateTime, $userTimezone)
     {
@@ -116,9 +124,10 @@ class DateTimeFieldTest extends DuskTestCase
             $profile->save();
         });
 
-        $this->browse(function (Browser $browser) use ($user, $local) {
+        $this->browse(function (Browser $browser) use ($user, $userTimezone, $local) {
             $browser->loginAs($user)
                 ->visit(Attach::belongsToMany('users', $user->id, 'books', 'personalBooks'))
+                ->luxonTimezone($userTimezone)
                 ->assertSeeIn('h1', 'Attach Book')
                 ->typeOnDateTimeLocal('@purchased_at', $local)
                 ->create()
@@ -149,9 +158,9 @@ class DateTimeFieldTest extends DuskTestCase
 
             $ship->fresh();
 
-            $this->assertEquals(
-                $now->toDateTimeString(),
-                $ship->departed_at->toDateTimeString()
+            $this->assertSame(
+                $now->toIso8601String(),
+                $ship->departed_at->toIso8601String()
             );
 
             $browser->blank();
@@ -162,6 +171,8 @@ class DateTimeFieldTest extends DuskTestCase
 
     /**
      * @dataProvider localiseDatetimeDataProvider
+     *
+     * @group internal-server
      */
     public function test_can_persist_date_using_datetime_input($appDateTime, $appTimezone, $localDateTime, $userTimezone)
     {
@@ -178,13 +189,14 @@ class DateTimeFieldTest extends DuskTestCase
             $profile->save();
         });
 
-        $this->browse(function (Browser $browser) use ($user, $now) {
+        $this->browse(function (Browser $browser) use ($user, $userTimezone, $now) {
             $ship = ShipFactory::new()->create([
                 'departed_at' => $now,
             ]);
 
             $browser->loginAs($user)
                 ->visit(new Update('ships', $ship->id))
+                ->luxonTimezone($userTimezone)
                 ->type('@name', 'Laravel Ship')
                 ->update()
                 ->waitForText('The ship was updated!')

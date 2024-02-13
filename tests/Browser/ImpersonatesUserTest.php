@@ -26,16 +26,19 @@ class ImpersonatesUserTest extends DuskTestCase
                             $browser->assertVisible('@1-replicate-button')
                                 ->assertMissing('@1-impersonate-button');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(2)
                         ->elsewhere('', function ($browser) {
                             $browser->assertVisible('@2-replicate-button')
                                 ->assertMissing('@2-impersonate-button');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(3)
                         ->elsewhere('', function ($browser) {
                             $browser->assertVisible('@3-replicate-button')
                                 ->assertVisible('@3-impersonate-button');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(4)
                         ->elsewhere('', function ($browser) {
                             $browser->assertVisible('@4-replicate-button')
@@ -54,25 +57,30 @@ class ImpersonatesUserTest extends DuskTestCase
                             $browser->assertVisible('@1-replicate-button')
                                 ->assertMissing('@1-impersonate-button');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(2)
                         ->elsewhere('', function ($browser) {
                             $browser->assertVisible('@2-replicate-button')
                                 ->assertMissing('@2-impersonate-button');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(3)
                         ->elsewhere('', function ($browser) {
                             $browser->assertVisible('@3-replicate-button')
                                 ->assertMissing('@3-impersonate-button');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(4)
                         ->elsewhere('', function ($browser) {
                             $browser->assertVisible('@4-replicate-button')
                                 ->assertMissing('@4-impersonate-button');
-                        });
+                        })
+                        ->closeCurrentDropdown();
                 })
                 ->visit(new Dashboard())
                 ->press('Laravel Nova')
                 ->press('Stop Impersonating')
+                ->waitForDialog()
                 ->assertDialogOpened('Are you sure you want to stop impersonating?')
                 ->acceptDialog()
                 ->on(new Detail('users', 4))
@@ -110,21 +118,25 @@ class ImpersonatesUserTest extends DuskTestCase
                             $browser->assertVisible('@1-replicate-button')
                                 ->assertMissing('@1-impersonate-button');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(2)
                         ->elsewhere('', function ($browser) {
                             $browser->assertVisible('@2-replicate-button')
                                 ->assertMissing('@2-impersonate-button');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(3)
                         ->elsewhere('', function ($browser) {
                             $browser->assertVisible('@3-replicate-button')
                                 ->assertMissing('@3-impersonate-button');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(4)
                         ->elsewhere('', function ($browser) {
                             $browser->assertVisible('@4-replicate-button')
                                 ->assertMissing('@4-impersonate-button');
                         })
+                        ->closeCurrentDropdown()
                         ->openControlSelectorById(5)
                         ->elsewhere('', function ($browser) {
                             $browser->assertVisible('@5-replicate-button')
@@ -134,6 +146,7 @@ class ImpersonatesUserTest extends DuskTestCase
                 ->visit(new Dashboard())
                 ->press($user->name)
                 ->press('Stop Impersonating')
+                ->waitForDialog()
                 ->assertDialogOpened('Are you sure you want to stop impersonating?')
                 ->acceptDialog()
                 ->on(new Detail('users', $user->id))
@@ -157,7 +170,7 @@ class ImpersonatesUserTest extends DuskTestCase
                 ->within(new IndexComponent('subscribers'), function ($browser) use ($user, $subscriber) {
                     $browser->openControlSelectorById($subscriber->id)
                         ->elsewhere('', function ($browser) use ($user, $subscriber) {
-                            $browser->assertVisible("@{$subscriber->id}-replicate-button")
+                            $browser->assertMissing("@{$subscriber->id}-replicate-button")
                                 ->assertVisible("@{$subscriber->id}-impersonate-button")
                                 ->clickAndWaitForReload("@{$subscriber->id}-impersonate-button")
                                 ->assertPathIs('/')
@@ -170,6 +183,7 @@ class ImpersonatesUserTest extends DuskTestCase
                 ->visit(new Dashboard())
                 ->press($user->name)
                 ->press('Stop Impersonating')
+                ->waitForDialog()
                 ->assertDialogOpened('Are you sure you want to stop impersonating?')
                 ->acceptDialog()
                 ->on(new Detail('subscribers', $subscriber->id))
@@ -179,6 +193,9 @@ class ImpersonatesUserTest extends DuskTestCase
         });
     }
 
+    /**
+     * @group internal-server
+     */
     public function test_it_can_impersonate_another_user_using_different_guard_with_nova_guard_on_none_default()
     {
         $this->beforeServingApplication(function ($app, $config) {
@@ -198,7 +215,7 @@ class ImpersonatesUserTest extends DuskTestCase
                 ->within(new IndexComponent('subscribers'), function ($browser) use ($user, $subscriber) {
                     $browser->openControlSelectorById($subscriber->id)
                         ->elsewhere('', function ($browser) use ($user, $subscriber) {
-                            $browser->assertVisible("@{$subscriber->id}-replicate-button")
+                            $browser->assertMissing("@{$subscriber->id}-replicate-button")
                                 ->assertVisible("@{$subscriber->id}-impersonate-button")
                                 ->clickAndWaitForReload("@{$subscriber->id}-impersonate-button")
                                 ->assertPathIs('/')
@@ -210,6 +227,7 @@ class ImpersonatesUserTest extends DuskTestCase
                 ->visit(new Dashboard())
                 ->press($user->name)
                 ->press('Stop Impersonating')
+                ->waitForDialog()
                 ->assertDialogOpened('Are you sure you want to stop impersonating?')
                 ->acceptDialog()
                 ->on(new Detail('subscribers', $subscriber->id))

@@ -18,6 +18,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        config([
+            'auth.guards.web-subscribers' => [
+                'driver' => 'session',
+                'provider' => 'subscribers',
+            ],
+            'auth.providers.subscribers' => [
+                'driver' => 'eloquent',
+                'model' => \App\Models\Subscriber::class,
+            ],
+            'logging.channels.deprecations' => array_merge(
+                config('logging.channels.single'), ['path' => storage_path('logs/deprecations.log')],
+            ),
+        ]);
+
         if (version_compare(Application::VERSION, '9.35.0', '>=')) {
             Model::shouldBeStrict((bool) config('app.debug'));
         } else {

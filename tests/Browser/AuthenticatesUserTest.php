@@ -38,6 +38,7 @@ class AuthenticatesUserTest extends DuskTestCase
                 ->visit(new Dashboard())
                 ->press('Taylor Otwell')
                 ->press('Logout')
+                ->waitForDialog()
                 ->assertDialogOpened('Are you sure you want to log out?')
                 ->acceptDialog()
                 ->on(new Login())
@@ -114,10 +115,6 @@ class AuthenticatesUserTest extends DuskTestCase
 
     public function test_it_redirect_to_login_after_password_reset()
     {
-        $this->beforeServingApplication(function ($app, $config) {
-            $config->set('mail.default', 'log');
-        });
-
         $this->browse(function (Browser $browser) {
             $user = UserFactory::new()->create();
 

@@ -6,6 +6,7 @@ use Database\Factories\VideoFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\Controls\RelationSelectControlComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
+use Laravel\Nova\Testing\Browser\Components\SearchInputComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
@@ -83,13 +84,15 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Create('comments'))
                 ->select('@commentable-type', 'videos')
-                ->searchRelation('commentable', $video->id)
-                ->pause(1500)
-                ->assertMissing('@commentable-search-input-result-0')
-                ->searchRelation('commentable', $video2->id)
-                ->pause(1500)
-                ->assertSeeIn('@commentable-search-input-result-0', $video2->title)
-                ->cancelSelectingSearchResult('commentable')
+                ->within(new SearchInputComponent('commentable'), function ($browser) use ($video, $video2) {
+                    $browser->searchInput($video->id)
+                        ->pause(1500)
+                        ->assertEmptySearchResult()
+                        ->searchInput($video2->id)
+                        ->pause(1500)
+                        ->assertSearchResultContains($video2->title)
+                        ->cancelSelectingSearchResult();
+                })
                 ->cancel();
 
             $browser->visit(new Create('comments'))
