@@ -54,7 +54,7 @@ class Company extends Resource
 
             Text::make('Name')
                 ->rules('required')
-                ->suggestions(['Laravel LLC', 'Tailwind Labs Inc']),
+                ->suggestions(['Laravel Holdings Inc.', 'Tailwind Labs Inc']),
 
             Markdown::make('Description')
                 ->dependsOn('name', Dependents\CompanyDescription::class)
@@ -64,7 +64,7 @@ class Company extends Resource
 
             Country::make('Country')
                 ->dependsOn('name', function (Country $field, NovaRequest $request, FormData $formData) {
-                    if ($formData->name !== 'Laravel LLC') {
+                    if (! in_array($formData->name, ['Laravel LLC', 'Laravel Holdings Inc.'])) {
                         $field->readonly(false);
                     }
                 })
