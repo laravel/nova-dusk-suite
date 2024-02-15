@@ -8,10 +8,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class InlineCreateResourceModalAbandonmentTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function it_shows_exit_warning_dialog_if_modal_has_changes_when_pressing_escape()
+    public function test_it_shows_exit_warning_dialog_if_modal_has_changes_when_pressing_escape()
     {
         $this->defineApplicationStates('inline-create');
 
@@ -32,10 +29,7 @@ class InlineCreateResourceModalAbandonmentTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function it_doesnt_show_exit_warning_when_clicking_cancel()
+    public function test_it_doesnt_show_exit_warning_when_clicking_cancel()
     {
         $this->defineApplicationStates('inline-create');
 

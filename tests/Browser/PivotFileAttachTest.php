@@ -17,10 +17,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class PivotFileAttachTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function file_can_be_attached_to_resource()
+    public function test_file_can_be_attached_to_resource()
     {
         $this->defineApplicationStates('searchable');
 
@@ -69,10 +66,7 @@ class PivotFileAttachTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function file_can_be_detached_from_edit_attached_screen()
+    public function test_file_can_be_detached_from_edit_attached_screen()
     {
         $this->defineApplicationStates('searchable');
 

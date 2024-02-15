@@ -9,8 +9,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class SearchableSelectTest extends DuskTestCase
 {
-    /** @test */
-    public function it_can_search_select()
+    public function test_it_can_search_select()
     {
         $this->defineApplicationStates('searchable');
 

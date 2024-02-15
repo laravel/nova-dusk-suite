@@ -14,10 +14,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class FileAttachTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function file_can_be_attached_to_resource()
+    public function test_file_can_be_attached_to_resource()
     {
         $this->artisan('storage:link');
 
