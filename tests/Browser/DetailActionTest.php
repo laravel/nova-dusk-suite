@@ -14,10 +14,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class DetailActionTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function can_run_actions_on_resource()
+    public function test_can_run_actions_on_resource()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -32,10 +29,7 @@ class DetailActionTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function cannot_run_actions_on_deleted_resource()
+    public function test_cannot_run_actions_on_deleted_resource()
     {
         $role = RoleFactory::new()->create();
         $role->users()->attach(4);
@@ -62,10 +56,7 @@ class DetailActionTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function cannot_run_standalone_actions_on_deleted_resource()
+    public function test_cannot_run_standalone_actions_on_deleted_resource()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -83,10 +74,7 @@ class DetailActionTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function actions_can_be_cancelled_without_effect()
+    public function test_actions_can_be_cancelled_without_effect()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -100,10 +88,7 @@ class DetailActionTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function actions_on_all_matching_relations_should_be_scoped_to_the_relation()
+    public function test_actions_on_all_matching_relations_should_be_scoped_to_the_relation()
     {
         $post = PostFactory::new()->create([
             'user_id' => 1,

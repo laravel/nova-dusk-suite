@@ -11,10 +11,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class LensActionTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function can_run_actions_on_selected_resources()
+    public function test_can_run_actions_on_selected_resources()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -37,10 +34,7 @@ class LensActionTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_run_table_row_actions_on_selected_resources()
+    public function test_can_run_table_row_actions_on_selected_resources()
     {
         User::whereIn('id', [2, 3, 4])->update(['active' => true]);
 
@@ -75,10 +69,7 @@ class LensActionTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_run_actions_on_all_matching_resources()
+    public function test_can_run_actions_on_all_matching_resources()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)

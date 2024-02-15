@@ -12,10 +12,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexBelongsToFieldTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function belongs_to_field_navigates_to_parent_resource_when_clicked()
+    public function test_belongs_to_field_navigates_to_parent_resource_when_clicked()
     {
         $user = User::find(1);
         $user->posts()->save(PostFactory::new()->make());

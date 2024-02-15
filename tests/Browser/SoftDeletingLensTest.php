@@ -11,10 +11,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class SoftDeletingLensTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function can_soft_delete_a_resource_via_resource_table_row_delete_icon()
+    public function test_can_soft_delete_a_resource_via_resource_table_row_delete_icon()
     {
         $dock = DockFactory::new()->create();
 
@@ -33,10 +30,7 @@ class SoftDeletingLensTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_soft_delete_resources_using_checkboxes()
+    public function test_can_soft_delete_resources_using_checkboxes()
     {
         DockFactory::new()->times(3)->create();
 
@@ -56,10 +50,7 @@ class SoftDeletingLensTest extends DuskTestCase
         $this->assertEquals(2, Dock::onlyTrashed()->count());
     }
 
-    /**
-     * @test
-     */
-    public function can_restore_resources_using_checkboxes()
+    public function test_can_restore_resources_using_checkboxes()
     {
         DockFactory::new()->create();
         DockFactory::new()->times(2)->create(['deleted_at' => now()]);
@@ -80,10 +71,7 @@ class SoftDeletingLensTest extends DuskTestCase
         $this->assertEquals(3, Dock::count());
     }
 
-    /**
-     * @test
-     */
-    public function can_force_delete_resources_using_checkboxes()
+    public function test_can_force_delete_resources_using_checkboxes()
     {
         DockFactory::new()->times(3)->create();
 
@@ -104,10 +92,7 @@ class SoftDeletingLensTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_soft_delete_all_matching_resources()
+    public function test_can_soft_delete_all_matching_resources()
     {
         DockFactory::new()->times(3)->create();
 
@@ -128,10 +113,7 @@ class SoftDeletingLensTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_restore_all_matching_resources()
+    public function test_can_restore_all_matching_resources()
     {
         DockFactory::new()->times(3)->create(['deleted_at' => now()]);
 
@@ -152,10 +134,7 @@ class SoftDeletingLensTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_force_delete_all_matching_resources()
+    public function test_can_force_delete_all_matching_resources()
     {
         DockFactory::new()->times(3)->create(['deleted_at' => now()]);
 
@@ -177,10 +156,7 @@ class SoftDeletingLensTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function soft_deleted_resources_may_be_restored_via_row_icon()
+    public function test_soft_deleted_resources_may_be_restored_via_row_icon()
     {
         DockFactory::new()->create(['deleted_at' => now()]);
 

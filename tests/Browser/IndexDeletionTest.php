@@ -9,10 +9,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexDeletionTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function can_delete_a_resource_via_resource_table_row_delete_icon()
+    public function test_can_delete_a_resource_via_resource_table_row_delete_icon()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -31,10 +28,7 @@ class IndexDeletionTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_delete_resources_using_checkboxes()
+    public function test_can_delete_resources_using_checkboxes()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -54,10 +48,7 @@ class IndexDeletionTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_delete_all_matching_resources()
+    public function test_can_delete_all_matching_resources()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
