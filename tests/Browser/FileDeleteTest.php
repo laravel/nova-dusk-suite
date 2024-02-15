@@ -11,10 +11,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class FileDeleteTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function file_can_be_deleted()
+    public function test_file_can_be_deleted()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)

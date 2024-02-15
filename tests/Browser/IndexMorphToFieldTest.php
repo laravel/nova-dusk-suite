@@ -11,10 +11,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexMorphToFieldTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function morph_to_field_navigates_to_parent_resource_when_clicked()
+    public function test_morph_to_field_navigates_to_parent_resource_when_clicked()
     {
         $comment = CommentFactory::new()->create();
 
@@ -32,10 +29,7 @@ class IndexMorphToFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function morph_to_field_can_be_displayed_when_not_defined_using_types()
+    public function test_morph_to_field_can_be_displayed_when_not_defined_using_types()
     {
         $comment = CommentFactory::new()->create([
             'commentable_type' => \Illuminate\Foundation\Auth\User::class,
