@@ -10,8 +10,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class CreateResourceFormAbandonmentTest extends DuskTestCase
 {
-    /** @test */
-    public function it_shows_exit_warning_if_resource_form_has_changes_when_navigating_to_different_page()
+    public function test_it_shows_exit_warning_if_resource_form_has_changes_when_navigating_to_different_page()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -36,8 +35,7 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function it_shows_exit_warning_if_resource_form_has_changes_when_clicking_browser_back_button()
+    public function test_it_shows_exit_warning_if_resource_form_has_changes_when_clicking_browser_back_button()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -59,8 +57,7 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function it_doesnt_show_exit_warning_if_resource_form_has_changes_when_clicking_cancel()
+    public function test_it_doesnt_show_exit_warning_if_resource_form_has_changes_when_clicking_cancel()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -79,8 +76,7 @@ class CreateResourceFormAbandonmentTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function it_doesnt_show_exit_warning_if_resource_form_after_save_and_create_another_when_clicking_cancel()
+    public function test_it_doesnt_show_exit_warning_if_resource_form_after_save_and_create_another_when_clicking_cancel()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)

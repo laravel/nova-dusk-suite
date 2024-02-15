@@ -11,8 +11,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class IndexPreviewTest extends DuskTestCase
 {
-    /** @test */
-    public function it_can_display_preview_modal()
+    public function test_it_can_display_preview_modal()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)

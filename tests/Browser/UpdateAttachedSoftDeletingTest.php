@@ -12,10 +12,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateAttachedSoftDeletingTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function attached_resource_can_be_updated()
+    public function test_attached_resource_can_be_updated()
     {
         $ship = ShipFactory::new()->create(['deleted_at' => now()]);
         $captain = CaptainFactory::new()->create();
@@ -46,10 +43,7 @@ class UpdateAttachedSoftDeletingTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function attached_resource_can_be_updated_and_can_continue_editing()
+    public function test_attached_resource_can_be_updated_and_can_continue_editing()
     {
         $ship = ShipFactory::new()->create(['deleted_at' => now()]);
         $captain = CaptainFactory::new()->create();
