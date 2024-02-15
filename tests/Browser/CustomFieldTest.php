@@ -13,10 +13,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class CustomFieldTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function resource_can_be_created()
+    public function test_resource_can_be_created()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -35,10 +32,7 @@ class CustomFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function validation_errors_are_displayed()
+    public function test_validation_errors_are_displayed()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
@@ -52,10 +46,7 @@ class CustomFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function custom_index_field_displays_value()
+    public function test_custom_index_field_displays_value()
     {
         $flight = FlightFactory::new()->create();
 
@@ -71,10 +62,7 @@ class CustomFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function custom_detail_field_displays_value()
+    public function test_custom_detail_field_displays_value()
     {
         $flight = FlightFactory::new()->create();
 
