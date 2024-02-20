@@ -15,10 +15,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateAttachedPolymorphicTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function attached_resource_can_be_updated()
+    public function test_attached_resource_can_be_updated()
     {
         $post = PostFactory::new()->create();
         $tag = TagFactory::new()->create();
@@ -41,10 +38,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function attached_searchable_resource_is_locked()
+    public function test_attached_searchable_resource_is_locked()
     {
         $this->defineApplicationStates('searchable');
 
@@ -69,10 +63,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function attached_resource_can_be_updated_and_can_continue_editing()
+    public function test_attached_resource_can_be_updated_and_can_continue_editing()
     {
         $post = PostFactory::new()->create();
         $tag = TagFactory::new()->create();
@@ -95,10 +86,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function validation_errors_are_displayed()
+    public function test_validation_errors_are_displayed()
     {
         $post = PostFactory::new()->create();
         $tag = TagFactory::new()->create();
@@ -121,10 +109,7 @@ class UpdateAttachedPolymorphicTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function it_cant_edit_unsupported_polymorphic_relationship_type()
+    public function test_it_cant_edit_unsupported_polymorphic_relationship_type()
     {
         CommentFactory::new()->create([
             'commentable_type' => \Illuminate\Foundation\Auth\User::class,

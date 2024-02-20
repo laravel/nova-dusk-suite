@@ -32,6 +32,9 @@
         "orchestra/testbench-dusk": "^8.22",
         "phpunit/phpunit": "^10.1"
     },
+    "conflict": {
+        "laravel/dusk": "7.12.2"
+    },
     "autoload": {
         "psr-4": {
             "App\\": "app/",

@@ -11,8 +11,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class KeyValueFieldTest extends DuskTestCase
 {
-    /** @test */
-    public function it_can_display_numeric_array_keyvalue()
+    public function test_it_can_display_numeric_array_keyvalue()
     {
         $post = PostFactory::new()->create([
             'meta' => ['laravel', 'nova', 'admin'],
@@ -32,8 +31,7 @@ class KeyValueFieldTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function it_can_display_associated_array_keyvalue()
+    public function test_it_can_display_associated_array_keyvalue()
     {
         $post = PostFactory::new()->create([
             'meta' => ['project' => 'laravel', 'tool' => 'nova', 'length' => 20],
@@ -53,8 +51,7 @@ class KeyValueFieldTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function it_does_preserve_order_numeric_array_keyvalue()
+    public function test_it_does_preserve_order_numeric_array_keyvalue()
     {
         $post = PostFactory::new()->create([
             'meta' => ['laravel', 'nova', 'admin'],
@@ -77,8 +74,7 @@ class KeyValueFieldTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function it_does_not_preserve_order_associated_array_keyvalue()
+    public function test_it_does_not_preserve_order_associated_array_keyvalue()
     {
         $post = PostFactory::new()->create([
             'meta' => ['project' => 'laravel', 'tool' => 'nova', 'length' => 20],
@@ -107,8 +103,7 @@ class KeyValueFieldTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function it_does_not_preserve_order_on_numeric_mixed_with_associated_array_keyvalue()
+    public function test_it_does_not_preserve_order_on_numeric_mixed_with_associated_array_keyvalue()
     {
         $post = PostFactory::new()->create([
             'meta' => ['project' => 'laravel', 'tool' => 'nova'],

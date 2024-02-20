@@ -13,10 +13,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class DetailBelongsToFieldTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function belongs_to_field_navigates_to_parent_resource_when_clicked()
+    public function test_belongs_to_field_navigates_to_parent_resource_when_clicked()
     {
         $user = User::find(1);
         $user->posts()->save($post = PostFactory::new()->make());
@@ -33,10 +30,7 @@ class DetailBelongsToFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function belongs_to_field_should_honor_custom_labels()
+    public function test_belongs_to_field_should_honor_custom_labels()
     {
         InvoiceItemFactory::new()->create();
 
@@ -51,10 +45,7 @@ class DetailBelongsToFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function belongs_to_field_accepts_parent_with_big_int_id()
+    public function test_belongs_to_field_accepts_parent_with_big_int_id()
     {
         $user = UserFactory::new()->create([
             'id' => 9121018173229432287,

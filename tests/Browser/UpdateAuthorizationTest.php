@@ -10,10 +10,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class UpdateAuthorizationTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function update_page_should_not_be_accessible_if_not_authorized_to_view()
+    public function test_update_page_should_not_be_accessible_if_not_authorized_to_view()
     {
         $post = PostFactory::new()->create();
         User::find(1)->shouldBlockFrom('post.update.'.$post->id);

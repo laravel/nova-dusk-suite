@@ -9,10 +9,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class QueuedActionTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function queued_action_status_is_displayed_in_action_events_list()
+    public function test_queued_action_status_is_displayed_in_action_events_list()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
