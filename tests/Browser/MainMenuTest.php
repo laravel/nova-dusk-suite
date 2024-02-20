@@ -46,8 +46,6 @@ class MainMenuTest extends DuskTestCase
                         ->assertSeeIn('@current-active-link', 'Passthrough Lens');
                 });
         });
-
-        $this->reloadServing();
     }
 
     public function test_resource_link_not_active_when_visiting_lens_with_default_main_menu()

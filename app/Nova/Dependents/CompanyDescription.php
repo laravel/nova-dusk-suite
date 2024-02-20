@@ -42,7 +42,7 @@ class CompanyDescription
         }
 
         $field->default(
-            ! in_array($name, ['Laravel LLC', 'Tailwind Labs Inc'])
+            ! in_array($name, ['Laravel LLC', 'Laravel Holdings Inc.', 'Tailwind Labs Inc'])
                 ? "{$name}'s Description"
                 : ''
         );

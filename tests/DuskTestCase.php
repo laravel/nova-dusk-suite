@@ -5,6 +5,7 @@ namespace Laravel\Nova\Tests;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Arr;
 use Laravel\Dusk\Browser;
+use Laravel\Dusk\Keyboard;
 use Orchestra\Testbench\Dusk\Foundation\PackageManifest;
 
 abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
@@ -241,5 +242,17 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
 
             $browser->resize(env('DUSK_WIDTH'), env('DUSK_HEIGHT'));
         });
+    }
+
+    /**
+     * Ensure Keyboard class is available before assertion.
+     *
+     * @return void
+     */
+    protected function requiresKeyboardSupport()
+    {
+        if (! class_exists(Keyboard::class)) {
+            $this->markTestSkipped(sprintf('Missing required %s class.', Keyboard::class));
+        }
     }
 }

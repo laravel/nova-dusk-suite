@@ -72,14 +72,14 @@ class DependentFieldTest extends DuskTestCase
 
             $browser->visit(new Create('companies'))
                 ->waitForTextIn('h1', 'Create Company')
-                ->type('@name', 'Laravel LLC')
+                ->type('@name', 'Laravel Holdings Inc.')
                 ->pause(1500)
                 ->assertDisabled('@country')
                 ->create()
                 ->waitForText('The company was created!');
 
             $this->assertDatabaseHas('companies', [
-                'name' => 'Laravel LLC',
+                'name' => 'Laravel Holdings Inc.',
                 'description' => null,
                 'country' => null,
             ]);
@@ -172,7 +172,7 @@ class DependentFieldTest extends DuskTestCase
                 ->visit(new Create('companies'))
                 ->waitForTextIn('h1', 'Create Company')
                 ->within(new FormComponent, function ($form) {
-                    $form->type('@name', 'Laravel LLC')
+                    $form->type('@name', 'Laravel Holdings Inc.')
                         ->whenAvailable('@description', function () use ($form) {
                             $form->setFieldValue(
                                 'description',
@@ -185,7 +185,7 @@ class DependentFieldTest extends DuskTestCase
                 ->waitForText('The company was created!');
 
             $this->assertDatabaseHas('companies', [
-                'name' => 'Laravel LLC',
+                'name' => 'Laravel Holdings Inc.',
                 'description' => 'Laravel is a web ecosystem full of delightful tools that are supercharged for developer happiness and productivity.',
                 'country' => null,
             ]);

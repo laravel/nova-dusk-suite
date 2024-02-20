@@ -11,8 +11,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class AttachResourceFormAbandonmentTest extends DuskTestCase
 {
-    /** @test */
-    public function it_shows_exit_warning_if_resource_form_has_changes_when_navigating_to_different_page()
+    public function test_it_shows_exit_warning_if_resource_form_has_changes_when_navigating_to_different_page()
     {
         RoleFactory::new()->create();
 
@@ -37,8 +36,7 @@ class AttachResourceFormAbandonmentTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function it_shows_exit_warning_if_resource_form_has_changes_when_clicking_browser_back_button()
+    public function test_it_shows_exit_warning_if_resource_form_has_changes_when_clicking_browser_back_button()
     {
         RoleFactory::new()->create();
 
@@ -60,8 +58,7 @@ class AttachResourceFormAbandonmentTest extends DuskTestCase
         });
     }
 
-    /** @test */
-    public function it_doesnt_show_exit_warning_if_resource_form_has_changes_when_clicking_cancel()
+    public function test_it_doesnt_show_exit_warning_if_resource_form_has_changes_when_clicking_cancel()
     {
         RoleFactory::new()->create();
 

@@ -11,10 +11,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class PivotActionTest extends DuskTestCase
 {
-    /**
-     * @test
-     */
-    public function pivot_tables_can_be_referred_to_using_a_custom_name()
+    public function test_pivot_tables_can_be_referred_to_using_a_custom_name()
     {
         RoleFactory::new()->create()->users()->attach(1);
 
@@ -35,10 +32,7 @@ class PivotActionTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function actions_can_be_executed_against_pivot_rows()
+    public function test_actions_can_be_executed_against_pivot_rows()
     {
         RoleFactory::new()->create()->users()->attach(1);
 

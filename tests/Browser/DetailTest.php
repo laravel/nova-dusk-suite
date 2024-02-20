@@ -34,10 +34,7 @@ class DetailTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function can_view_resource_as_big_int()
+    public function test_can_view_resource_as_big_int()
     {
         $user = UserFactory::new()->create([
             'id' => 9121018173229432287,
