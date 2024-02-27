@@ -3,9 +3,11 @@
 namespace Laravel\Nova\Tests\Browser;
 
 use App\Models\User;
+use Database\Factories\CompanyFactory;
 use Database\Factories\DockFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
+use Laravel\Nova\Testing\Browser\Components\Controls\RelationSelectControlComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Components\SearchInputComponent;
 use Laravel\Nova\Testing\Browser\Pages\Create;
@@ -37,6 +39,37 @@ class CreateWithBelongsToTest extends DuskTestCase
         });
     }
 
+    public function test_toggling_with_trashed_on_belongs_to_field_resets_the_original_value_is_not_still_there()
+    {
+        CompanyFactory::new()->create(['name' => 'Laravel LLC']);
+        CompanyFactory::new()->create(['name' => 'Tailwind Labs Inc']);
+        CompanyFactory::new()->create(['name' => 'Monarkee LLC', 'deleted_at' => now()]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new Create('profiles'))
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->withTrashedRelation('companies')
+                        ->selectRelation('companies', 3)
+                        ->withoutTrashedRelation('companies');
+
+                    $browser->whenAvailable(
+                        new RelationSelectControlComponent('companies'),
+                        function (Browser $browser) {
+                            $browser->assertSelectHasOption('', 1)
+                                ->assertSelectHasOption('', 1);
+
+                            $browser->assertSelectMissingOption('', 3);
+                        }
+                    );
+
+                    $browser->cancel();
+                });
+
+            $browser->blank();
+        });
+    }
+
     public function test_parent_resource_should_be_limited_when_creating_via_parents_detail_page()
     {
         $this->browse(function (Browser $browser) {
@@ -44,7 +77,7 @@ class CreateWithBelongsToTest extends DuskTestCase
                 ->visit(new Detail('users', 1))
                 ->runCreateRelation('posts')
                 ->within(new FormComponent(), function ($browser) {
-                    $browser->within(new SearchInputComponent('users'), function ($browser) {
+                    $browser->whenAvailable(new SearchInputComponent('users'), function ($browser) {
                         $browser->assertSelectedSearchResult('Taylor Otwell');
                     })
                         ->type('@title', 'Test Post')

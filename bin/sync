@@ -83,6 +83,10 @@ transform([
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/cache.php"));
 
 transform([
+    "'default' => env('DB_CONNECTION', 'sqlite')," => "'default' => env('DB_CONNECTION', 'mysql'),"
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/database.php"));
+
+transform([
     "env('BCRYPT_ROUNDS', 12)," => "env('BCRYPT_ROUNDS', 10),",
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/hashing.php"));
 
@@ -109,23 +113,24 @@ transform([
 
 transform([
     "env('QUEUE_CONNECTION', 'database')," => "env('QUEUE_CONNECTION', 'sync'),",
+    "'database' => env('DB_CONNECTION', 'sqlite')," => "'database' => env('DB_CONNECTION', 'mysql'),"
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/queue.php"));
 transform([
-    "env('SESSION_DRIVER', 'cookie')," => "env('SESSION_DRIVER', 'file'),",
+    "env('SESSION_DRIVER', 'database')," => "env('SESSION_DRIVER', 'file'),",
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/session.php"));
 
 transform([
-    'Application::configure()' => 'Application::configure(dirname(__DIR__))',
+    // 'Application::configure(basePath: dirname(__DIR__))' => 'Application::configure(basePath: dirname(__DIR__))',
     "    ->withRouting(
         web: __DIR__.'/../routes/web.php',
-        // api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
-        // channels: __DIR__.'/../routes/channels.php',
-    )" => "    ->withRouting(
+        health: '/up',
+    )" => "    ->withProviders()
+    ->withRouting(
         web: __DIR__.'/../routes/web.php',
         api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
-        // channels: __DIR__.'/../routes/channels.php',
+        health: '/up',
     )",
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/bootstrap/app.php"));
 

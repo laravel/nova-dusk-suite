@@ -12,7 +12,7 @@ return [
     |
     | This value is the name of your application, which will be used when the
     | framework needs to place the application's name in a notification or
-    | any other location as required by the application or its packages.
+    | other UI elements where an application name needs to be displayed.
     |
     */
 
@@ -51,7 +51,7 @@ return [
     |
     | This URL is used by the console to properly generate URLs when using
     | the Artisan command line tool. You should set this to the root of
-    | your application so that it is used when running Artisan tasks.
+    | the application so that it's available within Artisan commands.
     |
     */
 
@@ -82,8 +82,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | The application locale determines the default locale that will be used
-    | by the translation service provider. You are free to set this value
-    | to any of the locales which will be supported by the application.
+    | by Laravel's translation / localization methods. This option can be
+    | set to any locale for which you plan to have translation strings.
     |
     */
 
@@ -121,14 +121,20 @@ return [
     |--------------------------------------------------------------------------
     |
     | This key is utilized by Laravel's encryption services and should be set
-    | to a random, 32 character string or all of the encrypted strings are
-    | not secure. You should do this prior to deploying the application.
+    | to a random, 32 character string to ensure that all encrypted values
+    | are secure. You should do this prior to deploying the application.
     |
     */
 
+    'cipher' => 'AES-256-CBC',
+
     'key' => env('APP_KEY'),
 
-    'cipher' => 'AES-256-CBC',
+    'previous_keys' => [
+        ...array_filter(
+            explode(',', env('APP_PREVIOUS_KEYS', ''))
+        ),
+    ],
 
     /*
     |--------------------------------------------------------------------------

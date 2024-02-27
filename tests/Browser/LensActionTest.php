@@ -2,7 +2,9 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
+use App\Models\Post;
 use App\Models\User;
+use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\ActionDropdownComponent;
 use Laravel\Nova\Testing\Browser\Components\LensComponent;
@@ -89,6 +91,36 @@ class LensActionTest extends DuskTestCase
                 3 => false,
                 4 => false,
             ], User::findMany([1, 2, 3, 4])->pluck('active', 'id')->all());
+
+            $browser->blank();
+        });
+    }
+
+    public function test_can_run_actions_on_selected_resources_via_search()
+    {
+        $this->browse(function (Browser $browser) {
+            PostFactory::new()->create([
+                'user_id' => 2,
+            ]);
+            PostFactory::new()->times(3)->create();
+
+            $browser->loginAs(1)
+                ->visit(new Lens('posts', 'post'))
+                ->within(new LensComponent('posts', 'post'), function ($browser) {
+                    $browser->waitForTable()
+                        ->searchFor('James Brooks')
+                        ->waitForTable();
+
+                    $browser->selectAllMatching()
+                        ->runAction('mark-as-active');
+                })->waitForText('The action was executed successfully.');
+
+            $this->assertEquals([
+                1 => true,
+                2 => false,
+                3 => false,
+                4 => false,
+            ], Post::findMany([1, 2, 3, 4])->pluck('active', 'id')->all());
 
             $browser->blank();
         });
