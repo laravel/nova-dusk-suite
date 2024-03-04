@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
+use Laravel\Nova\Actions\ActionResponse;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -22,7 +23,7 @@ class DownloadLaravelLogo extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        return Action::downloadURL(url('laravel-logo.png'), 'Laravel Logo');
+        return ActionResponse::download('Laravel Logo', url('laravel-logo.png'));
     }
 
     /**
