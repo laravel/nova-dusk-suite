@@ -23,7 +23,7 @@ class DownloadLaravelLogo extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        return Action::downloadURL(url('storage/laravel-logo.png'), 'Laravel Logo');
+        return Action::downloadURL(url('laravel-logo.png'), 'Laravel Logo');
     }
 
     /**
