@@ -118,7 +118,9 @@ class Company extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            Actions\DownloadLaravelLogo::make()->standalone(),
+        ];
     }
 
     /**
