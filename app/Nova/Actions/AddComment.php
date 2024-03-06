@@ -54,6 +54,7 @@ class AddComment extends Action
             BelongsTo::make('User')
                 ->hide()
                 ->rules('sometimes')
+                ->searchable(uses_searchable())
                 ->dependsOn('anonymous', function (BelongsTo $field, NovaRequest $request, FormData $formData) {
                     if ($formData->boolean('anonymous') === false) {
                         $field->show()->rules('required');
