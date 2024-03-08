@@ -41,7 +41,6 @@ class ChangeCreatedAt extends Action
     {
         return [
             DateTime::make('Created At', 'created_at')
-                ->required()
                 ->rules('required'),
         ];
     }
