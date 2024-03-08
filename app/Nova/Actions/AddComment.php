@@ -14,6 +14,8 @@ use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+use function App\Nova\uses_searchable;
+
 class AddComment extends Action
 {
     use InteractsWithQueue, Queueable;

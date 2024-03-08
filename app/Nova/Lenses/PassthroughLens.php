@@ -2,6 +2,7 @@
 
 namespace App\Nova\Lenses;
 
+use App\Nova\Actions\ChangeCreatedAt;
 use App\Nova\Actions\CreateUserProfile;
 use App\Nova\Actions\MarkAsActive;
 use App\Nova\Actions\MarkAsInactive;
@@ -87,6 +88,11 @@ class PassthroughLens extends Lens
             MarkAsInactive::make()->showInline()->canRun(function ($request, $model) {
                 return $model->active === true && (int) $model->getKey() !== 1;
             }),
+            ChangeCreatedAt::make()
+                ->sole()
+                ->canSee(function (NovaRequest $request) {
+                    return $request->resource() === UserResource::class;
+                }),
             CreateUserProfile::make()
                 ->showInline()
                 ->canSee(function (NovaRequest $request) {
