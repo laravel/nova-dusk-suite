@@ -13,6 +13,8 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Timezone;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+use function Laravel\Nova\uses_searchable;
+
 class CreateUserProfile extends Action
 {
     use InteractsWithQueue, Queueable;
@@ -57,6 +59,7 @@ class CreateUserProfile extends Action
             Text::make('Twitter Profile', 'twitter')->nullable(),
             Text::make('GitHub Username', 'github')->nullable(),
             Timezone::make('Timezone')
+                ->searchable(uses_searchable())
                 ->dependsOn(['github'], function (Timezone $field, NovaRequest $request, FormData $formData) {
                     switch ($formData->github) {
                         case 'crynobone':

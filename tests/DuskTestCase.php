@@ -2,11 +2,9 @@
 
 namespace Laravel\Nova\Tests;
 
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Arr;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Keyboard;
-use Orchestra\Testbench\Dusk\Foundation\PackageManifest;
 
 abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
 {
@@ -25,6 +23,13 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      * @var int
      */
     protected static $baseServePort = 8085;
+
+    /**
+     * Automatically loads environment file if available.
+     *
+     * @var bool
+     */
+    protected $loadEnvironmentVariables = true;
 
     /**
      * Get Application's base path.
@@ -87,55 +92,14 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
         ];
     }
 
-    /**
-     * Get application aliases.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return array
-     */
-    protected function getApplicationAliases($app)
+    /** {@inheritDoc} */
+    protected function resolveApplicationResolvingCallback($app): void
     {
-        return $app['config']['app.aliases'];
-    }
+        parent::resolveApplicationResolvingCallback($app);
 
-    /**
-     * Get application providers.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return array
-     */
-    protected function getApplicationProviders($app)
-    {
-        return $app['config']['app.providers'];
-    }
-
-    /**
-     * Resolve application implementation.
-     *
-     * @return \Illuminate\Foundation\Application
-     */
-    protected function resolveApplication()
-    {
-        return tap(new Application($this->getBasePath()), function ($app) {
-            $app->detectEnvironment(function () {
-                return 'testing';
-            });
-
-            PackageManifest::swap($app, $this);
+        $app->detectEnvironment(function () {
+            return 'testing';
         });
-    }
-
-    /**
-     * Resolve application core configuration implementation.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
-     */
-    protected function resolveApplicationConfiguration($app)
-    {
-        $app->make('Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables')->bootstrap($app);
-
-        parent::resolveApplicationConfiguration($app);
     }
 
     /**
@@ -146,7 +110,9 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      */
     protected function resolveApplicationConsoleKernel($app)
     {
-        $app->singleton('Illuminate\Contracts\Console\Kernel', 'App\Console\Kernel');
+        $app->singleton(
+            'Illuminate\Contracts\Console\Kernel', class_exists('App\Console\Kernel') ? 'App\Console\Kernel' : 'Illuminate\Foundation\Console\Kernel'
+        );
     }
 
     /**
@@ -157,7 +123,9 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      */
     protected function resolveApplicationHttpKernel($app)
     {
-        $app->singleton('Illuminate\Contracts\Http\Kernel', 'App\Http\Kernel');
+        $app->singleton(
+            'Illuminate\Contracts\Http\Kernel', class_exists('App\Http\Kernel') ? 'App\Http\Kernel' : 'Illuminate\Foundation\Http\Kernel'
+        );
     }
 
     /**
@@ -168,7 +136,10 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      */
     protected function resolveApplicationExceptionHandler($app)
     {
-        $app->singleton('Illuminate\Contracts\Debug\ExceptionHandler', 'App\Exceptions\Handler');
+        $app->singleton(
+            'Illuminate\Contracts\Debug\ExceptionHandler',
+            class_exists('App\Exceptions\Handler') ? 'App\Exceptions\Handler' : 'Illuminate\Foundation\Exceptions\Handler'
+        );
     }
 
     /**
