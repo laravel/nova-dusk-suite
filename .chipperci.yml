@@ -6,6 +6,7 @@ environment:
 
 services:
   - mysql: 5.7
+  - dusk:
 
 pipeline:
   - name: Setup
@@ -26,7 +27,7 @@ pipeline:
 
   - name: Composer Install
     cmd: |
-      composer2 install --no-interaction --no-scripts --prefer-dist
+      composer2 install --no-interaction --no-scripts --prefer-dist --no-scripts
 
   - name: Compile assets
     cmd: |
