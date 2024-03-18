@@ -1,15 +1,7 @@
 name: Laravel
 
 on:
-  push:
-    branches:
-      - "8.*"
-      - "9.*"
-      - "10.*"
-      - "master"
-      - "pr-*"
-      - "fixes-*"
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   laravel-tests:
@@ -21,7 +13,7 @@ jobs:
         os:
           - "ubuntu-latest"
         php:
-          - '8.0'
+          - 8.2
         dependencies:
           - "highest"
         experimental:
