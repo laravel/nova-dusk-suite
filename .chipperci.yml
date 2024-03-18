@@ -2,10 +2,11 @@ version: 1
 
 environment:
   php: 8.1
-  node: 18
+  node: 16
 
 services:
   - mysql: 5.7
+  - redis:
   - dusk:
 
 pipeline:
