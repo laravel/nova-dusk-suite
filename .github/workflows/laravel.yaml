@@ -1,15 +1,7 @@
 name: Laravel
 
 on:
-  push:
-    branches:
-      - "8.*"
-      - "9.*"
-      - "10.*"
-      - "master"
-      - "pr-*"
-      - "fixes-*"
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   laravel-tests:
@@ -72,7 +64,7 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        uses: "ramsey/composer-install@v2"
+        uses: "ramsey/composer-install@v3"
         with:
           dependency-versions: "${{ matrix.dependencies }}"
           composer-options: "--prefer-dist --no-cache"
