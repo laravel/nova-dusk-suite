@@ -31,8 +31,8 @@
         "laravel/nova": "@dev",
         "mockery/mockery": "^1.5.1",
         "nunomaduro/collision": "^7.5",
-        "orchestra/testbench": "^8.7",
-        "orchestra/testbench-dusk": "8.14",
+        "orchestra/testbench": "^8.22",
+        "orchestra/testbench-dusk": "^8.23",
         "phpunit/phpunit": "^10.1"
     },
     "conflict": {
