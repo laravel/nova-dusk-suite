@@ -13,7 +13,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Timezone;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-use function Laravel\Nova\uses_searchable;
+use function App\Nova\uses_searchable;
 
 class CreateUserProfile extends Action
 {
