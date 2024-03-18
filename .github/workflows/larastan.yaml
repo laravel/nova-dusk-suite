@@ -5,7 +5,7 @@ on:
     branches:
       - "9.*"
       - "10.*"
-      - "11.* "
+      - "11.*"
       - "master"
   pull_request:
 
