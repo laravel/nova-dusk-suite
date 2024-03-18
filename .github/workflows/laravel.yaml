@@ -1,14 +1,7 @@
 name: Laravel
 
 on:
-  push:
-    branches:
-      - "8.*"
-      - "9.*"
-      - "10.*"
-      - "11.*"
-      - "master"
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   laravel-tests:
