@@ -1,0 +1,63 @@
+version: 1
+
+environment:
+  php: 8.1
+  node: 18
+
+services:
+  - mysql: 5.7
+
+pipeline:
+  - name: Setup
+    cmd: |
+      cp -v .env.example .env
+
+  - name: Clone Nova
+    cmd: |
+      NOVA_BRANCH='develop'
+
+      if [[ $CI_COMMIT_BRANCH = "8.4" || $CI_COMMIT_BRANCH = "9.4" || $CI_COMMIT_BRANCH = "10.4" ]]; then
+        NOVA_BRANCH='4.0'
+      fi
+
+      echo "Cloning branch {$NOVA_BRANCH}"
+
+      git clone https://$GITHUB_TOKEN@github.com/laravel/nova.git --depth 1 --branch $NOVA_BRANCH --single-branch --no-tags
+
+  - name: Composer Install
+    cmd: |
+      composer2 install --no-interaction --no-scripts --prefer-dist
+
+  - name: Compile assets
+    cmd: |
+      cp ./nova/webpack.mix.js.dist ./nova/webpack.mix.js
+      echo '' > ./nova/resources/css/fonts.css
+
+      composer2 run dusk:assets
+
+  - name: App Setup
+    cmd: |
+      php artisan key:generate
+      chmod -R 777 storage bootstrap/cache
+      php artisan storage:link
+
+  - name: Detect Dusk Version
+    cmd: |
+      php vendor/bin/dusk-updater update $CHROME_DRIVER
+      php artisan package:discover
+      php artisan nova:publish
+
+  - name: Start Dusk Server
+    cmd: |
+      # php artisan dusk:chrome-driver --detect
+      # php -S 0.0.0.0:8000 -t public 2>/dev/null &
+      vendor/laravel/dusk/bin/chromedriver-linux &
+
+  - name: PHPUnit
+    cmd: |
+      vendor/bin/phpunit -c phpunit.xml --exclude-group=external-network
+
+  - name: Run Dusk
+    cmd: |
+      DUSK_SERVE_HOST="[::0]" DUSK_SERVE_PORT=8000 DUSK_SERVE_URL="http://${BUILD_HOST}:8000" APP_URL="http://${BUILD_HOST}:8000" vendor/bin/phpunit -c phpunit.dusk.xml --exclude-group external-network,local-time --stop-on-error --stop-on-failure
+
