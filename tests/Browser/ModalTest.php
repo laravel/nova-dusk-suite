@@ -12,7 +12,7 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class ModalTest extends DuskTestCase
 {
-    public function test_it_can_closed_searchable_input_dropdown()
+    public function test_it_can_closed_searchable_belongs_to_field_dropdown()
     {
         $this->defineApplicationStates('searchable');
 
@@ -34,6 +34,34 @@ class ModalTest extends DuskTestCase
                                 })->pause(500)
                                 ->elsewhere('', function ($browser) {
                                     $browser->assertMissing('@users-search-input-dropdown');
+                                });
+                        });
+                });
+
+            $browser->blank();
+        });
+    }
+
+    public function test_it_can_closed_searchable_select_field_dropdown()
+    {
+        $this->defineApplicationStates('searchable');
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(1)
+                ->visit(new Detail('users', 4))
+                ->openControlSelector()
+                ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
+                    $browser->click("button[data-action-id='create-user-profile']")
+                        ->elsewhereWhenAvailable(new ConfirmActionModalComponent(), function ($browser) {
+                            $browser->click('@timezone-search-input')
+                                ->elsewhereWhenAvailable(new SearchInputComponent('timezone'), function ($browser) {
+                                    $browser->showSearchDropdown();
+                                })
+                                ->elsewhereWhenAvailable('@timezone-search-input-dropdown', function ($browser) {
+                                    $browser->clickAtPoint(1, 1);
+                                })->pause(500)
+                                ->elsewhere('', function ($browser) {
+                                    $browser->assertMissing('@timezone-search-input-dropdown');
                                 });
                         });
                 });
