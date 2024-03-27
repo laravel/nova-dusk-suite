@@ -7,6 +7,7 @@ use App\Models\User;
 use Database\Factories\PostFactory;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\BreadcrumbComponent;
+use Laravel\Nova\Testing\Browser\Components\Controls\SelectControlComponent;
 use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Page;
@@ -29,9 +30,12 @@ class ReplicateTest extends DuskTestCase
                     $browser->assertSee('User Post Details: '.$post->id)
                         ->assertCurrentPageTitle('Replicate User Post');
                 })
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent(), function ($browser) use ($post) {
                     $browser->whenAvailable('@title', function ($browser) {
                         $browser->type('', 'Replicated Post');
+                    })
+                    ->whenAvailable(new SelectControlComponent('users-select'), function ($browser) use ($post) {
+                        $browser->select('', $post->user_id);
                     });
                 })
                 ->create()
@@ -63,8 +67,13 @@ class ReplicateTest extends DuskTestCase
                     $browser->assertSee('User Post Details: '.$post->id)
                         ->assertCurrentPageTitle('Replicate User Post');
                 })
-                ->within(new FormComponent(), function ($browser) {
-                    $browser->type('@title', 'Replicated Post 2');
+                ->within(new FormComponent(), function ($browser) use ($post) {
+                    $browser->whenAvailable('@title', function ($browser) {
+                        $browser->type('', 'Replicated Post 2');
+                    })
+                    ->whenAvailable(new SelectControlComponent('users-select'), function ($browser) use ($post) {
+                        $browser->select('', $post->user_id);
+                    });
                 })
                 ->create()
                 ->waitForText('The user post was created!');

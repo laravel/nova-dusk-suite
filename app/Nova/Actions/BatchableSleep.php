@@ -32,7 +32,6 @@ class BatchableSleep extends Action implements BatchableAction, ShouldQueue
     {
         if (! $this->isStandalone()) {
             foreach ($models as $model) {
-                /** @phpstan-ignore-next-line */
                 $this->batch()->add(new SleepTask($model));
 
                 $this->markAsFinished($model);

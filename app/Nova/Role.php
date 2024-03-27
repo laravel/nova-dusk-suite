@@ -63,6 +63,7 @@ class Role extends Resource
                         new Actions\UpdateRequiredPivotNotes,
                     ];
                 })
+                ->searchable(uses_searchable())
                 ->prunable()
                 ->filterable()
                 ->reorderAttachables(uses_with_reordering()),

@@ -105,7 +105,7 @@ class IndexTest extends DuskTestCase
                 ->assertSee('Create & Add Another')
                 ->assertSee('Create User');
 
-//            // to different Resource Index screen
+            // to different Resource Index screen
             $browser->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTextIn('h1', 'Users')

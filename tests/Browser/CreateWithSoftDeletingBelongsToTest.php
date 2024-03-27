@@ -59,7 +59,7 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
         });
     }
 
-    public function test_uncheck_with_trashed_can_be_saved_when_parent_is_trashed()
+    public function test_uncheck_with_trashed_cannot_be_saved_when_parent_is_trashed()
     {
         $ship = ShipFactory::new()->create(['deleted_at' => now()]);
 
@@ -69,14 +69,14 @@ class CreateWithSoftDeletingBelongsToTest extends DuskTestCase
                 ->withTrashedRelation('ships')
                 ->selectRelation('ships', $ship->id)
                 ->withoutTrashedRelation('ships')
-                    // Ideally would use assertChecked here but RemoteWebDriver
-                    // returns unchecked when it clearly is checked?
                 ->type('@name', 'Sail name')
                 ->type('@inches', 25)
                 ->create()
-                ->waitForText('The sail was created!');
+                ->waitForText('There was a problem submitting the form.')
+                ->assertSee(__('validation.required', ['attribute' => 'Ship']))
+                ->cancel();
 
-            $this->assertSame(1, Sail::whereBelongsTo($ship)->count());
+            $this->assertSame(0, Sail::whereBelongsTo($ship)->count());
 
             $browser->blank();
         });
