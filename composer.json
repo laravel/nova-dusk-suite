@@ -10,7 +10,6 @@
     "require": {
         "php": "^8.1",
         "algolia/algoliasearch-client-php": "^3.3",
-        "carbonphp/carbon-doctrine-types": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
         "laravel/dusk": "^7.11.3",
@@ -24,7 +23,6 @@
         "spatie/laravel-ray": "^1.17"
     },
     "require-dev": {
-        "doctrine/dbal": "^3.5.1",
         "fakerphp/faker": "^1.9.1",
         "larastan/larastan": "^2.5.1",
         "laravel/breeze": "^1.1",
