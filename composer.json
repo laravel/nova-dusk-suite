@@ -60,7 +60,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "10.5.x-dev"
+            "dev-master": "11.5.x-dev"
         },
         "laravel": {
             "dont-discover": []
