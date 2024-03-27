@@ -14,7 +14,7 @@
         "doctrine/dbal": "^3.5.1",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
-        "laravel/dusk": "^7.11.3",
+        "laravel/dusk": "^8.0",
         "laravel/framework": "^10.8",
         "laravel/scout": "^10.0.1",
         "laravel/tinker": "^2.7",
