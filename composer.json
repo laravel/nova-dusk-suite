@@ -10,12 +10,11 @@
     "require": {
         "php": "^8.1",
         "algolia/algoliasearch-client-php": "^3.3",
-        "carbonphp/carbon-doctrine-types": "^2.0",
         "doctrine/dbal": "^3.5.1",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
-        "laravel/dusk": "^7.11.3",
-        "laravel/framework": "^10.8",
+        "laravel/dusk": "^8.1",
+        "laravel/framework": "^10.48.4",
         "laravel/scout": "^10.0.1",
         "laravel/tinker": "^2.7",
         "laravel/vapor-core": "^2.22",
@@ -25,15 +24,13 @@
         "spatie/laravel-ray": "^1.17"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.9.1",
         "larastan/larastan": "^2.5.1",
         "laravel/breeze": "^1.1",
         "laravel/nova": "@dev",
-        "mockery/mockery": "^1.5.1",
         "nunomaduro/collision": "^7.5",
-        "orchestra/testbench": "^8.22",
+        "orchestra/testbench": "^8.22.2",
         "orchestra/testbench-dusk": "^8.23",
-        "phpunit/phpunit": "^10.1"
+        "phpunit/phpunit": "^10.5"
     },
     "conflict": {
         "laravel/dusk": "7.12.2"
