@@ -169,7 +169,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             return ! $user->active;
                         })
                 )->append(
-                    MenuItem::externalLink('Dashboard', route('dashboard'))
+                    MenuItem::externalLink('Dashboard', url('/dashboard'))
                 );
             });
 

@@ -8,7 +8,8 @@ require __DIR__.'/../vendor/autoload.php';
 $input = new Symfony\Component\Console\Input\ArgvInput();
 $files = new Illuminate\Filesystem\Filesystem();
 
-$version = ($input->hasParameterOption('--dev') && $input->hasParameterOption('--stable') === false) ? '10.x-dev' : '^10.0';
+// $version = ($input->hasParameterOption('--dev') && $input->hasParameterOption('--stable') === false) ? 'dev-master' : '^11.0';
+$version = 'dev-master';
 
 $files->deleteDirectory("{$workingPath}/skeleton");
 
@@ -17,13 +18,13 @@ Symfony\Component\Process\Process::fromShellCommandline(
 )->mustRun();
 
 Illuminate\Support\Collection::make([
-    'app/Console/Kernel.php',
-    'app/Exceptions/Handler.php',
-    'app/Http/Kernel.php',
     'app/Http/Controllers/*.php',
     'app/Http/Middleware/*.php',
-    'config/*.php',
+    'bootstrap/app.php',
+    'bootstrap/providers.php',
     'lang/en/*.php',
+    'public/index.php',
+    'artisan',
 ])->transform(fn ($file) => "{$workingPath}/skeleton/{$file}")
 ->map(fn ($file) => str_contains($file, '*') ? [...$files->glob($file)] : $file)
 ->flatten()
@@ -31,25 +32,26 @@ Illuminate\Support\Collection::make([
     $files->copy($file, "{$workingPath}".Illuminate\Support\Str::after($file, "{$workingPath}/skeleton"));
 });
 
+Illuminate\Support\Collection::make([
+    'vendor/laravel/framework/config/*.php',
+])->transform(fn ($file) => "{$workingPath}/{$file}")
+->map(fn ($file) => str_contains($file, '*') ? [...$files->glob($file)] : $file)
+->flatten()
+->each(function ($file) use ($files, $workingPath) {
+    $files->copy($file, "{$workingPath}".Illuminate\Support\Str::after($file, "{$workingPath}/vendor/laravel/framework"));
+});
+
 $files->delete("{$workingPath}/config/sanctum.php");
 
 transform([
     "env('APP_ENV', 'production')" => "env('APP_ENV', 'testing')",
     "    'asset_url' => env('ASSET_URL')," => "    'asset_url' => env('ASSET_URL'),".PHP_EOL.PHP_EOL."    'mix_url' => env('MIX_ASSET_URL'),",
-    "        /*
-         * Package Service Providers...
-         */" => "        /*
-         * Package Service Providers...
-         */
-        Laravel\Dusk\DuskServiceProvider::class,
-        Otwell\CustomField\FieldServiceProvider::class,
-        Otwell\IconsViewer\ToolServiceProvider::class,
-        Otwell\RememberTokenCopier\AssetServiceProvider::class,
-        Otwell\ResourceTool\ToolServiceProvider::class,
-        Otwell\SidebarTool\ToolServiceProvider::class,",
-    "        App\Providers\EventServiceProvider::class," => "        App\Providers\EventServiceProvider::class,".PHP_EOL."        App\Providers\NovaServiceProvider::class,"
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/app.php"));
 
+transform([
+
+    "'collation' => 'utf8mb4_0900_ai_ci'," => "'collation' => 'utf8mb4_unicode_ci',"
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/database.php"));
 transform([
     "    'guards' => [
         'web' => [
@@ -77,6 +79,14 @@ transform([
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/auth.php"));
 
 transform([
+    "env('CACHE_STORE', 'database')," => "env('CACHE_STORE', 'file'),",
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/cache.php"));
+
+transform([
+    "'default' => env('DB_CONNECTION', 'sqlite')," => "'default' => env('DB_CONNECTION', 'mysql'),"
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/database.php"));
+
+transform([
     "env('BCRYPT_ROUNDS', 12)," => "env('BCRYPT_ROUNDS', 10),",
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/hashing.php"));
 
@@ -100,6 +110,46 @@ transform([
             'replace_placeholders' => true,
         ],"
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/logging.php"));
+
+transform([
+    "env('QUEUE_CONNECTION', 'database')," => "env('QUEUE_CONNECTION', 'sync'),",
+    "'database' => env('DB_CONNECTION', 'sqlite')," => "'database' => env('DB_CONNECTION', 'mysql'),"
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/queue.php"));
+transform([
+    "env('SESSION_DRIVER', 'database')," => "env('SESSION_DRIVER', 'file'),",
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/session.php"));
+
+transform([
+    // 'Application::configure(basePath: dirname(__DIR__))' => 'Application::configure(basePath: dirname(__DIR__))',
+    "    ->withRouting(
+        web: __DIR__.'/../routes/web.php',
+        commands: __DIR__.'/../routes/console.php',
+        health: '/up',
+    )" => "    ->withProviders()
+    ->withRouting(
+        web: __DIR__.'/../routes/web.php',
+        api: __DIR__.'/../routes/api.php',
+        commands: __DIR__.'/../routes/console.php',
+        health: '/up',
+    )",
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/bootstrap/app.php"));
+
+transform([
+    "    App\Providers\AppServiceProvider::class,
+" => "    App\Providers\AppServiceProvider::class,
+    App\Providers\AuthServiceProvider::class,
+    App\Providers\EventServiceProvider::class,
+    App\Providers\NovaServiceProvider::class,
+    // App\Providers\RouteServiceProvider::class,
+
+    Laravel\Dusk\DuskServiceProvider::class,
+    Otwell\CustomField\FieldServiceProvider::class,
+    Otwell\IconsViewer\ToolServiceProvider::class,
+    Otwell\RememberTokenCopier\AssetServiceProvider::class,
+    Otwell\ResourceTool\ToolServiceProvider::class,
+    Otwell\SidebarTool\ToolServiceProvider::class,
+",
+], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/bootstrap/providers.php"));
 
 $files->deleteDirectory("{$workingPath}/skeleton");
 
