@@ -6,11 +6,11 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
+use Laravel\Nova\Actions\ActionResponse;
 use Laravel\Nova\Fields\ActionFields;
-use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class ChangeCreatedAt extends Action
+class DownloadLaravelLogo extends Action
 {
     use InteractsWithQueue, Queueable;
 
@@ -21,27 +21,19 @@ class ChangeCreatedAt extends Action
      * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      */
-    public function handle(ActionFields $fields, Collection $models): mixed
+    public function handle(ActionFields $fields, Collection $models)
     {
-        $models->each(function ($model) use ($fields) {
-            $model->created_at = $fields->created_at;
-            $model->save();
-        });
-
-        return null;
+        return ActionResponse::download('Laravel Logo', url('laravel-logo.png'));
     }
 
     /**
      * Get the fields available on the action.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return array<int, \Laravel\Nova\Fields\Field>
+     * @return array
      */
-    public function fields(NovaRequest $request): array
+    public function fields(NovaRequest $request)
     {
-        return [
-            DateTime::make('Created At', 'created_at')
-                ->rules('required'),
-        ];
+        return [];
     }
 }

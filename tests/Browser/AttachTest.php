@@ -41,6 +41,34 @@ class AttachTest extends DuskTestCase
         });
     }
 
+    public function test_resource_can_be_attached_using_searchable()
+    {
+        $this->defineApplicationStates('searchable');
+
+        $this->browse(function (Browser $browser) {
+            $role = RoleFactory::new()->create();
+
+            $browser->loginAs(1)
+                ->visit(Attach::belongsToMany('roles', $role->id, 'users'))
+                ->within(new FormComponent(), function ($browser) use ($role) {
+                    $browser->whenAvailable('@via-resource-field', function ($browser) use ($role) {
+                        $browser->assertSee('Role')->assertSee($role->id);
+                    })
+                        ->searchAttachable(3);
+                })
+                ->create()
+                ->waitForText('The resource was attached!');
+
+            $this->assertDatabaseHas('role_user', [
+                'user_id' => '3',
+                'role_id' => $role->id,
+                'notes' => null,
+            ]);
+
+            $browser->blank();
+        });
+    }
+
     public function test_fields_on_intermediate_table_should_be_stored()
     {
         $this->browse(function (Browser $browser) {

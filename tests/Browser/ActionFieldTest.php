@@ -180,8 +180,6 @@ class ActionFieldTest extends DuskTestCase
 
     public function test_action_modal_focuses_the_first_input()
     {
-        $this->markTestSkipped('Modal no longer focused on the first input');
-
         RoleFactory::new()->create()->users()->attach(1);
 
         $this->browse(function (Browser $browser) {
@@ -202,8 +200,6 @@ class ActionFieldTest extends DuskTestCase
 
     public function test_action_modal_focus_is_trapped_to_just_the_modal()
     {
-        $this->markTestSkipped('Modal no longer focused on the first input');
-
         RoleFactory::new()->create()->users()->attach(1);
 
         $this->browse(function (Browser $browser) {

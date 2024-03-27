@@ -93,12 +93,7 @@ class BookPurchases extends Lens
         return [
             ExportAsCsv::make()->withFormat(function ($model) {
                 /** @var \App\Models\Book $model */
-
-                /**
-                 * @phpstan-ignore-next-line
-                 *
-                 * @var int $total
-                 */
+                /** @var int $total */
                 $total = $model->total ?? 0;
 
                 return [
