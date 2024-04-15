@@ -40,8 +40,6 @@ class DashboardTest extends DuskTestCase
 
     public function test_it_can_focus_global_search_using_shortcut()
     {
-        $this->requiresKeyboardSupport();
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Dashboard())
