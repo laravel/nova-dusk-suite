@@ -23,6 +23,7 @@ use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Laravel\Nova\Util;
+use Laravel\Prompts;
 use Otwell\IconsViewer\IconsViewer;
 use Otwell\SidebarTool\SidebarTool;
 
@@ -75,10 +76,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             function ($command) {
                 /** @var \Illuminate\Console\Command $command */
                 return [
-                    $command->ask('Name'),
-                    $command->ask('Email Address'),
-                    $command->secret('Password'),
-                    $command->confirm('Active', false),
+                    new Prompts\TextPrompt(label: 'Name', required: true, validate: ['name' => 'required|min:2']),
+                    new Prompts\TextPrompt(label: 'Email Address', required: true, validate: ['email' => 'required|email']),
+                    new Prompts\PasswordPrompt(label: 'Password', validate: ['password' => Password::defaults()]),
+                    new Prompts\ConfirmPrompt(label: 'Active', default: false, required: true),
                 ];
             },
             function (string $name, string $email, string $password, bool $active) {
