@@ -12,12 +12,11 @@ use Laravel\Nova\Testing\Browser\Components\SidebarComponent;
 use Laravel\Nova\Testing\Browser\Pages\Lens;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 class MainMenuTest extends DuskTestCase
 {
-    /**
-     * @group internal-server
-     */
+    #[Group('internal-server')]
     public function test_resource_link_is_not_active_when_visiting_lens_with_custom_main_menu()
     {
         $this->beforeServingApplication(function ($app) {

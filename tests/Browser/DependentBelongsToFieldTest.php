@@ -10,14 +10,8 @@ use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
-/**
- * @covers \Laravel\Nova\Fields\BelongsTo::dependsOn()
- */
 class DependentBelongsToFieldTest extends DuskTestCase
 {
-    /**
-     * @covers \Laravel\Nova\Fields\Heading::dependsOn()
-     */
     public function test_it_can_apply_depends_on_first_load()
     {
         $this->browse(function (Browser $browser) {

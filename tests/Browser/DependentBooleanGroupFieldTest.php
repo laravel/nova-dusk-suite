@@ -12,9 +12,6 @@ use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
-/**
- * @covers \Laravel\Nova\Fields\BooleanGroup::dependsOn()
- */
 class DependentBooleanGroupFieldTest extends DuskTestCase
 {
     public function test_it_can_apply_field_dependencies_when_creating()

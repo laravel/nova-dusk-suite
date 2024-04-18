@@ -11,9 +11,6 @@ use Laravel\Nova\Tests\DuskTestCase;
 
 class DependentFieldTest extends DuskTestCase
 {
-    /**
-     * @covers \Laravel\Nova\Fields\Select::dependsOn()
-     */
     public function test_it_can_apply_depends_on_select_field_options()
     {
         $this->browse(function (Browser $browser) {
@@ -49,10 +46,6 @@ class DependentFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @covers \Laravel\Nova\Fields\Field::dependsOn()
-     * @covers \Laravel\Nova\Fields\Field::readOnly()
-     */
     public function test_it_can_apply_depends_and_handle_form_requests_with_readonly()
     {
         $this->browse(function (Browser $browser) {
@@ -101,10 +94,6 @@ class DependentFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @covers \Laravel\Nova\Fields\Field::dependsOn()
-     * @covers \Laravel\Nova\Fields\Field::hide()
-     */
     public function test_it_can_apply_depends_but_does_not_submit_hidden_field()
     {
         $this->browse(function (Browser $browser) {
@@ -131,9 +120,6 @@ class DependentFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @covers \Laravel\Nova\Fields\Code::dependsOn()
-     */
     public function test_it_can_apply_depends_on_code_field()
     {
         $this->browse(function (Browser $browser) {
@@ -162,9 +148,6 @@ class DependentFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @covers \Laravel\Nova\Fields\Markdown::dependsOn()
-     */
     public function test_it_can_apply_depends_on_markdown_field()
     {
         $this->browse(function (Browser $browser) {
@@ -194,9 +177,6 @@ class DependentFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @covers \Laravel\Nova\Fields\Markdown::dependsOn()
-     */
     public function test_it_can_apply_cascading_depends_on_changes()
     {
         $this->browse(function (Browser $browser) {

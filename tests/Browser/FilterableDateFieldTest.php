@@ -8,12 +8,11 @@ use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Tests\DuskTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 class FilterableDateFieldTest extends DuskTestCase
 {
-    /**
-     * @group date-field
-     */
+    #[Group('date-field')]
     public function test_it_can_filter_by_date_field()
     {
         $this->browse(function (Browser $browser) {
@@ -62,9 +61,7 @@ class FilterableDateFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @group datetime-field
-     */
+    #[Group('datetime-field')]
     public function test_it_can_filter_by_datetime_field()
     {
         $this->browse(function (Browser $browser) {

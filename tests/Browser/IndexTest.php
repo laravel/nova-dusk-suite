@@ -17,6 +17,7 @@ use Laravel\Nova\Testing\Browser\Pages\Page;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 class IndexTest extends DuskTestCase
 {
@@ -53,9 +54,7 @@ class IndexTest extends DuskTestCase
         });
     }
 
-    /**
-     * @group internal-server
-     */
+    #[Group('internal-server')]
     public function test_resource_index_can_show_reload_button_when_received_errors()
     {
         $this->beforeServingApplication(function ($app) {

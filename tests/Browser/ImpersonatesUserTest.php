@@ -12,6 +12,7 @@ use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 class ImpersonatesUserTest extends DuskTestCase
 {
@@ -193,9 +194,7 @@ class ImpersonatesUserTest extends DuskTestCase
         });
     }
 
-    /**
-     * @group internal-server
-     */
+    #[Group('internal-server')]
     public function test_it_can_impersonate_another_user_using_different_guard_with_nova_guard_on_none_default()
     {
         $this->beforeServingApplication(function ($app, $config) {
