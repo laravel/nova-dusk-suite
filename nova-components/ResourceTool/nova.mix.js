@@ -15,7 +15,6 @@ class NovaExtension {
     return new webpack.ProvidePlugin({
       _: 'lodash',
       axios: 'axios',
-      Errors: 'form-backend-validation'
     })
   }
 

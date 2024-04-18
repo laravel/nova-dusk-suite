@@ -1,1 +1,1 @@
-.ml-1{margin-left:.25rem}.filter{filter:var(--tw-filter)}.dark .dark\:text-white{--tw-text-opacity:1;color:rgba(255,255,255,var(--tw-text-opacity))}
+.ml-1{margin-left:.25rem}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.dark\:text-white:is(.dark *){--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity))}

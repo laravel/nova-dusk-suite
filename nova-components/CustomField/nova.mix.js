@@ -15,21 +15,13 @@ class NovaExtension {
     return new webpack.ProvidePlugin({
       _: 'lodash',
       axios: 'axios',
-      Errors: 'form-backend-validation'
     })
   }
 
   webpackConfig(webpackConfig) {
     webpackConfig.externals = {
-      vue: 'Vue'
-    }
-
-    webpackConfig.resolve.alias = {
-      ...(webpackConfig.resolve.alias || {}),
-      'laravel-nova': path.join(
-        __dirname,
-        '../../vendor/laravel/nova/resources/js/mixins/packages.js'
-      ),
+      vue: 'Vue',
+      'laravel-nova': 'LaravelNova',
     }
 
     webpackConfig.output = {
