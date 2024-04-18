@@ -9,32 +9,16 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
 {
     use Concerns\DatabaseTruncation;
 
-    /**
-     * The base serve host URL to use while testing the application.
-     *
-     * @var string
-     */
+    /** {@inheritDoc} */
     protected static $baseServeHost = '127.0.0.1';
 
-    /**
-     * The base serve port to use while testing the application.
-     *
-     * @var int
-     */
+    /** {@inheritDoc} */
     protected static $baseServePort = 8085;
 
-    /**
-     * Automatically loads environment file if available.
-     *
-     * @var bool
-     */
+    /** {@inheritDoc} */
     protected $loadEnvironmentVariables = true;
 
-    /**
-     * Get Application's base path.
-     *
-     * @return string
-     */
+    /** {@inheritDoc} */
     public static function applicationBasePath()
     {
         return realpath(__DIR__.'/../');
@@ -52,11 +36,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
         parent::setUp();
     }
 
-    /**
-     * Server specific setup. It may share alot with the main setUp() method, but
-     * should exclude things like DB migrations so we don't end up wiping the
-     * DB content mid test. Using this method means we can be explicit.
-     */
+    /** {@inheritDoc} */
     protected function setUpDuskServer(): void
     {
         parent::setUpDuskServer();
@@ -67,21 +47,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
         });
     }
 
-    /**
-     * Reload serving on a given host and port.
-     */
-    public static function reloadServing(): void
-    {
-        static::stopServing();
-        static::serve(static::$baseServeHost, static::$baseServePort);
-    }
-
-    /**
-     * Get package providers.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return array
-     */
+    /** {@inheritDoc} */
     protected function getPackageProviders($app)
     {
         return [
@@ -101,12 +67,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
         });
     }
 
-    /**
-     * Resolve application Console Kernel implementation.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
-     */
+    /** {@inheritDoc} */
     protected function resolveApplicationConsoleKernel($app)
     {
         $app->singleton(
@@ -114,12 +75,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
         );
     }
 
-    /**
-     * Resolve application HTTP Kernel implementation.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
-     */
+    /** {@inheritDoc} */
     protected function resolveApplicationHttpKernel($app)
     {
         $app->singleton(
@@ -127,12 +83,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
         );
     }
 
-    /**
-     * Resolve application HTTP exception handler.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
-     */
+    /** {@inheritDoc} */
     protected function resolveApplicationExceptionHandler($app)
     {
         $app->singleton(

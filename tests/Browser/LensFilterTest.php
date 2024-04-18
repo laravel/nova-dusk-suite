@@ -7,6 +7,7 @@ use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\LensComponent;
 use Laravel\Nova\Testing\Browser\Pages\Lens;
 use Laravel\Nova\Tests\DuskTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class LensFilterTest extends DuskTestCase
 {
@@ -102,9 +103,7 @@ class LensFilterTest extends DuskTestCase
         });
     }
 
-    /**
-     * @dataProvider userResourceLenUrlWithFilterApplied
-     */
+    #[DataProvider('userResourceLenUrlWithFilterApplied')]
     public function test_filters_can_be_applied_to_lenses_received_from_url($url)
     {
         $this->browse(function (Browser $browser) use ($url) {

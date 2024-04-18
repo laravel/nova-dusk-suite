@@ -8,16 +8,11 @@ use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 class DependentPivotFieldTest extends DuskTestCase
 {
-    /**
-     * @group datetime-field
-     *
-     * @covers \Laravel\Nova\Fields\Currency::dependsOn()
-     * @covers \Laravel\Nova\Fields\Hidden::dependsOn()
-     * @covers \Laravel\Nova\Fields\Select::dependsOn()
-     */
+    #[Group('datetime-field')]
     public function test_it_can_apply_depends_on_pivot_fields()
     {
         Carbon::setTestNow($now = Carbon::now());

@@ -7,6 +7,7 @@ use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class IndexFilterTest extends DuskTestCase
 {
@@ -176,9 +177,7 @@ class IndexFilterTest extends DuskTestCase
         });
     }
 
-    /**
-     * @dataProvider userResourceUrlWithFilterApplied
-     */
+    #[DataProvider('userResourceUrlWithFilterApplied')]
     public function test_filters_can_be_applied_to_resources_received_from_url($url)
     {
         $this->browse(function (Browser $browser) use ($url) {

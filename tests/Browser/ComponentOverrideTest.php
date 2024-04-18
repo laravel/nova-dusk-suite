@@ -7,12 +7,11 @@ use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Pages\Create;
 use Laravel\Nova\Tests\DuskTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 class ComponentOverrideTest extends DuskTestCase
 {
-    /**
-     * @group internal-server
-     */
+    #[Group('internal-server')]
     public function test_it_can_override_default_components()
     {
         $this->beforeServingApplication(function ($app) {

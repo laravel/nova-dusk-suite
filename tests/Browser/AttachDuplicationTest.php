@@ -12,6 +12,7 @@ use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 class AttachDuplicationTest extends DuskTestCase
 {
@@ -50,9 +51,7 @@ class AttachDuplicationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @group datetime-field
-     */
+    #[Group('datetime-field')]
     public function test_it_can_attach_different_relation_groups()
     {
         Carbon::setTestNow($now = Carbon::now());
@@ -89,9 +88,7 @@ class AttachDuplicationTest extends DuskTestCase
         ]);
     }
 
-    /**
-     * @group datetime-field
-     */
+    #[Group('datetime-field')]
     public function test_it_can_attach_duplicate_relations_with_different_pivot()
     {
         Carbon::setTestNow($now = Carbon::now());
@@ -124,9 +121,7 @@ class AttachDuplicationTest extends DuskTestCase
         });
     }
 
-    /**
-     * @group datetime-field
-     */
+    #[Group('datetime-field')]
     public function test_it_cannot_attach_duplicate_relations_with_same_pivot()
     {
         Carbon::setTestNow($now = Carbon::parse('2021-02-16 12:55:00'));

@@ -11,12 +11,11 @@ use Laravel\Dusk\OperatingSystem;
 use Laravel\Nova\Fields\Attachments\Attachment;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class MarkdownFieldTest extends DuskTestCase
 {
-    /**
-     * @dataProvider markdownContentDataProvider
-     */
+    #[DataProvider('markdownContentDataProvider')]
     public function test_it_can_write_markdown_content($value)
     {
         $this->browse(function (Browser $browser) use ($value) {
@@ -41,9 +40,7 @@ class MarkdownFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @dataProvider markdownActionButtonsDataProvider
-     */
+    #[DataProvider('markdownActionButtonsDataProvider')]
     public function test_it_can_use_action_buttons($action, $expected)
     {
         $this->browse(function (Browser $browser) use ($action, $expected) {
@@ -76,9 +73,7 @@ class MarkdownFieldTest extends DuskTestCase
         });
     }
 
-    /**
-     * @dataProvider markdownActionKeysDataProvider
-     */
+    #[DataProvider('markdownActionKeysDataProvider')]
     public function test_it_can_use_action_keys($action, $expected)
     {
         $this->browse(function (Browser $browser) use ($action, $expected) {

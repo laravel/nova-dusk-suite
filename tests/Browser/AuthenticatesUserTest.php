@@ -9,12 +9,11 @@ use Laravel\Nova\Testing\Browser\Components\SidebarComponent;
 use Laravel\Nova\Testing\Browser\Pages\Dashboard;
 use Laravel\Nova\Testing\Browser\Pages\Login;
 use Laravel\Nova\Tests\DuskTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class AuthenticatesUserTest extends DuskTestCase
 {
-    /**
-     * @dataProvider intendedUrlDataProvider
-     */
+    #[DataProvider('intendedUrlDataProvider')]
     public function test_it_redirect_to_intended_url_after_login($targetUrl, $expectedUrl)
     {
         $this->browse(function (Browser $browser) use ($targetUrl, $expectedUrl) {

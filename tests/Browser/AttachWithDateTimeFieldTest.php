@@ -9,10 +9,9 @@ use Laravel\Nova\Testing\Browser\Components\FormComponent;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
-/**
- * @group datetime-field
- */
+#[Group('datetime-field')]
 class AttachWithDateTimeFieldTest extends DuskTestCase
 {
     public function test_it_can_attach_different_relation_groups()
