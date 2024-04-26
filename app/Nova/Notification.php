@@ -9,6 +9,8 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
+use Laravel\Nova\Tabs\Tabs;
 
 /**
  * @template TModel of \Laravel\Nova\Notifications\Notification
@@ -106,13 +108,21 @@ class Notification extends Resource
 
             Text::make('Type')->onlyOnDetail(),
 
-            KeyValue::make('Data'),
+            Tabs::make('Details', [
+                Panel::make('Additional Details', [
+                    KeyValue::make('Data'),
 
-            Boolean::make('Read', function ($value) {
-                return ! is_null($this->read_at);
-            }),
+                    Boolean::make('Read', function ($value) {
+                        return ! is_null($this->read_at);
+                    }),
 
-            DateTime::make('Read At'),
+                    DateTime::make('Read At'),
+                ]),
+                Panel::make('Historical Details', [
+                    DateTime::make('Created At'),
+                    DateTime::make('Updated At'),
+                ]),
+            ]),
         ];
     }
 

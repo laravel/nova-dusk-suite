@@ -10,6 +10,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Tabs\Tabs;
 
 /**
  * @template TModel of \App\Models\Book
@@ -80,32 +81,34 @@ class Book extends Resource
             })->filterable()
                 ->showOnPreview(),
 
-            BelongsToMany::make('Purchasers', 'purchasers', User::class)
-                ->fields(new Fields\BookPurchase(null, true))
-                ->actions(function () {
-                    return [
-                        new Actions\PivotTouch(),
-                    ];
-                }),
+            Tabs::make('Relations', [
+                BelongsToMany::make('Purchasers', 'purchasers', User::class)
+                    ->fields(new Fields\BookPurchase(null, true))
+                    ->actions(function () {
+                        return [
+                            new Actions\PivotTouch(),
+                        ];
+                    }),
 
-            BelongsToMany::make('Personal Purchasers', 'personalPurchasers', User::class)
-                ->fields(new Fields\BookPurchase('personal'))
-                ->actions(function () {
-                    return [
-                        new Actions\PivotTouch(),
-                        new Actions\ConvertPurchaseToGift(),
-                    ];
-                }),
+                BelongsToMany::make('Personal Purchasers', 'personalPurchasers', User::class)
+                    ->fields(new Fields\BookPurchase('personal'))
+                    ->actions(function () {
+                        return [
+                            new Actions\PivotTouch(),
+                            new Actions\ConvertPurchaseToGift(),
+                        ];
+                    }),
 
-            BelongsToMany::make('Gift Purchasers', 'giftPurchasers', User::class)
-                ->fields(new Fields\BookPurchase('gift'))
-                ->actions(function ($request) {
-                    return [
-                        new Actions\PivotTouch(),
-                    ];
-                })
-                ->allowDuplicateRelations()
-                ->collapsedByDefault(),
+                BelongsToMany::make('Gift Purchasers', 'giftPurchasers', User::class)
+                    ->fields(new Fields\BookPurchase('gift'))
+                    ->actions(function ($request) {
+                        return [
+                            new Actions\PivotTouch(),
+                        ];
+                    })
+                    ->allowDuplicateRelations()
+                    ->collapsedByDefault(),
+            ]),
         ];
     }
 
