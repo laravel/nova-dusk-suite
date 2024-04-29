@@ -41,7 +41,7 @@ class SubscriberPolicy
      */
     public function create(User $user)
     {
-        return false;
+        return in_array($user->email, ['nova@laravel.com']);
     }
 
     /**
@@ -53,7 +53,7 @@ class SubscriberPolicy
      */
     public function update(User $user, Subscriber $subscriber)
     {
-        return false;
+        return in_array($user->email, ['nova@laravel.com']);
     }
 
     /**
@@ -65,7 +65,7 @@ class SubscriberPolicy
      */
     public function delete(User $user, Subscriber $subscriber)
     {
-        return false;
+        return in_array($user->email, ['nova@laravel.com']);
     }
 
     /**
@@ -77,7 +77,7 @@ class SubscriberPolicy
      */
     public function restore(User $user, Subscriber $subscriber)
     {
-        return false;
+        return in_array($user->email, ['nova@laravel.com']);
     }
 
     /**
@@ -89,6 +89,6 @@ class SubscriberPolicy
      */
     public function forceDelete(User $user, Subscriber $subscriber)
     {
-        return false;
+        return in_array($user->email, ['nova@laravel.com']);
     }
 }
