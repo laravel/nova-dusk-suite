@@ -38,6 +38,7 @@ class Subscriber extends Authenticatable
      */
     protected $casts = [
         'meta' => 'json',
+        'email_verified_at' => 'datetime',
     ];
 
     /**
