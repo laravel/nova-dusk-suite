@@ -10,6 +10,7 @@ use Database\Factories\RoleFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Components\IndexComponent;
+use Laravel\Nova\Testing\Browser\Components\TabIndexComponent;
 use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Tests\DuskTestCase;
 
@@ -176,7 +177,7 @@ class ManyToManyActionResourceTest extends DuskTestCase
             $browser->script('localStorage.setItem("nova.resources.users.giftPurchasers.collapsed", false)');
 
             $browser->refresh()
-                ->within(new IndexComponent('users', 'giftPurchasers'), function ($browser) use ($user, $purchase) {
+                ->within(new TabIndexComponent('users', 'giftPurchasers'), function ($browser) use ($user, $purchase) {
                     $browser->waitForTable()
                         ->clickCheckboxForId($user->id, $purchase->id)
                         ->runAction('pivot-touch');
@@ -229,7 +230,7 @@ class ManyToManyActionResourceTest extends DuskTestCase
             $browser->script('localStorage.setItem("nova.resources.users.giftPurchasers.collapsed", false)');
 
             $browser->refresh()
-                ->within(new IndexComponent('users', 'giftPurchasers'), function ($browser) use ($user, $purchase) {
+                ->within(new TabIndexComponent('users', 'giftPurchasers'), function ($browser) use ($user, $purchase) {
                     $browser->waitForTable()
                         ->clickCheckboxForId($user->id, $purchase->id)
                         ->deleteSelected()
