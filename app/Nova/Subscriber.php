@@ -148,6 +148,8 @@ class Subscriber extends Resource
         return [
             Actions\Sleep::make()->canSee(function ($request) {
                 return optional($request->user())->id !== 4;
+            })->canSee(function ($request) {
+                return in_array($request->user()?->email, ['nova@laravel.com']);
             })->canRun(function () {
                 return false;
             }),
