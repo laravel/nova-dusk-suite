@@ -119,8 +119,8 @@ class Notification extends Resource
                     DateTime::make('Read At'),
                 ]),
                 Panel::make('Historical Details', [
-                    DateTime::make('Created At'),
-                    DateTime::make('Updated At'),
+                    DateTime::make('Created At')->readonly(),
+                    DateTime::make('Updated At')->readonly(),
                 ]),
             ]),
         ];
