@@ -104,8 +104,8 @@ class Subscriber extends Resource
 
                 ]),
                 Panel::make('Histories', [
-                    DateTime::make('Created At')->nullable(),
-                    DateTime::make('Updated At')->nullable(),
+                    DateTime::make('Created At')->nullable()->readonly(),
+                    DateTime::make('Updated At')->nullable()->readonly(),
                     DateTime::make('Email Verified At')->nullable(),
                 ]),
             ]),
