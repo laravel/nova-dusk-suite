@@ -182,7 +182,7 @@ class IndexActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $subscribers = SubscriberFactory::new()->times(5)->create();
 
-            $browser->loginAs(1)
+            $browser->loginAs(4)
                 ->visit(new Index('subscribers'))
                 ->within(new IndexComponent('subscribers'), function ($browser) use ($subscribers) {
                     $browser->waitForTable()

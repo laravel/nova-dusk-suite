@@ -131,7 +131,7 @@ class ResourceTableSelectionTest extends DuskTestCase
         SubscriberFactory::new()->times(5)->create();
 
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(4)
+            $browser->loginAs(3)
                 ->visit(new Index('subscribers'))
                 ->within(new IndexComponent('subscribers'), function ($browser) {
                     $browser->waitForTable()
