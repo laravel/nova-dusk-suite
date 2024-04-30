@@ -120,7 +120,7 @@ class DetailActionTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $subscribers = SubscriberFactory::new()->times(5)->create();
 
-            $browser->loginAs(1)
+            $browser->loginAs(4)
                 ->visit(new Detail('subscribers', $subscribers[0]->id))
                 ->openControlSelector()
                 ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
