@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Repeater\SubscriberWebsite;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\Badge;
@@ -9,6 +10,7 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Email;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Repeater;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
@@ -70,6 +72,12 @@ class Subscriber extends Resource
                 ->sortable()
                 ->showOnPreview()
                 ->filterable(),
+
+            Repeater::make('Meta')
+                ->repeatables([
+                    SubscriberWebsite::make(),
+                ])
+                ->asJson(),
 
             Tabs::make('Additional Details', [
                 Panel::make('Security', [
