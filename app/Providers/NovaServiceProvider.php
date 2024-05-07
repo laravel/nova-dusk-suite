@@ -84,6 +84,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ];
             },
             function (string $name, string $email, string $password, bool $active) {
+
+            /** @var class-string<\Illuminate\Database\Eloquent\Model> $model */
                 $model = Util::userModel();
 
                 return tap((new $model())->forceFill([
