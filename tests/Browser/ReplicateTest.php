@@ -34,9 +34,9 @@ class ReplicateTest extends DuskTestCase
                     $browser->whenAvailable('@title', function ($browser) {
                         $browser->type('', 'Replicated Post');
                     })
-                    ->whenAvailable(new SelectControlComponent('users-select'), function ($browser) use ($post) {
-                        $browser->select('', $post->user_id);
-                    });
+                        ->whenAvailable(new SelectControlComponent('users-select'), function ($browser) use ($post) {
+                            $browser->select('', $post->user_id);
+                        });
                 })
                 ->create()
                 ->waitForText('The user post was created!');
@@ -71,9 +71,9 @@ class ReplicateTest extends DuskTestCase
                     $browser->whenAvailable('@title', function ($browser) {
                         $browser->type('', 'Replicated Post 2');
                     })
-                    ->whenAvailable(new SelectControlComponent('users-select'), function ($browser) use ($post) {
-                        $browser->select('', $post->user_id);
-                    });
+                        ->whenAvailable(new SelectControlComponent('users-select'), function ($browser) use ($post) {
+                            $browser->select('', $post->user_id);
+                        });
                 })
                 ->create()
                 ->waitForText('The user post was created!');

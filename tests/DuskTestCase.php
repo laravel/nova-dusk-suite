@@ -132,7 +132,6 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
      * Define application states.
      *
      * @param  array|string  $states
-     * @param  \Closure(\Laravel\Dusk\Browser):void  $callback
      * @return $this
      */
     protected function defineApplicationStates($states)
