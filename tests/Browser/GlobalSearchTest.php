@@ -83,9 +83,9 @@ class GlobalSearchTest extends DuskTestCase
 
             $browser->within('@global-search-component', function ($browser) {
                 $browser->click('@global-search')
-                        ->elsewhereWhenAvailable('@global-search-results', function ($browser) {
-                            $browser->click('button[dusk="users 0"]');
-                        });
+                    ->elsewhereWhenAvailable('@global-search-results', function ($browser) {
+                        $browser->click('button[dusk="users 0"]');
+                    });
             })
                 ->waitForLocation('/nova/resources/users/1')
                 ->on(new Detail('users', '1'));
