@@ -293,6 +293,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
+        parent::register();
+
         Nova::notificationPollingInterval((int) CarbonInterval::days(1)->totalSeconds);
 
         Nova::serving(function (ServingNova $event) {
