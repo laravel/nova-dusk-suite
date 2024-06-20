@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Laravel\Nova\Nova;
+
 class NovaWithoutAuthenticationServiceProvider extends NovaServiceProvider
 {
 
