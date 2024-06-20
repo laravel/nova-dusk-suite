@@ -242,8 +242,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 Features::twoFactorAuthentication(),
             ])
             ->withAuthenticationRoutes()
-            ->withPasswordResetRoutes()
-            ->register();
+            ->withPasswordResetRoutes();
     }
 
     /**
