@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Fortify\Features;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Events\StartedImpersonating;
 use Laravel\Nova\Events\StoppedImpersonating;
@@ -236,6 +237,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function routes()
     {
         Nova::routes()
+            ->withFortifyFeatures([
+                Features::emailVerification(),
+                Features::twoFactorAuthentication(),
+            ])
             ->withAuthenticationRoutes()
             ->withPasswordResetRoutes()
             ->register();
