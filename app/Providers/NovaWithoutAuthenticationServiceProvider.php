@@ -4,7 +4,6 @@ namespace App\Providers;
 
 class NovaWithoutAuthenticationServiceProvider extends NovaServiceProvider
 {
-
     /**
      * Register the Nova routes.
      *
