@@ -6,7 +6,6 @@ use Laravel\Nova\Nova;
 
 class NovaWithoutAuthenticationServiceProvider extends NovaServiceProvider
 {
-
     /**
      * Register the Nova routes.
      *
