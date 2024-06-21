@@ -241,8 +241,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 Features::emailVerification(),
                 Features::twoFactorAuthentication(),
             ])
-            ->withAuthenticationRoutes(fortify: false)
-            ->withPasswordResetRoutes();
+            ->withAuthenticationRoutes()
+            ->withPasswordResetRoutes()
+            ->register(fortify: false);
     }
 
     /**

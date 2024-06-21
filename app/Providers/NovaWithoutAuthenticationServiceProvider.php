@@ -19,7 +19,8 @@ class NovaWithoutAuthenticationServiceProvider extends NovaServiceProvider
         ]);
 
         Nova::routes()
-            ->withoutAuthenticationRoutes(fortify: false)
-            ->withPasswordResetRoutes();
+            ->withoutAuthenticationRoutes()
+            ->withPasswordResetRoutes()
+            ->register(fortify: false);
     }
 }
