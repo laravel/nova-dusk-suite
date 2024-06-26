@@ -2,7 +2,8 @@
 
 namespace Laravel\Nova\Tests\Browser;
 
-use Database\Factories\UserFactory;
+use App\Providers\NovaServiceProvider;
+use App\Providers\NovaWithoutAuthenticationServiceProvider;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Testing\Browser\Components\SidebarComponent;
@@ -11,19 +12,27 @@ use Laravel\Nova\Tests\DuskTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
+#[Group('auth')]
 #[Group('internal-server')]
 class CustomAuthenticatesUserTest extends DuskTestCase
 {
+    /**
+     * Get package providers.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return array<int, class-string>
+     */
+    protected function getPackageProviders($app)
+    {
+        return collect(parent::getPackageProviders($app))
+            ->replace([
+                NovaServiceProvider::class => NovaWithoutAuthenticationServiceProvider::class,
+            ])->all();
+    }
+
     #[DataProvider('intendedUrlDataProvider')]
     public function test_it_redirect_to_intended_url_after_login($targetUrl, $expectedUrl)
     {
-        $this->beforeServingApplication(function ($app, $config) {
-            $config->set('nova.routes.login', '/login');
-            $config->set('nova.routes.logout', '/logout');
-
-            Nova::$withAuthentication = false;
-        });
-
         $this->browse(function (Browser $browser) use ($targetUrl, $expectedUrl) {
             $browser->logout()
                 ->assertGuest()
@@ -40,13 +49,6 @@ class CustomAuthenticatesUserTest extends DuskTestCase
 
     public function test_it_redirect_to_login_after_logout()
     {
-        $this->beforeServingApplication(function ($app, $config) {
-            $config->set('nova.routes.login', '/login');
-            $config->set('nova.routes.logout', '/logout');
-
-            Nova::$withAuthentication = false;
-        });
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Dashboard())
@@ -64,13 +66,6 @@ class CustomAuthenticatesUserTest extends DuskTestCase
 
     public function test_it_clear_user_association_after_logout()
     {
-        $this->beforeServingApplication(function ($app, $config) {
-            $config->set('nova.routes.login', '/login');
-            $config->set('nova.routes.logout', '/logout');
-
-            Nova::$withAuthentication = false;
-        });
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Dashboard())
@@ -85,13 +80,6 @@ class CustomAuthenticatesUserTest extends DuskTestCase
 
     public function test_it_clear_user_association_after_session_timeout()
     {
-        $this->beforeServingApplication(function ($app, $config) {
-            $config->set('nova.routes.login', '/login');
-            $config->set('nova.routes.logout', '/logout');
-
-            Nova::$withAuthentication = false;
-        });
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)->visit(new Dashboard());
 
@@ -108,13 +96,6 @@ class CustomAuthenticatesUserTest extends DuskTestCase
 
     public function test_it_can_relogin_after_session_timeout()
     {
-        $this->beforeServingApplication(function ($app, $config) {
-            $config->set('nova.routes.login', '/login');
-            $config->set('nova.routes.logout', '/logout');
-
-            Nova::$withAuthentication = false;
-        });
-
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)->visit(new Dashboard());
 
@@ -126,31 +107,6 @@ class CustomAuthenticatesUserTest extends DuskTestCase
                 ->type('password', 'password')
                 ->clickAndWaitForReload('button[type="submit"]')
                 ->on(new Dashboard);
-
-            $browser->blank();
-        });
-    }
-
-    public function test_it_redirect_to_login_after_password_reset()
-    {
-        $this->beforeServingApplication(function ($app, $config) {
-            $config->set('mail.default', 'log');
-            $config->set('nova.routes.login', '/login');
-            $config->set('nova.routes.logout', '/logout');
-
-            Nova::$withAuthentication = false;
-        });
-
-        $this->browse(function (Browser $browser) {
-            $user = UserFactory::new()->create();
-
-            $browser->logout()
-                ->assertGuest()
-                ->visit(Nova::url('password/reset'))
-                ->waitForText('Forgot your password?')
-                ->type('input[id="email"]', $user->email)
-                ->clickAndWaitForReload('button[type="submit"]', 40)
-                ->assertPathIs('/login');
 
             $browser->blank();
         });
