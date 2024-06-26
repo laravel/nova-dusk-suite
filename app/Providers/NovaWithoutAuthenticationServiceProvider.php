@@ -13,11 +13,6 @@ class NovaWithoutAuthenticationServiceProvider extends NovaServiceProvider
      */
     protected function routes()
     {
-        config([
-            'nova.routes.login' => '/login',
-            'nova.routes.logout' => '/logout',
-        ]);
-
         Nova::routes()
             ->withoutAuthenticationRoutes()
             ->withPasswordResetRoutes()
