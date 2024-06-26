@@ -3,7 +3,14 @@
 namespace Laravel\Nova\Tests;
 
 use Illuminate\Support\Arr;
+use Inertia\ServiceProvider as InertiaServiceProvider;
 use Laravel\Dusk\Browser;
+use Laravel\Fortify\FortifyServiceProvider;
+use Laravel\Nova\NovaCoreServiceProvider;
+use Laravel\Nova\NovaServiceProvider;
+use Laravel\Scout\ScoutServiceProvider;
+
+use function Orchestra\Testbench\package_path;
 
 abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
 {
@@ -19,9 +26,10 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     protected $loadEnvironmentVariables = true;
 
     /** {@inheritDoc} */
+    #[\Override]
     public static function applicationBasePath()
     {
-        return realpath(__DIR__.'/../');
+        return package_path(['vendor', 'laravel', 'nova-dusk-suite']);
     }
 
     /**
@@ -51,9 +59,11 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     protected function getPackageProviders($app)
     {
         return [
-            'Inertia\ServiceProvider',
-            'Laravel\Nova\NovaCoreServiceProvider',
-            'Carbon\Laravel\ServiceProvider',
+            FortifyServiceProvider::class,
+            InertiaServiceProvider::class,
+            NovaCoreServiceProvider::class,
+            NovaServiceProvider::class,
+            ScoutServiceProvider::class,
         ];
     }
 

@@ -21,7 +21,8 @@ class ResetPasswordTest extends DuskTestCase
                 ->type('password', 'password!!')
                 ->type('password_confirmation', 'password!!')
                 ->clickAndWaitForReload('button[type="submit"]')
-                ->assertPathIs(Nova::url('/dashboards/main'));
+                ->assertPathIs(Nova::url('/login'))
+                ->assertGuest();
 
             $browser->blank();
 
