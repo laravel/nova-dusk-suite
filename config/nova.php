@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Laravel\Nova\Actions\ActionResource;
 use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Http\Middleware\Authorize;
@@ -108,8 +109,8 @@ return [
     'api_middleware' => [
         'nova',
         Authenticate::class,
+        // EnsureEmailIsVerified::redirectTo('nova.pages.verification.notice'),
         Authorize::class,
-        // 'nova.verified',
     ],
 
     /*
