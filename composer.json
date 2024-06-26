@@ -27,8 +27,9 @@
         "laravel/breeze": "^2.0",
         "laravel/nova": "@dev",
         "nunomaduro/collision": "^8.0",
-        "orchestra/testbench": "^9.0.3",
-        "orchestra/testbench-dusk": "^9.0",
+        "orchestra/testbench-core": "^9.1.7",
+        "orchestra/testbench-dusk": "^9.1.1",
+        "orchestra/workbench": "^9.0",
         "phpunit/phpunit": "^10.5"
     },
     "conflict": {

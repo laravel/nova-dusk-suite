@@ -17,17 +17,18 @@ use PHPUnit\Framework\Attributes\Group;
 class CustomAuthenticatesUserTest extends DuskTestCase
 {
     /**
-     * Get package providers.
+     * Override application aliases.
+     *
+     * @api
      *
      * @param  \Illuminate\Foundation\Application  $app
-     * @return array<int, class-string>
+     * @return array<class-string, class-string>
      */
-    protected function getPackageProviders($app)
+    protected function overrideApplicationProviders($app)
     {
-        return collect(parent::getPackageProviders($app))
-            ->replace([
-                NovaServiceProvider::class => NovaWithoutAuthenticationServiceProvider::class,
-            ])->all();
+        return [
+            NovaServiceProvider::class => NovaWithoutAuthenticationServiceProvider::class,
+        ];
     }
 
     #[DataProvider('intendedUrlDataProvider')]
