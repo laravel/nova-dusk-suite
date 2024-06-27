@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Nova\Actions\Actionable;
 
 /**
@@ -19,7 +20,7 @@ use Laravel\Nova\Actions\Actionable;
  */
 class User extends Authenticatable
 {
-    use Actionable, HasFactory, Notifiable;
+    use Actionable, HasFactory, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
