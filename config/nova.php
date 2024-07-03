@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Laravel\Nova\Actions\ActionResource;
 use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Http\Middleware\Authorize;
 use Laravel\Nova\Http\Middleware\BootTools;
 use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
+use Laravel\Nova\Http\Middleware\EnsureEmailIsVerified;
 use Laravel\Nova\Http\Middleware\HandleInertiaRequests;
 
 return [
@@ -109,7 +109,7 @@ return [
     'api_middleware' => [
         'nova',
         Authenticate::class,
-        // EnsureEmailIsVerified::redirectTo('nova.pages.verification.notice'),
+        // EnsureEmailIsVerified::class,
         Authorize::class,
     ],
 
