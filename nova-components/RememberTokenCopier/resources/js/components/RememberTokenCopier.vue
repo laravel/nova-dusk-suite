@@ -4,7 +4,7 @@
       <ModalHeader v-text="data.title" />
 
       <div class="p-4">
-        <span v-if="data.token !== null">{{ data.token }}</span>
+        <span v-if="(data?.token ?? null)">{{ data.token }}</span>
         <span v-else>&mdash;</span>
       </div>
 
@@ -24,6 +24,7 @@
 
 <script setup>
 import { Button } from 'laravel-nova-ui'
+
 const emit = defineEmits(['close'])
 
 const props = defineProps({
