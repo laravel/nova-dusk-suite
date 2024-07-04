@@ -238,12 +238,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         Nova::routes()
             ->withFortifyFeatures([
+                Features::updatePasswords(),
                 Features::emailVerification(),
                 Features::twoFactorAuthentication(['confirm' => true, 'confirmPassword' => true]),
             ])
             ->withAuthenticationRoutes()
             // ->withoutAuthenticationRoutes()
             ->withPasswordResetRoutes()
+            // ->withoutPasswordResetRoutes()
             ->register(fortify: false);
     }
 
