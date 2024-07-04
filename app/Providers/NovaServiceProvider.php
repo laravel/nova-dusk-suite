@@ -245,6 +245,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             ->withAuthenticationRoutes()
             // ->withoutAuthenticationRoutes()
             ->withPasswordResetRoutes()
+            // ->withoutPasswordResetRoutes()
             ->register(fortify: false);
     }
 
