@@ -10,7 +10,7 @@ use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
--use Laravel\Nova\Tabs\Tab;
+use Laravel\Nova\Tabs\Tab;
 
 /**
  * @template TModel of \Laravel\Nova\Notifications\Notification
