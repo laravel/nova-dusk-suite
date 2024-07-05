@@ -10,7 +10,7 @@ use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Laravel\Nova\Tabs\Tabs;
+-use Laravel\Nova\Tabs\Tab;
 
 /**
  * @template TModel of \Laravel\Nova\Notifications\Notification
@@ -108,7 +108,7 @@ class Notification extends Resource
 
             Text::make('Type')->onlyOnDetail(),
 
-            Tabs::make('Details', [
+            Tab::panel('Details', [
                 Panel::make('Additional Details', [
                     KeyValue::make('Data'),
 

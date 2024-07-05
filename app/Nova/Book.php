@@ -10,7 +10,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Tabs\Tabs;
+use Laravel\Nova\Tabs\Tab;
 
 /**
  * @template TModel of \App\Models\Book
@@ -81,7 +81,7 @@ class Book extends Resource
             })->filterable()
                 ->showOnPreview(),
 
-            Tabs::make('Relations', [
+            Tab::panel('Relations', [
                 BelongsToMany::make('Purchasers', 'purchasers', User::class)
                     ->fields(new Fields\BookPurchase(null, true))
                     ->actions(function () {
