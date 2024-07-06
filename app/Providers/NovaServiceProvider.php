@@ -230,6 +230,21 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     }
 
     /**
+     * Register the Fortify configurations.
+     *
+     * @return void
+     */
+    protected function fortify()
+    {
+        Nova::fortify()
+            ->features([
+                Features::updatePasswords(),
+                Features::emailVerification(),
+                Features::twoFactorAuthentication(['confirm' => true, 'confirmPassword' => true]),
+            ]);
+    }
+
+    /**
      * Register the Nova routes.
      *
      * @return void
