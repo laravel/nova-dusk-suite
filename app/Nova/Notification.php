@@ -108,7 +108,7 @@ class Notification extends Resource
 
             Text::make('Type')->onlyOnDetail(),
 
-            Tab::panel('Details', [
+            Tab::group('Details', [
                 Panel::make('Additional Details', [
                     KeyValue::make('Data'),
 
