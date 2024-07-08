@@ -81,7 +81,7 @@ class Book extends Resource
             })->filterable()
                 ->showOnPreview(),
 
-            Tab::panel('Relations', [
+            Tab::group('Relations', [
                 BelongsToMany::make('Purchasers', 'purchasers', User::class)
                     ->fields(new Fields\BookPurchase(null, true))
                     ->actions(function () {

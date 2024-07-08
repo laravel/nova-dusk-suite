@@ -79,7 +79,7 @@ class Subscriber extends Resource
                 ])
                 ->asJson(),
 
-            Tab::panel('Additional Details', [
+            Tab::group('Additional Details', [
                 Panel::make('Security', [
                     Password::make('Password', 'password')
                         ->onlyOnForms()
