@@ -7,6 +7,17 @@ use Laravel\Nova\Nova;
 class NovaWithoutAuthenticationServiceProvider extends NovaServiceProvider
 {
     /**
+     * Register the Fortify configurations.
+     *
+     * @return void
+     */
+    protected function fortify()
+    {
+        Nova::fortify()
+            ->register(routes: false);
+    }
+
+    /**
      * Register the Nova routes.
      *
      * @return void
@@ -15,7 +26,6 @@ class NovaWithoutAuthenticationServiceProvider extends NovaServiceProvider
     {
         Nova::routes()
             ->withoutAuthenticationRoutes()
-            ->withPasswordResetRoutes()
-            ->register(fortify: false);
+            ->withPasswordResetRoutes();
     }
 }
