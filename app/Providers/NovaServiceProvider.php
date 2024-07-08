@@ -241,7 +241,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 Features::updatePasswords(),
                 Features::emailVerification(),
                 Features::twoFactorAuthentication(['confirm' => true, 'confirmPassword' => true]),
-            ]);
+            ])
+            ->usernameUsing('email')
+            ->register(routes: false);
     }
 
     /**
@@ -252,16 +254,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function routes()
     {
         Nova::routes()
-            ->withFortifyFeatures([
-                Features::updatePasswords(),
-                Features::emailVerification(),
-                Features::twoFactorAuthentication(['confirm' => true, 'confirmPassword' => true]),
-            ])
             ->withAuthenticationRoutes()
             // ->withoutAuthenticationRoutes()
             ->withPasswordResetRoutes()
             // ->withoutPasswordResetRoutes()
-            ->register(fortify: false);
+            ->register();
     }
 
     /**
