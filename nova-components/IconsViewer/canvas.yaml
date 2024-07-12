@@ -1,0 +1,27 @@
+preset: package
+
+namespace: Otwell\IconsViewer
+user-auth-model: Illuminate\Foundation\Auth\User
+
+paths:
+  src: src
+  resource: resources
+
+factory:
+  path: database/factories
+
+migration:
+  path: database/migrations
+  prefix: ''
+
+console:
+  namespace: Otwell\IconsViewer\Console
+
+model:
+  namespace: Otwell\IconsViewer\Models
+
+provider:
+  namespace: Otwell\IconsViewer
+
+testing:
+  namespace: Otwell\IconsViewer\Tests

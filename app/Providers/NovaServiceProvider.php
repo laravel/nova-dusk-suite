@@ -84,7 +84,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     new Prompts\ConfirmPrompt(label: 'Active', default: false, required: true),
                 ];
             },
-            function (string $name, string $email, string $password, bool $active) {
+            function (string $name, string $email, string $password, bool $active) { // @phpstan-ignore argument.type
                 /** @var class-string<\Illuminate\Database\Eloquent\Model> $model */
                 $model = Util::userModel();
 
@@ -199,7 +199,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function registerFieldMacros()
     {
         Hidden::macro('trackSelectedResources', function (string $from) {
-            /** @phpstan-ignore-next-line */
             $this->dependsOn($from, function (Hidden $field, NovaRequest $request, FormData $formData) use ($from) {
                 $bool = $formData->get($from, false) === true ? 'true' : 'false';
 
@@ -219,12 +218,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         });
 
         Field::macro('showWhen', function (bool $condition) {
-            /** @phpstan-ignore-next-line */
             return $condition === true ? $this->show() : $this->hide();
         });
 
         Field::macro('showUnless', function (bool $condition) {
-            /** @phpstan-ignore-next-line */
             return $condition === true ? $this->hide() : $this->show();
         });
     }
