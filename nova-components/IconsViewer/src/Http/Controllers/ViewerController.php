@@ -43,7 +43,7 @@ class ViewerController extends Controller
         })
             ->collect()
             ->reject(fn ($file) => Str::endsWith($file, 'd.ts') || Str::endsWith($file, ['index.js', 'package.json']))
-            ->transform(function ($file) use ($directory, $set) {
+            ->transform(function ($file) use ($directory) {
                 /** @var string $file */
                 return Str::snake(
                     str_replace(['Icon.js', '/'], ['', ''], Str::after($file, $directory)), '-'
