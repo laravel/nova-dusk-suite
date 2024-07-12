@@ -1,15 +1,16 @@
 <template>
   <div>
-    <Heading :level="2" class="mb-6">{{ props.name }} ({{ props.icons.length }} icons)</Heading>
+    <Heading :level="2" class="mb-6">{{ name }} ({{ icons.length }} icons)</Heading>
 
     <div class="icons-viewer-set-grid">
       <Card
-        v-for="icon in props.icons"
+        v-for="icon in icons"
         class="mx-2 p-2 flex items-center justify-center"
-        v-tooltip="`${icon}`"
+        v-tooltip="icon"
       >
-        <component
-          :is="`heroicons-${icon}`"
+        <Heroicons
+          :name="icon"
+          :type="iconType"
           height="48"
           width="48"
         />
@@ -19,9 +20,15 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+
 const props = defineProps({
   name: { type: String, required: true },
   icons: { type: Array, default: [] },
+})
+
+const iconType = computed(() => {
+  return props.name === 'Solid' ? 'solid' : 'outline'
 })
 </script>
 

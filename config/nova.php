@@ -5,7 +5,7 @@ use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Http\Middleware\Authorize;
 use Laravel\Nova\Http\Middleware\BootTools;
 use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
-use Laravel\Nova\Http\Middleware\EnsureEmailIsVerified;
+// use Laravel\Nova\Http\Middleware\EnsureEmailIsVerified;
 use Laravel\Nova\Http\Middleware\HandleInertiaRequests;
 
 return [
