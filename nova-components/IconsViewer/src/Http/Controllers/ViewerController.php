@@ -36,25 +36,19 @@ class ViewerController extends Controller
     public static function iconSet(string $set)
     {
         /** @var string $directory */
-        $directory = NOVA_PATH.'/resources/js/components/Heroicons/'.$set;
+        $directory = NOVA_PATH.'/node_modules/@heroicons/vue/24/'.$set;
 
         return LazyCollection::make(function () use ($directory) {
             yield from (new Finder())->in($directory)->files();
         })
             ->collect()
-            ->transform(function ($file) use ($directory) {
+            ->reject(fn ($file) => Str::endsWith($file, 'd.ts') || Str::endsWith($file, ['index.js', 'package.json']))
+            ->transform(function ($file) use ($directory, $set) {
                 /** @var string $file */
-                return str_replace(
-                    'heroicons-',
-                    '',
-                    Str::snake(str_replace(
-                        ['/', '.vue'],
-                        ['', ''],
-                        Str::after($file, $directory)
-                    ), '-'),
+                return Str::snake(
+                    str_replace(['Icon.js', '/'], ['', ''], Str::after($file, $directory)), '-'
                 );
-            })->reject(function ($file) {
-                return $file === 'index.js';
-            })->sort()->values()->all();
+            })->reject(fn ($file) => Str::startsWith($file, 'esm'))
+            ->sort()->values()->all();
     }
 }
