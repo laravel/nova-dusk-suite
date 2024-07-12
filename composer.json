@@ -27,6 +27,7 @@
         "larastan/larastan": "^2.5.1",
         "laravel/breeze": "^1.1",
         "laravel/nova": "@dev",
+        "laravel/pint": "^1.16",
         "nunomaduro/collision": "^7.5",
         "orchestra/testbench-core": "^8.24.4",
         "orchestra/testbench-dusk": "^8.24.1",

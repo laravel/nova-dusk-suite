@@ -14,7 +14,7 @@ use Laravel\Nova\Actions\Actionable;
  */
 class Profile extends Model
 {
-    use HasFactory, Actionable;
+    use Actionable, HasFactory;
 
     /**
      * The attributes that should be cast to native types.
