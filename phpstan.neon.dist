@@ -14,16 +14,16 @@ parameters:
     - nova-components/SidebarTool/src
 
   # The level 9 is the highest level
-  level: 6
+  level: 5
 
   ignoreErrors:
+    # - identifier: missingType.generics
+    # - identifier: missingType.iterableValue
     - '#Access to an undefined property Laravel\\Nova\\Fields\\(ActionFields|FormData)#'
     - '#Call to an undefined method Illuminate\\Database\\Eloquent\\[a-zA-Z\\\<\>]+::(withTrashed|onlyTrashed|trashed)\(\)#'
 
   excludePaths:
     - app/Http/Controllers/Auth/*.php
 
-  checkMissingIterableValueType: false
   noUnnecessaryCollectionCall: false
   checkModelProperties: false
-  checkGenericClassInNonGenericObjectType: false

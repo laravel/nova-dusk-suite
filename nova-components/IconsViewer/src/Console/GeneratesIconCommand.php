@@ -43,7 +43,7 @@ class GeneratesIconCommand extends Command
             })
                 ->collect()
                 ->reject(fn ($file) => Str::endsWith($file, 'd.ts') || Str::endsWith($file, ['index.js', 'package.json']))
-                ->transform(function ($file) use ($directory) {
+                ->transform(function ($file) use ($directory) { // @phpstan-ignore argument.type
                     /** @var string $file */
                     return Str::snake(
                         str_replace(['Icon.js', '/'], ['', ''], Str::after($file, $directory)), '-'

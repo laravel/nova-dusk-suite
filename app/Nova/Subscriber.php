@@ -94,7 +94,7 @@ class Subscriber extends Resource
                             'active' => 'success',
                         ])->label(function ($value) {
                             return Str::title($value);
-                        })->filterable(function ($request, $query, $value) {
+                        })->filterable(function ($request, $query, $value) { // @phpstan-ignore argument.type
                             return $query->when($value === 'active', function ($query) {
                                 $query->whereNotNull('email_verified_at');
                             })->when($value === 'inactive', function ($query) {

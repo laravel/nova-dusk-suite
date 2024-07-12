@@ -56,8 +56,8 @@ abstract class Resource extends NovaResource
      * Build a "detail" query for the given resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  \Illuminate\Contracts\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Contracts\Database\Eloquent\Builder
      */
     public static function detailQuery(NovaRequest $request, $query)
     {
