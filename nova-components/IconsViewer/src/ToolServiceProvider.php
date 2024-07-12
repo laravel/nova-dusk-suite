@@ -24,6 +24,12 @@ class ToolServiceProvider extends ServiceProvider
         Nova::serving(function (ServingNova $event) {
             //
         });
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Console\GeneratesIconCommand::class,
+            ]);
+        }
     }
 
     /**
