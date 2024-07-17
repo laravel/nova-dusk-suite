@@ -8,11 +8,10 @@
         class="mx-2 p-2 flex items-center justify-center"
         v-tooltip="icon"
       >
-        <Heroicons
+        <Icon
           :name="icon"
           :type="iconType"
-          height="48"
-          width="48"
+          class="!w-[48] !h-[48]"
         />
       </Card>
     </div>
@@ -20,6 +19,7 @@
 </template>
 
 <script setup>
+import { Icon } from 'laravel-nova-ui'
 import { computed } from 'vue'
 
 const props = defineProps({
