@@ -100,7 +100,8 @@ transform([
         ],
 
         'daily' => [
-            'driver' => 'daily',"
+            'driver' => 'daily',",
+    "'channel' => env('LOG_DEPRECATIONS_CHANNEL', 'null')," => "'channel' => env('LOG_DEPRECATIONS_CHANNEL', 'deprecations'),",
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/config/logging.php"));
 
 transform([
