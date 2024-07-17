@@ -63,8 +63,6 @@ return [
 
     'mix_url' => env('MIX_ASSET_URL'),
 
-    'mix_url' => env('MIX_ASSET_URL'),
-
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
