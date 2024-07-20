@@ -4,7 +4,6 @@ namespace App\Nova\Policies;
 
 use App\Models\User;
 use App\Nova\Profile;
-use Illuminate\Auth\Access\Response;
 
 class ProfilePolicy
 {
