@@ -13,7 +13,9 @@ class ProfilePolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return ! $user->isBlockedFrom('profile.viewAny')
+            ? Response::allow()
+            : Response::denyAsNotFound();
     }
 
     /**
@@ -21,7 +23,9 @@ class ProfilePolicy
      */
     public function view(User $user, Profile $profile): bool
     {
-        return true;
+        return ! $user->isBlockedFrom('profile.view.'.$profile->id)
+            ? Response::allow()
+            : Response::denyAsNotFound();
     }
 
     /**
@@ -29,7 +33,9 @@ class ProfilePolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return ! $user->isBlockedFrom('profile.create')
+            ? Response::allow()
+            : Response::deny();
     }
 
     /**
@@ -37,7 +43,9 @@ class ProfilePolicy
      */
     public function update(User $user, Profile $profile): bool
     {
-        return true;
+        return ! $user->isBlockedFrom('profile.update.'.$profile->id)
+            ? Response::allow()
+            : Response::deny();
     }
 
     /**
@@ -46,5 +54,17 @@ class ProfilePolicy
     public function delete(User $user, Profile $profile): bool
     {
         return false;
+    }
+
+    /**
+     * Determine whether the user can add a comment to the podcast.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Profile  $profile
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function addPassport(User $user, Profile $profile)
+    {
+        return Str::endsWith($user->email, '@laravel.com');
     }
 }

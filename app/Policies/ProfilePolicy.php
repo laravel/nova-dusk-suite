@@ -99,7 +99,7 @@ class ProfilePolicy
      */
     public function forceDelete(User $user, Profile $profile)
     {
-        return true;
+        return false;
     }
 
     /**
