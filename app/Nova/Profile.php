@@ -29,6 +29,13 @@ class Profile extends Resource
     public static $model = \App\Models\Profile::class;
 
     /**
+     * The policy the resource corrsponds to.
+     *
+     * @var class-string|null
+     */
+    public static $policy = Policies\ProfilePolicy::class;
+
+    /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
