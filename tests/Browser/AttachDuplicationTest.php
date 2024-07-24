@@ -23,7 +23,7 @@ class AttachDuplicationTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
-                ->within(new FormComponent(), function ($browser) use ($role) {
+                ->within(new FormComponent, function ($browser) use ($role) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
@@ -60,7 +60,7 @@ class AttachDuplicationTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('users', 1, 'books', 'giftBooks'))
                 ->assertSeeIn('h1', 'Attach Book')
-                ->within(new FormComponent(), function ($browser) use ($now) {
+                ->within(new FormComponent, function ($browser) use ($now) {
                     $browser->selectAttachable(4)
                         ->type('@price', '39')
                         ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now);
@@ -101,7 +101,7 @@ class AttachDuplicationTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('users', 1, 'books', 'personalBooks'))
                 ->assertSeeIn('h1', 'Attach Book')
-                ->within(new FormComponent(), function ($browser) use ($now) {
+                ->within(new FormComponent, function ($browser) use ($now) {
                     $browser->selectAttachable(4)
                         ->type('@price', '34')
                         ->typeOnDateTimeLocal('input[dusk="purchased_at"]', $now);

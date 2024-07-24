@@ -159,7 +159,7 @@ class IndexActionTest extends DuskTestCase
                         })
                         ->closeCurrentDropdown()
                         ->openControlSelectorById(2)
-                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent, function ($browser) {
                             $browser->assertSee('Mark As Inactive');
                         })
                         ->closeCurrentDropdown()

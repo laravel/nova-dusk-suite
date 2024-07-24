@@ -22,7 +22,7 @@ class FilterableFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new UserIndex())
+                ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->assertFilterCount(0)
@@ -300,7 +300,7 @@ class FilterableFieldTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new UserIndex())
+                ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->runFilter(function ($browser) {

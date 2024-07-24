@@ -27,7 +27,7 @@ class PaginationTest extends DuskTestCase
                         ->assertDisabled('nav button[dusk="next"]')
                         ->assertEnabled('nav button[dusk="previous"]')
                         ->previousPage();
-                })->on(new UserIndex())
+                })->on(new UserIndex)
                 ->assertQueryStringHas('users_page', 1);
 
             $browser->blank();
@@ -52,7 +52,7 @@ class PaginationTest extends DuskTestCase
                         ->assertEnabled('nav button[dusk="previous"]')
                         ->assertEnabled('nav button[dusk="first"]')
                         ->previousPage();
-                })->on(new UserIndex())
+                })->on(new UserIndex)
                 ->assertQueryStringHas('users_page', 1);
 
             $browser->blank();

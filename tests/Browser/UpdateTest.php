@@ -43,7 +43,7 @@ class UpdateTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Update('users', 1))
                 ->waitForTextIn('h1', 'Update User: Taylor Otwell')
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->type('@name', ' ');
                 })
                 ->update()
@@ -67,12 +67,12 @@ class UpdateTest extends DuskTestCase
             $browser->loginAs(2)
                 ->visit(new Update('users', 1))
                 ->waitForTextIn('h1', 'Update User: Taylor')
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent, function ($browser) {
                     $browser->assertSeeLink('Users')
                         ->assertSeeLink('User Details: Taylor')
                         ->assertCurrentPageTitle('Update User');
                 })
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->assertSee('E-mail address should be unique')
                         ->assertSelected('@settings->pagination', 'simple')
                         ->type('@name', 'Taylor Otwell upDATED')
@@ -97,7 +97,7 @@ class UpdateTest extends DuskTestCase
             $browser->loginAs(2)
                 ->visit(new Update('users', 1))
                 ->waitForTextIn('h1', 'Update User: Taylor Otwell')
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->type('@name', 'Taylor Otwell Updated')
                         ->type('@password', 'secret')
                         ->assertSee('E-mail address should be unique');
@@ -121,7 +121,7 @@ class UpdateTest extends DuskTestCase
             $browser->loginAs(2)
                 ->visit(new Update('users', 1))
                 ->waitForTextIn('h1', 'Update User: Taylor Otwell')
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->type('@password', 'secret')
                         ->type('@name', 'Taylor Otwell Updated')
                         ->keys('@name', '{enter}');
@@ -149,7 +149,7 @@ class UpdateTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Update('users', 1))
                 ->waitForTextIn('h1', 'Update User: Taylor')
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->assertSee('E-mail address should be unique')
                         ->assertSelected('@settings->pagination', 'simple')
                         ->type('@name', 'Taylor Otwell upDATED')

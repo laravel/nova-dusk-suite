@@ -63,7 +63,7 @@ class ActionFieldTest extends DuskTestCase
                         ->clickCheckboxForId(1)
                         ->selectAction('update-pivot-notes', function ($browser) {
                             $browser->elsewhere('', function ($browser) {
-                                $browser->whenAvailable(new ConfirmActionModalComponent(), function ($browser) {
+                                $browser->whenAvailable(new ConfirmActionModalComponent, function ($browser) {
                                     $browser->assertScript('Nova.useShortcuts', false)
                                         ->assertSee('Provide a description for notes.');
                                 })->keys('', ['e']);
@@ -89,7 +89,7 @@ class ActionFieldTest extends DuskTestCase
                     $browser->waitForTable()
                         ->clickCheckboxForId(1)
                         ->runAction('update-required-pivot-notes')
-                        ->elsewhere(new ConfirmActionModalComponent(), function ($browser) {
+                        ->elsewhere(new ConfirmActionModalComponent, function ($browser) {
                             $browser->assertSee(__('validation.required', ['attribute' => 'Notes']));
                         });
                 });
@@ -137,13 +137,13 @@ class ActionFieldTest extends DuskTestCase
                 ->within(new IndexComponent('users'), function (Browser $browser) {
                     $browser->waitForTable()
                         ->openControlSelectorById(1)
-                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function (Browser $browser) {
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent, function (Browser $browser) {
                             $browser->waitFor('@1-preview-button')
                                 ->assertMissing('@1-inline-actions');
                         })
                         ->closeCurrentDropdown()
                         ->openControlSelectorById(2)
-                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function (Browser $browser) {
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent, function (Browser $browser) {
                             $browser->assertSee('Mark As Inactive');
                         });
                 });

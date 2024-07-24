@@ -41,7 +41,7 @@ class RemoveAttachedTest extends DuskTestCase
                         ->assertPresent("tr[data-pivot-id='{$book2->getKey()}']")
                         ->within("tr[data-pivot-id='{$book2->getKey()}']", function ($browser) {
                             $browser->click('@4-delete-button')
-                                ->elsewhereWhenAvailable(new DeleteResourceModalComponent(), function ($browser) {
+                                ->elsewhereWhenAvailable(new DeleteResourceModalComponent, function ($browser) {
                                     $browser->confirm();
                                 })->pause(500);
                         })->waitForTable()

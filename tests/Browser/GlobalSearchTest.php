@@ -16,7 +16,7 @@ class GlobalSearchTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new Dashboard())
+                ->visit(new Dashboard)
                 ->within('@global-search-component', function ($browser) {
                     $browser->type('@global-search', 'a')
                         ->elsewhereWhenAvailable('@global-search-results', function ($browser) {
@@ -45,7 +45,7 @@ class GlobalSearchTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs(1)
-                ->visit(new Dashboard())
+                ->visit(new Dashboard)
                 ->within('@global-search-component', function ($browser) use ($user) {
                     $browser->type('@global-search', $user->getKey())
                         ->elsewhereWhenAvailable('@global-search-results', function ($browser) {
@@ -65,7 +65,7 @@ class GlobalSearchTest extends DuskTestCase
             $currentWindowHandles = count($browser->driver->getWindowHandles());
 
             $browser->loginAs(1)
-                ->visit(new Dashboard())
+                ->visit(new Dashboard)
                 ->within('@global-search-component', function ($browser) {
                     $browser->type('@global-search', 'taylor')
                         ->elsewhereWhenAvailable('@global-search-results', function ($browser) {

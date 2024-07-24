@@ -22,7 +22,7 @@ class AttachTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
-                ->within(new FormComponent(), function ($browser) use ($role) {
+                ->within(new FormComponent, function ($browser) use ($role) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
@@ -50,7 +50,7 @@ class AttachTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('roles', $role->id, 'users'))
-                ->within(new FormComponent(), function ($browser) use ($role) {
+                ->within(new FormComponent, function ($browser) use ($role) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) use ($role) {
                         $browser->assertSee('Role')->assertSee($role->id);
                     })
@@ -76,12 +76,12 @@ class AttachTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent, function ($browser) {
                     $browser->assertSeeLink('Users')
                         ->assertSeeLink('User Details: Taylor Otwell')
                         ->assertCurrentPageTitle('Attach Role');
                 })
-                ->within(new FormComponent(), function ($browser) use ($role) {
+                ->within(new FormComponent, function ($browser) use ($role) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
@@ -109,12 +109,12 @@ class AttachTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(Attach::belongsToMany('users', 1, 'roles'))
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent, function ($browser) {
                     $browser->assertSeeLink('Users')
                         ->assertSeeLink('User Details: Taylor Otwell')
                         ->assertCurrentPageTitle('Attach Role');
                 })
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('Taylor Otwell');
                     });

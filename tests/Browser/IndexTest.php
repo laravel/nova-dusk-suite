@@ -26,7 +26,7 @@ class IndexTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new UserIndex)
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent, function ($browser) {
                     $browser->assertSee('Resources')
                         ->assertCurrentPageTitle('Users');
                 })
@@ -252,7 +252,7 @@ class IndexTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($role) {
             $browser->loginAs(1)
-                ->visit(new Dashboard());
+                ->visit(new Dashboard);
 
             $browser->script('localStorage.setItem("nova.resources.roles.collapsed", true)');
 

@@ -38,7 +38,7 @@ class CreateWithHasManyThroughTest extends DuskTestCase
                         ->click('@create-button');
                 })
                 ->on(new Create('sails'))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->type('@inches', '25');
                 })
                 ->create()

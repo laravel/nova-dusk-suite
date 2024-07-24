@@ -20,7 +20,7 @@ class HasOneAuthorizationTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Create('users'))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->assertMissing('@create-profile-relation-button')
                         ->type('@name', 'Adam Wathan')
                         ->type('@email', 'adam@laravel.com')

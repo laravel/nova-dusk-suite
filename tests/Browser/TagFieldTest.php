@@ -22,7 +22,7 @@ class TagFieldTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Update('flights', $flight->getKey()))
-                ->within(new FormComponent(), function ($browser) use ($passports) {
+                ->within(new FormComponent, function ($browser) use ($passports) {
                     $browser->assertMissing('@passports-selected-tags')
                         ->within(new SearchSearchInputComponent('passports'), function ($browser) use ($passports) {
                             $browser->searchAndSelectFirstResult($passports[0]->getKey());

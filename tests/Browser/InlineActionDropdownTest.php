@@ -15,7 +15,7 @@ class InlineActionDropdownTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new UserIndex())
+                ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->assertPresentControlSelectorById(1)

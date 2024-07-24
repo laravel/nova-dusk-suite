@@ -26,7 +26,7 @@ class RepeaterFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($invoice) {
             $browser->loginAs(1)
                 ->visit(new Update('invoices', $invoice->getKey()))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->whenAvailable('@items', function ($browser) {
                         $browser->assertValue('[dusk="0-repeater-row"] input[dusk="quantity"]', 1)
                             ->assertValue('[dusk="1-repeater-row"] input[dusk="quantity"]', 2)
@@ -55,7 +55,7 @@ class RepeaterFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($invoice) {
             $browser->loginAs(1)
                 ->visit(new Update('invoices', $invoice->getKey()))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->whenAvailable('@items', function ($browser) {
                         $browser->assertValue('[dusk="0-repeater-row"] input[dusk="quantity"]', 1)
                             ->assertValue('[dusk="1-repeater-row"] input[dusk="quantity"]', 2)
@@ -85,7 +85,7 @@ class RepeaterFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($invoice) {
             $browser->loginAs(1)
                 ->visit(new Update('invoices', $invoice->getKey()))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->whenAvailable('@items', function ($browser) {
                         $browser->assertValue('[dusk="0-repeater-row"] input[dusk="quantity"]', 1)
                             ->assertValue('[dusk="1-repeater-row"] input[dusk="quantity"]', 2)

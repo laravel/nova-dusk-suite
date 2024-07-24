@@ -16,7 +16,7 @@ class ResourceClickActionTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new UserIndex())
+                ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function (Browser $browser) {
                     $browser->click('tr[dusk="3-row"] td:nth-child(3)');
                 })
@@ -38,32 +38,32 @@ class ResourceClickActionTest extends DuskTestCase
             };
 
             $browser->loginAs($fetchUser(1, 'detail'))
-                ->visit(new UserIndex())
+                ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function (Browser $browser) {
                     $browser->click('tr[dusk="3-row"] td:nth-child(3)');
                 })
                 ->waitForLocation((new Detail('users', 3))->url());
 
             $browser->loginAs($fetchUser(2, 'edit'))
-                ->visit(new UserIndex())
+                ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function (Browser $browser) {
                     $browser->click('tr[dusk="3-row"] td:nth-child(3)');
                 })
                 ->waitForLocation((new Update('users', 3))->url());
 
             $browser->loginAs($fetchUser(3, 'select'))
-                ->visit(new UserIndex())
+                ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function (Browser $browser) {
                     $browser->click('tr[dusk="3-row"] td:nth-child(3)')
                         ->assertCheckboxChecked('[dusk="3-row"] [role="checkbox"]');
                 });
 
             $browser->loginAs($fetchUser(4, 'ignore'))
-                ->visit(new UserIndex())
+                ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function (Browser $browser) {
                     $browser->click('tr[dusk="3-row"] td:nth-child(3)')
                         ->assertCheckboxNotChecked('[dusk="3-row"] [role="checkbox"]');
-                })->assertPathIs((new UserIndex())->url());
+                })->assertPathIs((new UserIndex)->url());
 
             $browser->blank();
         });

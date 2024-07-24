@@ -26,7 +26,7 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new UserIndex())
+                ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->assertSeeResource(1)
@@ -83,7 +83,7 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->waitForTable()
                         ->assertQueryStringHas(
                             'books_filter',
-                            'W3sicmVzb3VyY2U6Ym9va3M6Z2lmdEJvb2tzIjoiNCJ9LHsiQm9vbGVhbjphY3RpdmUiOiIifSx7IkN1cnJlbmN5OnByaWNlIjpbbnVsbCxudWxsXX1d'
+                            'W3sicmVzb3VyY2U6Ym9va3M6Z2lmdEJvb2tzIjo0fSx7IkJvb2xlYW46YWN0aXZlIjoiIn0seyJDdXJyZW5jeTpwcmljZSI6W251bGwsbnVsbF19XQ=='
                         )
                         ->assertSeeResource(4, 1)
                         ->assertSeeResource(4, 2)
@@ -96,7 +96,7 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         })->waitForTable()
                         ->assertQueryStringHas(
                             'books_filter',
-                            'W3sicmVzb3VyY2U6Ym9va3M6Z2lmdEJvb2tzIjoiMyJ9LHsiQm9vbGVhbjphY3RpdmUiOiIifSx7IkN1cnJlbmN5OnByaWNlIjpbbnVsbCxudWxsXX1d'
+                            'W3sicmVzb3VyY2U6Ym9va3M6Z2lmdEJvb2tzIjozfSx7IkJvb2xlYW46YWN0aXZlIjoiIn0seyJDdXJyZW5jeTpwcmljZSI6W251bGwsbnVsbF19XQ=='
                         )
                         ->assertDontSeeResource(4, 1)
                         ->assertDontSeeResource(4, 2)
@@ -137,7 +137,7 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         })->waitForTable()
                         ->assertQueryStringHas(
                             'ships_filter',
-                            base64_encode(json_encode([['resource:captains:captains' => "{$captain->getKey()}"]]))
+                            base64_encode(json_encode([['resource:captains:captains' => $captain->getKey()]]))
                         )
                         ->assertSeeResource($ship->getKey())
                         ->assertDontSeeResource($ship1->getKey())
@@ -149,7 +149,7 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         })->waitForTable()
                         ->assertQueryStringHas(
                             'ships_filter',
-                            base64_encode(json_encode([['resource:captains:captains' => "{$captain1->getKey()}"]]))
+                            base64_encode(json_encode([['resource:captains:captains' => $captain1->getKey()]]))
                         )
                         ->assertSeeResource($ship->getKey())
                         ->assertDontSeeResource($ship1->getKey())

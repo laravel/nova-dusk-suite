@@ -29,12 +29,12 @@ class UpdateAttachedTest extends DuskTestCase
                         ->click('@1-edit-attached-button');
                 })
                 ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent, function ($browser) {
                     $browser->assertSeeLink('Users')
                         ->assertSeeLink('User Details: Taylor Otwell')
                         ->assertCurrentPageTitle('Update attached Role: 1');
                 })
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
@@ -68,12 +68,12 @@ class UpdateAttachedTest extends DuskTestCase
                         ->click('@1-edit-attached-button');
                 })
                 ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent, function ($browser) {
                     $browser->assertSeeLink('Users')
                         ->assertSeeLink('User Details: Taylor Otwell')
                         ->assertCurrentPageTitle('Update attached Role: 1');
                 })
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
@@ -110,12 +110,12 @@ class UpdateAttachedTest extends DuskTestCase
                         ->click('@1-edit-attached-button');
                 })
                 ->on(UpdateAttached::belongsToMany('users', 1, 'roles', 1))
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent, function ($browser) {
                     $browser->assertSeeLink('Users')
                         ->assertSeeLink('User Details: Taylor Otwell')
                         ->assertCurrentPageTitle('Update attached Role: 1');
                 })
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })
@@ -156,12 +156,12 @@ class UpdateAttachedTest extends DuskTestCase
                         });
                 })
                 ->on(UpdateAttached::belongsToMany('users', 1, 'books', 4))
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent, function ($browser) {
                     $browser->assertSeeLink('Users')
                         ->assertSeeLink('User Details: Taylor Otwell')
                         ->assertCurrentPageTitle('Update attached Book: laravel-testing-decoded');
                 })
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->whenAvailable('@via-resource-field', function ($browser) {
                         $browser->assertSee('User')->assertSee('Taylor Otwell');
                     })

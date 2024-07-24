@@ -15,8 +15,8 @@ class DashboardTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new Dashboard())
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->visit(new Dashboard)
+                ->within(new BreadcrumbComponent, function ($browser) {
                     $browser->assertSee('Dashboard')
                         ->assertCurrentPageTitle('Main');
                 })
@@ -42,7 +42,7 @@ class DashboardTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new Dashboard())
+                ->visit(new Dashboard)
                 ->withKeyboard(function (Keyboard $keyboard) {
                     $keyboard->type(['/']);
                 })

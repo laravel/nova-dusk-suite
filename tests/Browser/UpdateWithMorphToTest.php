@@ -48,12 +48,12 @@ class UpdateWithMorphToTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Update('comments', $comment->id))
-                ->within(new BreadcrumbComponent(), function ($browser) use ($comment) {
+                ->within(new BreadcrumbComponent, function ($browser) use ($comment) {
                     $browser->assertSeeLink('Comments')
                         ->assertSeeLink('Comment Details: '.$comment->id)
                         ->assertCurrentPageTitle('Update Comment');
                 })
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->assertMissing('@commentable-unlock-relation')
                         ->searchFirstRelation('commentable', 2)
                         ->assertMissing('@commentable-unlock-relation');
@@ -100,12 +100,12 @@ class UpdateWithMorphToTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Update('comments', $comment->id))
-                ->within(new BreadcrumbComponent(), function ($browser) use ($comment) {
+                ->within(new BreadcrumbComponent, function ($browser) use ($comment) {
                     $browser->assertSeeLink('Comments')
                         ->assertSeeLink('Comment Details: '.$comment->id)
                         ->assertCurrentPageTitle('Update Comment');
                 })
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->assertEnabled('select[dusk="commentable-type"]')
                         ->within('select[dusk="commentable-type"]', function ($browser) {
                             $browser->assertSee('Link');
@@ -177,11 +177,11 @@ class UpdateWithMorphToTest extends DuskTestCase
                     'viaResourceId' => $post->id,
                     'viaRelationship' => 'comments',
                 ]))
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent, function ($browser) {
                     $browser->assertSeeLink('Link Details: 1')
                         ->assertCurrentPageTitle('Update Comment');
                 })
-                ->within(new FormComponent(), function ($browser) use ($post) {
+                ->within(new FormComponent, function ($browser) use ($post) {
                     $browser->whenAvailable('select[dusk="commentable-type"]', function ($browser) {
                         $browser->assertEnabled('')
                             ->assertSelected('', 'posts');
@@ -224,7 +224,7 @@ class UpdateWithMorphToTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Update('photos', $photo->id))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->selectRelation('imageable', '');
                 })->update()
                 ->waitForText('The photo was updated!');

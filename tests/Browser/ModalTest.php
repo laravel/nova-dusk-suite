@@ -22,9 +22,9 @@ class ModalTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('posts', $post->id))
                 ->openControlSelector()
-                ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
+                ->elsewhereWhenAvailable(new ActionDropdownComponent, function ($browser) {
                     $browser->click("button[data-action-id='add-comment']")
-                        ->elsewhereWhenAvailable(new ConfirmActionModalComponent(), function ($browser) {
+                        ->elsewhereWhenAvailable(new ConfirmActionModalComponent, function ($browser) {
                             $browser->click('@anonymous-default-boolean-field')
                                 ->elsewhereWhenAvailable(new SearchInputComponent('users'), function ($browser) {
                                     $browser->showSearchDropdown();
@@ -50,9 +50,9 @@ class ModalTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('users', 4))
                 ->openControlSelector()
-                ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
+                ->elsewhereWhenAvailable(new ActionDropdownComponent, function ($browser) {
                     $browser->click("button[data-action-id='create-user-profile']")
-                        ->elsewhereWhenAvailable(new ConfirmActionModalComponent(), function ($browser) {
+                        ->elsewhereWhenAvailable(new ConfirmActionModalComponent, function ($browser) {
                             $browser->click('@timezone-search-input')
                                 ->elsewhereWhenAvailable(new SearchInputComponent('timezone'), function ($browser) {
                                     $browser->showSearchDropdown();
