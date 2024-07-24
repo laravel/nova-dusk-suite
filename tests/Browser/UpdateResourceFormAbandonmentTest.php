@@ -10,7 +10,9 @@ use Laravel\Nova\Testing\Browser\Pages\Index;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
+#[Group('form-abort')]
 class UpdateResourceFormAbandonmentTest extends DuskTestCase
 {
     public function test_it_shows_exit_warning_if_resource_form_has_changes_when_navigating_to_different_page()
@@ -23,7 +25,7 @@ class UpdateResourceFormAbandonmentTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Update('videos', $video->id))
                 ->type('@title', 'Hello World')
-                ->within(new SidebarComponent(), function ($browser) {
+                ->within(new SidebarComponent, function ($browser) {
                     $browser->clickLink('Users');
                 })
                 ->waitForDialog()
@@ -77,7 +79,7 @@ class UpdateResourceFormAbandonmentTest extends DuskTestCase
                 ->visit(new Update('videos', $video->id))
                 ->type('@title', 'Hello World')
                 ->cancel()
-                ->on(new Index('videos'));
+                ->on(new Detail('videos', $video->id));
 
             $this->assertDatabaseMissing('videos', [
                 'title' => 'Hello World',

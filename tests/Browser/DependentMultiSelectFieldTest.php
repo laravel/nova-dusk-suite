@@ -16,7 +16,7 @@ class DependentMultiSelectFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Create('profiles'))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->selectRelation('users', 4)
                         ->assertSelectHasOptions('@interests', [
                             'laravel',
@@ -49,7 +49,7 @@ class DependentMultiSelectFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Update('profiles', 1))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->assertSelectHasOptions('@interests', [
                         'laravel',
                         'phpunit',

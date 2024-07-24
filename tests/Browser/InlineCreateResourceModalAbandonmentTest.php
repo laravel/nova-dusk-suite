@@ -5,7 +5,9 @@ namespace Laravel\Nova\Tests\Browser;
 use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Attach;
 use Laravel\Nova\Tests\DuskTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
+#[Group('form-abort')]
 class InlineCreateResourceModalAbandonmentTest extends DuskTestCase
 {
     public function test_it_shows_exit_warning_dialog_if_modal_has_changes_when_pressing_escape()

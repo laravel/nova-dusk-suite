@@ -46,13 +46,13 @@ class LensActionTest extends DuskTestCase
                 ->within(new LensComponent('users', 'passthrough-lens'), function ($browser) {
                     $browser->waitForTable()
                         ->openControlSelectorById(1)
-                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent, function ($browser) {
                             $browser->waitFor('@1-preview-button')
                                 ->assertMissing('@1-inline-actions');
                         })
                         ->closeCurrentDropdown()
                         ->openControlSelectorById(2)
-                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent, function ($browser) {
                             $browser->assertSee('Mark As Inactive');
                         })
                         ->closeCurrentDropdown()

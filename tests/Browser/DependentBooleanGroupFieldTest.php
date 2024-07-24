@@ -65,7 +65,7 @@ class DependentBooleanGroupFieldTest extends DuskTestCase
 
             $browser->loginAs(1)
                 ->visit(new Update('users', $user->id))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->type('@email', 'mior@laravel-nova.com')->pause(2000);
                 })->update()
                 ->waitForText('The user was updated!');

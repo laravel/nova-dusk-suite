@@ -64,7 +64,7 @@ class VisitPreviousPageRedirectionTest extends DuskTestCase
                     $browser->waitForTable()
                         ->editResourceById($category->getKey());
                 })->on(new Update('categories', $category->getKey()))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->type('@name', 'Laravel');
                 })
                 ->updateAndContinueEditing()
@@ -92,7 +92,7 @@ class VisitPreviousPageRedirectionTest extends DuskTestCase
                 ->assertQueryStringHas('viaResourceId', $category->getKey())
                 ->assertQueryStringHas('viaRelationship', 'subcategories')
                 ->assertQueryStringHas('relationshipType', 'hasMany')
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->type('@name', 'Laravel');
                 })
                 ->createAndAddAnother()

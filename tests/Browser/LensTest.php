@@ -20,7 +20,7 @@ class LensTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Lens('users', 'passthrough-lens'))
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent, function ($browser) {
                     $browser->assertSee('Resources')
                         ->assertSeeLink('Users')
                         ->assertCurrentPageTitle('Passthrough Lens');

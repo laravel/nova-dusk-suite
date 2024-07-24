@@ -24,7 +24,7 @@ class CreateWithPolymorphicTest extends DuskTestCase
                         ->click('@create-button');
                 })
                 ->on(new Create('comments'))
-                ->within(new FormComponent(), function ($browser) use ($post) {
+                ->within(new FormComponent, function ($browser) use ($post) {
                     $browser->assertDisabled('@commentable-type')
                         ->assertSelectedSearchResult('commentable', $post->title)
                         ->type('@body', 'Test Comment');

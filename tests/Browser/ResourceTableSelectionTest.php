@@ -20,7 +20,7 @@ class ResourceTableSelectionTest extends DuskTestCase
                 ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
-                        ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
+                        ->within(new SelectAllDropdownComponent, function (Browser $browser) {
                             $browser->assertCheckboxIsNotChecked()
                                 ->assertSelectAllOnCurrentPageNotChecked()
                                 ->assertSelectAllMatchingNotChecked();
@@ -29,7 +29,7 @@ class ResourceTableSelectionTest extends DuskTestCase
                         ->clickCheckboxForId(3)
                         ->clickCheckboxForId(2)
                         ->clickCheckboxForId(1)
-                        ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
+                        ->within(new SelectAllDropdownComponent, function (Browser $browser) {
                             $browser->assertCheckboxIsIndeterminate()
                                 ->assertSelectAllOnCurrentPageChecked()
                                 ->assertSelectAllMatchingNotChecked()
@@ -40,7 +40,7 @@ class ResourceTableSelectionTest extends DuskTestCase
             $browser->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
-                        ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
+                        ->within(new SelectAllDropdownComponent, function (Browser $browser) {
                             $browser->selectAllOnCurrentPage()
                                 ->assertCheckboxIsIndeterminate()
                                 ->assertSelectAllOnCurrentPageChecked()
@@ -62,7 +62,7 @@ class ResourceTableSelectionTest extends DuskTestCase
                 ->visit(new UserIndex)
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
-                        ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
+                        ->within(new SelectAllDropdownComponent, function (Browser $browser) {
                             $browser->selectAllOnCurrentPage()
                                 ->assertCheckboxIsIndeterminate()
                                 ->assertSelectAllOnCurrentPageChecked()
@@ -92,7 +92,7 @@ class ResourceTableSelectionTest extends DuskTestCase
                         ->assertNotChecked('[dusk="2-row"] [role="checkbox"]')
                         ->assertNotChecked('[dusk="3-row"] [role="checkbox"]')
                         ->assertNotChecked('[dusk="4-row"] [role="checkbox"]')
-                        ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
+                        ->within(new SelectAllDropdownComponent, function (Browser $browser) {
                             $browser->assertCheckboxIsNotChecked()
                                 ->assertSelectAllOnCurrentPageNotChecked()
                                 ->assertSelectAllMatchingNotChecked()
@@ -117,7 +117,7 @@ class ResourceTableSelectionTest extends DuskTestCase
                         ->assertCheckboxChecked('[dusk="3-row"] [role="checkbox"]')
                         ->assertCheckboxChecked('[dusk="4-row"] [role="checkbox"]')
                         ->unselectAllMatching()
-                        ->within(new SelectAllDropdownComponent(), function (Browser $browser) {
+                        ->within(new SelectAllDropdownComponent, function (Browser $browser) {
                             $browser->assertCheckboxIsIndeterminate();
                         });
                 });

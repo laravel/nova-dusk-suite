@@ -25,7 +25,7 @@ class ActionModalAbandonmentTest extends DuskTestCase
                         ->clickCheckboxForId(1)
                         ->selectAction('update-required-pivot-notes', function ($browser) {
                             $browser->elsewhere('', function ($browser) {
-                                $browser->whenAvailable(new ConfirmActionModalComponent(), function ($browser) {
+                                $browser->whenAvailable(new ConfirmActionModalComponent, function ($browser) {
                                     $browser->keys('@notes', 'Custom Notes', '{tab}');
                                 })
                                     ->assertPresentModal()
@@ -56,7 +56,7 @@ class ActionModalAbandonmentTest extends DuskTestCase
                     $browser->waitForTable()
                         ->clickCheckboxForId(1)
                         ->selectAction('update-required-pivot-notes', function ($browser) {
-                            $browser->elsewhereWhenAvailable(new ConfirmActionModalComponent(), function ($browser) {
+                            $browser->elsewhereWhenAvailable(new ConfirmActionModalComponent, function ($browser) {
                                 $browser->type('@notes', 'Custom Notes')->cancel();
                             })
                                 ->pause(100)

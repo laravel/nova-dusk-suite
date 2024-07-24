@@ -21,7 +21,7 @@ class CreateWithSoftDeletingMorphToTest extends DuskTestCase
             $browser->loginAs(1)
                 ->visit(new Detail('videos', $video->id))
                 ->runCreateRelation('comments')
-                ->within(new FormComponent(), function ($browser) use ($video) {
+                ->within(new FormComponent, function ($browser) use ($video) {
                     $browser->assertDisabled('@commentable-type')
                         ->assertSelectedSearchResult('commentable', $video->title);
                 })

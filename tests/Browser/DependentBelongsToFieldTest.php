@@ -108,7 +108,7 @@ class DependentBelongsToFieldTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
                 ->visit(new Create('posts'))
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->assertSee('Attachment')
                         ->assertInputValue('@key-value-key-0', 'Author')
                         ->assertInputValue('@key-value-value-0', 'Anonymous')

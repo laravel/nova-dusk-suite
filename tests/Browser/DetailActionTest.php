@@ -123,7 +123,7 @@ class DetailActionTest extends DuskTestCase
             $browser->loginAs(4)
                 ->visit(new Detail('subscribers', $subscribers[0]->id))
                 ->openControlSelector()
-                ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) {
+                ->elsewhereWhenAvailable(new ActionDropdownComponent, function ($browser) {
                     $browser->assertDisabled('button[data-action-id="sleep"]');
                 });
 

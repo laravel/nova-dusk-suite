@@ -21,7 +21,7 @@ class FormButtonTest extends DuskTestCase
 
             $browser->loginAs($user)
                 ->visit(new Dashboard)
-                ->within(new HeaderComponent(), function (Browser $browser) use ($user) {
+                ->within(new HeaderComponent, function (Browser $browser) use ($user) {
                     $browser->press($user->name)
                         ->elsewhereWhenAvailable('[data-menu-open=true]', function ($browser) {
                             $browser->press('Verify Account');
@@ -43,7 +43,7 @@ class FormButtonTest extends DuskTestCase
 
             $browser->loginAs($user)
                 ->visit(new Dashboard)
-                ->within(new SidebarComponent(), function (Browser $browser) {
+                ->within(new SidebarComponent, function (Browser $browser) {
                     $browser->press('Verify Using Inertia');
                 })->on(new Detail('users', $user->id));
 

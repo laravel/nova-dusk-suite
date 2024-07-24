@@ -197,9 +197,9 @@ class DependentActionFieldTest extends DuskTestCase
                 ->visit(new Detail('captains', $captains[0]->getKey()))
                 ->within(new DetailComponent('captains', $captains[0]->getKey()), function ($browser) use ($captains) {
                     $browser->openControlSelector()
-                        ->elsewhereWhenAvailable(new ActionDropdownComponent(), function ($browser) use ($captains) {
+                        ->elsewhereWhenAvailable(new ActionDropdownComponent, function ($browser) use ($captains) {
                             $browser->click("button[data-action-id='track-selected-action']")
-                                ->elsewhereWhenAvailable(new ConfirmActionModalComponent(), function ($browser) use ($captains) {
+                                ->elsewhereWhenAvailable(new ConfirmActionModalComponent, function ($browser) use ($captains) {
                                     $browser->assertValue('@selected_resources', 'false - '.$captains[0]->getKey())
                                         ->click('[id="toggle-default-boolean-field"]')
                                         ->pause(1000)

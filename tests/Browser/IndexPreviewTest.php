@@ -19,7 +19,7 @@ class IndexPreviewTest extends DuskTestCase
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->previewResourceById(1)
-                        ->elsewhereWhenAvailable(new PreviewResourceModalComponent(), function ($browser) {
+                        ->elsewhereWhenAvailable(new PreviewResourceModalComponent, function ($browser) {
                             $browser->assertSee('PREVIEWING TAYLOR OTWELL')
                                 ->assertSeeIn('@name', 'Taylor Otwell')
                                 ->assertSeeIn('@email', 'taylor@laravel.com')

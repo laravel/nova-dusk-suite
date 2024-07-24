@@ -78,7 +78,7 @@ class ImpersonatesUserTest extends DuskTestCase
                         })
                         ->closeCurrentDropdown();
                 })
-                ->visit(new Dashboard())
+                ->visit(new Dashboard)
                 ->press('Laravel Nova')
                 ->press('Stop Impersonating')
                 ->waitForDialog()
@@ -144,7 +144,7 @@ class ImpersonatesUserTest extends DuskTestCase
                                 ->assertMissing('@5-impersonate-button');
                         });
                 })
-                ->visit(new Dashboard())
+                ->visit(new Dashboard)
                 ->press($user->name)
                 ->press('Stop Impersonating')
                 ->waitForDialog()
@@ -181,7 +181,7 @@ class ImpersonatesUserTest extends DuskTestCase
                                 ->assertAuthenticatedAs($subscriber, 'web-subscribers');
                         });
                 })
-                ->visit(new Dashboard())
+                ->visit(new Dashboard)
                 ->press($user->name)
                 ->press('Stop Impersonating')
                 ->waitForDialog()
@@ -223,7 +223,7 @@ class ImpersonatesUserTest extends DuskTestCase
                                 ->assertAuthenticatedAs($subscriber);
                         });
                 })
-                ->visit(new Dashboard())
+                ->visit(new Dashboard)
                 ->press($user->name)
                 ->press('Stop Impersonating')
                 ->waitForDialog()

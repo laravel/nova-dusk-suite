@@ -10,7 +10,9 @@ use Laravel\Nova\Testing\Browser\Pages\Detail;
 use Laravel\Nova\Testing\Browser\Pages\UpdateAttached;
 use Laravel\Nova\Testing\Browser\Pages\UserIndex;
 use Laravel\Nova\Tests\DuskTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
+#[Group('form-abort')]
 class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
 {
     public function test_it_shows_exit_warning_if_resource_form_has_changes_when_navigating_to_different_page()
@@ -30,7 +32,7 @@ class UpdateAttachedResourceFormAbandonmentTest extends DuskTestCase
                     $browser->assertSee('User')->assertSee('Taylor Otwell');
                 })
                 ->keys('@notes', 'Test Notes Updated', '{tab}')
-                ->within(new SidebarComponent(), function ($browser) {
+                ->within(new SidebarComponent, function ($browser) {
                     $browser->clickLink('Users');
                 })
                 ->waitForDialog()

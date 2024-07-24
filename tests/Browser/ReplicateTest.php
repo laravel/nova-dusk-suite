@@ -26,11 +26,11 @@ class ReplicateTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
                 ->visit(new Replicate('posts', $post->id))
-                ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
+                ->within(new BreadcrumbComponent, function ($browser) use ($post) {
                     $browser->assertSee('User Post Details: '.$post->id)
                         ->assertCurrentPageTitle('Replicate User Post');
                 })
-                ->within(new FormComponent(), function ($browser) use ($post) {
+                ->within(new FormComponent, function ($browser) use ($post) {
                     $browser->whenAvailable('@title', function ($browser) {
                         $browser->type('', 'Replicated Post');
                     })
@@ -63,11 +63,11 @@ class ReplicateTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($post) {
             $browser->loginAs(1)
                 ->visit(new Replicate('posts', $post->id))
-                ->within(new BreadcrumbComponent(), function ($browser) use ($post) {
+                ->within(new BreadcrumbComponent, function ($browser) use ($post) {
                     $browser->assertSee('User Post Details: '.$post->id)
                         ->assertCurrentPageTitle('Replicate User Post');
                 })
-                ->within(new FormComponent(), function ($browser) use ($post) {
+                ->within(new FormComponent, function ($browser) use ($post) {
                     $browser->whenAvailable('@title', function ($browser) {
                         $browser->type('', 'Replicated Post 2');
                     })
@@ -97,13 +97,13 @@ class ReplicateTest extends DuskTestCase
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()->replicateResourceById(2);
                 })
-                ->within(new BreadcrumbComponent(), function ($browser) {
+                ->within(new BreadcrumbComponent, function ($browser) {
                     $browser->assertSee('User Details: James Brooks')
                         ->assertCurrentPageTitle('Replicate User');
                 })
                 ->waitForText('Create User')
                 ->assertSeeIn('h1', 'Create User')
-                ->within(new FormComponent(), function ($browser) {
+                ->within(new FormComponent, function ($browser) {
                     $browser->assertInputValue('@name', 'James Brooks')
                         ->assertInputValue('@email', 'james@laravel.com')
                         ->assertSee('Create & Add Another')

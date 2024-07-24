@@ -15,7 +15,7 @@ class ToolAuthorizationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new Dashboard())
+                ->visit(new Dashboard)
                 ->pause(250)
                 ->assertSee('Sidebar Tool');
 
@@ -44,7 +44,7 @@ class ToolAuthorizationTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new Dashboard())
+                ->visit(new Dashboard)
                 ->pause(250)
                 ->assertDontSee('Sidebar Tool');
 

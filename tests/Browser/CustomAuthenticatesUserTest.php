@@ -52,7 +52,7 @@ class CustomAuthenticatesUserTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new Dashboard())
+                ->visit(new Dashboard)
                 ->press('Taylor Otwell')
                 ->press('Logout')
                 ->waitForDialog()
@@ -69,9 +69,9 @@ class CustomAuthenticatesUserTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(1)
-                ->visit(new Dashboard())
+                ->visit(new Dashboard)
                 ->logout()
-                ->visit((new Dashboard())->url())
+                ->visit((new Dashboard)->url())
                 ->waitForLocation('/login')
                 ->assertGuest();
 
@@ -82,11 +82,11 @@ class CustomAuthenticatesUserTest extends DuskTestCase
     public function test_it_clear_user_association_after_session_timeout()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(1)->visit(new Dashboard());
+            $browser->loginAs(1)->visit(new Dashboard);
 
             $browser->deleteCookie('nova_dusk_suite_session');
 
-            $browser->within(new SidebarComponent(), function ($browser) {
+            $browser->within(new SidebarComponent, function ($browser) {
                 $browser->clickLink('Books');
             })->waitForLocation('/login')
                 ->assertGuest();
@@ -98,7 +98,7 @@ class CustomAuthenticatesUserTest extends DuskTestCase
     public function test_it_can_relogin_after_session_timeout()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(1)->visit(new Dashboard());
+            $browser->loginAs(1)->visit(new Dashboard);
 
             $browser->deleteCookie('nova_dusk_suite_session')
                 ->script('Nova.$emit("token-expired")');

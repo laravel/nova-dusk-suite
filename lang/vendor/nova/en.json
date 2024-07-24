@@ -469,6 +469,7 @@
   "Copy to clipboard": "Copy to clipboard",
   "Are you sure you want to delete this notification?": "Are you sure you want to delete this notification?",
   "The image could not be loaded": "The image could not be loaded",
+  "Export As CSV": "Export As CSV",
   "Filename": "Filename",
   "Type": "Type",
   "CSV (.csv)": "CSV (.csv)",
