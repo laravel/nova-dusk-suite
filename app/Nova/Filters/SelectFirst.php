@@ -24,6 +24,11 @@ class SelectFirst extends Filter
         $this->keyName = $keyName;
     }
 
+    public function key()
+    {
+        return 'select-first';
+    }
+
     /**
      * Apply the filter to the given query.
      *
