@@ -242,7 +242,7 @@ class Post extends Resource
     public function filters(NovaRequest $request): array
     {
         return [
-            new Filters\SelectFirst('user_id'),
+            Filters\SelectFirst::make('user_id')->searchable(uses_searchable()),
             new Filters\UserPost,
         ];
     }
