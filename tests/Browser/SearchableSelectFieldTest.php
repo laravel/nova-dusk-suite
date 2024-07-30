@@ -7,9 +7,9 @@ use Laravel\Dusk\Browser;
 use Laravel\Nova\Testing\Browser\Pages\Update;
 use Laravel\Nova\Tests\DuskTestCase;
 
-class SearchableSelectTest extends DuskTestCase
+class SearchableSelectFieldTest extends DuskTestCase
 {
-    public function test_it_can_search_select()
+    public function test_it_can_search_select_field()
     {
         $this->defineApplicationStates('searchable');
 
