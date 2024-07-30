@@ -34,7 +34,7 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->assertSeeResource(3)
                         ->assertSeeResource(4)
                         ->runFilter(function ($browser) {
-                            $browser->whenAvailable('@giftBooks-default-belongs-to-many-field-filter', function ($browser) {
+                            $browser->whenAvailable('@giftBooks-eloquent-field-filter', function ($browser) {
                                 $browser->select('', 4)->pause(1000);
                             });
                         })->waitForTable()
@@ -43,7 +43,7 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->assertDontSeeResource(3)
                         ->assertDontSeeResource(4)
                         ->runFilter(function ($browser) {
-                            $browser->whenAvailable('@giftBooks-default-belongs-to-many-field-filter', function ($browser) {
+                            $browser->whenAvailable('@giftBooks-eloquent-field-filter', function ($browser) {
                                 $browser->select('', 3)->pause(1000);
                             });
                         })->waitForTable()
@@ -76,7 +76,7 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->assertSeeResource(3, 3)
                         ->assertDontSeeResource(4, 4)
                         ->runFilter(function ($browser) {
-                            $browser->whenAvailable('@giftBooks-default-belongs-to-many-field-filter', function ($browser) {
+                            $browser->whenAvailable('@giftBooks-eloquent-field-filter', function ($browser) {
                                 $browser->select('', 4)->pause(1000);
                             });
                         })
@@ -90,7 +90,7 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->assertDontSeeResource(3, 3)
                         ->assertDontSeeResource(4, 4)
                         ->runFilter(function ($browser) {
-                            $browser->whenAvailable('@giftBooks-default-belongs-to-many-field-filter', function ($browser) {
+                            $browser->whenAvailable('@giftBooks-eloquent-field-filter', function ($browser) {
                                 $browser->select('', 3)->pause(1000);
                             });
                         })->waitForTable()
@@ -131,7 +131,7 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->assertSeeResource($ship1->getKey())
                         ->assertSeeResource($ship2->getKey())
                         ->runFilter(function ($browser) use ($captain) {
-                            $browser->whenAvailable('@captains-default-belongs-to-many-field-filter', function ($browser) use ($captain) {
+                            $browser->whenAvailable('@captains-eloquent-field-filter', function ($browser) use ($captain) {
                                 $browser->select('', $captain->getKey())->pause(1000);
                             });
                         })->waitForTable()
@@ -143,7 +143,7 @@ class FilterableBelongsToManyFieldTest extends DuskTestCase
                         ->assertDontSeeResource($ship1->getKey())
                         ->assertDontSeeResource($ship2->getKey())
                         ->runFilter(function ($browser) use ($captain1) {
-                            $browser->whenAvailable('@captains-default-belongs-to-many-field-filter', function ($browser) use ($captain1) {
+                            $browser->whenAvailable('@captains-eloquent-field-filter', function ($browser) use ($captain1) {
                                 $browser->select('', $captain1->getKey())->pause(1000);
                             });
                         })->waitForTable()

@@ -31,7 +31,7 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertSeeResource(3)
                         ->assertSeeResource(4)
                         ->runFilter(function ($browser) {
-                            $browser->click('@active-default-boolean-field-filter');
+                            $browser->click('@active-boolean-field-filter');
                         })
                         ->waitForTable()
 //                        ->pause(50000)
@@ -41,7 +41,7 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertDontSeeResource(3)
                         ->assertSeeResource(4)
                         ->runFilter(function ($browser) {
-                            $browser->click('@active-default-boolean-field-filter');
+                            $browser->click('@active-boolean-field-filter');
                         })
                         ->waitForTable()
                         ->assertFilterCount(1)
@@ -51,7 +51,7 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertDontSeeResource(4)
 
                         ->runFilter(function ($browser) {
-                            $browser->click('@active-default-boolean-field-filter');
+                            $browser->click('@active-boolean-field-filter');
                         })
                         ->waitForTable()
                         ->assertFilterCount(0)
@@ -76,7 +76,7 @@ class FilterableFieldTest extends DuskTestCase
                 ->within(new IndexComponent('posts'), function ($browser) {
                     $browser->waitForTable()
                         ->runFilter(function ($browser) {
-                            $browser->whenAvailable('select[dusk="user-default-belongs-to-field-filter"]', function ($browser) {
+                            $browser->whenAvailable('select[dusk="user-belongs-to-field-filter"]', function ($browser) {
                                 $browser->select('', 1)->pause(1000);
                             });
                         })
@@ -89,7 +89,7 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertDontSeeResource(5);
 
                     $browser->runFilter(function ($browser) {
-                        $browser->select('select[dusk="user-default-belongs-to-field-filter"]', 2)->pause(1000);
+                        $browser->select('select[dusk="user-belongs-to-field-filter"]', 2)->pause(1000);
                     })
                         ->waitForTable()
                         ->assertFilterCount(1)
@@ -100,7 +100,7 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertSeeResource(5);
 
                     $browser->runFilter(function ($browser) {
-                        $browser->select('select[dusk="user-default-belongs-to-field-filter"]', '')->pause(1000);
+                        $browser->select('select[dusk="user-belongs-to-field-filter"]', '')->pause(1000);
                     })
                         ->waitForTable()
                         ->assertFilterCount(0)
@@ -133,7 +133,7 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertSeeResource(5)
                         ->assertSeeResource(6)
                         ->runFilter(function ($browser) {
-                            $browser->select('select[dusk="commentable-default-morph-to-field-filter"]', 'links')->pause(1000);
+                            $browser->select('select[dusk="commentable-morph-to-field-filter"]', 'links')->pause(1000);
                         })
                         ->waitForTable()
                         ->assertFilterCount(1)
@@ -145,7 +145,7 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertDontSeeResource(6);
 
                     $browser->runFilter(function ($browser) {
-                        $browser->select('select[dusk="commentable-default-morph-to-field-filter"]', 'posts')->pause(1000);
+                        $browser->select('select[dusk="commentable-morph-to-field-filter"]', 'posts')->pause(1000);
                     })
                         ->waitForTable()
                         ->assertFilterCount(1)
@@ -157,7 +157,7 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertDontSeeResource(6);
 
                     $browser->runFilter(function ($browser) {
-                        $browser->select('select[dusk="commentable-default-morph-to-field-filter"]', 'videos')->pause(1000);
+                        $browser->select('select[dusk="commentable-morph-to-field-filter"]', 'videos')->pause(1000);
                     })
                         ->waitForTable()
                         ->assertFilterCount(1)
@@ -188,7 +188,7 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertSeeResource(4)
                         ->assertSeeResource(5)
                         ->runFilter(function ($browser) use ($subscribers) {
-                            $browser->type('@email-default-email-field-filter', $subscribers[2]->email)->pause(1000);
+                            $browser->type('@email-email-field-filter', $subscribers[2]->email)->pause(1000);
                         })
                         ->waitForTable()
                         ->assertFilterCount(1)
@@ -214,7 +214,7 @@ class FilterableFieldTest extends DuskTestCase
                 ->within(new IndexComponent('posts'), function ($browser) {
                     $browser->waitForTable()
                         ->runFilter(function ($browser) {
-                            $browser->within(new SearchInputComponent('user-default-belongs-to-field', 'filter'), function ($browser) {
+                            $browser->within(new SearchInputComponent('user-belongs-to-field-filter'), function ($browser) {
                                 $browser->searchFirstRelation(1)->pause(1000);
                             });
                         })
@@ -227,7 +227,7 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertDontSeeResource(5);
 
                     $browser->runFilter(function ($browser) {
-                        $browser->within(new SearchInputComponent('user-default-belongs-to-field', 'filter'), function ($browser) {
+                        $browser->within(new SearchInputComponent('user-belongs-to-field-filter'), function ($browser) {
                             $browser->searchFirstRelation(2)->pause(1000);
                         });
                     })
@@ -240,7 +240,7 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertSeeResource(5);
 
                     $browser->runFilter(function ($browser) {
-                        $browser->click('@user-default-belongs-to-field-search-filter-clear-button')->pause(1000);
+                        $browser->click('@user-belongs-to-field-filter-search-input-clear-button')->pause(1000);
                     })
                         ->waitForTable()
                         ->assertFilterCount(0)
@@ -251,7 +251,7 @@ class FilterableFieldTest extends DuskTestCase
                         ->assertSeeResource(5);
 
                     $browser->runFilter(function ($browser) {
-                        $browser->within(new SearchInputComponent('user-default-belongs-to-field', 'filter'), function ($browser) {
+                        $browser->within(new SearchInputComponent('user-belongs-to-field-filter'), function ($browser) {
                             $browser->assertEmptySearchResult();
                         });
                     }, false);
@@ -277,14 +277,14 @@ class FilterableFieldTest extends DuskTestCase
                 ->within(new IndexComponent('profiles'), function ($browser) {
                     $browser->waitForTable()
                         ->runFilter(function ($browser) {
-                            $browser->select('@interests-default-multi-select-field-filter', ['laravel', 'phpunit'])->pause(1000);
+                            $browser->select('@interests-multi-select-field-filter', ['laravel', 'phpunit'])->pause(1000);
                         })->waitForTable()
                         ->assertSeeResource(1)
                         ->assertSeeResource(2)
                         ->assertDontSeeResource(3);
 
                     $browser->runFilter(function ($browser) {
-                        $browser->select('@interests-default-multi-select-field-filter', ['laravel', 'livewire'])->pause(1000);
+                        $browser->select('@interests-multi-select-field-filter', ['laravel', 'livewire'])->pause(1000);
                     })
                         ->waitForTable()
                         ->assertSeeResource(1)
@@ -304,7 +304,7 @@ class FilterableFieldTest extends DuskTestCase
                 ->within(new IndexComponent('users'), function ($browser) {
                     $browser->waitForTable()
                         ->runFilter(function ($browser) {
-                            $browser->whenAvailable('@created_at-default-date-time-field-range-start', function ($browser) {
+                            $browser->whenAvailable('@created_at-date-time-field-filter-range-start', function ($browser) {
                                 $browser->typeInDateTimeField('', now()->startOfMonth());
                             });
                         })->waitForTable()
@@ -313,7 +313,7 @@ class FilterableFieldTest extends DuskTestCase
                         ->waitForTable()
                         ->assertFilterCount(0)
                         ->runFilter(function ($browser) {
-                            $browser->whenAvailable('@created_at-default-date-time-field-range-start', function ($browser) {
+                            $browser->whenAvailable('@created_at-date-time-field-filter-range-start', function ($browser) {
                                 $browser->typeInDateTimeField('', now()->startOfMonth());
                             });
                         })->waitForTable()

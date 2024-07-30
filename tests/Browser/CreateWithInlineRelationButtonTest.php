@@ -74,10 +74,10 @@ class CreateWithInlineRelationButtonTest extends DuskTestCase
                             ->resetSearchResult()
                             ->assertSearchResult(function ($browser, $attribute) {
                                 $browser->assertSeeIn("{$attribute}-results", 'Ship name')
-                                    ->assertPresent("{$attribute}-result-1")
-                                    ->assertPresent("{$attribute}-result-2")
-                                    ->assertPresent("{$attribute}-result-3")
-                                    ->assertPresent("{$attribute}-result-4");
+                                    ->assertNotPresent("{$attribute}-result-1")
+                                    ->assertNotPresent("{$attribute}-result-2")
+                                    ->assertNotPresent("{$attribute}-result-3")
+                                    ->assertNotPresent("{$attribute}-result-4");
                             });
                     });
                 });
