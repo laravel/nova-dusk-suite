@@ -44,7 +44,7 @@ class ViewerController extends Controller
         $directory = NOVA_PATH.'/node_modules/@heroicons/vue/24/'.$set;
 
         return LazyCollection::make(function () use ($directory) {
-            yield from (new Finder())->in($directory)->files();
+            yield from (new Finder)->in($directory)->files();
         })
             ->collect()
             ->reject(fn ($file) => Str::endsWith($file, 'd.ts') || Str::endsWith($file, ['index.js', 'package.json']))

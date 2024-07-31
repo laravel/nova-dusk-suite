@@ -59,11 +59,9 @@ class ProfilePolicy
     /**
      * Determine whether the user can add a comment to the podcast.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Profile  $profile
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @return bool
      */
-    public function addPassport(User $user, Profile $profile)
+    public function addPassport(User $user, Profile $profile): bool
     {
         return str_ends_with($user->email, '@laravel.com');
     }

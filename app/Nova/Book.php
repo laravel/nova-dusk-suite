@@ -86,7 +86,7 @@ class Book extends Resource
                     ->fields(new Fields\BookPurchase(null, true))
                     ->actions(function () {
                         return [
-                            new Actions\PivotTouch(),
+                            new Actions\PivotTouch,
                         ];
                     }),
 
@@ -94,8 +94,8 @@ class Book extends Resource
                     ->fields(new Fields\BookPurchase('personal'))
                     ->actions(function () {
                         return [
-                            new Actions\PivotTouch(),
-                            new Actions\ConvertPurchaseToGift(),
+                            new Actions\PivotTouch,
+                            new Actions\ConvertPurchaseToGift,
                         ];
                     }),
 
@@ -103,7 +103,7 @@ class Book extends Resource
                     ->fields(new Fields\BookPurchase('gift'))
                     ->actions(function ($request) {
                         return [
-                            new Actions\PivotTouch(),
+                            new Actions\PivotTouch,
                         ];
                     })
                     ->allowDuplicateRelations()
@@ -159,8 +159,8 @@ class Book extends Resource
     public function actions(NovaRequest $request): array
     {
         return [
-            new Actions\MarkAsActive(),
-            new Actions\Touch(),
+            new Actions\MarkAsActive,
+            new Actions\Touch,
             ExportAsCsv::make(),
         ];
     }
