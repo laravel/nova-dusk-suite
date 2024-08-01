@@ -114,6 +114,7 @@ Symfony\Component\Process\Process::fromShellCommandline(
 )->mustRun();
 
 transform([
+    'return package_path([\'vendor\', \'laravel\', \'nova-dusk-suite\']);' => 'return realpath(__DIR__.\'/../\');',
     'return realpath(__DIR__.\'/../vendor/laravel/nova-dusk-suite\');' => 'return realpath(__DIR__.\'/../\');',
 ], fn ($changes) => $files->replaceInFile(array_keys($changes), array_values($changes), "{$workingPath}/tests/DuskTestCase.php"));
 

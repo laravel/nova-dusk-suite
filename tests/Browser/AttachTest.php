@@ -121,7 +121,7 @@ class AttachTest extends DuskTestCase
                 })
                 ->create()
                 ->waitForText('There was a problem submitting the form.')
-                ->assertSee(__('validation.required', ['attribute' => 'role']))
+                ->assertSee(__('validation.required', ['attribute' => 'Role']))
                 ->cancel();
 
             $this->assertDatabaseMissing('role_user', [
