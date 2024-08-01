@@ -97,7 +97,7 @@ class BookPurchase
                         ->rules('required')
                         ->dependsOn('price', function ($field, NovaRequest $request, FormData $formData) {
                             if (! is_null($formData->price) && $formData->price == 0) {
-                                $field->locked()->default('gift');
+                                $field->immutable()->default('gift');
                             }
                         }),
                 ];
@@ -109,7 +109,7 @@ class BookPurchase
                         'personal' => 'Personal',
                         'gift' => 'Gift',
                     ])
-                        ->locked()
+                        ->immutable()
                         ->default($this->type),
                 ];
             }),
