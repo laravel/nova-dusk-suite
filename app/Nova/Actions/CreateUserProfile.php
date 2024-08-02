@@ -30,7 +30,7 @@ class CreateUserProfile extends Action
     {
         $user = $models->first();
 
-        $profile = new Profile();
+        $profile = new Profile;
         $profile->user_id = $user->getKey();
         $profile->timezone = $fields->timezone;
 

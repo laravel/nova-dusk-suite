@@ -134,7 +134,7 @@ class AttachPolymorphicTest extends DuskTestCase
                 })
                 ->create()
                 ->waitForText('There was a problem submitting the form.')
-                ->assertSee(__('validation.required', ['attribute' => 'tag']))
+                ->assertSee(__('validation.required', ['attribute' => 'Tag']))
                 ->cancel();
 
             $post->refresh()->loadMissing('tags');

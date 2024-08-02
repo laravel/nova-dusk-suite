@@ -39,7 +39,7 @@ class GeneratesIconCommand extends Command
         return $files->put(
             (string) realpath(join_paths(__DIR__, '..', '..', 'heroicons.json')),
             LazyCollection::make(function () use ($directory) {
-                yield from (new Finder())->in($directory)->files();
+                yield from (new Finder)->in($directory)->files();
             })
                 ->collect()
                 ->reject(fn ($file) => Str::endsWith($file, 'd.ts') || Str::endsWith($file, ['index.js', 'package.json']))

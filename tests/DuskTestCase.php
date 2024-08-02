@@ -11,8 +11,6 @@ use Laravel\Nova\NovaCoreServiceProvider;
 use Laravel\Nova\NovaServiceProvider;
 use Laravel\Scout\ScoutServiceProvider;
 
-use function Orchestra\Testbench\package_path;
-
 abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
 {
     use Concerns\DatabaseTruncation;
@@ -30,7 +28,7 @@ abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
     #[\Override]
     public static function applicationBasePath()
     {
-        return package_path(['vendor', 'laravel', 'nova-dusk-suite']);
+        return realpath(__DIR__.'/../');
     }
 
     /**

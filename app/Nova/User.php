@@ -225,7 +225,7 @@ class User extends Resource
                 ->fields(new Fields\BookPurchase('personal'))
                 ->actions(function ($request) {
                     return [
-                        new Actions\PivotTouch(),
+                        new Actions\PivotTouch,
                         Actions\ConvertPurchaseToGift::make()
                             ->canSee(function () {
                                 return true;
@@ -249,7 +249,7 @@ class User extends Resource
                 )
                 ->actions(function ($request) {
                     return [
-                        new Actions\PivotTouch(),
+                        new Actions\PivotTouch,
                     ];
                 })->filterable()
                 ->dontReorderAttachables()
@@ -302,7 +302,7 @@ class User extends Resource
                     return $model->active === true && (int) $model->getKey() !== 1;
                 }),
             new Actions\Sleep,
-            new Actions\SendNotification(),
+            new Actions\SendNotification,
             Actions\StandaloneTask::make()->standalone(),
             Actions\RedirectToGoogle::make()->withoutConfirmation(),
             Actions\ChangeCreatedAt::make()->sole(),
