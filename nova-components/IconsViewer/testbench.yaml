@@ -1,21 +1,26 @@
 providers:
-  - Otwell\IconsViewer\ToolServiceProvider
+  - Laravel\Nova\NovaCoreServiceProvider
+  - Workbench\App\Providers\NovaServiceProvider
 
-migrations:
-  - workbench/database/migrations
+migrations: true
 
 seeders:
   - Workbench\Database\Seeders\DatabaseSeeder
 
 workbench:
-  start: '/'
-  install: true
-  discovers:
-    web: true
-    api: false
-    commands: false
-    components: false
-    views: false
-  build: []
-  assets: []
+  start: /nova/icons-viewer
+  user: nova@laravel.com
+  build:
+    - package-discover
+    - asset-publish
+    - create-sqlite-db
+    - db:wipe
+    - migrate:refresh
+  assets:
+    - nova-assets
   sync: []
+
+purge:
+  directories:
+    - lang/*
+    - public/vendor/*
