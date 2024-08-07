@@ -2,7 +2,7 @@ let mix = require('laravel-mix')
 let tailwindcss = require('tailwindcss')
 let postcssImport = require('postcss-import')
 let path = require('path')
-let unique = require('./unique')
+let unique = require('./vendor/laravel/nova-devtool/unique')
 
 mix.extend('nova', new require('./vendor/laravel/nova/nova.mix'))
 
