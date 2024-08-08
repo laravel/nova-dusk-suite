@@ -138,4 +138,26 @@ class UpdateWithBelongsToTest extends DuskTestCase
             $browser->blank();
         });
     }
+
+    public function test_searchable_resource_can_be_cleared_without_fetching_all_records()
+    {
+        $this->defineApplicationStates('searchable');
+
+        $post = PostFactory::new()->create([
+            'user_id' => 4,
+        ]);
+
+        $this->browse(function (Browser $browser) use ($post) {
+            $browser->loginAs(1)
+                ->visit(new Update('posts', $post->id))
+                ->within(new FormComponent(), function ($browser) {
+                    $browser->assertSelectedSearchResult('users', 'Laravel Nova')
+                        ->click('@users-search-input-clear-button')
+                        ->pause(1500)
+                        ->assertEmptySearchResult('users');
+                });
+
+            $browser->blank();
+        });
+    }
 }
