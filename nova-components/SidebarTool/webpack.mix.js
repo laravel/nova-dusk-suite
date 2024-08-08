@@ -4,7 +4,7 @@ let postcssImport = require('postcss-import')
 let path = require('path')
 let unique = require('./vendor/laravel/nova-devtool/unique')
 
-mix.extend('nova', new require('./vendor/laravel/nova/nova.mix'))
+mix.extend('nova', new require('./vendor/laravel/nova-devtool/nova.mix'))
 
 mix
   .setPublicPath('dist')
