@@ -11,8 +11,6 @@ use Laravel\Nova\NovaCoreServiceProvider;
 use Laravel\Nova\NovaServiceProvider;
 use Laravel\Scout\ScoutServiceProvider;
 
-use function Orchestra\Testbench\package_path;
-
 abstract class DuskTestCase extends \Orchestra\Testbench\Dusk\TestCase
 {
     use Concerns\DatabaseTruncation;
