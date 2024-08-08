@@ -6,16 +6,13 @@
     "watch": "mix watch",
     "watch-poll": "mix watch -- --watch-options-poll=1000",
     "hot": "mix watch --hot",
-    "prod": "npm run nova-install && npm run production",
-    "production": "mix --production",
-    "nova-install": "npm --prefix='../../vendor/laravel/nova' ci"
+    "prod": "npm run production",
+    "production": "mix --production"
   },
   "devDependencies": {
-    "@vue/compiler-sfc": "^3.2.22",
-    "laravel-mix": "^6.0.41",
-    "postcss": "^8.4.31",
+    "laravel-nova-devtool": "file:vendor/laravel/nova-devtool",
     "postcss-import": "^14.0.2",
-    "vue-loader": "^16.8.3"
+    "lodash": "^4.17.21"
   },
   "dependencies": {
     "axios": "^1.6.0",

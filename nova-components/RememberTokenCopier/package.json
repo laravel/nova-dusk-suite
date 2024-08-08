@@ -7,16 +7,9 @@
     "watch-poll": "mix watch -- --watch-options-poll=1000",
     "hot": "mix watch --hot",
     "prod": "npm run production",
-    "production": "mix --production",
-    "nova:install": "npm --prefix='../../vendor/laravel/nova' ci"
+    "production": "mix --production"
   },
   "devDependencies": {
-    "@vue/compiler-sfc": "^3.4.19",
-    "laravel-mix": "^6.0.49",
-    "postcss": "^8.4.35",
-    "vue-loader": "^16.8.3"
-  },
-  "dependencies": {
-    "laravel-nova-ui": "0.4.10"
+    "laravel-nova-devtool": "file:vendor/laravel/nova-devtool"
   }
 }

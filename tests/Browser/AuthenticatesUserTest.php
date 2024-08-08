@@ -107,10 +107,10 @@ class AuthenticatesUserTest extends DuskTestCase
                 ->visit(new Login)
                 ->type('email', 'nova@laravel.com')
                 ->type('password', 'password')
-                ->clickAndWaitForReload('button[type="submit"]')
-                ->assertPathIs('/dashboard');
+                ->click('button[type="submit"]')
+                ->waitForLocation('/dashboard');
 
-            $browser->pause(2000)->blank();
+            $browser->blank();
         });
     }
 
