@@ -5,7 +5,8 @@ mix.extend('nova', new require('./vendor/laravel/nova-devtool/nova.mix'))
 
 mix
   .setPublicPath('dist')
-  .js('resources/js/tool.js', 'js')
+  .js('resources/js/tool.js', 'dist')
   .vue({ version: 3 })
   .alias({ '@': path.join(__dirname, 'resources/js/') })
   .nova('otwell/icons-viewer')
+  .version()

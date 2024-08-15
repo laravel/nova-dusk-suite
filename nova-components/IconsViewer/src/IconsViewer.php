@@ -15,8 +15,7 @@ class IconsViewer extends Tool
      */
     public function boot()
     {
-        Nova::script('icons-viewer', __DIR__.'/../dist/js/tool.js');
-        // Nova::style('icons-viewer', __DIR__.'/../dist/css/tool.css');
+        Nova::mix('icons-viewer', __DIR__.'/../dist/');
     }
 
     /**
