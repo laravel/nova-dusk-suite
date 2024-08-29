@@ -16,6 +16,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
+const Nova = window.Nova
+
 const sidebarResponse = ref(null)
 
 onMounted(() => {
