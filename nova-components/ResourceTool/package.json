@@ -9,8 +9,7 @@
     "production": "mix --production"
   },
   "devDependencies": {
-    "laravel-nova-devtool": "file:vendor/laravel/nova-devtool",
-    "lodash": "^4.17.21"
+    "laravel-nova-devtool": "file:vendor/laravel/nova-devtool"
   },
   "dependencies": {
     "tailwindcss": "^3.4.0"

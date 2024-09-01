@@ -7,8 +7,6 @@
 </template>
 
 <script>
-import find from 'lodash/find'
-
 export default {
   props: ['index', 'resourceName', 'resourceId', 'resource', 'panel'],
 
@@ -19,7 +17,7 @@ export default {
   },
 
   mounted() {
-    this.fieldName = find(this.resource.fields, (resource) => {
+    this.fieldName = Object.values(this.resource.fields),find(resource => {
       return resource.attribute == 'name'
     }).value || 'Unknown'
   }

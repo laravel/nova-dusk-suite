@@ -11,7 +11,7 @@
     },
     "require-dev": {
         "laravel/nova": "*",
-        "laravel/nova-devtool": "dev-preset-typescript"
+        "laravel/nova-devtool": "^1.0"
     },
     "autoload": {
         "psr-4": {
