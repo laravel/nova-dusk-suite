@@ -17,9 +17,9 @@ export default {
   },
 
   mounted() {
-    this.fieldName = Object.values(this.resource.fields),find(resource => {
+    this.fieldName = Object.values(this.resource.fields).find(resource => {
       return resource.attribute == 'name'
-    }).value || 'Unknown'
+    })?.value ?? 'Unknown'
   }
 }
 </script>
