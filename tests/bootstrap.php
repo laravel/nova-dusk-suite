@@ -11,6 +11,8 @@ $GITHUB_ACTIONS = isset($_SERVER['GITHUB_ACTIONS']) || isset($_ENV['GITHUB_ACTIO
 
 if ($CI) {
     Options::withoutUI();
+    Options::addArgument('--unlimited-storage');
+    Options::addArgument('--disable-remote-fonts');
 
     Browser::$waitSeconds = 60;
 } else {
@@ -28,3 +30,21 @@ Options::$w3cCompliant = $CHIPPERCI || $GITHUB_ACTIONS ? true : false;
 Options::addArgument('--incognito');
 Options::addArgument('--disable-popup-blocking');
 Options::addArgument('--force-prefers-reduced-motion');
+
+Browser::macro('waitForRequest', function ($callback = null, $seconds = null) {
+    $length = $this->driver->executeScript('return window.history.length;');
+
+    if ($callback) {
+        $callback($this);
+    }
+
+    return $this->waitUsing($seconds, 100, function () use ($length) {
+        return $length < $this->driver->executeScript('return window.history.length;');
+    }, 'Waited %s seconds for request.');
+});
+
+Browser::macro('clickAndWaitForRequest', function ($selector = null, $seconds = null) {
+    return $this->waitForRequest(function ($browser) use ($selector) {
+        $browser->click($selector);
+    }, $seconds);
+});

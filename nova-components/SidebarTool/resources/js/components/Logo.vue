@@ -5,6 +5,8 @@
 <script>
 import { CancelToken, Cancel } from 'axios'
 
+const Nova = window.Nova
+
 export default {
   data: () => ({
     canceller: null,

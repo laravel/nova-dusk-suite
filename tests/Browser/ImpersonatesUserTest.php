@@ -44,7 +44,7 @@ class ImpersonatesUserTest extends DuskTestCase
                         ->elsewhere('', function ($browser) {
                             $browser->assertVisible('@4-replicate-button')
                                 ->assertVisible('@4-impersonate-button')
-                                ->clickAndWaitForReload('@4-impersonate-button')
+                                ->clickAndWaitForRequest('@4-impersonate-button')
                                 ->assertPathIs('/')
                                 ->assertQueryStringHas('impersonator', 2)
                                 ->assertQueryStringHas('impersonated', 4)
@@ -105,7 +105,7 @@ class ImpersonatesUserTest extends DuskTestCase
                         ->elsewhere('', function ($browser) use ($user) {
                             $browser->assertVisible("@{$user->id}-replicate-button")
                                 ->assertVisible("@{$user->id}-impersonate-button")
-                                ->clickAndWaitForReload("@{$user->id}-impersonate-button")
+                                ->clickAndWaitForRequest("@{$user->id}-impersonate-button")
                                 ->assertPathIs('/')
                                 ->assertQueryStringHas('impersonator', 2)
                                 ->assertQueryStringHas('impersonated', $user->id)
@@ -173,7 +173,7 @@ class ImpersonatesUserTest extends DuskTestCase
                         ->elsewhere('', function ($browser) use ($user, $subscriber) {
                             $browser->assertMissing("@{$subscriber->id}-replicate-button")
                                 ->assertVisible("@{$subscriber->id}-impersonate-button")
-                                ->clickAndWaitForReload("@{$subscriber->id}-impersonate-button")
+                                ->clickAndWaitForRequest("@{$subscriber->id}-impersonate-button")
                                 ->assertPathIs('/')
                                 ->assertQueryStringHas('impersonator', $user->id)
                                 ->assertQueryStringHas('impersonated', $subscriber->id)
@@ -216,7 +216,7 @@ class ImpersonatesUserTest extends DuskTestCase
                         ->elsewhere('', function ($browser) use ($user, $subscriber) {
                             $browser->assertMissing("@{$subscriber->id}-replicate-button")
                                 ->assertVisible("@{$subscriber->id}-impersonate-button")
-                                ->clickAndWaitForReload("@{$subscriber->id}-impersonate-button")
+                                ->clickAndWaitForRequest("@{$subscriber->id}-impersonate-button")
                                 ->assertPathIs('/')
                                 ->assertQueryStringHas('impersonator', $user->id)
                                 ->assertQueryStringHas('impersonated', $subscriber->id)

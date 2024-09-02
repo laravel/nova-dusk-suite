@@ -29,6 +29,7 @@ class CustomForgotUserPasswordTest extends DuskTestCase
             ])->all();
     }
 
+    #[Group('internal-server')]
     public function test_it_redirect_to_login_after_password_reset()
     {
         $this->beforeServingApplication(function ($app, $config) {
@@ -38,12 +39,13 @@ class CustomForgotUserPasswordTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $user = UserFactory::new()->create();
 
-            $browser->logout()
+            $browser->visit('/')
+                ->logout()
                 ->assertGuest()
                 ->visit(Nova::url('password/reset'))
                 ->waitForText('Forgot your password?')
                 ->type('input[id="email"]', $user->email)
-                ->clickAndWaitForReload('button[type="submit"]', 40)
+                ->clickAndWaitForRequest('button[type="submit"]', 40)
                 ->assertPathIs('/login');
 
             $browser->blank();

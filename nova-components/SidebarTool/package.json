@@ -10,11 +10,11 @@
   },
   "devDependencies": {
     "laravel-nova-devtool": "file:vendor/laravel/nova-devtool",
-    "postcss-import": "^14.0.2",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "postcss-import": "^14.0.2"
   },
   "dependencies": {
-    "axios": "^1.6.0",
+    "axios": "^1.7.4",
     "tailwindcss": "^3.4.0"
   }
 }

@@ -18,13 +18,14 @@ class AuthenticatesUserTest extends DuskTestCase
     public function test_it_redirect_to_intended_url_after_login($targetUrl, $expectedUrl)
     {
         $this->browse(function (Browser $browser) use ($targetUrl, $expectedUrl) {
-            $browser->logout()
+            $browser->visit('/')
+                ->logout()
                 ->assertGuest()
                 ->visit(Nova::url($targetUrl))
                 ->on(new Login)
                 ->type('email', 'nova@laravel.com')
                 ->type('password', 'password')
-                ->clickAndWaitForReload('button[type="submit"]')
+                ->clickAndWaitForRequest('button[type="submit"]')
                 ->assertPathIs(Nova::url($expectedUrl))
                 ->assertAuthenticated();
 
@@ -90,7 +91,8 @@ class AuthenticatesUserTest extends DuskTestCase
             $browser->waitForLocation('/nova/login')
                 ->type('email', 'nova@laravel.com')
                 ->type('password', 'password')
-                ->clickAndWaitForReload('button[type="submit"]')
+                ->click('button[type="submit"]')
+                ->waitForLocation('/nova/dashboards/main')
                 ->on(new Dashboard);
 
             $browser->blank();
@@ -100,7 +102,8 @@ class AuthenticatesUserTest extends DuskTestCase
     public function test_redirect_outside_of_nova_after_login()
     {
         $this->browse(function (Browser $browser) {
-            $browser->logout()
+            $browser->visit('/')
+                ->logout()
                 ->assertGuest()
                 ->visit('/dashboard')
                 ->waitForLocation('/login')
