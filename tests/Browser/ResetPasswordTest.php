@@ -20,7 +20,7 @@ class ResetPasswordTest extends DuskTestCase
             $browser->visit("/nova/password/reset/{$token}?email={$user->email}")
                 ->type('password', 'password!!')
                 ->type('password_confirmation', 'password!!')
-                ->clickAndWaitForReload('button[type="submit"]')
+                ->clickAndWaitForRequest('button[type="submit"]')
                 ->assertPathIs(Nova::url('/login'))
                 ->assertGuest();
 

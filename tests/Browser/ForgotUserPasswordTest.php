@@ -18,7 +18,8 @@ class ForgotUserPasswordTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $user = UserFactory::new()->create();
 
-            $browser->logout()
+            $browser->visit('/')
+                ->logout()
                 ->assertGuest()
                 ->visit(Nova::url('password/reset'))
                 ->waitForText('Forgot your password?')
