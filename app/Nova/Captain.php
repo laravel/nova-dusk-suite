@@ -64,7 +64,8 @@ class Captain extends Resource
                     ];
                 })
                 ->prunable()
-                ->searchable(uses_searchable()),
+                ->searchable(uses_searchable())
+                ->displaysWithTrashed(! uses_without_trashed()),
         ];
     }
 
