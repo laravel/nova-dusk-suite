@@ -10,8 +10,8 @@
     "require": {
         "php": "^8.2",
         "algolia/algoliasearch-client-php": "^3.3",
-        "doctrine/dbal": "^4.0",
         "carbonphp/carbon-doctrine-types": "^3.0",
+        "doctrine/dbal": "^4.0",
         "guzzlehttp/guzzle": "^7.8",
         "http-interop/http-factory-guzzle": "^1.2",
         "laravel/dusk": "^8.0",
