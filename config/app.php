@@ -162,11 +162,11 @@ return [
          * Package Service Providers...
          */
         Laravel\Dusk\DuskServiceProvider::class,
-        Otwell\CustomField\FieldServiceProvider::class,
-        Otwell\IconsViewer\ToolServiceProvider::class,
-        Otwell\RememberTokenCopier\AssetServiceProvider::class,
-        Otwell\ResourceTool\ToolServiceProvider::class,
-        Otwell\SidebarTool\ToolServiceProvider::class,
+        NovaComponents\CustomField\FieldServiceProvider::class,
+        NovaComponents\IconsViewer\ToolServiceProvider::class,
+        NovaComponents\RememberTokenCopier\AssetServiceProvider::class,
+        NovaComponents\ResourceTool\ToolServiceProvider::class,
+        NovaComponents\SidebarTool\ToolServiceProvider::class,
 
         /*
          * Application Service Providers...

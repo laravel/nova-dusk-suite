@@ -3,7 +3,8 @@
     "description": "The Laravel Framework.",
     "keywords": [
         "framework",
-        "laravel"
+        "laravel",
+        "dev"
     ],
     "license": "MIT",
     "type": "project",
@@ -39,14 +40,17 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
-            "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/",
-            "Otwell\\CustomField\\": "nova-components/CustomField/src/",
-            "Otwell\\IconsViewer\\": "nova-components/IconsViewer/src/",
-            "Otwell\\RememberTokenCopier\\": "nova-components/RememberTokenCopier/src/",
-            "Otwell\\ResourceTool\\": "nova-components/ResourceTool/src/",
-            "Otwell\\SidebarTool\\": "nova-components/SidebarTool/src/"
+            "App\\": [
+                "app/",
+                "vendor/laravel/nova/workbench/app"
+            ],
+            "Database\\Factories\\": "vendor/laravel/nova/workbench/database/factories/",
+            "Database\\Seeders\\": "vendor/laravel/nova/workbench/database/seeders/",
+            "NovaComponents\\CustomField\\": "vendor/laravel/nova/workbench/nova-components/CustomField/src/",
+            "NovaComponents\\IconsViewer\\": "vendor/laravel/nova/workbench/nova-components/IconsViewer/src/",
+            "NovaComponents\\RememberTokenCopier\\": "vendor/laravel/nova/workbench/nova-components/RememberTokenCopier/src/",
+            "NovaComponents\\ResourceTool\\": "vendor/laravel/nova/workbench/nova-components/ResourceTool/src/",
+            "NovaComponents\\SidebarTool\\": "vendor/laravel/nova/workbench/nova-components/SidebarTool/src/"
         },
         "files": [
             "bootstrap/helpers.php"
@@ -54,6 +58,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "App\\": "vendor/laravel/nova/workbench/app",
             "Laravel\\Nova\\Tests\\": "tests/"
         }
     },
