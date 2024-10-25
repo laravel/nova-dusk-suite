@@ -22,6 +22,7 @@
         "league/flysystem-aws-s3-v3": "^3.0",
         "meilisearch/meilisearch-php": "^1.1",
         "nova-kit/nova-on-vapor": "^2.0",
+        "orchestra/testbench-core": "^8.24.4",
         "spatie/laravel-ray": "^1.17"
     },
     "require-dev": {
@@ -30,7 +31,6 @@
         "laravel/nova": "@dev",
         "laravel/pint": "^1.16",
         "nunomaduro/collision": "^7.5",
-        "orchestra/testbench-core": "^8.24.4",
         "orchestra/testbench-dusk": "^8.24.1",
         "orchestra/workbench": "^8.0",
         "phpunit/phpunit": "^10.5"
