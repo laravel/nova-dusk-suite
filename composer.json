@@ -40,10 +40,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": [
-                "app/",
-                "vendor/laravel/nova/workbench/app"
-            ],
+            "App\\": "app/",
             "Database\\Factories\\": "vendor/laravel/nova/workbench/database/factories/",
             "Database\\Seeders\\": "vendor/laravel/nova/workbench/database/seeders/",
             "NovaComponents\\CustomField\\": "vendor/laravel/nova/workbench/nova-components/CustomField/src/",
