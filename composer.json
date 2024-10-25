@@ -3,7 +3,8 @@
     "description": "The Laravel Framework.",
     "keywords": [
         "framework",
-        "laravel"
+        "laravel",
+        "dev"
     ],
     "license": "MIT",
     "type": "project",
@@ -20,6 +21,7 @@
         "league/flysystem-aws-s3-v3": "^3.0",
         "meilisearch/meilisearch-php": "^1.1",
         "nova-kit/nova-on-vapor": "^2.0",
+        "orchestra/testbench-core": "^9.1.7",
         "spatie/laravel-ray": "^1.35"
     },
     "require-dev": {
@@ -28,7 +30,6 @@
         "laravel/nova": "@dev",
         "laravel/pint": "^1.16",
         "nunomaduro/collision": "^8.0",
-        "orchestra/testbench-core": "^9.1.7",
         "orchestra/testbench-dusk": "^9.1.1",
         "orchestra/workbench": "^9.0",
         "phpunit/phpunit": "^10.5"
@@ -39,13 +40,13 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/",
-            "Otwell\\CustomField\\": "nova-components/CustomField/src/",
-            "Otwell\\IconsViewer\\": "nova-components/IconsViewer/src/",
-            "Otwell\\RememberTokenCopier\\": "nova-components/RememberTokenCopier/src/",
-            "Otwell\\ResourceTool\\": "nova-components/ResourceTool/src/",
-            "Otwell\\SidebarTool\\": "nova-components/SidebarTool/src/"
+            "Database\\Factories\\": "vendor/laravel/nova/workbench/database/factories/",
+            "Database\\Seeders\\": "vendor/laravel/nova/workbench/database/seeders/",
+            "NovaComponents\\CustomField\\": "vendor/laravel/nova/workbench/nova-components/CustomField/src/",
+            "NovaComponents\\IconsViewer\\": "vendor/laravel/nova/workbench/nova-components/IconsViewer/src/",
+            "NovaComponents\\RememberTokenCopier\\": "vendor/laravel/nova/workbench/nova-components/RememberTokenCopier/src/",
+            "NovaComponents\\ResourceTool\\": "vendor/laravel/nova/workbench/nova-components/ResourceTool/src/",
+            "NovaComponents\\SidebarTool\\": "vendor/laravel/nova/workbench/nova-components/SidebarTool/src/"
         },
         "files": [
             "bootstrap/helpers.php"
@@ -53,6 +54,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "App\\": "vendor/laravel/nova/workbench/app",
             "Laravel\\Nova\\Tests\\": "tests/"
         }
     },
@@ -78,21 +80,6 @@
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
             "@php artisan nova:publish --force"
-        ],
-        "dusk:prepare": [
-            "@php vendor/bin/dusk-updater detect --auto-update",
-            "@php vendor/bin/testbench-dusk package:discover",
-            "@php artisan nova:publish --force"
-        ],
-        "dusk:assets": [
-            "npm --prefix=./nova/ ci",
-            "TAILWIND_MODE=build npm --prefix=./nova/ run prod",
-            "@php artisan nova:publish --force"
-        ],
-        "dusk:test": [
-            "@composer run dusk:prepare",
-            "@php vendor/bin/testbench-dusk package:dusk-purge",
-            "@php vendor/bin/phpunit -c phpunit.dusk.xml --color"
         ]
     },
     "repositories": [
