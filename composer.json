@@ -9,14 +9,14 @@
     "type": "project",
     "require": {
         "php": "^8.0",
-        "algolia/algoliasearch-client-php": "^3.3",
+        "algolia/algoliasearch-client-php": "^4.0",
         "carbonphp/carbon-doctrine-types": "^2.0",
         "doctrine/dbal": "^3.1.4",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
         "laravel/dusk": "^7.11.3",
-        "laravel/framework": "^9.0",
-        "laravel/scout": "^10.0.1",
+        "laravel/framework": "^9.52.17",
+        "laravel/scout": "^10.11",
         "laravel/tinker": "^2.7",
         "laravel/vapor-core": "^2.22",
         "league/flysystem-aws-s3-v3": "^3.0",
@@ -31,8 +31,8 @@
         "laravel/nova": "@dev",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
-        "orchestra/testbench": "^7.27",
-        "orchestra/testbench-dusk": "^7.28",
+        "orchestra/testbench": "^7.47",
+        "orchestra/testbench-dusk": "^7.49",
         "phpunit/phpunit": "^9.6"
     },
     "autoload": {
