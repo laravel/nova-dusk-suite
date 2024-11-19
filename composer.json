@@ -10,16 +10,16 @@
     "type": "project",
     "require": {
         "php": "^8.2",
-        "algolia/algoliasearch-client-php": "^3.3",
+        "algolia/algoliasearch-client-php": "^4.0",
         "guzzlehttp/guzzle": "^7.8",
         "http-interop/http-factory-guzzle": "^1.2",
-        "laravel/dusk": "^8.1",
-        "laravel/framework": "^11.0.3",
-        "laravel/scout": "^10.8",
+        "laravel/dusk": "^8.2",
+        "laravel/framework": "^11.32",
+        "laravel/scout": "^10.11",
         "laravel/tinker": "^2.9",
         "laravel/vapor-core": "^2.36",
         "league/flysystem-aws-s3-v3": "^3.0",
-        "meilisearch/meilisearch-php": "^1.1",
+        "meilisearch/meilisearch-php": "^1.11",
         "nova-kit/nova-on-vapor": "^2.0",
         "orchestra/testbench-core": "^9.1.7",
         "spatie/laravel-ray": "^1.35"
@@ -30,8 +30,8 @@
         "laravel/nova": "@dev",
         "laravel/pint": "^1.16",
         "nunomaduro/collision": "^8.0",
-        "orchestra/testbench-dusk": "^9.1.1",
-        "orchestra/workbench": "^9.0",
+        "orchestra/testbench-dusk": "^9.9",
+        "orchestra/workbench": "^9.8",
         "phpunit/phpunit": "^10.5"
     },
     "conflict": {
