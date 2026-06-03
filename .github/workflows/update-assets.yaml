@@ -3,22 +3,25 @@ name: Update Nova Component Assets
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Setup Node 14
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '16.x'
 
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         name: Checkout private tools
         with:
           repository: laravel/nova
@@ -27,14 +30,14 @@ jobs:
           ref: "4.0"
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # v2
         with:
           php-version: 8.1
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, intl, fileinfo
           coverage: none
 
       - name: Install dependencies
-        uses: "ramsey/composer-install@v3"
+        uses: "ramsey/composer-install@a8d0d959dab41457692a5e2041bd9b757a119e3f" # v3
         with:
           dependency-versions: "highest"
           composer-options: "--prefer-dist --no-cache"
@@ -66,6 +69,6 @@ jobs:
           TAILWIND_MODE: build
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@3ea6ae190baf489ba007f7c92608f33ce20ef04a # v4
         with:
           commit_message: Update Assets

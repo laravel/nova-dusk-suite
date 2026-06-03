@@ -3,6 +3,9 @@ name: Laravel
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   laravel-tests:
     runs-on: ${{ matrix.os }}
@@ -38,33 +41,36 @@ jobs:
 
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
 
       - name: Setup Node 16
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '16.x'
 
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         name: Checkout private tools
         with:
           repository: laravel/nova
           token: ${{ secrets.MY_GITHUB_TOKEN }}
           path: nova
           ref: "4.0"
+          persist-credentials: false
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # v2
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, intl, fileinfo, opcache
           coverage: none
 
       - name: Install dependencies
-        uses: "ramsey/composer-install@v3"
+        uses: "ramsey/composer-install@a8d0d959dab41457692a5e2041bd9b757a119e3f" # v3
         with:
           dependency-versions: "${{ matrix.dependencies }}"
           composer-options: "--prefer-dist --no-cache"
@@ -117,21 +123,21 @@ jobs:
           RAY_ENABLED: false
 
       - name: Upload Failed Screenshots
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@ff15f0306b3f739f7b6fd43fb5d26cd321bd4de5 # v3
         if: failure()
         with:
           name: "screenshots-php${{ matrix.php }}"
           path: tests/Browser/screenshots/*
 
       - name: Upload Console Errors
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@ff15f0306b3f739f7b6fd43fb5d26cd321bd4de5 # v3
         if: failure()
         with:
           name: "console-php${{ matrix.php }}"
           path: tests/Browser/console/*
 
       - name: Upload Laravel Logs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@ff15f0306b3f739f7b6fd43fb5d26cd321bd4de5 # v3
         if: failure()
         with:
           name: "log-php${{ matrix.php }}"
